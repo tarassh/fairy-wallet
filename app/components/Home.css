@@ -11,8 +11,10 @@
 
 .container h2 {
   font-size: 1rem;
+  font-weight: 100;
 }
 
 .container h3 {
   font-size: 0.8rem;
+  font-weight: 100;
 }
