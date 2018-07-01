@@ -4,11 +4,12 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware } from 'react-router-redux';
 import rootReducer from '../reducers';
+import deviceListener from '../middleware/deviceListener';
 import type { counterStateType } from '../reducers/counter';
 
 const history = createHashHistory();
 const router = routerMiddleware(history);
-const enhancer = applyMiddleware(thunk, router);
+const enhancer = applyMiddleware(thunk, router, deviceListener);
 
 function configureStore(initialState?: counterStateType) {
   return createStore(rootReducer, initialState, enhancer);

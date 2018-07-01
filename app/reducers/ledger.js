@@ -2,7 +2,9 @@
 import * as types from '../actions/types';
 
 const initialState = {
-    ledger: {}
+    isConnected: false,
+    device: null,
+    publicKey: null
 };
 
 export default function ledger(state = initialState, action) {
@@ -10,13 +12,16 @@ export default function ledger(state = initialState, action) {
     
     case types.DEVICE_CONNECTED: {
       return Object.assign({}, state, {
+        isConnected: true,
         device: action.device
       });
     }
 
     case types.DEVICE_DISCONNECTED: {
       return Object.assign({}, state, {
-        device: {}
+        isConnected: false,
+        device: null,
+        publicKey: null
       });
     }
 

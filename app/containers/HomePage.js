@@ -11,52 +11,44 @@ import * as LedgerActions from "../actions/ledger";
 const Transport = require("@ledgerhq/hw-transport-node-hid").default;
 
 type Props = {
-  actions: {},
-  ledger: {}
+    actions: {},
+    ledger: {}
 };
 
 class HomePage extends Component<Props> {
-  props: Props;
-  constructor(props) {
-    super(props);
+    props: Props;
 
+    componentDidMount() {
+        const {
+            actions
+        } = this.props;
+        actions.startListen();   
+    }
 
-    const sub = Transport.listen({
-      next: e => {
-        if (e.type === 'add') {
-          sub.unsubscribe();
-          Transport.open(e.descriptor).then(transport => {
-            console.log(transport);
-            transport.setDebugMode(true);
-            props.actions.deviceConnected(transport);
-          });
-        }
-        if (e.type === 'remove') {
-          
-        }
-      }
-    });
-  }
+    componentWillUnmount() {
+        const {
+            actions
+        } = this.props;
+        actions.stopListen();
+    }
 
-  
-
-  render() {
-    return <Home />;
-  }
+    render() {
+        return<Home />;
+    }
 }
 
 function mapStateToProps(state) {
-  return {
-    ledger: state.ledger
-  };
+    return {
+        ledger: state.ledger
+    };
 };
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({
-      ...LedgerActions
-    }, dispatch)
-  };
+    return {
+        actions: bindActionCreators({
+            ...LedgerActions
+        }, dispatch)
+    };
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));
