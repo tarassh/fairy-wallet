@@ -64,7 +64,9 @@ const deviceListenerMiddleware = store => next => action => {
         }, 2000);
     } else if (action.type === types.STOP_LISTEN_DEVICE_EVENTS) {
         const { ledger } = store.getState();
-        ledger.subscriber.unsubscribe();
+        if (ledger.subscriber && {}.toString.call(ledger.subscriber) === '[object Function]') {
+            ledger.subscriber.unsubscribe();
+        }
         store.dispatch({
             type: types.SET_DEVICE_SUBSCRIBER,
             subscriber: null

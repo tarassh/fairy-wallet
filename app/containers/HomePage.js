@@ -38,7 +38,6 @@ class HomePage extends Component<Props> {
             actions
         } = this.props;
         console.log(ledger);
-        
     }
 
     render() {
