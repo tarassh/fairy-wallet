@@ -1,5 +1,4 @@
-//@flow
-import type Transport from "@ledgerhq/hw-transport";
+import type Transport from "@ledgerhq/hw-transport-node-hid";
 
 const bippath = require('bip32-path');
 
@@ -41,7 +40,7 @@ export function foreach<T, A>(
 export default class Eos {
     transport: Transport<*>;
 
-    constructor(transport) {
+    constructor(transport: Transport<*>) {
         this.transport = transport;
         transport.decorateAppAPIMethods(
             this,

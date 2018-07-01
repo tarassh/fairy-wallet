@@ -32,6 +32,15 @@ class HomePage extends Component<Props> {
         actions.stopListen();
     }
 
+    componentDidUpdate() {
+        const {
+            ledger,
+            actions
+        } = this.props;
+        console.log(ledger);
+        
+    }
+
     render() {
         return<Home />;
     }

@@ -1,31 +1,74 @@
 // @flow
 import * as types from '../actions/types';
-import * as ledger from "../actions/ledger";
 
+const Api = require('../actions/helpers/eosledjer').default;
 const Transport = require("@ledgerhq/hw-transport-node-hid").default;
 
 const deviceListenerMiddleware = store => next => action => {
     if (action.type === types.START_LISTEN_DEVICE_EVENTS) {
+        let sub = null;
         action.interval = setInterval(() => {
-            Transport.list().then(devices => {
-                const state = store.getState();
+            if (sub === null) {
+                sub = Transport.listen({
+                    next: e => {
+                        const { ledger } = store.getState();
+                        store.dispatch({
+                            type: types.DEVICE_CONNECTED,
+                            devicePath: e.device.path
+                        });
 
-                if (state.ledger.isConnected && devices.length === 0) {
-                    store.dispatch(ledger.deviceDisconnected())
-                }
+                        if (e.type === 'add' && (ledger.devicePath !== e.device.path && ledger.publicKey === null)) {
+                            sub.unsubscribe();
+                            sub = null;
+        
+                            Transport.open(e.device.path).then(transport => {
+                                transport.setDebugMode(true);
+                                const api = new Api(transport);
+                                api.getPublicKey("44'/194'/0'/0/0").then(result => {
+                                    transport.close();
+        
+                                    store.dispatch({
+                                        type: types.GET_PUBLIC_KEY_SUCCESS, 
+                                        publicKey: result
+                                    });
+                                
+                                    return result;
+                                }).catch(err => {
+                                    console.log(err);
+                                    transport.close();
 
-                if (!state.ledger.isConnected && devices.length > 0) {
-                    Transport.open(devices[0]).then(transport => {
-                        transport.setDebugMode(true);
-                        store.dispatch(ledger.deviceConnected(transport));
-                        return transport;
-                    }).catch();
-                }
+                                    store.dispatch({
+                                        type: types.GET_PUBLIC_KEY_FAILURE,
+                                        publicKey: null
+                                    })
+                                });
+                                return transport;
+                            }).catch(err => {
+                                console.log(err);
+                            });
+                        }
+                        if (e.type === 'remove') {
+                            store.dispatch({
+                                type: types.DEVICE_DISCONNECTED,
+                                
+                            });
+                        }
+                    },
+                });
 
-                return devices;
-            }).catch();
+                store.dispatch({
+                    type: types.SET_DEVICE_SUBSCRIBER,
+                    subscriber: sub
+                });
+            }
         }, 2000);
     } else if (action.type === types.STOP_LISTEN_DEVICE_EVENTS) {
+        const { ledger } = store.getState();
+        ledger.subscriber.unsubscribe();
+        store.dispatch({
+            type: types.SET_DEVICE_SUBSCRIBER,
+            subscriber: null
+        });
         clearInterval(action.interval);
     }
     next(action);

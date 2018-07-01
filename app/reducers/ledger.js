@@ -2,25 +2,41 @@
 import * as types from '../actions/types';
 
 const initialState = {
-    isConnected: false,
-    device: null,
+    subscriber: null,
+    devicePath: null,
     publicKey: null
 };
 
 export default function ledger(state = initialState, action) {
   switch (action.type) {
-    
+
+    case types.SET_DEVICE_SUBSCRIBER: {
+      return Object.assign({}, state, {
+        subscriber: action.subscriber
+      });
+    }
+
     case types.DEVICE_CONNECTED: {
       return Object.assign({}, state, {
-        isConnected: true,
-        device: action.device
+        devicePath: action.devicePath,
       });
     }
 
     case types.DEVICE_DISCONNECTED: {
       return Object.assign({}, state, {
-        isConnected: false,
-        device: null,
+        devicePath: null,
+        publicKey: null
+      });
+    }
+
+    case types.GET_PUBLIC_KEY_SUCCESS: {
+      return Object.assign({}, state, {
+        publicKey: action.publicKey
+      });
+    }
+
+    case types.GET_PUBLIC_KEY_FAILURE: {
+      return Object.assign({}, state, {
         publicKey: null
       });
     }
