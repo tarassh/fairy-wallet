@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Grid, Container } from 'semantic-ui-react';
 import styles from './Home.css';
 import Lock from './Lock';
-import Connect from './Connect';
+import Connection from './Connection';
 
 type Props = {
   ledger: {}
@@ -23,7 +23,7 @@ export default class Home extends Component<Props> {
 
     let uiSegment = <Lock />;
     if (state === 1) {
-      uiSegment = <Connect />;
+      uiSegment = <Connection />;
     }
 
     return (
