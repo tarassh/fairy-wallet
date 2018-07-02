@@ -21,8 +21,7 @@ export function foreach<T, A>(
     function iterate(index, array, result) {
         if (index >= array.length) {
             return result;
-        } else
-            return callback(array[index], index).then(function (res) {
+        } return callback(array[index], index).then((res) => {
                 result.push(res);
                 return iterate(index + 1, array, result);
             });
@@ -71,8 +70,8 @@ export default class Eos {
         wif: string,
         chainCode?: string
     }> {
-        let paths = bippath.fromString(path).toPathArray();
-        let buffer = new Buffer(1 + paths.length * 4);
+        const paths = bippath.fromString(path).toPathArray();
+        const buffer = new Buffer.alloc(1 + paths.length * 4);
         buffer[0] = paths.length;
         paths.forEach((element, index) => {
             buffer.writeUInt32BE(element, 1 + 4 * index);
@@ -86,9 +85,9 @@ export default class Eos {
                 buffer
             )
             .then(response => {
-                let result = {};
-                let publicKeyLength = response[0];
-                let addressLength = response[1 + publicKeyLength];
+                const result = {};
+                const publicKeyLength = response[0];
+                const addressLength = response[1 + publicKeyLength];
                 result.publicKey = response
                     .slice(1, 1 + publicKeyLength)
                     .toString("hex");
@@ -124,18 +123,18 @@ export default class Eos {
         v: string,
         r: string
     }> {
-        let paths = bippath.fromString(path).toPathArray();
+        const paths = bippath.fromString(path).toPathArray();
         let offset = 0;
-        let rawTx = new Buffer(rawTxHex, "hex");
-        let toSend = [];
+        const rawTx = new Buffer.from(rawTxHex, "hex");
+        const toSend = [];
         let response;
         while (offset !== rawTx.length) {
-            let maxChunkSize = offset === 0 ? 150 - 1 - paths.length * 4 : 150;
-            let chunkSize =
+            const maxChunkSize = offset === 0 ? 150 - 1 - paths.length * 4 : 150;
+            const chunkSize =
                 offset + maxChunkSize > rawTx.length
                     ? rawTx.length - offset
                     : maxChunkSize;
-            let buffer = new Buffer(
+            const buffer = new Buffer.alloc(
                 offset === 0 ? 1 + paths.length * 4 + chunkSize : chunkSize
             );
             if (offset === 0) {
@@ -170,8 +169,8 @@ export default class Eos {
         version: string
     }> {
         return this.transport.send(CLA, INS_GET_APP_CONFIGURATION, 0x00, 0x00).then(response => {
-            let result = {};
-            result.version = "" + response[1] + "." + response[2] + "." + response[3];
+            const result = {};
+            result.version = `${  response[1]  }.${  response[2]  }.${  response[3]}`;
             return result;
         });
     }

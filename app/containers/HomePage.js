@@ -8,9 +8,8 @@ import Home from '../components/Home';
 import * as LedgerActions from "../actions/ledger";
 
 
-const Transport = require("@ledgerhq/hw-transport-node-hid").default;
-
 type Props = {
+    history: {},
     actions: {},
     ledger: {}
 };
@@ -22,7 +21,14 @@ class HomePage extends Component<Props> {
         const {
             actions
         } = this.props;
-        actions.startListen();   
+        actions.startListen();
+    }
+
+    componentDidUpdate() {
+        const {
+            ledger
+        } = this.props;
+        console.log(ledger);
     }
 
     componentWillUnmount() {
@@ -32,16 +38,17 @@ class HomePage extends Component<Props> {
         actions.stopListen();
     }
 
-    componentDidUpdate() {
-        const {
-            ledger,
-            actions
-        } = this.props;
-        console.log(ledger);
-    }
-
     render() {
-        return<Home />;
+        const {
+            history,
+            ledger
+        } = this.props;
+        return (
+          <Home
+            history={history}
+            ledger={ledger}
+          />
+        );
     }
 }
 

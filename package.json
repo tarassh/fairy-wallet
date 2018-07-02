@@ -185,6 +185,7 @@
     "redux-logger": "^3.0.6",
     "rimraf": "^2.6.2",
     "sass-loader": "^7.0.1",
+    "semantic-ui-react": "^0.81.3",
     "sinon": "^5.0.10",
     "spectron": "^3.8.0",
     "style-loader": "^0.21.0",
