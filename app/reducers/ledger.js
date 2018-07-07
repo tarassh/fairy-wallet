@@ -4,7 +4,6 @@ import * as types from '../actions/types';
 const initialState = {
     subscriber: null,
     devicePath: null,
-    publicKey: null,
     transport: null,
     application: null
 };
@@ -49,18 +48,6 @@ export default function ledger(state = initialState, action) {
       return Object.assign({}, state, {
         application: null,
         transport: null
-      });
-    }
-
-    case types.GET_PUBLIC_KEY_SUCCESS: {
-      return Object.assign({}, state, {
-        publicKey: action.publicKey
-      });
-    }
-
-    case types.GET_PUBLIC_KEY_FAILURE: {
-      return Object.assign({}, state, {
-        publicKey: null
       });
     }
 

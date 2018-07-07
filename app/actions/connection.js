@@ -4,14 +4,6 @@ import { getAccounts } from './accounts';
 
 import eos from './helpers/eos';
 
-export function test(url) {
-    return function(dispatch) {
-        dispatch({
-            type: 'dfgdfgdgdgdf'
-        }); 
-    }
-};
-
 export function createConnection(url) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -47,8 +39,8 @@ export function createConnection(url) {
             type: types.CREATE_CONNECTION_SUCCESS,
             httpEndpoint
           });
-            
-            return dispatch(getAccounts(getState().ledger.publicKey))
+
+          return dispatch(getAccounts(getState().accounts.publicKey.wif));
         }
         return dispatch({
           type: types.CREATE_CONNECTION_FAILURE
@@ -70,6 +62,5 @@ export function createConnection(url) {
 }
 
 export default {
-    createConnection,
-    test
+  createConnection
 }

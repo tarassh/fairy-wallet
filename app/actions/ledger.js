@@ -22,7 +22,7 @@ export function startListen() {
         if (event.type === 'add') {
           if (getState().ledger.devicePath === null) {
 
-            if (getState().ledger.devicePath !== event.device.path && getState().ledger.publicKey === null) {
+            if (getState().ledger.devicePath !== event.device.path && getState().ledger.application === null) {
               dispatch(stopListen());
 
               Transport.open(event.device.path).then((transport) => {
@@ -36,7 +36,8 @@ export function startListen() {
                     application: result,
                     transport
                   });
-
+                  
+                  dispatch(getPublicKey());
                   dispatch(startListen());
                   return result;
                 }).catch((err) => {
@@ -86,6 +87,23 @@ export function stopListen() {
         type: types.STOP_LISTEN_DEVICE_EVENTS
       });
     }
+  };
+}
+
+export function getPublicKey() {
+  return (dispatch: () => void, getState) => {
+    const { ledger } = getState();
+
+    const api = new Api(ledger.transport);    
+    api.getPublicKey("44'/194'/0'/0/0").then((result) => dispatch({
+        type: types.GET_PUBLIC_KEY_SUCCESS,
+        publicKey: result
+      })).catch((err) => {
+      dispatch({
+        type: types.GET_PUBLIC_KEY_FAILURE,
+        err
+      })
+    });
   };
 }
 
