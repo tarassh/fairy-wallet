@@ -6,15 +6,17 @@ import { withRouter } from 'react-router-dom';
 import Home from '../components/Home';
 
 import * as LedgerActions from "../actions/ledger";
-
+import * as StateActions from "../actions/states";
 
 type Props = {
     history: {},
     actions: {},
-    ledger: {}
+    states: {},
+    ledger: {},
+    accounts: {}
 };
 
-class HomePage extends Component<Props> {
+class HomeContainer extends Component<Props> {
     props: Props;
 
     componentDidMount() {
@@ -41,12 +43,18 @@ class HomePage extends Component<Props> {
     render() {
         const {
             history,
-            ledger
+            ledger,
+            actions,
+            states,
+            accounts
         } = this.props;
         return (
           <Home
             history={history}
             ledger={ledger}
+            actions={actions}
+            states={states}
+            accounts={accounts}
           />
         );
     }
@@ -54,16 +62,19 @@ class HomePage extends Component<Props> {
 
 function mapStateToProps(state) {
     return {
-        ledger: state.ledger
+        ledger: state.ledger,
+        states: state.states,
+        accounts: state.accounts
     };
 };
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators({
+            ...StateActions,
             ...LedgerActions
         }, dispatch)
     };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomePage));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeContainer));

@@ -3,12 +3,13 @@
   top: 50%;
   left: 50%;
   text-align: center;
-  -ms-transform: translateX(-50%) translateY(-50%);
-  -webkit-transform: translate(-50%,-50%);
-  transform: translate(-50%,-50%);
+  -ms-transform: translateX(-50%) translateY(75%);
+  -webkit-transform: translate(-50%,75%);
+  transform: translate(-50%, 75%);
   user-select: none;  
 }
 
+/*
 .container h2 {
   font-size: 1rem;
   font-weight: 100;
@@ -18,3 +19,13 @@
   font-size: 0.8rem;
   font-weight: 100;
 }
+*/
+
+body {
+  position: relative;
+  color: white;
+  height: 100vh;
+  background-color: #232c39;
+  font-family: Arial, Helvetica, Helvetica Neue, serif;
+  overflow-y: hidden;
+} 

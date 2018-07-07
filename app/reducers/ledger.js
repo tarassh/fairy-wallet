@@ -10,9 +10,15 @@ const initialState = {
 export default function ledger(state = initialState, action) {
   switch (action.type) {
 
-    case types.SET_DEVICE_SUBSCRIBER: {
+    case types.START_LISTEN_DEVICE_EVENTS: {
       return Object.assign({}, state, {
         subscriber: action.subscriber
+      });
+    }
+
+    case types.STOP_LISTEN_DEVICE_EVENTS: {
+      return Object.assign({}, state, {
+        subscriber: null
       });
     }
 

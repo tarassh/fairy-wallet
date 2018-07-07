@@ -3,10 +3,16 @@ import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import Root from './containers/Root';
 import { configureStore, history } from './store/configureStore';
-import './app.global.css';
+//import './app.global.css';
+import 'semantic-ui-css/components/list.min.css';
+import 'semantic-ui-css/components/container.min.css';
+import 'semantic-ui-css/components/icon.min.css';
+import 'semantic-ui-css/components/step.min.css';
+import 'semantic-ui-css/components/grid.min.css';
+import 'semantic-ui-css/components/segment.min.css';
+import 'semantic-ui-css/components/message.min.css';
 
 const store = configureStore();
-
 
 render(
   <AppContainer>

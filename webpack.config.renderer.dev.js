@@ -78,7 +78,7 @@ export default merge.smart(baseConfig, {
           }
         }
       },
-      {
+     /* {
         test: /\.global\.css$/,
         use: [
           {
@@ -108,7 +108,11 @@ export default merge.smart(baseConfig, {
             }
           }
         ]
-      },
+      },*/
+	    {
+            test: /\.css$/,
+            loader: "style-loader!css-loader"
+        },
       // SASS support - compile all .global.scss files and pipe it to style.css
       {
         test: /\.global\.(scss|sass)$/,

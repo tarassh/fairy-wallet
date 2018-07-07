@@ -1,12 +1,19 @@
 // @flow
 import React, { Component } from 'react';
-import { Grid, Container } from 'semantic-ui-react';
+import { Grid, Container, Segment } from 'semantic-ui-react';
 import styles from './Home.css';
-import Lock from './Lock';
-import Connection from './Connection';
+import Status from './Home/Status'
+import Lock from './Home/Lock'
+import NoAccount from './Home/NoAccount'
+import Connection from './Home/Connection'
+import ListAccounts from './Home/ListAccounts'
+import * as types from '../actions/types';
 
 type Props = {
-  ledger: {}
+    history: {},
+    actions: {},
+    states: {},
+    ledger: {}
 };
 
 export default class Home extends Component<Props> {
@@ -14,32 +21,38 @@ export default class Home extends Component<Props> {
 
   render() {
     const {
-      ledger
+        states,
+        ledger,
+        accounts
     } = this.props;
-    let state = 0;
-    if (ledger.publicKey !== null) {
-      state = 1;
-    }
 
-    let uiSegment = <Lock />;
-    if (state === 1) {
-      uiSegment = <Connection />;
+//    let statusSegment = <Status 
+//        deviceConnected={states.deviceConnected} 
+//        accountsFound={states.nodeConnected} 
+//        nodeConnected={states.accountsRetrieved} />
+
+    var mainSegment = <Lock />;
+    if(states.deviceConnected && !states.nodeConnected){
+        mainSegment = <Connection />;
+    }
+    if(states.deviceConnected && states.nodeConnected && !states.accountsRetrieved){
+        mainSegment = <NoAccount />
+    }
+    if(states.deviceConnected && states.nodeConnected && states.accountsRetrieved){
+        mainSegment = <ListAccounts accounts={accounts.names}/>;
     }
 
     return (
-      <div className={styles.container} data-tid="container">
-        <Grid
-          textAlign="center"
-        >
-          <Grid.Column
-            verticalAlign="middle"
-          >
-            <Container>
-              {uiSegment}
-            </Container>
-          </Grid.Column>
+        <Grid stretched={true} textAlign='center' verticalAlign='middle'>
+            <Grid.Row />
+            <Grid.Row columns={3} className='container'>
+                <Grid.Column width={5}/>
+                <Grid.Column width={6}>
+                    {mainSegment}
+                </Grid.Column>
+                <Grid.Column width={5}/>
+            </Grid.Row>
         </Grid>
-      </div>
     );
   }
 }

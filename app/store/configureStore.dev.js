@@ -1,22 +1,22 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
-import { routerMiddleware, routerActions } from 'react-router-redux';
+import createHistory from 'history/createBrowserHistory'
+import { routerMiddleware, routerActions, push } from 'react-router-redux';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
-import * as counterActions from '../actions/counter';
-import type { counterStateType } from '../reducers/counter';
-import deviceListener from '../middleware/deviceListener';
+import * as ledgerActions from '../actions/ledger';
+import * as stateActions from '../actions/states';
+import * as connectionActions from '../actions/connection';
+import * as accountsActions from '../actions/accounts';
 
 const history = createHashHistory();
+//const history = createHistory();
 
-const configureStore = (initialState?: counterStateType) => {
+const configureStore = (initialState = {}) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
-
-  // Device Middleware
-  middleware.push(deviceListener);
 
   // Thunk Middleware
   middleware.push(thunk);
@@ -38,8 +38,11 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...counterActions,
-    ...routerActions
+    ...ledgerActions,
+    ...routerActions,
+    ...stateActions,
+    ...connectionActions,
+    ...accountsActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
@@ -57,14 +60,14 @@ const configureStore = (initialState?: counterStateType) => {
 
   // Create Store
   const store = createStore(rootReducer, initialState, enhancer);
-
+    
   if (module.hot) {
     module.hot.accept(
       '../reducers',
       () => store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
     );
   }
-
+    
   return store;
 };
 
