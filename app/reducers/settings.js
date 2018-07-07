@@ -1,4 +1,4 @@
-import * as types from "./types";
+import * as types from "../actions/types";
 
 const initialState = {
     acceptedConstitution: false,

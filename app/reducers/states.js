@@ -6,7 +6,7 @@ const initialState = {
     accountsRetrieved: false
 };
 
-export default function state(state = initialState, action){
+export default function states(state = initialState, action){
     switch (action.type) {
         case types.APP_LEDGER_CONNECTION_STATUS: {
           return Object.assign({}, state, {

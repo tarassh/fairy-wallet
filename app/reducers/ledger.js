@@ -4,7 +4,9 @@ import * as types from '../actions/types';
 const initialState = {
     subscriber: null,
     devicePath: null,
-    publicKey: null
+    publicKey: null,
+    transport: null,
+    application: null
 };
 
 export default function ledger(state = initialState, action) {
@@ -24,14 +26,29 @@ export default function ledger(state = initialState, action) {
 
     case types.DEVICE_CONNECTED: {
       return Object.assign({}, state, {
-        devicePath: action.devicePath,
+        devicePath: action.devicePath
       });
     }
 
     case types.DEVICE_DISCONNECTED: {
       return Object.assign({}, state, {
         devicePath: null,
-        publicKey: null
+        transport: null,
+        application: null,
+      });
+    }
+
+    case types.GET_APP_STATS_SUCCESS: {
+      return Object.assign({}, state, {
+        application: action.application,
+        transport: action.transport
+      });
+    }
+
+    case types.GET_APP_STATS_FAILED: {
+      return Object.assign({}, state, {
+        application: null,
+        transport: null
       });
     }
 
