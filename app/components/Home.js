@@ -23,7 +23,8 @@ export default class Home extends Component<Props> {
     const {
         states,
         ledger,
-        accounts
+        accounts,
+        history
     } = this.props;
 
 //    let statusSegment = <Status 
@@ -39,7 +40,7 @@ export default class Home extends Component<Props> {
         mainSegment = <NoAccount />
     }
     if(states.deviceConnected && states.nodeConnected && states.accountsRetrieved){
-        mainSegment = <ListAccounts accounts={accounts.names}/>;
+        mainSegment = <ListAccounts accounts={accounts.names} history={history}/>;
     }
 
     return (
