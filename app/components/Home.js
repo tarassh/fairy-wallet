@@ -30,8 +30,8 @@ export default class Home extends Component<Props> {
 
   render() {
     const {
-      states,
-      accounts,
+        states,
+        accounts
     } = this.props;
 
     console.log(this.props);

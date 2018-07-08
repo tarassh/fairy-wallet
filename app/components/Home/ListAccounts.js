@@ -3,25 +3,42 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Container, List, Icon, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
+import compose from 'lodash/fp/compose';
 
 type Props = {
-  history: {}
+    accounts: {},
+    history: {}
 };
 
 export class ListAccountsContainer extends Component<Props> {
     props: Props;
     
+//    componentDidMount() {
+//        const {
+//          history
+//        } = this.props;
+//
+//        history.push('/wallet');
+//    }
+
+    gotoWallet = () => {
+        const {
+          history
+        } = this.props;
+    
+        history.push('/wallet');
+    }
+
     render() {
         const {
-            history
+            accounts
         } = this.props;
 
-        gotoWallet = () => {
-            history.push('\wallet');
-        }
-
-        const accountRender = accounts.map((account, i) =>                                       
-            <List.Item as='a' onClick='this.gotoWallet' key={i}>
+        const accountRender = accounts.names.map((account, i) =>                                       
+            <List.Item as='a' onClick={this.gotoWallet} key={i}>
               <Icon name='user' />
               <List.Content>
                 <List.Description>
@@ -42,8 +59,18 @@ export class ListAccountsContainer extends Component<Props> {
 
 function mapStateToProps(state) {
     return {
-        history: state.history
+        accounts: state.accounts
     }
 }
 
-export default connect(mapStateToProps, null)(ListAccountsContainer);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        push: push,
+        history: history
+    }, dispatch);
+}
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(ListAccountsContainer)
