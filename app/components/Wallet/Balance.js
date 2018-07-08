@@ -24,57 +24,55 @@ export default class Balance extends Component<Props> {
         ]
         
         return (
-            <Container textAlign="center">
-                <Grid stretched={true}>
-                   <Grid.Row>
-                        <Grid.Column textAlign='left'>
-                            <Label floating>
-                                Wallet
-                            </Label>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column textAlign='left'>
-                            <Label>
-                                Account
-                                <Label.Detail>{accounts.account.account_name}</Label.Detail>
-                              </Label>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column textAlign='left'>
-                            <Label>
-                                Balance
-                                <Label.Detail>{accounts.account.core_liquid_balance}</Label.Detail>
-                              </Label>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Table celled fixed>
-                                <Table.Header>
-                                  <Table.Row>
-                                    <Table.HeaderCell>
-                                      Currency
-                                    </Table.HeaderCell>
-                                    <Table.HeaderCell>
-                                      Total
-                                    </Table.HeaderCell>
-                                  </Table.Row>
-                                </Table.Header>
-                                <Table.Body>
-                                  {_.map(tableData, ({currency, total}) => (
-                                    <Table.Row>
-                                      <Table.Cell>{currency}</Table.Cell>
-                                      <Table.Cell>{total}</Table.Cell>
-                                    </Table.Row>
-                                  ))}
-                                </Table.Body>
-                            </Table>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Container>
+            <Grid stretched={true}>
+               <Grid.Row>
+                    <Grid.Column textAlign='left'>
+                        <Label as='a' color='blue' ribbon>
+                            Wallet
+                        </Label>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column textAlign='left'>
+                        <Label>
+                            Account
+                            <Label.Detail>{accounts.account.account_name}</Label.Detail>
+                          </Label>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column textAlign='left'>
+                        <Label>
+                            Balance
+                            <Label.Detail>{accounts.account.core_liquid_balance}</Label.Detail>
+                          </Label>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Table celled fixed>
+                            <Table.Header>
+                              <Table.Row>
+                                <Table.HeaderCell>
+                                  Currency
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                  Total
+                                </Table.HeaderCell>
+                              </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                              {_.map(tableData, ({currency, total}) => (
+                                <Table.Row>
+                                  <Table.Cell>{currency}</Table.Cell>
+                                  <Table.Cell>{total}</Table.Cell>
+                                </Table.Row>
+                              ))}
+                            </Table.Body>
+                        </Table>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         );
     }
 }

@@ -11,6 +11,8 @@ import 'semantic-ui-css/components/step.min.css';
 import 'semantic-ui-css/components/grid.min.css';
 import 'semantic-ui-css/components/segment.min.css';
 import 'semantic-ui-css/components/message.min.css';
+import 'semantic-ui-css/components/label.min.css';
+import 'semantic-ui-css/components/table.min.css';
 
 const store = configureStore();
 
