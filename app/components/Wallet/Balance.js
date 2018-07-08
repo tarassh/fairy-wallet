@@ -37,7 +37,7 @@ export default class Balance extends Component<Props> {
                         <Grid.Column textAlign='left'>
                             <Label>
                                 Account
-                                <Label.Detail>{'name'}</Label.Detail>
+                                <Label.Detail>{accounts.account.account_name}</Label.Detail>
                               </Label>
                         </Grid.Column>
                     </Grid.Row>
@@ -45,7 +45,7 @@ export default class Balance extends Component<Props> {
                         <Grid.Column textAlign='left'>
                             <Label>
                                 Balance
-                                <Label.Detail>{'balance'}</Label.Detail>
+                                <Label.Detail>{accounts.account.core_liquid_balance}</Label.Detail>
                               </Label>
                         </Grid.Column>
                     </Grid.Row>
