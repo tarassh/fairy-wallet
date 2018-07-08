@@ -5,6 +5,8 @@ import { Container, List, Icon, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
+import compose from 'lodash/fp/compose';
 
 type Props = {
     accounts: {},
@@ -14,16 +16,20 @@ type Props = {
 export class ListAccountsContainer extends Component<Props> {
     props: Props;
     
-    componentDidMount() {
+//    componentDidMount() {
+//        const {
+//          history
+//        } = this.props;
+//
+//        history.push('/wallet');
+//    }
+
+    gotoWallet = () => {
         const {
           history
         } = this.props;
-
+    
         history.push('/wallet');
-    }
-
-    gotoWallet = () => {
-//        this.props.push('/wallet');
     }
 
     render() {
@@ -64,4 +70,7 @@ const mapDispatchToProps = (dispatch) => {
     }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListAccountsContainer);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(ListAccountsContainer)

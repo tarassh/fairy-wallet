@@ -9,7 +9,7 @@ export default () => (
   <App>
     <HashRouter>
         <Switch>
-          <Route path="/" component={Home} />
+          <Route exact path="/" component={Home} />
           <Route path="/wallet" component={Wallet} />
         </Switch>
     </HashRouter>

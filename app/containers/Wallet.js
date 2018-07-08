@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { Grid } from 'semantic-ui-react';
 
 type Props = {
     history: {},
     actions: {},
-    settings: {},
     states: {},
     ledger: {}
 };
@@ -14,25 +15,25 @@ type Props = {
 class WalletContainer extends Component<Props> {
     props: Props;
     
-      render() {
-    const {
-        states,
-        ledger
-    } = this.props;
+    render() {
+        const {
+            states,
+            ledger
+        } = this.props;
 
-    return (
-        <Grid stretched={true} divided='vertically'>
-            <Grid.Row columns={2}>
-                <Grid.Column width={6}>
-                    '{leftSegment}'
-                </Grid.Column>
-                <Grid.Column width={10}>
-                    '{rightSegment}'
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-        );
-    }
+        return (
+            <Grid stretched={true} divided='vertically'>
+                <Grid.Row columns={2}>
+                    <Grid.Column width={6}>
+                        'dummy'
+                    </Grid.Column>
+                    <Grid.Column width={10}>
+                        'dummy'
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+            );
+        }
 };
 
 function mapStateToProps(state) {
@@ -43,13 +44,13 @@ function mapStateToProps(state) {
     };
 };
 
-function mapDispatchToProps(dispatch) {
-    return {
-        actions: bindActionCreators({
-            ...StateActions,
-            ...LedgerActions
-        }, dispatch)
-    };
-}
+//function mapDispatchToProps(dispatch) {
+//    return {
+//        actions: bindActionCreators({
+//            ...StateActions,
+//            ...LedgerActions
+//        }, dispatch)
+//    };
+//}
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WalletContainer));
+export default connect(mapStateToProps, null)(WalletContainer);

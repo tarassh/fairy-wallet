@@ -40,7 +40,7 @@ export default class Home extends Component<Props> {
         mainSegment = <NoAccount />
     }
     if(states.deviceConnected && states.nodeConnected && states.accountsRetrieved){
-        mainSegment = <ListAccounts accounts={accounts.names} history={history}/>;
+        mainSegment = <ListAccounts accounts={accounts.names}/>;
     }
 
     return (
