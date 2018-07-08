@@ -6,14 +6,14 @@ import eos from './helpers/eos';
 
 export function createConnection(url) {
   return (dispatch: () => void, getState) => {
+    if (!url || url.length === 0) {
+      return;
+    }
+
     dispatch({
       type: types.CREATE_CONNECTION_REQUEST,
       url
     });
-
-    if (!url || url.length === 0) {
-      return;
-    }
 
     try {
       const {

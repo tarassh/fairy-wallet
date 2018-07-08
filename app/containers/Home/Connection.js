@@ -11,13 +11,26 @@ class ConnectionContainer extends Component<Props> {
     this.state = { nodeUrl: '' };
   }
 
-  onConnect = () => this.props.createConnection(this.state.nodeUrl)
+  onConnect = () => {
+    this.props.createConnection(this.state.nodeUrl)
+  }
 
-  getUrl = e => {
-    this.state.nodeUrl = e.target.value;
+  getUrl = (e, { value }) => {
+    this.setState({
+      nodeUrl: value
+    });
   }
 
   render() {
+    const {
+      loading
+    } = this.props;
+
+    let disabled = false;
+    if (loading.CREATE_CONNECTION) {
+      disabled = true;
+    }
+
     return (
       <Form>
         <Form.Field
@@ -25,12 +38,13 @@ class ConnectionContainer extends Component<Props> {
           control={Input}
           label="Node URL"
           onChange={this.getUrl}
+          size='big'
           placeholder="https://"
         />
         <Container textAlign="center">
           <Button
             content="Connect"
-            icon="exchange"
+            disabled={disabled}
             primary
             onClick={this.onConnect}
             style={{ marginTop: '1em' }}
@@ -41,8 +55,14 @@ class ConnectionContainer extends Component<Props> {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+      loading: state.loading
+  };
+};
+
 const mapDispatchToProps = (dispatch) => bindActionCreators({
   createConnection
 }, dispatch)
 
-export default connect(null, mapDispatchToProps)(ConnectionContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionContainer)

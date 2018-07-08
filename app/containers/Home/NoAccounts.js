@@ -23,7 +23,6 @@ class NoAccountsContainer extends Component<Props> {
         <Container textAlign="center">
           <Button
             content="Verify Key With Ledger"
-            icon="verify"
             primary
             onClick={this.onRevealePublicKey}
             style={{ marginTop: '1em' }}
