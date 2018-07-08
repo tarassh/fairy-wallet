@@ -3,7 +3,8 @@ import * as types from '../actions/types';
 const initialState = {
     deviceConnected: false,
     nodeConnected: false,
-    accountsRetrieved: false
+    accountsRetrieved: false,
+    accountInfoRetrieved: false 
 };
 
 export default function state(state = initialState, action){
@@ -39,6 +40,17 @@ export default function state(state = initialState, action){
         case types.GET_ACCOUNTS_FAILURE: {
           return Object.assign({}, state, {
             accountsRetrieved: false
+          });
+        }
+        case types.GET_ACCOUNT_SUCCESS: {
+          return Object.assign({}, state, {
+            accountInfoRetrieved: true
+          });
+        }
+        case types.GET_ACCOUNT_REQUEST:
+        case types.GET_ACCOUNT_FAILURE: {
+          return Object.assign({}, state, {
+            accountInfoRetrieved: false
           });
         }
     default: {

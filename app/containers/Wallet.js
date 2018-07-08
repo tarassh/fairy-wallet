@@ -1,56 +1,53 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { Grid } from 'semantic-ui-react';
+import { getAccount } from '../actions/accounts';
+import Wallet from '../components/Wallet';
+
 
 type Props = {
-    history: {},
     actions: {},
-    states: {},
-    ledger: {}
+    states: {}
 };
 
 class WalletContainer extends Component<Props> {
     props: Props;
     
+    componentDidMount() {
+        const {
+            actions,
+            accounts
+        } = this.props;
+    
+        actions.getAccount(accounts.names ? accounts.names[0] : 'cryptofairy1');
+    }
+    
     render() {
         const {
             states,
-            ledger
+            accounts
         } = this.props;
 
         return (
-            <Grid stretched={true} divided='vertically'>
-                <Grid.Row columns={2}>
-                    <Grid.Column width={6}>
-                        'dummy'
-                    </Grid.Column>
-                    <Grid.Column width={10}>
-                        'dummy'
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            );
-        }
+            <Wallet accounts={accounts} states={states} />
+        );
+    }
 };
 
 function mapStateToProps(state) {
     return {
-        ledger: state.ledger,
         states: state.states,
         accounts: state.accounts
     };
 };
 
-//function mapDispatchToProps(dispatch) {
-//    return {
-//        actions: bindActionCreators({
-//            ...StateActions,
-//            ...LedgerActions
-//        }, dispatch)
-//    };
-//}
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            getAccount: getAccount
+        }, dispatch)
+    };
+}
 
-export default connect(mapStateToProps, null)(WalletContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletContainer);

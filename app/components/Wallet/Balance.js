@@ -1,26 +1,27 @@
 // @flow
+import _ from 'lodash'
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Container, Grid, Icon, Label, List, Table } from 'semantic-ui-react';
 
 type Props = {
-  accounts: Array<string>
+  accounts: {}
 };
 
 export default class Balance extends Component<Props> {
     props: Props;
     
-    const tableData = [
-          { currency: 'John', total: 15 },
-          { currency: 'Amber', total: 40  },
-          { currency: 'Leslie', total: 25  },
-          { currency: 'Ben', total: 70 },
-        ]
-    
     render() {
         const {
             accounts
         } = this.props;
+
+        const tableData = [
+            { currency: 'John', total: 15 },
+            { currency: 'Amber', total: 40  },
+            { currency: 'Leslie', total: 25  },
+            { currency: 'Ben', total: 70 },
+        ]
         
         return (
             <Container textAlign="center">
@@ -50,24 +51,20 @@ export default class Balance extends Component<Props> {
                     </Grid.Row>
                     <Grid.Row>
                         <Grid.Column>
-                            <Table sortable celled fixed>
+                            <Table celled fixed>
                                 <Table.Header>
                                   <Table.Row>
-                                    <Table.HeaderCell
-                                      sorted={column === 'currency' ? direction : null}
-                                      onClick={this.handleSort('currency')}>
-                                      Name
+                                    <Table.HeaderCell>
+                                      Currency
                                     </Table.HeaderCell>
-                                    <Table.HeaderCell
-                                      sorted={column === 'total' ? direction : null}
-                                      onClick={this.handleSort('total')}>
-                                      Age
+                                    <Table.HeaderCell>
+                                      Total
                                     </Table.HeaderCell>
                                   </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                  {_.map(data, ({ currency, total }) => (
-                                    <Table.Row key={name}>
+                                  {_.map(tableData, ({currency, total}) => (
+                                    <Table.Row>
                                       <Table.Cell>{currency}</Table.Cell>
                                       <Table.Cell>{total}</Table.Cell>
                                     </Table.Row>

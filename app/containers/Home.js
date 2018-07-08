@@ -33,12 +33,12 @@ class HomeContainer extends Component<Props> {
         console.log(ledger);
     }
 
-    componentWillUnmount() {
-        const {
-            actions
-        } = this.props;
-        actions.stopListen();
-    }
+//    componentWillUnmount() {
+//        const {
+//            actions
+//        } = this.props;
+//        actions.stopListen();
+//    }
 
     render() {
         const {
