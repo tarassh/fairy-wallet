@@ -14,6 +14,7 @@ import 'semantic-ui-css/components/message.min.css';
 import 'semantic-ui-css/components/label.min.css';
 import 'semantic-ui-css/components/table.min.css';
 import 'semantic-ui-css/components/tab.min.css';
+import 'semantic-ui-css/components/menu.min.css';
 
 const store = configureStore();
 
