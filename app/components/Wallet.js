@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Grid, Message, Icon } from 'semantic-ui-react';
 import styles from './Wallet.css';
 import WalletBalance from './Wallet/Balance';
+import WalletActions from './Wallet/Actions';
 import * as types from '../actions/types';
 
 type Props = {
@@ -39,6 +40,7 @@ export default class Wallet extends Component<Props> {
 
     if (states.accountInfoRetrieved){
         leftSegment = <WalletBalance accounts={accounts}/>
+        rightSegment = <WalletActions />
     }
 
     return (
