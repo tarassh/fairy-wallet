@@ -154,6 +154,7 @@ export default class Eos {
                 .send(CLA, INS_SIGN, i === 0 ? P1_FIRST : P1_MORE, 0x00, data)
                 .then(apduResponse => {
                     response = apduResponse;
+                    return response;
                 })
         ).then(() => {
             const v = response.slice(0, 1).toString("hex");

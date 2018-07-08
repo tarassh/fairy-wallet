@@ -13,7 +13,8 @@ type Props = {
     actions: {},
     states: {},
     ledger: {},
-    accounts: {}
+    accounts: {},
+    loading: {}
 };
 
 class HomeContainer extends Component<Props> {
@@ -24,13 +25,6 @@ class HomeContainer extends Component<Props> {
             actions
         } = this.props;
         actions.startListen();
-    }
-
-    componentDidUpdate() {
-        const {
-            ledger
-        } = this.props;
-        console.log(ledger);
     }
 
     componentWillUnmount() {
@@ -46,7 +40,8 @@ class HomeContainer extends Component<Props> {
             ledger,
             actions,
             states,
-            accounts
+            accounts,
+            loading
         } = this.props;
         return (
           <Home
@@ -55,6 +50,7 @@ class HomeContainer extends Component<Props> {
             actions={actions}
             states={states}
             accounts={accounts}
+            loading={loading}
           />
         );
     }
@@ -64,7 +60,8 @@ function mapStateToProps(state) {
     return {
         ledger: state.ledger,
         states: state.states,
-        accounts: state.accounts
+        accounts: state.accounts,
+        loading: state.loading
     };
 };
 

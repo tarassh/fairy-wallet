@@ -7,7 +7,7 @@ import eos from './helpers/eos';
 export function createConnection(url) {
   return (dispatch: () => void, getState) => {
     dispatch({
-      type: types.CREATE_CONNECTION_PENDING,
+      type: types.CREATE_CONNECTION_REQUEST,
       url
     });
 

@@ -40,12 +40,10 @@ export function getAccount(name) {
       sign: false
     };
 
-    eos(modified).getAccount(name).then((result) => {
-      dispatch({
+    eos(modified).getAccount(name).then((result) => dispatch({
         type: types.GET_ACCOUNT_SUCCESS,
         account: result
-      });
-    }).catch((err) => {
+      })).catch((err) => {
       dispatch({
         type: types.GET_ACCOUNT_FAILURE,
         err
@@ -67,12 +65,10 @@ export function getActions(name) {
       sign: false
     };
 
-    eos(modified).getActions(name).then((result) => {
-      dispatch({
+    eos(modified).getActions(name).then((result) => dispatch({
         type: types.GET_ACTIONS_SUCCESS,
         actions: result
-      });
-    }).catch((err) => {
+      })).catch((err) => {
       dispatch({
         type: types.GET_ACTIONS_FAILURE,
         err
@@ -84,5 +80,6 @@ export function getActions(name) {
 
 export default {
   getAccounts,
-  getAccount
+  getAccount, 
+  getActions
 }

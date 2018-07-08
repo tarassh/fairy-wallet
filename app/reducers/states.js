@@ -24,7 +24,7 @@ export default function states(state = initialState, action){
             nodeConnected: true
           });
         }
-        case types.CREATE_CONNECTION_PENDING:
+        case types.CREATE_CONNECTION_REQUEST:
         case types.CREATE_CONNECTION_FAILURE: {
           return Object.assign({}, state, {
             nodeConnected: false

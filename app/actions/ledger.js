@@ -36,7 +36,7 @@ export function startListen() {
                     application: result,
                     transport
                   });
-                  
+
                   dispatch(getPublicKey());
                   dispatch(startListen());
                   return result;
@@ -90,15 +90,21 @@ export function stopListen() {
   };
 }
 
-export function getPublicKey() {
+export function getPublicKey(display = false) {
   return (dispatch: () => void, getState) => {
     const { ledger } = getState();
 
-    const api = new Api(ledger.transport);    
-    api.getPublicKey("44'/194'/0'/0/0").then((result) => dispatch({
-        type: types.GET_PUBLIC_KEY_SUCCESS,
-        publicKey: result
-      })).catch((err) => {
+    const api = new Api(ledger.transport);
+    if (display) {
+      dispatch({
+        type: types.GET_PUBLIC_KEY_DISPLAY
+      });
+    }
+
+    api.getPublicKey("44'/194'/0'/0/0", display).then((result) => dispatch({
+      type: types.GET_PUBLIC_KEY_SUCCESS,
+      publicKey: result
+    })).catch((err) => {
       dispatch({
         type: types.GET_PUBLIC_KEY_FAILURE,
         err
