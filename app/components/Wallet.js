@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Grid, Message, Icon } from 'semantic-ui-react';
+import { Grid, Message, Icon, Container } from 'semantic-ui-react';
 import styles from './Wallet.css';
 import WalletBalance from './Wallet/Balance';
 import WalletActions from './Wallet/Actions';
@@ -30,7 +30,7 @@ export default class Wallet extends Component<Props> {
             </Message.Content>
           </Message>;
 
-        let rightSegment = 
+    let rightSegment = 
         <Message icon>
             <Icon name='circle notched' loading />
             <Message.Content>

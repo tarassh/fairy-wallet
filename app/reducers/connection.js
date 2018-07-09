@@ -17,7 +17,7 @@ export default function connection(state = initialState, action) {
 
     case types.CREATE_CONNECTION_FAILURE: {
       return Object.assign({}, state, {
-        httpEndpoint: null
+        //httpEndpoint: null
       });
     }
 

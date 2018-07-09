@@ -27,7 +27,7 @@ export default class Balance extends Component<Props> {
             <Grid stretched={true}>
                <Grid.Row>
                     <Grid.Column textAlign='left'>
-                        <Label as='a' color='blue' ribbon>
+                        <Label as='a' color='blue'>
                             Wallet
                         </Label>
                     </Grid.Column>
@@ -63,7 +63,7 @@ export default class Balance extends Component<Props> {
                             </Table.Header>
                             <Table.Body>
                               {_.map(tableData, ({currency, total}) => (
-                                <Table.Row>
+                                <Table.Row key={currency}>
                                   <Table.Cell>{currency}</Table.Cell>
                                   <Table.Cell>{total}</Table.Cell>
                                 </Table.Row>
