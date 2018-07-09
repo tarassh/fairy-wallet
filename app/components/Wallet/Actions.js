@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Tab } from 'semantic-ui-react';
+import { Tab, Segment } from 'semantic-ui-react';
 import ActionsHistory from './Actions/History';
 import ActionsSend from './Actions/Send';
 import ActionsReceive from './Actions/Receive';
@@ -18,9 +18,11 @@ export default class Actions extends Component<Props> {
             { menuItem: 'Send', render: () => <ActionsSend /> },
             { menuItem: 'Receive', render: () => <ActionsReceive /> },
         ]
-        
+
         return (
-            <Tab panes={panes}/>
+            <Segment>
+                <Tab panes={panes} />
+            </Segment>
         );
     }
 }

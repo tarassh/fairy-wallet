@@ -13,7 +13,7 @@ export default class Receive extends Component<Props> {
         const content = 'Receive content';
         
         return (
-            <Tab.Pane content={content} />
+            <Tab.Pane content={content} className='receive' />
         );
     }
 }

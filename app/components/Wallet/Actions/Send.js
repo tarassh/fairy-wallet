@@ -13,7 +13,7 @@ export default class Send extends Component<Props> {
         const content = 'Send content';
         
         return (
-            <Tab.Pane content={content} />
+            <Tab.Pane content={content}  className='send'/>
         );
     }
 }
