@@ -47,6 +47,17 @@ export default function states(state = initialState, action) {
         accountsRetrieved: false
       });
     }
+	case types.GET_ACCOUNT_SUCCESS: {
+       return Object.assign({}, state, {
+         accountInfoRetrieved: true
+       });
+    }
+    case types.GET_ACCOUNT_REQUEST:
+    case types.GET_ACCOUNT_FAILURE: {
+        return Object.assign({}, state, {
+          accountInfoRetrieved: false
+       });
+    }
     default: {
       return state;
     }

@@ -102,29 +102,11 @@ export function getPublicKey(display = false) {
     }
 
     api.getPublicKey("44'/194'/0'/0/0", display).then((result) => {
-      if (display) {
-        dispatch({
-          type: types.PUBLIC_KEY_DISPLAY_SUCCESS,
-          publicKey: result
-        });
-      } else {
-        dispatch({
-          type: types.GET_PUBLIC_KEY_SUCCESS,
-          publicKey: result
-        });
-      }
+      const type = display ? types.PUBLIC_KEY_DISPLAY_FAILURE : types.GET_PUBLIC_KEY_FAILURE;
+      dispatch({ type, result });
     }).catch((err) => {
-      if (display) {
-        dispatch({
-          type: types.PUBLIC_KEY_DISPLAY_FAILURE,
-          publicKey: result
-        });
-      } else {
-        dispatch({
-          type: types.GET_PUBLIC_KEY_FAILURE,
-          publicKey: result
-        });
-      }
+      const type = display ? types.PUBLIC_KEY_DISPLAY_FAILURE : types.GET_PUBLIC_KEY_FAILURE;
+      dispatch({ type, err });
     });
   };
 }
