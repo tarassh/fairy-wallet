@@ -38,7 +38,6 @@ class ConnectionContainer extends Component<Props> {
           control={Input}
           label="Node URL"
           onChange={this.getUrl}
-          size='big'
           placeholder="https://"
         />
         <Container textAlign="center">

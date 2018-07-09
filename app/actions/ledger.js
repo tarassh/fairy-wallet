@@ -97,18 +97,34 @@ export function getPublicKey(display = false) {
     const api = new Api(ledger.transport);
     if (display) {
       dispatch({
-        type: types.GET_PUBLIC_KEY_DISPLAY
+        type: types.PUBLIC_KEY_DISPLAY_REQUEST
       });
     }
 
-    api.getPublicKey("44'/194'/0'/0/0", display).then((result) => dispatch({
-      type: types.GET_PUBLIC_KEY_SUCCESS,
-      publicKey: result
-    })).catch((err) => {
-      dispatch({
-        type: types.GET_PUBLIC_KEY_FAILURE,
-        err
-      })
+    api.getPublicKey("44'/194'/0'/0/0", display).then((result) => {
+      if (display) {
+        dispatch({
+          type: types.PUBLIC_KEY_DISPLAY_SUCCESS,
+          publicKey: result
+        });
+      } else {
+        dispatch({
+          type: types.GET_PUBLIC_KEY_SUCCESS,
+          publicKey: result
+        });
+      }
+    }).catch((err) => {
+      if (display) {
+        dispatch({
+          type: types.PUBLIC_KEY_DISPLAY_FAILURE,
+          publicKey: result
+        });
+      } else {
+        dispatch({
+          type: types.GET_PUBLIC_KEY_FAILURE,
+          publicKey: result
+        });
+      }
     });
   };
 }

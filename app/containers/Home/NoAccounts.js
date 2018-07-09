@@ -1,46 +1,42 @@
 // @flow
 import React, { Component } from 'react';
-import { Button, Container, Form } from 'semantic-ui-react';
+import { Button, Container, Form, Message, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getPublicKey } from '../../actions/ledger';
+import * as LedgerActions from '../../actions/ledger';
 
 type Props = {
-    accounts: {}
+  accounts: {}
 };
 
 class NoAccountsContainer extends Component<Props> {
 
-  onRevealePublicKey = () => this.getPublicKey(true)
+  onRevealePublicKey = () => {
+    this.props.getPublicKey(true);
+  }
 
   render() {
-      const { accounts } = this.props;
-      const noAccountsText = `Public Key ${  accounts.publicKey.wif  } doesn't have any registered account.`;
+    const { accounts } = this.props;
+    const noAccountsText = `Public Key ${accounts.publicKey.wif} doesn't have any registered account. Please create accoгnt for this Public Key.`;
+
     return (
       <Form>
-        <h2>{noAccountsText}</h2>
-        <h2>Please create accont for this Public Key</h2>
-        <Container textAlign="center">
-          <Button
-            content="Verify Key With Ledger"
-            primary
-            onClick={this.onRevealePublicKey}
-            style={{ marginTop: '1em' }}
-          />
-        </Container>
+        <Message
+          content={noAccountsText}
+        />
       </Form>
     );
   }
 }
 
 function mapStateToProps(state) {
-    return {
-        accounts: state.accounts
-    };
+  return {
+    accounts: state.accounts
+  };
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-    ...getPublicKey
+  ...LedgerActions
 }, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(NoAccountsContainer)
