@@ -3,7 +3,7 @@ import type Transport from "@ledgerhq/hw-transport-node-hid";
 const bippath = require('bip32-path');
 
 
-const CLA = 0xE0;
+const CLA = 0xD4;
 const INS_GET_PUBLIC_KEY = 0x02;
 const INS_SIGN = 0x04;
 const INS_GET_APP_CONFIGURATION = 0x06;
