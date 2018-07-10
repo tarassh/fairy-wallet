@@ -1,0 +1,47 @@
+/* Tabs */
+.ui.segment.tab {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Grid */
+.ui.grid.inner {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.ui.grid>.row>.column.grid-container {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* Segment */
+.ui.horizontal.segments.wallet {
+    width: 100%;
+    min-height: 100%;
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.ui.segments.wallet > .balance {
+    width: 40%;
+}
+
+.ui.segments.wallet > .actions {
+    width: 60%;
+}
+
+.ui.segments.wallet .segments.no-border,
+.ui.segments.wallet .segments.no-border >.segment,
+.ui.segments.wallet .segments.no-border >.segment+.segments,
+.ui.segments.wallet .segments.no-border >.segment+.segments>.segment{
+    border: none;
+    box-shadow: none;
+}
+
+/*.ui.segments.wallet .segments.no-padding,*/
+.ui.segments.wallet .segments.no-padding,
+.ui.segments.wallet .segments.no-padding >.segment+.segments {
+    padding: 0;
+}

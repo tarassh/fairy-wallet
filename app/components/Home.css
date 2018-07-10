@@ -1,3 +1,4 @@
+/*
 .container {
   position: absolute;
   top: 50%;
@@ -8,6 +9,7 @@
   transform: translate(-50%, 75%);
   user-select: none;  
 }
+*/
 
 /*
 .container h2 {
@@ -21,6 +23,7 @@
 }
 */
 
+/*
 body {
   position: relative;
   color: white;
@@ -29,3 +32,4 @@ body {
   font-family: Arial, Helvetica, Helvetica Neue, serif;
   overflow: hidden;
 } 
+*/

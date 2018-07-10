@@ -67,6 +67,8 @@ const configureStore = (initialState = {}) => {
       () => store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
     );
   }
+
+    history.push('/');
     
   return store;
 };
