@@ -102,8 +102,8 @@ export function getPublicKey(display = false) {
     }
 
     api.getPublicKey("44'/194'/0'/0/0", display).then((result) => {
-      const type = display ? types.PUBLIC_KEY_DISPLAY_FAILURE : types.GET_PUBLIC_KEY_FAILURE;
-      dispatch({ type, result });
+      const type = display ? types.PUBLIC_KEY_DISPLAY_SUCCESS : types.GET_PUBLIC_KEY_SUCCESS;
+      return dispatch({ type, result });
     }).catch((err) => {
       const type = display ? types.PUBLIC_KEY_DISPLAY_FAILURE : types.GET_PUBLIC_KEY_FAILURE;
       dispatch({ type, err });
