@@ -4,7 +4,8 @@ import * as types from './types';
 import eos from './helpers/eos';
 import serialize from './helpers/ledgerserialize';
 
-export function transfer(from, to, asset, memo = '') {
+// from: cryptofairy1, to: account, asset: 100.0000 EOS, memo: blah blah (e.g. 100 symbols)
+export function transfer(from, to, asset, memo = '') { 
   return (dispatch: () => void, getState) => {
     const {
       connection,

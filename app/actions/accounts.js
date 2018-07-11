@@ -54,6 +54,7 @@ export function getAccount(name) {
   };
 }
 
+// history 
 export function getActions(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -83,6 +84,7 @@ export function getActions(name) {
 }
 
 export default {
-  getAccounts,
-  getAccount
+    getAccounts,
+    getAccount,
+    getActions
 }
