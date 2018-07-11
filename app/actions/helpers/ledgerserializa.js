@@ -3,11 +3,11 @@ const FcBuffer = require('Fcbuffer');
 const assert = require('assert');
 const asn1 = require('asn1-ber');
 
-export default function serialize(types, fields, transaction) {
+export default function serialize(chainId, transaction, types) {
 
     const writter = new asn1.BerWriter();
 
-    encode(writter, FcBuffer.toBuffer(types.checksum256(), types.config.chainId));
+    encode(writter, FcBuffer.toBuffer(types.checksum256(), chainId));
     encode(writter, FcBuffer.toBuffer(types.time(), transaction.expiration));
     encode(writter, FcBuffer.toBuffer(types.uint16(), transaction.ref_block_num));
     encode(writter, FcBuffer.toBuffer(types.uint32(), transaction.ref_block_prefix));
