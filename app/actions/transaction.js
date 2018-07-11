@@ -4,32 +4,33 @@ import * as types from './types';
 import eos from './helpers/eos';
 import serialize from './helpers/ledgerserialize';
 
-export function transfer(from, to, asset, memo = '') {
+export function broadcastTransaction(tx) {
   return (dispatch: () => void, getState) => {
     const {
-      connection,
-      account
+      connection
+    } = getState();
+    eos(connection).pushTransaction(tx).then((response) => {
+        console.log(response);
+        return response;
+    }).catch((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function transfer(from, to, asset, memo = '') {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.CREATE_TRANSFER_TX_PENDING
+    });
+    const {
+      connection
     } = getState();
 
     const modified = {
       ...connection,
       sign: false
     };
-
-    eos(modified).createTransaction(120, (error, headers) => {
-      console.log(headers);
-    });
-
-    console.log(eos(modified));
-
-    const obj = {
-      "from": from,
-      "to": to,
-      "quantity": asset,
-      "memo": memo
-    };
-    let fc = eos(modified).fc;
-    console.log(fc);
 
     return eos(modified).transaction('eosio.token', contract => {
       contract.transfer(
@@ -43,10 +44,19 @@ export function transfer(from, to, asset, memo = '') {
       expireInSeconds: 60 * 60,
       sign: connection.sign
     }).then((tx) => {
-      var buffer = serialize(fc.types, fc.structs.transfer.fields, tx.transaction.transaction);
-      console.log(buffer.toString('hex'));
+      const { fc } = eos(modified);
+      const buffer = serialize(fc.types, fc.structs.transfer.fields, tx.transaction.transaction);
+      dispatch({
+        type: types.CREATE_TRANSFER_TX_SUCCESS,
+        tx,
+        raw: buffer.toString('hex')
+      });
+      return tx;
     }).catch((err) => {
-      console.log(err);
+      dispatch({
+        type: types.CREATE_TRANSFER_TX_FAILURE,
+        err
+      })
     });
   };
 }

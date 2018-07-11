@@ -93,9 +93,9 @@ export function getCurrencyBalance(account) {
     } = getState();
 
     const { tokens } = settings;
-    let selectedTokens = tokens[account];
+    const selectedTokens = tokens[account];
     if (!selectedTokens) {
-      selectedTokens = [];
+      return dispatch({type: types.GET_CURRENCY_BALANCE_SUCCESS, balances: {}});
     }
     selectedTokens.forEach(symbol => {
       eos(connection).getCurrencyBalance('eosio.token', account, symbol).then((result) => dispatch({ 
