@@ -40,10 +40,13 @@ export function getAccount(name) {
       sign: false
     };
 
-    eos(modified).getAccount(name).then((result) => dispatch({
+    eos(modified).getAccount(name).then((result) => {
+      dispatch(getCurrencyBalance(name));
+      return dispatch({
         type: types.GET_ACCOUNT_SUCCESS,
         account: result
-      })).catch((err) => {
+      });
+    }).catch((err) => {
       dispatch({
         type: types.GET_ACCOUNT_FAILURE,
         err
@@ -78,8 +81,43 @@ export function getActions(name) {
   };
 }
 
+export function getCurrencyBalance(account) {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.GET_CURRENCY_BALANCE_REQUEST
+    });
+
+    const  {
+      connection, 
+      settings
+    } = getState();
+
+    const { tokens } = settings;
+    let selectedTokens = tokens[account];
+    if (!selectedTokens) {
+      selectedTokens = [];
+    }
+    selectedTokens.forEach(symbol => {
+      eos(connection).getCurrencyBalance('eosio.token', account, symbol).then((result) => dispatch({ 
+          type: types.GET_CURRENCY_BALANCE_SUCCESS,
+          balances: formatBalance(result[0])
+        })).catch((err) => {
+        dispatch({type: types.GET_CURRENCY_BALANCE_FAILURE, err});
+      });
+    });
+  };
+}
+
+function formatBalance(balance) {
+  const temp = {};
+  const [amount, symbol] = balance.split(' ');
+  temp[symbol] = parseFloat(amount);
+  return temp;
+}
+
 export default {
   getAccounts,
   getAccount, 
-  getActions
+  getActions,
+  getCurrencyBalance
 }

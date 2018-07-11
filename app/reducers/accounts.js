@@ -5,7 +5,8 @@ const initialState = {
   publicKey: null,
   names: null,
   account: null,
-  actions: null
+  actions: null,
+  balances: null
 };
 
 export default function accounts(state = initialState, action) {
@@ -55,6 +56,12 @@ export default function accounts(state = initialState, action) {
     case types.GET_PUBLIC_KEY_FAILURE: {
       return Object.assign({}, state, {
         publicKey: null
+      });
+    }
+
+    case types.GET_CURRENCY_BALANCE_SUCCESS: {
+      return Object.assign({}, state, {
+        balances: action.balances
       });
     }
 

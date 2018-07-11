@@ -1,10 +1,9 @@
 import * as types from "../actions/types";
 
 const initialState = {
-  acceptedConstitution: false,
   node: '',
   accounts: [],
-  walletActive: false
+  tokens: {}
 }
 
 export default function settings(state = initialState, action) {
