@@ -26,6 +26,8 @@
 
 .ui.segments.wallet > .balance {
     width: 40%;
+    padding: 0;
+    margin: 0;
 }
 
 .ui.segments.wallet > .actions {
@@ -44,4 +46,13 @@
 .ui.segments.wallet .segments.no-padding,
 .ui.segments.wallet .segments.no-padding >.segment+.segments {
     padding: 0;
+}
+
+/* Label */
+.ui.label {
+    border-bottom: 2px black dotted;
+}
+
+.ui.label .detail {
+    float: right;
 }

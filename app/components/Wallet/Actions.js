@@ -20,9 +20,7 @@ export default class Actions extends Component<Props> {
         ]
 
         return (
-            <Segment>
-                <Tab panes={panes} />
-            </Segment>
+            <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
         );
     }
 }
