@@ -1,15 +1,30 @@
 // @flow
-import _ from 'lodash'
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Container, Grid, Icon, Label, List, Table, Segment } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addToken } from '../../actions/settings'
 
 type Props = {
-  accounts: {}
+    accounts: {},
+    actions: {}
 };
 
-export default class Balance extends Component<Props> {
-    props: Props;
+class Balance extends Component<Props> {
+    constructor(props) {
+        super(props);
+    }
+    
+    addToken = (token) => {
+        this.props.actions.addToken(token);
+    }
+
+    componentWillMount(){
+        this.addToken('EOS');
+        this.addToken('Mocha');
+    }
     
     render() {
         const {
@@ -42,7 +57,7 @@ export default class Balance extends Component<Props> {
                     </Label>
                 </Segment>
                 <Segment>
-                    <Icon link name='plus square outline' />
+                    <Icon link name='plus square outline' onClick={this.addToken}/>
                 </Segment>
                 <Segment>
                     <Table celled basic='very' compact='very' unstackable>
@@ -70,3 +85,13 @@ export default class Balance extends Component<Props> {
         );
     }
 }
+
+function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators({
+            addToken: addToken
+        }, dispatch)
+    };
+}
+
+export default connect(null, mapDispatchToProps)(Balance);

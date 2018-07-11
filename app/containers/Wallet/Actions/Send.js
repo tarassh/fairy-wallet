@@ -4,10 +4,10 @@ import { render } from 'react-dom';
 import { getActions } from '../../../actions/accounts';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import History from '../../../components/Wallet/Actions/History';
+import _ from 'lodash'
 
 type Props = {
-    history: {},
+    settings: {},
     accounts: {},
     actions: {}
 };
@@ -20,19 +20,62 @@ class SendContainer extends Component<Props> {
     }
     
     componentDidMount(){
-        const {
-            actions,
-            accounts
-        } = this.props;
-
-        const name = accounts.account.account_name;
-        actions.getActions(name); 
     }
     
     render() {
+        const {
+            accounts,
+            settings
+        } = this.props;
+        
+        const tokens = _.map(settings.tokens, (token) => {
+            let tokens = [];
+            tokens.concat({ text: token, value: token });
+            return tokens;
+        });
         
         return (
-            <History />
+            <Segment className='no-border'>
+                <Form>
+                    <Form.Group widths='equal'>
+                      <Form.Field
+                        id='form-input-control-first-name'
+                        control={Label}
+                        label='Account from'
+                        value={accounts.account_name}
+                      />
+                      <Form.Field
+                        id='form-input-control-token'
+                        control={Select}
+                        label='Select token'
+                        options={tokens}
+                       />
+                      <Form.Field
+                        id='form-input-control-recipient'
+                        control={Input}
+                        label='Recipient'
+                      />
+                    </Form.Group>
+                    <Form.Field
+                      id='form-textarea-control-amount'
+                      control={Input}
+                      label='Amount'
+                      placeholder='0.00'
+                    />
+                    <Form.Field
+                      id='form-button-control-public'
+                      control={TextArea}
+                      content='Memo'
+                      label='Memo'
+                    />
+                  <Form.Field
+                      id='form-button-control-public'
+                      control={Button}
+                      content='Confirm'
+                      label='Label with htmlFor'
+                    />
+              </Form>
+            </Segment>
         );
     }
 }
@@ -40,7 +83,8 @@ class SendContainer extends Component<Props> {
 function mapStateToProps(state){
       return {
           history: state.actions,
-          accounts: state.accounts
+          accounts: state.accounts,
+          settings: state.settings
       }      
 }
 

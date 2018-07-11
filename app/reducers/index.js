@@ -5,13 +5,15 @@ import states from './states';
 import ledger from './ledger';
 import connection from './connection';
 import accounts from './accounts';
+import settings from './settings';
 
 const rootReducer = combineReducers({
     ledger,
     states,
     connection,
     accounts,
-    router
+    router,
+    settings
 });
 
 export default rootReducer;
