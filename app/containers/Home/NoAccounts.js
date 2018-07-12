@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Button, Container, Form, Message, Modal } from 'semantic-ui-react';
+import { Form, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as LedgerActions from '../../actions/ledger';

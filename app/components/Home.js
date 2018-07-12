@@ -2,10 +2,11 @@
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
 import styles from './Home.css';
-import Lock from './Home/Lock'
-import NoAccounts from './Home/NoAccounts'
-import Connection from './Home/Connection'
-import ListAccounts from './Home/ListAccounts'
+import Lock from './Home/Lock';
+import NoAccounts from './Home/NoAccounts';
+import Connection from './Home/Connection';
+import ListAccounts from './Home/ListAccounts';
+import PublicKey from './Home/PublicKey';
 
 type Props = {
   states: {},
@@ -37,7 +38,11 @@ export default class Home extends Component<Props> {
     console.log(this.props);
 
     let mainSegment = <Lock />;
-    if (states.deviceConnected && !states.nodeConnected) {
+    if (states.deviceConnected && accounts.publicKey === null) {
+      mainSegment = <PublicKey />;
+    }
+
+    if (states.deviceConnected && !states.nodeConnected && accounts.publicKey !== null) {
       mainSegment = <Connection />;
     }
 
