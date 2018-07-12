@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Button, Container, Form, Input } from 'semantic-ui-react';
+import { Button, Container, Form, Input, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { createConnection } from '../../actions/connection';
@@ -23,7 +23,8 @@ class ConnectionContainer extends Component<Props> {
 
   render() {
     const {
-      loading
+      loading, 
+      connection
     } = this.props;
 
     let disabled = false;
@@ -31,15 +32,26 @@ class ConnectionContainer extends Component<Props> {
       disabled = true;
     }
 
+    let errorMessage = '';
+    if (connection.err !== null) {
+      errorMessage = (<Message
+        error 
+        header="Failed to connect" 
+        content={connection.err.message}
+      />);
+    }
+
     return (
-      <Form>
+      <Form error>
         <Form.Field
           autoFocus
           control={Input}
           label="Node URL"
           onChange={this.getUrl}
           placeholder="https://"
+          disabled={disabled}
         />
+        {errorMessage}
         <Container textAlign="center">
           <Button
             content="Connect"
@@ -56,7 +68,8 @@ class ConnectionContainer extends Component<Props> {
 
 function mapStateToProps(state) {
   return {
-      loading: state.loading
+      loading: state.loading,
+      connection: state.connection
   };
 };
 
