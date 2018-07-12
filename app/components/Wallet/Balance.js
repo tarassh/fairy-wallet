@@ -1,8 +1,7 @@
 // @flow
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { Container, Grid, Icon, Label, List, Table, Segment } from 'semantic-ui-react';
+import { Icon, Label, Table, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings'

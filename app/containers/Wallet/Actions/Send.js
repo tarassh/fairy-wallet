@@ -8,8 +8,7 @@ import { getActions } from '../../../actions/accounts';
 
 type Props = {
   settings: {},
-  accounts: {},
-  actions: {}
+  accounts: {}
 };
 
 class SendContainer extends Component<Props> {
@@ -45,7 +44,7 @@ class SendContainer extends Component<Props> {
             <Form.Field
               id='form-input-control-token'
               control={Select}
-              label='Select token'
+              label='Token'
               options={tokens}
               defaultValue={['EOS']}
             />
