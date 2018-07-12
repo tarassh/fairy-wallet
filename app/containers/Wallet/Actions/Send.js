@@ -20,9 +20,11 @@ class SendContainer extends Component<Props> {
     }
     
     state = {
+        token: 'EOS',
         recipient: '',
         amount: '',
         memo: '',
+        submittedToken: '',
         submittedRecipient: '',
         submittedAmount: '',
         submittedMemo: ''
@@ -32,16 +34,22 @@ class SendContainer extends Component<Props> {
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
     handleSubmit = () => {
-        const { recipient, amount, memo } = this.state
+        const { token, recipient, amount, memo } = this.state
         const { accounts, actions } = this.props;
 
         this.setState({ 
+            submittedToken: token,
             submittedRecipient: recipient, 
             submittedAmount: amount,
             submittedMemo: memo    
         })
         
-        actions.transfer(accounts.account.account_name, recipient. amount, memo);
+        actions.transfer(
+            accounts.account.account_name, 
+            recipient, 
+            (new Number(amount)).toFixed(2) + ' ' + token.toUpperCase(), 
+            memo
+        );
     }
 
     componentDidMount(){
@@ -54,9 +62,11 @@ class SendContainer extends Component<Props> {
         } = this.props;
         
         const {
+            token,
             recipient,
             amount,
             memo,
+            submittedToken,
             submittedRecipient,
             submittedAmount,
             submittedMemo
@@ -87,8 +97,11 @@ class SendContainer extends Component<Props> {
                         <Form.Dropdown
                             id='form-input-control-token'
                             label='Select token'
+                            name='token'
                             options={tokens}
-                            defaultValue={'EOS'}
+                            text={token}
+                            defaultValue='EOS'
+                            onChange={this.handleChange}
                         />
                     </Form.Group>
                     <Form.TextArea
