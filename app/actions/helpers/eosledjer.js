@@ -3,7 +3,7 @@ import type Transport from "@ledgerhq/hw-transport-node-hid";
 const bippath = require('bip32-path');
 
 
-const CLA = 0xE0;
+const CLA = 0xD4;
 const INS_GET_PUBLIC_KEY = 0x02;
 const INS_SIGN = 0x04;
 const INS_GET_APP_CONFIGURATION = 0x06;
@@ -154,6 +154,7 @@ export default class Eos {
                 .send(CLA, INS_SIGN, i === 0 ? P1_FIRST : P1_MORE, 0x00, data)
                 .then(apduResponse => {
                     response = apduResponse;
+                    return response;
                 })
         ).then(() => {
             const v = response.slice(0, 1).toString("hex");

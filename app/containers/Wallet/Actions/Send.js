@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Form, Segment, Label, Select, Input, TextArea, Button } from 'semantic-ui-react';
 import { getActions } from '../../../actions/accounts';
+import { transfer } from '../../../actions/transaction';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash'
@@ -17,26 +18,30 @@ class SendContainer extends Component<Props> {
     constructor(props) {
         super(props);
     }
+    
     state = {
-            recipient: '',
-            amount: '',
-            memo: '',
-            submittedRecipient: '',
-            submittedAmount: '',
-            submittedMemo: ''
-        }
+        recipient: '',
+        amount: '',
+        memo: '',
+        submittedRecipient: '',
+        submittedAmount: '',
+        submittedMemo: ''
+    }
     
     
     handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
     handleSubmit = () => {
         const { recipient, amount, memo } = this.state
+        const { accounts, actions } = this.props;
 
         this.setState({ 
             submittedRecipient: recipient, 
             submittedAmount: amount,
             submittedMemo: memo    
         })
+        
+        actions.transfer(accounts.account.account_name, recipient. amount, memo);
     }
 
     componentDidMount(){
@@ -60,17 +65,13 @@ class SendContainer extends Component<Props> {
         
         const tokens = _.map(settings.tokens[accounts.account.account_name], (token) => ({ text: token, value: token, key: token }));
 
-//        let tokens = [];
-//        _.map(settings.tokens[accounts.account.account_name], (token) => {
-//          tokens.push({ text: token, value: token, key: token });
-//        });
-
         return (
             <Segment className='no-border'>
-                <Form>
+                <Form onSubmit={this.handleSubmit}>
                     <Form.Input
                         id='form-input-control-recipient'
                         label='Recipient'
+                        name='recipient'
                         value={recipient}
                         onChange={this.handleChange}
                     />
@@ -79,6 +80,7 @@ class SendContainer extends Component<Props> {
                             id='form-textarea-control-amount'
                             label='Amount'
                             placeholder='0.00'
+                            name='amount'
                             value={amount}
                             onChange={this.handleChange}
                         />
@@ -93,6 +95,7 @@ class SendContainer extends Component<Props> {
                         id='form-button-control-public'
                         content='Memo'
                         label='Memo'
+                        name='memo'
                         value={memo}
                         onChange={this.handleChange}
                     />
@@ -117,7 +120,8 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
     return { 
         actions: bindActionCreators({
-            getActions: getActions
+            getActions: getActions,
+            transfer: transfer
         }, dispatch)       
     };  
 }
