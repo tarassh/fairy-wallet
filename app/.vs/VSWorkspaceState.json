@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\actions",
+    "\\components",
+    "\\components\\Wallet",
+    "\\components\\Wallet\\Actions",
+    "\\containers",
+    "\\containers\\Wallet",
+    "\\containers\\Wallet\\Actions"
+  ],
+  "SelectedNode": "\\containers\\Wallet\\Actions\\History.js",
+  "PreviewInSolutionExplorer": false
+}
