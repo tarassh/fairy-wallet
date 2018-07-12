@@ -6,7 +6,7 @@ export function addToken(account, token) {
         dispatch({
             type: types.ADD_TOKEN,
             account,
-            token
+            token: token.toUpperCase()
         })
     }
 }

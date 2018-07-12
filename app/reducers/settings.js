@@ -15,11 +15,12 @@ export default function settings(state = initialState, action) {
       return Object.assign({}, state, action.payload);
     }
     case types.ADD_TOKEN: {
+      const { account, token } = action;
       const { tokens } = state;
-      if (!tokens[action.account]) {
-        tokens[action.account] = [action.token];
-      } else {
-        tokens[action.account].push(action.token);
+      if (!tokens[account]) {
+        tokens[account] = [token];
+      } else if (tokens[account].indexOf(token) === -1) {
+        tokens[account].push(token);
       }
       return Object.assign({}, state, {
         tokens

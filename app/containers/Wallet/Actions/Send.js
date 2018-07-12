@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Input, TextArea, Button, Select, Label, Segment, Dropdown } from 'semantic-ui-react';
+import { Form, Input, Button, Select, Segment } from 'semantic-ui-react';
 import _ from 'lodash';
 import { getActions } from '../../../actions/accounts';
 
@@ -25,43 +25,34 @@ class SendContainer extends Component<Props> {
       settings
     } = this.props;
 
-    const tokens = _.map(settings.tokens, (token) => {
-      const allTokens = [];
-      allTokens.concat({ text: token, value: token });
-      return allTokens;
-    });
+    const tokens = _.map(settings.tokens[accounts.account.account_name], (token) => ({ text: token, value: token }));
 
     return (
       <Segment className='no-border'>
         <Form>
+          <Form.Field
+            id='form-input-control-recipient'
+            control={Input}
+            label='Recipient'
+          />
           <Form.Group widths='equal'>
             <Form.Field
-              id='form-input-control-first-name'
-              control={Label}
-              label='Account from'
-              value={accounts.account.account_name}
+              id='form-textarea-control-amount'
+              control={Input}
+              label='Amount'
+              placeholder='0.0000'
             />
             <Form.Field
               id='form-input-control-token'
               control={Select}
               label='Select token'
               options={tokens}
-            />
-            <Form.Field
-              id='form-input-control-recipient'
-              control={Input}
-              label='Recipient'
+              defaultValue={['EOS']}
             />
           </Form.Group>
           <Form.Field
-            id='form-textarea-control-amount'
-            control={Input}
-            label='Amount'
-            placeholder='0.00'
-          />
-          <Form.Field
             id='form-button-control-public'
-            control={TextArea}
+            control={Input}
             content='Memo'
             label='Memo'
           />
