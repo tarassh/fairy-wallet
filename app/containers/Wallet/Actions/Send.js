@@ -1,19 +1,40 @@
 // @flow
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Tab, Form, Input, TextArea, Button, Select, Label, Segment, Dropdown } from 'semantic-ui-react';
+import { getActions } from '../../../actions/accounts';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import _ from 'lodash'
 
 type Props = {
+    settings: {},
+    accounts: {},
+    actions: {}
 };
 
-export default class Send extends Component<Props> {
+class SendContainer extends Component<Props> {
     props: Props;
     
+    getValue = (e, prop) => {    
+        prop = e.target.value;
+    }
+    
+    componentDidMount(){
+    }
+    
     render() {
-        const tokens = [{ text: 'EOS', value: 'EOS' }, { text: 'Shit', value: 'Shit' }, { text: 'Mocha', value: 'Mocha' }];
-
-        const content =
+        const {
+            accounts,
+            settings
+        } = this.props;
+        
+        const tokens = _.map(settings.tokens, (token) => {
+            let tokens = [];
+            tokens.concat({ text: token, value: token });
+            return tokens;
+        });
+        
+        return (
             <Segment className='no-border'>
                 <Form>
                     <Form.Group widths='equal'>
@@ -21,6 +42,7 @@ export default class Send extends Component<Props> {
                         id='form-input-control-first-name'
                         control={Label}
                         label='Account from'
+                        value={accounts.account_name}
                       />
                       <Form.Field
                         id='form-input-control-token'
@@ -53,10 +75,25 @@ export default class Send extends Component<Props> {
                       label='Label with htmlFor'
                     />
               </Form>
-            </Segment>;
-        
-        return (
-            <Tab.Pane content={content} className='send'/>
+            </Segment>
         );
     }
 }
+            
+function mapStateToProps(state){
+      return {
+          history: state.actions,
+          accounts: state.accounts,
+          settings: state.settings
+      }      
+}
+
+function mapDispatchToProps(dispatch){
+    return { 
+        actions: bindActionCreators({
+            getActions: getActions
+        }, dispatch)       
+    };  
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendContainer);

@@ -14,6 +14,7 @@
 @import '~semantic-ui-css/components/container.min.css';
 @import '~semantic-ui-css/components/icon.min.css';
 @import '~semantic-ui-css/components/step.min.css';
+@import '~semantic-ui-css/components/form.min.css';
 
 html, body {
    width: 100%;
