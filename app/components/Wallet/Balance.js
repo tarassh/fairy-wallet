@@ -17,13 +17,17 @@ class Balance extends Component<Props> {
         super(props);
     }
     
-    addToken = (token) => {
-        this.props.actions.addToken(token);
+    addToken = (account, token) => {
+        this.props.actions.addToken(account, token);
     }
 
     componentWillMount(){
-        this.addToken('EOS');
-        this.addToken('Mocha');
+        const {
+            accounts
+        } = this.props
+        
+        this.addToken(accounts.account.account_name, 'EOS');
+        this.addToken(accounts.account.account_name, 'Mocha');
     }
     
     render() {

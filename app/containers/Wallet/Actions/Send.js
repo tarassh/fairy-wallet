@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import { Form, Segment, Label, Select, Input, TextArea, Button } from 'semantic-ui-react';
 import { getActions } from '../../../actions/accounts';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,12 +14,31 @@ type Props = {
 };
 
 class SendContainer extends Component<Props> {
-    props: Props;
-    
-    getValue = (e, prop) => {    
-        prop = e.target.value;
+    constructor(props) {
+        super(props);
     }
+    state = {
+            recipient: '',
+            amount: '',
+            memo: '',
+            submittedRecipient: '',
+            submittedAmount: '',
+            submittedMemo: ''
+        }
     
+    
+    handleChange = (e, { name, value }) => this.setState({ [name]: value });
+
+    handleSubmit = () => {
+        const { recipient, amount, memo } = this.state
+
+        this.setState({ 
+            submittedRecipient: recipient, 
+            submittedAmount: amount,
+            submittedMemo: memo    
+        })
+    }
+
     componentDidMount(){
     }
     
@@ -28,53 +48,59 @@ class SendContainer extends Component<Props> {
             settings
         } = this.props;
         
-        const tokens = _.map(settings.tokens, (token) => {
-            let tokens = [];
-            tokens.concat({ text: token, value: token });
-            return tokens;
-        });
+        const {
+            recipient,
+            amount,
+            memo,
+            submittedRecipient,
+            submittedAmount,
+            submittedMemo
+        } = this.state;
+
         
+        const tokens = _.map(settings.tokens[accounts.account.account_name], (token) => ({ text: token, value: token, key: token }));
+
+//        let tokens = [];
+//        _.map(settings.tokens[accounts.account.account_name], (token) => {
+//          tokens.push({ text: token, value: token, key: token });
+//        });
+
         return (
             <Segment className='no-border'>
                 <Form>
-                    <Form.Group widths='equal'>
-                      <Form.Field
-                        id='form-input-control-first-name'
-                        control={Label}
-                        label='Account from'
-                        value={accounts.account_name}
-                      />
-                      <Form.Field
-                        id='form-input-control-token'
-                        control={Select}
-                        label='Select token'
-                        options={tokens}
-                       />
-                      <Form.Field
+                    <Form.Input
                         id='form-input-control-recipient'
-                        control={Input}
                         label='Recipient'
-                      />
+                        value={recipient}
+                        onChange={this.handleChange}
+                    />
+                    <Form.Group widths='equal'>
+                        <Form.Input
+                            id='form-textarea-control-amount'
+                            label='Amount'
+                            placeholder='0.00'
+                            value={amount}
+                            onChange={this.handleChange}
+                        />
+                        <Form.Dropdown
+                            id='form-input-control-token'
+                            label='Select token'
+                            options={tokens}
+//                            defaultValue={['EOS']}
+                        />
                     </Form.Group>
-                    <Form.Field
-                      id='form-textarea-control-amount'
-                      control={Input}
-                      label='Amount'
-                      placeholder='0.00'
+                    <Form.TextArea
+                        id='form-button-control-public'
+                        content='Memo'
+                        label='Memo'
+                        value={memo}
+                        onChange={this.handleChange}
                     />
-                    <Form.Field
-                      id='form-button-control-public'
-                      control={TextArea}
-                      content='Memo'
-                      label='Memo'
+                    <Form.Button
+                        id='form-button-control-public'
+                        content='Confirm'
                     />
-                  <Form.Field
-                      id='form-button-control-public'
-                      control={Button}
-                      content='Confirm'
-                      label='Label with htmlFor'
-                    />
-              </Form>
+                </Form>
             </Segment>
         );
     }

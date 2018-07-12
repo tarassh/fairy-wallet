@@ -1,11 +1,12 @@
 // @flow
 import * as types from './types';
 
-export function addToken(token) {
+export function addToken(account, token) {
     return (dispatch: () => void) => {
         dispatch({
-            type: types.BALANCE_ADD_TOKEN,
-            token: token
+            type: types.ADD_TOKEN,
+            account,
+            token
         })
     }
 }
