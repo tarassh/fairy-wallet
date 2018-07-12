@@ -3,7 +3,7 @@ import * as types from "../actions/types";
 const initialState = {
   node: '',
   accounts: [],
-  tokens: []
+  tokens: {}
 }
 
 export default function settings(state = initialState, action) {
@@ -14,9 +14,15 @@ export default function settings(state = initialState, action) {
     case types.SET_SETTING: {
       return Object.assign({}, state, action.payload);
     }
-    case types.BALANCE_ADD_TOKEN: {
+    case types.ADD_TOKEN: {
+      const { tokens } = state;
+      if (!tokens[action.account]) {
+        tokens[action.account] = [action.token];
+      } else {
+        tokens[action.account].push(action.token);
+      }
       return Object.assign({}, state, {
-        tokens: state.tokens.concat(action.token)
+        tokens
       });
     }
     default: {
