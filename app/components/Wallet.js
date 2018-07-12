@@ -1,13 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import { Grid, Message, Icon, Container, Segment } from 'semantic-ui-react';
+import { Message, Icon, Segment } from 'semantic-ui-react';
 import styles from './Wallet.css';
 import WalletBalance from './Wallet/Balance';
 import WalletActions from './Wallet/Actions';
-import * as types from '../actions/types';
 
 type Props = {
-  actions: {},
   states: {},
   accounts: {}
 };
@@ -17,7 +15,6 @@ export default class Wallet extends Component<Props> {
 
   render() {
     const {
-      actions,
       states,
       accounts
     } = this.props;
@@ -28,7 +25,7 @@ export default class Wallet extends Component<Props> {
         <Message.Content>
           <Message.Header>Retrieving account info</Message.Header>
         </Message.Content>
-       </Message>);
+      </Message>);
 
     let rightSegment =
       (<Message icon>
@@ -36,7 +33,7 @@ export default class Wallet extends Component<Props> {
         <Message.Content>
           <Message.Header>Retrieving history</Message.Header>
         </Message.Content>
-       </Message>);
+      </Message>);
 
     if (states.accountInfoRetrieved) {
       leftSegment = <WalletBalance accounts={accounts} />
