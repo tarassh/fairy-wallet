@@ -88,7 +88,7 @@ class SendContainer extends Component<Props> {
                             id='form-input-control-token'
                             label='Select token'
                             options={tokens}
-//                            defaultValue={['EOS']}
+                            defaultValue={'EOS'}
                         />
                     </Form.Group>
                     <Form.TextArea
