@@ -1,84 +1,117 @@
 // @flow
 import React, { Component } from 'react';
+import { Form, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Input, Button, Select, Segment } from 'semantic-ui-react';
 import _ from 'lodash';
-import { getActions } from '../../../actions/accounts';
+import { transfer } from '../../../actions/transaction';
 
 type Props = {
-  settings: {},
-  accounts: {}
+    settings: {},
+    accounts: {},
+    actions: {}
 };
 
 class SendContainer extends Component<Props> {
-  props: Props;
+    
+    state = {
+        token: 'EOS',
+        recipient: '',
+        amount: '',
+        memo: ''
+    }
+    
+    handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
-  getValue = (e, prop) => {
-    prop = e.target.value;
-  }
+    handleSubmit = () => {
+        const { token, recipient, amount, memo } = this.state
+        const { accounts, actions } = this.props;
+        
+        actions.transfer(
+            accounts.account.account_name, 
+            recipient, 
+            `${(new Number(amount)).toFixed(4)  } ${  token.toUpperCase()}`, 
+            memo
+        );
+    }
+    
+    render() {
+        const {
+            accounts,
+            settings
+        } = this.props;
+        
+        const {
+            token,
+            recipient,
+            amount,
+            memo
+        } = this.state;
 
-  render() {
-    const {
-      accounts,
-      settings
-    } = this.props;
+        
+        const tokens = _.map(settings.tokens[accounts.account.account_name], (token) => ({ text: token, value: token, key: token }));
 
-    const tokens = _.map(settings.tokens[accounts.account.account_name], (token) => ({ text: token, value: token }));
-
-    return (
-      <Segment className='no-border'>
-        <Form>
-          <Form.Field
-            id='form-input-control-recipient'
-            control={Input}
-            label='Recipient'
-          />
-          <Form.Group widths='equal'>
-            <Form.Field
-              id='form-textarea-control-amount'
-              control={Input}
-              label='Amount'
-              placeholder='0.0000'
-            />
-            <Form.Field
-              id='form-input-control-token'
-              control={Select}
-              label='Token'
-              options={tokens}
-              defaultValue={['EOS']}
-            />
-          </Form.Group>
-          <Form.Field
-            id='form-button-control-public'
-            control={Input}
-            content='Memo'
-            label='Memo'
-          />
-          <Form.Field
-            id='form-button-control-public'
-            control={Button}
-            content='Next'
-          />
-        </Form>
-      </Segment>
-    );
-  }
+        return (
+          <Segment className='no-border'>
+            <Form onSubmit={this.handleSubmit}>
+              <Form.Input
+                id='form-input-control-recipient'
+                label='Recipient'
+                name='recipient'
+                value={recipient}
+                onChange={this.handleChange}
+              />
+              <Form.Group widths='equal'>
+                <Form.Input
+                  id='form-textarea-control-amount'
+                  label='Amount'
+                  placeholder='0.00000'
+                  name='amount'
+                  value={amount}
+                  onChange={this.handleChange}
+                />
+                <Form.Dropdown
+                  id='form-input-control-token'
+                  label='Select token'
+                  name='token'
+                  options={tokens}
+                  text={token}
+                  defaultValue='EOS'
+                  onChange={this.handleChange}
+                />
+              </Form.Group>
+              <Form.Input
+                id='form-button-control-public'
+                content='Memo'
+                label='Memo'
+                name='memo'
+                value={memo}
+                onChange={this.handleChange}
+              />
+              <Form.Button
+                id='form-button-control-public'
+                content='Confirm'
+              />
+            </Form>
+          </Segment>
+        );
+    }
+}
+            
+function mapStateToProps(state){
+      return {
+          history: state.actions,
+          accounts: state.accounts,
+          settings: state.settings
+      }      
 }
 
-function mapStateToProps(state) {
-  return {
-    accounts: state.accounts,
-    settings: state.settings
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({
-      getActions
-    }, dispatch)
-  };
+function mapDispatchToProps(dispatch){
+    return { 
+        actions: bindActionCreators({
+            transfer
+        }, dispatch)       
+    };  
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SendContainer);
