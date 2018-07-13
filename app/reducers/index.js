@@ -7,6 +7,7 @@ import connection from './connection';
 import accounts from './accounts';
 import loading from './loading';
 import settings from './settings';
+import transaction from './transaction';
 
 const rootReducer = combineReducers({
     ledger,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
     accounts,
     loading,
     settings,
+    transaction,
     router
 });
 

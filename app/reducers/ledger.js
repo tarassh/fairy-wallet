@@ -2,6 +2,7 @@
 import * as types from '../actions/types';
 
 const initialState = {
+    bip44Path: "44'/194'/0'/0/0",
     subscriber: null,
     devicePath: null,
     transport: null,

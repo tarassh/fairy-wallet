@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { Segment, Container } from 'semantic-ui-react';
 
 type Props = {
   children: React.Node

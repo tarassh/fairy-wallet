@@ -101,12 +101,37 @@ export function getPublicKey(display = false) {
       });
     }
 
-    api.getPublicKey("44'/194'/0'/0/0", display).then((result) => {
+    api.getPublicKey(ledger.bip44Path, display).then((result) => {
       const type = display ? types.PUBLIC_KEY_DISPLAY_SUCCESS : types.GET_PUBLIC_KEY_SUCCESS;
       return dispatch({ type, publicKey: result });
     }).catch((err) => {
       const type = display ? types.PUBLIC_KEY_DISPLAY_FAILURE : types.GET_PUBLIC_KEY_FAILURE;
       dispatch({ type, err });
+    });
+  };
+}
+
+export function signTransaction(rawTx) {
+  return (dispatch: () => void, getState) => {
+    dispatch({ type: types.SIGN_TRANSACTION_REQUEST });
+    const { ledger } = getState();
+
+    const api = new Api(ledger.transport);
+    api.signTransaction(ledger.bip44Path, rawTx).then((result) => {
+      const buffer = Buffer.from(result.v + result.r + result.s, 'hex');
+      dispatch({
+        type: types.SIGN_TRANSACTION_SUCCESS,
+        rawSignature: buffer
+      });
+      return result;
+    }).catch((err) => {
+
+      dispatch({
+        type: types.SIGN_TRANSACTION_FAILURE,
+        err
+      });
+
+      dispatch(startListen());
     });
   };
 }
