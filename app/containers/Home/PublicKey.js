@@ -28,7 +28,7 @@ class PublicKeyContainer extends Component<Props> {
         <Message
           content={noAccountsText}
         />
-        <Button
+        <Button 
           content="Retry"
           disabled={disabled}
           primary

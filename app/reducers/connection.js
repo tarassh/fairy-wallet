@@ -24,6 +24,12 @@ export default function connection(state = initialState, action) {
       });
     }
 
+    case types.CREATE_CONNECTION_REQUEST: {
+      return Object.assign({}, state, {
+        err: null
+      });
+    }
+
     default: {
       return state;
     }

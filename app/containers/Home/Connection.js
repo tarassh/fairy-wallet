@@ -33,7 +33,7 @@ class ConnectionContainer extends Component<Props> {
     }
 
     let errorMessage = '';
-    if (connection.err !== null) {
+    if (!disabled && connection.err !== null) {
       errorMessage = (<Message
         error 
         header="Failed to connect" 

@@ -21,7 +21,7 @@ export function broadcastTransaction(tx) {
 export function transfer(from, to, asset, memo = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
-      type: types.CREATE_TRANSFER_TX_PENDING
+      type: types.CREATE_TRANSFER_TX_REQUEST
     });
     const {
       connection
@@ -45,7 +45,7 @@ export function transfer(from, to, asset, memo = '') {
       sign: connection.sign
     }).then((tx) => {
       const { fc } = eos(modified);
-      const buffer = serialize(fc.types, fc.structs.transfer.fields, tx.transaction.transaction);
+      const buffer = serialize(fc.types.config.chainId, tx.transaction.transaction, fc.types);
       dispatch({
         type: types.CREATE_TRANSFER_TX_SUCCESS,
         tx,
