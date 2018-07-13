@@ -17,6 +17,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.CREATE_TRANSFER_TX_REQUEST:
     case types.CREATE_TRANSFER_TX_FAILURE: {
       return Object.assign({}, state, {
         tx: null,
@@ -26,7 +27,7 @@ export default function transaction(state = initialState, action) {
 
     case types.SIGN_TRANSACTION_SUCCESS: {
       const signature = Signature.from(action.rawSignature);
-      const { tx } = state.transaction;
+      const { tx } = state;
       tx.transaction.signatures.push(signature.toString());
       return Object.assign({}, state, {
         tx

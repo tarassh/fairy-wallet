@@ -34,7 +34,7 @@ export default function serialize(chainId, transaction, types) {
         encode(writter, FcBuffer.toBuffer(types.permission_name(), authorization.permission));
     }
 
-    const data = FcBuffer.toBuffer(types.bytes(), action.data);
+    const data = Buffer.from(action.data, 'hex');
     encode(writter, FcBuffer.toBuffer(types.unsigned_int(), data.length));
     encode(writter, data);
 

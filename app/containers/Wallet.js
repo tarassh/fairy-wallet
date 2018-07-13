@@ -4,12 +4,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getAccount } from '../actions/accounts';
 import Wallet from '../components/Wallet';
+import { signTransaction } from '../actions/ledger';
 
 
 type Props = {
   actions: {},
   states: {},
-  loading: {}
+  loading: {},
+  transaction: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -22,6 +24,19 @@ class WalletContainer extends Component<Props> {
     } = this.props;
 
     actions.getAccount(accounts.names ? accounts.names[0] : 'cryptofairy1');
+  }
+
+  componentDidUpdate() {
+    const { 
+      transaction,
+      actions,
+      loading
+    } = this.props;
+
+    console.log(transaction);
+    if (transaction.tx != null && transaction.tx.transaction.signatures.length === 0 && (loading.SIGN_TRANSACTION === undefined)) {
+      actions.signTransaction(transaction.raw);      
+    }
   }
 
   render() {
@@ -41,14 +56,16 @@ function mapStateToProps(state) {
   return {
     states: state.states,
     accounts: state.accounts,
-    loading: state.loading
+    loading: state.loading,
+    transaction: state.transaction
   };
 };
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      getAccount
+      getAccount,
+      signTransaction
     }, dispatch)
   };
 }
