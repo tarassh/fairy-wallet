@@ -4,7 +4,7 @@ import * as types from '../actions/types';
 const initialState = {
   httpEndpoint: null,
   sign: false,
-  bloadcast: false,
+  broadcast: false,
   err: null
 };
 

@@ -17,6 +17,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.BROADCAST_TRANSACTION_FAILURE:
     case types.CREATE_TRANSFER_TX_REQUEST:
     case types.CREATE_TRANSFER_TX_FAILURE: {
       return Object.assign({}, state, {

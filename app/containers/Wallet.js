@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { getAccount } from '../actions/accounts';
 import Wallet from '../components/Wallet';
 import { signTransaction } from '../actions/ledger';
+import { broadcastTransaction } from '../actions/transaction';
 
 
 type Props = {
@@ -23,7 +24,7 @@ class WalletContainer extends Component<Props> {
       accounts
     } = this.props;
 
-    actions.getAccount(accounts.names ? accounts.names[0] : 'cryptofairy1');
+    actions.getAccount(accounts.names[accounts.activeAccount]);
   }
 
   componentDidUpdate() {
@@ -36,6 +37,9 @@ class WalletContainer extends Component<Props> {
     console.log(transaction);
     if (transaction.tx != null && transaction.tx.transaction.signatures.length === 0 && (loading.SIGN_TRANSACTION === undefined)) {
       actions.signTransaction(transaction.raw);      
+    }
+    if (transaction.tx != null && transaction.tx.transaction.signatures.length > 0 && loading.BROADCAST_TRANSACTION === undefined) {
+      actions.broadcastTransaction(transaction.tx);
     }
   }
 
@@ -65,7 +69,8 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
       getAccount,
-      signTransaction
+      signTransaction,
+      broadcastTransaction
     }, dispatch)
   };
 }

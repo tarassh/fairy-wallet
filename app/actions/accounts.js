@@ -28,6 +28,10 @@ export function getAccounts(publicKey) {
   };
 }
 
+export function setActiveAccount(index) {
+  return (dispatch: () => void) => dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
+}
+
 export function getAccount(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
