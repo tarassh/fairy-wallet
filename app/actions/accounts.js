@@ -112,7 +112,6 @@ export function getCurrencyBalance(account) {
         values => {
             const pairs = _.map(_.flatten(values), value => {
                 let valueKey = value.split(' ');
-                valueKey[0] = parseFloat(valueKey[0])
                 return valueKey.reverse();
             });
             const balancesObject = _.fromPairs(pairs);

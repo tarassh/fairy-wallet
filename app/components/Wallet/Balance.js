@@ -6,7 +6,6 @@ import { Container, Grid, Icon, Label, List, Table, Segment, Modal, Button, Inpu
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings'
-import { getCurrencyBalance } from '../../actions/accounts'
 
 type Props = {
     accounts: {},

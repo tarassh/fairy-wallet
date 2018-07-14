@@ -34,17 +34,6 @@ export function addToken(account, token) {
             settings
         } = getState();
         
-        let tokens = settings.tokens[accounts.names[accounts.activeAccount]] || [];
-        if (!tokens.includes('EOS')){
-           dispatch({
-            type: types.ADD_TOKEN,
-            account,
-            token: 'EOS'
-           }) 
-        }
-        
-        if (settings.balances[token])
-        
         if (!token) return;
         
         dispatch({
@@ -52,6 +41,10 @@ export function addToken(account, token) {
             account,
             token: token.toUpperCase()
         })
+        
+        if (!settings.balances[token]){
+            getCurrencyBalance(account);
+        }
     }
 }
 
