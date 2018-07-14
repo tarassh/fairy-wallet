@@ -9,6 +9,8 @@ import * as ledgerActions from '../actions/ledger';
 import * as stateActions from '../actions/states';
 import * as connectionActions from '../actions/connection';
 import * as accountsActions from '../actions/accounts';
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 const history = createHashHistory();
 //const history = createHistory();
@@ -58,8 +60,18 @@ const configureStore = (initialState = {}) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers(...enhancers);
 
+  //configure persistor
+  const persistConfig = {
+    key: 'root',
+    storage,
+  }
+    
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
+    
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(persistedReducer, initialState, enhancer);
+    
+    const persistor = persistStore(store);
     
   if (module.hot) {
     module.hot.accept(
@@ -70,7 +82,14 @@ const configureStore = (initialState = {}) => {
 
     history.push('/');
     
-  return store;
+  return {
+      store, 
+      persistor 
+  };
 };
 
-export default { configureStore, history };
+export default {
+    configureStore,
+    history
+}
+

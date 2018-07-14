@@ -2,9 +2,12 @@ import * as types from '../actions/types';
 
 
 const initialState = {
+  publicKey: null,
   names: null,
   account: null,
-  actions: null
+  actions: null,
+  balances: null,
+  activeAccount: 0
 };
 
 export default function accounts(state = initialState, action) {
@@ -42,6 +45,30 @@ export default function accounts(state = initialState, action) {
     case types.GET_ACTIONS_FAILURE: {
       return Object.assign({}, state, {
         actions: null
+      });
+    }
+
+    case types.SET_ACTIVE_ACCOUNT: {
+      return Object.assign({}, state, {
+        activeAccount: action.index
+      });
+    }
+
+    case types.GET_PUBLIC_KEY_SUCCESS: {
+      return Object.assign({}, state, {
+        publicKey: action.publicKey
+      });
+    }
+
+    case types.GET_PUBLIC_KEY_FAILURE: {
+      return Object.assign({}, state, {
+        publicKey: null
+      });
+    }
+
+    case types.GET_CURRENCY_BALANCE_SUCCESS: {
+      return Object.assign({}, state, {
+        balances: action.balances
       });
     }
 

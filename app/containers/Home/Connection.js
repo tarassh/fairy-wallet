@@ -1,53 +1,80 @@
 // @flow
 import React, { Component } from 'react';
-import { Button, Container, Form, Input } from 'semantic-ui-react';
-import * as states from '../../actions/states';
-import { createConnection, test } from '../../actions/connection';
+import { Button, Container, Form, Input, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { createConnection } from '../../actions/connection';
 
 class ConnectionContainer extends Component<Props> {
-    constructor(props) {
-        super(props);
-        this.state = { nodeUrl: '' };
+  constructor(props) {
+    super(props);
+    this.state = { nodeUrl: '' };
+  }
+
+  onConnect = () => {
+    this.props.createConnection(this.state.nodeUrl)
+  }
+
+  getUrl = (e, { value }) => {
+    this.setState({
+      nodeUrl: value
+    });
+  }
+
+  render() {
+    const {
+      loading, 
+      connection
+    } = this.props;
+
+    let disabled = false;
+    if (loading.CREATE_CONNECTION) {
+      disabled = true;
     }
-    
-    onConnect = () => {
-        return this.props.createConnection(this.state.nodeUrl);
+
+    let errorMessage = '';
+    if (!disabled && connection.err !== null) {
+      errorMessage = (<Message
+        error 
+        header="Failed to connect" 
+        content={connection.err ? connection.err.message : 'error'}
+      />);
     }
-    
-    getUrl = e => {
-        this.state.nodeUrl = e.target.value;
-    }
-    
-    render() {
-      return (
-        <Form>
-          <Form.Field
-            autoFocus
-            control={Input}
-            label="Node URL"
-            onChange={this.getUrl}
-            placeholder="https://"
+
+    return (
+      <Form error>
+        <Form.Field
+          autoFocus
+          control={Input}
+          label="Node URL"
+          onChange={this.getUrl}
+          placeholder="https://"
+          disabled={disabled}
+        />
+        {errorMessage}
+        <Container textAlign="center">
+          <Button
+            content="Connect"
+            disabled={disabled}
+            primary
+            onClick={this.onConnect}
+            style={{ marginTop: '1em' }}
           />
-          <Container textAlign="center">
-            <Button
-              content="Connect"
-              icon="exchange"
-              primary
-              onClick={this.onConnect}
-              style={{ marginTop: '1em' }}
-            />
-          </Container>
-        </Form>
-      );
-    }
+        </Container>
+      </Form>
+    );
+  }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        createConnection: createConnection
-    }, dispatch);
-}
+function mapStateToProps(state) {
+  return {
+      loading: state.loading,
+      connection: state.connection
+  };
+};
 
-export default connect(null, mapDispatchToProps)(ConnectionContainer)
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  createConnection
+}, dispatch)
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConnectionContainer)

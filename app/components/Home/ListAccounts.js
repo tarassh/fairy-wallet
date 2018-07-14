@@ -1,34 +1,30 @@
 // @flow
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { Container, List, Icon, Segment } from 'semantic-ui-react';
+import { List, Icon, Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 import compose from 'lodash/fp/compose';
+import { setActiveAccount } from '../../actions/accounts';
 
 type Props = {
+    actions: {},
     accounts: {},
     history: {}
 };
 
 export class ListAccountsContainer extends Component<Props> {
     props: Props;
-    
-//    componentDidMount() {
-//        const {
-//          history
-//        } = this.props;
-//
-//        history.push('/wallet');
-//    }
 
-    gotoWallet = () => {
+    gotoWallet = (e) => {
         const {
-          history
+          history,
+          actions,
+          accounts
         } = this.props;
-    
+        
+        actions.setActiveAccount(accounts.names.indexOf(e.target.innerText));
         history.push('/wallet');
     }
 
@@ -38,21 +34,21 @@ export class ListAccountsContainer extends Component<Props> {
         } = this.props;
 
         const accountRender = accounts.names.map((account, i) =>                                       
-            <List.Item as='a' onClick={this.gotoWallet} key={i}>
-              <Icon name='user' />
-              <List.Content>
-                <List.Description>
-                  {account}
-                </List.Description>
-              </List.Content>
-            </List.Item>)
+          (<List.Item as='a' onClick={this.gotoWallet} key={i}>
+            <Icon name='user' />
+            <List.Content>
+              <List.Description>
+                {account}
+              </List.Description>
+            </List.Content>
+           </List.Item>))
         
         return (
-            <Segment raised>
-                <List>
-                    {accountRender}
-                </List>
-            </Segment>
+          <Segment raised>
+            <List>
+              {accountRender}
+            </List>
+          </Segment>
         );
     }
 }
@@ -63,12 +59,12 @@ function mapStateToProps(state) {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        push: push,
-        history: history
-    }, dispatch);
-}
+const mapDispatchToProps = (dispatch) => ({
+    actions: bindActionCreators({
+        setActiveAccount,
+        push,
+    }, dispatch)
+  });
 
 export default compose(
   withRouter,

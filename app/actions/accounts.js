@@ -28,6 +28,10 @@ export function getAccounts(publicKey) {
   };
 }
 
+export function setActiveAccount(index) {
+  return (dispatch: () => void) => dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
+}
+
 export function getAccount(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -41,7 +45,8 @@ export function getAccount(name) {
     };
 
     eos(modified).getAccount(name).then((result) => {
-      dispatch({
+      dispatch(getCurrencyBalance(name));
+      return dispatch({
         type: types.GET_ACCOUNT_SUCCESS,
         account: result
       });
@@ -54,7 +59,6 @@ export function getAccount(name) {
   };
 }
 
-// history 
 export function getActions(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -68,12 +72,10 @@ export function getActions(name) {
       sign: false
     };
 
-    eos(modified).getActions(name).then((result) => {
-      dispatch({
+    eos(modified).getActions(name).then((result) => dispatch({
         type: types.GET_ACTIONS_SUCCESS,
         actions: result
-      });
-    }).catch((err) => {
+      })).catch((err) => {
       dispatch({
         type: types.GET_ACTIONS_FAILURE,
         err
@@ -83,8 +85,43 @@ export function getActions(name) {
   };
 }
 
+export function getCurrencyBalance(account) {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.GET_CURRENCY_BALANCE_REQUEST
+    });
+
+    const  {
+      connection, 
+      settings
+    } = getState();
+
+    const { tokens } = settings;
+    const selectedTokens = tokens[account];
+    if (!selectedTokens) {
+      return dispatch({type: types.GET_CURRENCY_BALANCE_SUCCESS, balances: {}});
+    }
+    selectedTokens.forEach(symbol => {
+      eos(connection).getCurrencyBalance('eosio.token', account, symbol).then((result) => dispatch({ 
+          type: types.GET_CURRENCY_BALANCE_SUCCESS,
+          balances: formatBalance(result[0])
+        })).catch((err) => {
+        dispatch({type: types.GET_CURRENCY_BALANCE_FAILURE, err});
+      });
+    });
+  };
+}
+
+function formatBalance(balance) {
+  const temp = {};
+  const [amount, symbol] = balance.split(' ');
+  temp[symbol] = parseFloat(amount);
+  return temp;
+}
+
 export default {
-    getAccounts,
-    getAccount,
-    getActions
+  getAccounts,
+  getAccount, 
+  getActions,
+  getCurrencyBalance
 }

@@ -9,9 +9,11 @@ const initialState = {
 
 export default function state(state = initialState, action){
     switch (action.type) {
-        case types.APP_LEDGER_CONNECTION_STATUS: {
+//        case types.APP_LEDGER_CONNECTION_STATUS: {
+            case types.GET_PUBLIC_KEY_SUCCESS: {
           return Object.assign({}, state, {
-            deviceConnected: action.deviceConnected
+//            deviceConnected: action.deviceConnected
+              deviceConnected: true
           });
         }
         case types.DEVICE_CONNECTING:

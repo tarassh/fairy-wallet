@@ -27,11 +27,6 @@ export default class Home extends Component<Props> {
         history
     } = this.props;
 
-//    let statusSegment = <Status 
-//        deviceConnected={states.deviceConnected} 
-//        accountsFound={states.nodeConnected} 
-//        nodeConnected={states.accountsRetrieved} />
-
     var mainSegment = <Lock />;
     if(states.deviceConnected && !states.nodeConnected){
         mainSegment = <Connection />;
