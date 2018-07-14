@@ -6,6 +6,7 @@ import { Container, Grid, Icon, Label, List, Table, Segment, Modal, Button, Inpu
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings'
+import { getCurrencyBalance } from '../../actions/accounts'
 
 type Props = {
     accounts: {},
@@ -15,12 +16,17 @@ type Props = {
 class Balance extends Component<Props> {
     constructor(props) {
         super(props);
+        
+        this.state = {
+            token: '',
+            modalOpen: false
+        }
     }
-    
-    state = {
-        token: ''
-    }
-    
+
+    handleOpen = () => this.setState({ modalOpen: true })
+
+    handleClose = () => this.setState({ modalOpen: false })
+
     handleChange = (e, { name, value }) => {
         this.setState({ [name]: value })
     };
@@ -35,16 +41,14 @@ class Balance extends Component<Props> {
         } = this.state;
         
         this.props.actions.addToken(accounts.account.account_name, token);
+        this.handleClose();
     }
 
-    componentWillMount(){
+    componentDidMount(){
         const {
             accounts
         } = this.props
-        
-        
-        this.addToken(accounts.account.account_name, 'EOS');
-//        this.addToken(accounts.account.account_name, 'Mocha');
+
     }
     
     render() {
@@ -96,7 +100,7 @@ class Balance extends Component<Props> {
                     </Table>
                 </Segment>
                 <Segment>
-                    <Modal size='tiny' trigger={<Button>Add new token</Button>}>
+                    <Modal size='tiny' open={this.state.modalOpen} trigger={<Button onClick={this.handleOpen}>Add new token</Button>}>
                         <Modal.Content>
                             <Modal.Description>
                                 <Input name='token' value={token} placeholder='Token name...' onChange={this.handleChange} />
@@ -121,7 +125,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators({
-            addToken: addToken
+            addToken,
+            getCurrencyBalance
         }, dispatch)
     };
 }

@@ -6,6 +6,7 @@ import { getAccount } from '../actions/accounts';
 import Wallet from '../components/Wallet';
 import { signTransaction } from '../actions/ledger';
 import { broadcastTransaction } from '../actions/transaction';
+import { setupNativeToken } from '../actions/settings';
 
 
 type Props = {
@@ -25,6 +26,7 @@ class WalletContainer extends Component<Props> {
     } = this.props;
 
     actions.getAccount(accounts.names[accounts.activeAccount]);
+    actions.setupNativeToken();
   }
 
   componentDidUpdate() {
@@ -70,7 +72,8 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators({
       getAccount,
       signTransaction,
-      broadcastTransaction
+      broadcastTransaction,
+      setupNativeToken
     }, dispatch)
   };
 }

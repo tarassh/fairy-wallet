@@ -1,5 +1,6 @@
 // @flow
 import * as types from './types';
+import _ from 'lodash';
 
 import eos from './helpers/eos';
 
@@ -93,7 +94,8 @@ export function getCurrencyBalance(account) {
 
     const  {
       connection, 
-      settings
+      settings,
+      accounts
     } = getState();
 
     const { tokens } = settings;
@@ -101,15 +103,27 @@ export function getCurrencyBalance(account) {
     if (!selectedTokens) {
       return dispatch({type: types.GET_CURRENCY_BALANCE_SUCCESS, balances: {}});
     }
+    
+    const promisses = [];
     selectedTokens.forEach(symbol => {
-      eos(connection).getCurrencyBalance('eosio.token', account, symbol).then((result) => dispatch({ 
-          type: types.GET_CURRENCY_BALANCE_SUCCESS,
-          balances: formatBalance(result[0])
-        })).catch((err) => {
-        dispatch({type: types.GET_CURRENCY_BALANCE_FAILURE, err});
-      });
+      promisses.push(eos(connection).getCurrencyBalance('eosio.token', account, symbol))
     });
-  };
+    Promise.all(promisses).then(
+        values => {
+            const pairs = _.map(_.flatten(values), value => {
+                let valueKey = value.split(' ');
+                valueKey[0] = parseFloat(valueKey[0])
+                return valueKey.reverse();
+            });
+            const balancesObject = _.fromPairs(pairs);
+            dispatch({ 
+                type: types.GET_CURRENCY_BALANCE_SUCCESS,
+                balances: balancesObject
+            });
+        }, error => {
+            dispatch({type: types.GET_CURRENCY_BALANCE_FAILURE, error});
+        });
+    };
 }
 
 function formatBalance(balance) {
