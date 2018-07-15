@@ -3,8 +3,9 @@ import * as types from '../actions/types';
 
 const initialState = {
   httpEndpoint: null,
-  sign: false,
-  broadcast: false,
+  // sign: false,
+  // broadcast: false,
+  // verbose: true,
   err: null
 };
 

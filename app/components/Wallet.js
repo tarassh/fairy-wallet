@@ -7,8 +7,7 @@ import WalletActions from './Wallet/Actions';
 
 type Props = {
   states: {},
-  accounts: {},
-  loading: {}
+  accounts: {}
 };
 
 export default class Wallet extends Component<Props> {
@@ -17,8 +16,7 @@ export default class Wallet extends Component<Props> {
   render() {
     const {
       states,
-      accounts,
-      loading
+      accounts
     } = this.props;
 
     let leftSegment =

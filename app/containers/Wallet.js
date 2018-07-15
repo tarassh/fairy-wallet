@@ -12,7 +12,7 @@ type Props = {
   actions: {},
   states: {},
   loading: {},
-  transaction: {}
+  accounts: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -25,22 +25,6 @@ class WalletContainer extends Component<Props> {
     } = this.props;
 
     actions.getAccount(accounts.names[accounts.activeAccount]);
-  }
-
-  componentDidUpdate() {
-    const { 
-      transaction,
-      actions,
-      loading
-    } = this.props;
-
-    console.log(transaction);
-    if (transaction.tx != null && transaction.tx.transaction.signatures.length === 0 && (loading.SIGN_TRANSACTION === undefined)) {
-      actions.signTransaction(transaction.raw);      
-    }
-    if (transaction.tx != null && transaction.tx.transaction.signatures.length > 0 && loading.BROADCAST_TRANSACTION === undefined) {
-      actions.broadcastTransaction(transaction.tx);
-    }
   }
 
   render() {
