@@ -123,13 +123,6 @@ export function getCurrencyBalance(account) {
   };
 }
 
-function formatBalance(balance) {
-  const temp = {};
-  const [amount, symbol] = balance.split(' ');
-  temp[symbol] = parseFloat(amount);
-  return temp;
-}
-
 export default {
   getAccounts,
   getAccount,
