@@ -111,31 +111,6 @@ export function getPublicKey(display = false) {
   };
 }
 
-export function signTransaction(rawTx) {
-  return (dispatch: () => void, getState) => {
-    dispatch({ type: types.SIGN_TRANSACTION_REQUEST });
-    const { ledger } = getState();
-
-    const api = new Api(ledger.transport);
-    api.signTransaction(ledger.bip44Path, rawTx).then((result) => {
-      const buffer = Buffer.from(result.v + result.r + result.s, 'hex');
-      dispatch({
-        type: types.SIGN_TRANSACTION_SUCCESS,
-        rawSignature: buffer
-      });
-      return result;
-    }).catch((err) => {
-
-      dispatch({
-        type: types.SIGN_TRANSACTION_FAILURE,
-        err
-      });
-
-      dispatch(startListen());
-    });
-  };
-}
-
 export default {
   startListen,
   stopListen
