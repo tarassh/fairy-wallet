@@ -25,7 +25,7 @@ export default class Wallet extends Component<Props> {
         <Message.Content>
           <Message.Header>Retrieving account info</Message.Header>
         </Message.Content>
-      </Message>);
+       </Message>);
 
     let rightSegment =
       (<Message icon>
@@ -33,7 +33,7 @@ export default class Wallet extends Component<Props> {
         <Message.Content>
           <Message.Header>Retrieving history</Message.Header>
         </Message.Content>
-      </Message>);
+       </Message>);
 
     if (states.accountInfoRetrieved) {
       leftSegment = <WalletBalance accounts={accounts} />
