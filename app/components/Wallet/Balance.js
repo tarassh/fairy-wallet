@@ -124,8 +124,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         actions: bindActionCreators({
-            addToken,
-            getCurrencyBalance
+            addToken
         }, dispatch)
     };
 }

@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 import { Tab, Segment } from 'semantic-ui-react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
-import ActionsReceive from './Actions/Receive';
+import ActionsStake from './Actions/Stake';
 
 type Props = {
 };
@@ -16,7 +16,7 @@ export default class Actions extends Component<Props> {
         const panes = [
             { menuItem: 'History', render: () => <ActionsHistory /> },
             { menuItem: 'Send', render: () => <ActionsSend /> },
-            { menuItem: 'Receive', render: () => <ActionsReceive /> },
+            { menuItem: 'Stake\\Unstake', render: () => <ActionsStake /> }
         ]
 
         return (
