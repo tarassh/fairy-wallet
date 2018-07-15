@@ -5,19 +5,19 @@ import states from './states';
 import ledger from './ledger';
 import connection from './connection';
 import accounts from './accounts';
-import loading from './loading';
 import settings from './settings';
 import transaction from './transaction';
+import loading from './loading';
 
 const rootReducer = combineReducers({
     ledger,
     states,
     connection,
     accounts,
-    loading,
+    router,
     settings,
     transaction,
-    router
+    loading
 });
 
 export default rootReducer;

@@ -9,8 +9,7 @@ import { transfer } from '../../../actions/transaction';
 type Props = {
   settings: {},
   accounts: {},
-  actions: {},
-  transaction: {}
+  actions: {}
 };
 
 class SendContainer extends Component<Props> {
@@ -94,7 +93,7 @@ class SendContainer extends Component<Props> {
             content='Confirm'
           />
         </Form>
-        <Modal open={open}>
+        <Modal open={open} closeOnDimmerClick={false} closeOnDocumentClick={false}>
           <Modal.Header>Use Ledger to verify transaction.</Modal.Header>
         </Modal>
       </Segment>

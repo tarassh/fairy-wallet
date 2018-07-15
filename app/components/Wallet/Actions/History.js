@@ -3,9 +3,7 @@ import React, { Component } from 'react';
 import { Tab, Segment, Table } from 'semantic-ui-react';
 import _ from 'lodash'
 
-type Props = {
-  accounts: {}
-};
+type Props = {};
 
 export default class History extends Component<Props> {
   props: Props;

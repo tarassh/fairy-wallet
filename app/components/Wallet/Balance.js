@@ -1,10 +1,10 @@
 // @flow
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Icon, Label, Table, Segment } from 'semantic-ui-react';
+import { Label, Table, Segment, Modal, Button, Input } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addToken } from '../../actions/settings'
+import { addToken } from '../../actions/settings';
 
 type Props = {
   accounts: {},
@@ -12,20 +12,34 @@ type Props = {
 };
 
 class Balance extends Component<Props> {
+  constructor(props) {
+    super(props);
 
-  componentWillMount() {
-  }
-
-  componentDidUpdate() {
-    const { account_name } = this.props.accounts.account;
-    if (account_name) {
-      this.addToken(account_name, 'JUNGLE');
-      this.addToken(account_name, 'EOS');
+    this.state = {
+      token: '',
+      modalOpen: false
     }
   }
 
-  addToken = (account, token) => {
-    this.props.actions.addToken(account, token);
+  handleOpen = () => this.setState({ modalOpen: true })
+
+  handleClose = () => this.setState({ modalOpen: false })
+
+  handleChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
+  };
+
+  addToken = () => {
+    const {
+      accounts
+    } = this.props;
+
+    const {
+      token
+    } = this.state;
+
+    this.props.actions.addToken(accounts.account.account_name, token);
+    this.handleClose();
   }
 
   render() {
@@ -33,12 +47,7 @@ class Balance extends Component<Props> {
       accounts
     } = this.props;
 
-    const tableData = [
-      { currency: 'EOS', total: 15000 },
-      { currency: 'Amber', total: 40000 },
-      { currency: 'ShittyToken', total: 2500 },
-      { currency: 'EosDolliar', total: 700000 },
-    ]
+    const { token } = this.state
 
     return (
       <Segment.Group className='no-border no-padding'>
@@ -59,9 +68,6 @@ class Balance extends Component<Props> {
           </Label>
         </Segment>
         <Segment>
-          <Icon link name='plus square outline' onClick={this.addToken} />
-        </Segment>
-        <Segment>
           <Table celled basic='very' compact='very' unstackable>
             <Table.Header>
               <Table.Row>
@@ -69,31 +75,45 @@ class Balance extends Component<Props> {
                   Currency
                 </Table.HeaderCell>
                 <Table.HeaderCell>
-                  Total
+                  Balance
                 </Table.HeaderCell>
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {_.map(tableData, ({ currency, total }) => (
+              {_.map(accounts.balances, (balance, currency) => (
                 <Table.Row key={currency}>
                   <Table.Cell collapsing>{currency}</Table.Cell>
-                  <Table.Cell collapsing>{total}</Table.Cell>
+                  <Table.Cell collapsing>{balance}</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
+        </Segment>
+        <Segment>
+          <Modal size='tiny' open={this.state.modalOpen} trigger={<Button onClick={this.handleOpen}>Add new token</Button>}>
+            <Modal.Content>
+              <Modal.Description>
+                <Input name='token' value={token} placeholder='Token name...' onChange={this.handleChange} />
+              </Modal.Description>
+            </Modal.Content>
+            <Modal.Actions>
+              <Button basic onClick={this.addToken}>Add</Button>
+            </Modal.Actions>
+          </Modal>
         </Segment>
       </Segment.Group>
     );
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators({
-      addToken
-    }, dispatch)
-  };
-}
+const mapStateToProps = state => ({
+  settings: state.settings
+})
 
-export default connect(null, mapDispatchToProps)(Balance);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    addToken,
+  }, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Balance);
