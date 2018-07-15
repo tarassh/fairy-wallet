@@ -4,6 +4,7 @@ const initialState = {
   deviceConnected: false,
   nodeConnected: false,
   accountsRetrieved: false,
+  accountsRequested: false,
   accountInfoRetrieved: false
 };
 
@@ -37,7 +38,12 @@ export default function states(state = initialState, action) {
         accountsRetrieved: true
       });
     }
-    case types.GET_ACCOUNTS_REQUEST:
+    case types.GET_ACCOUNTS_REQUEST: {
+      return Object.assign({}, state, {
+        accountsRequested: true,
+        accountsRetrieved: false,
+      });
+    }
     case types.GET_ACCOUNTS_FAILURE: {
       return Object.assign({}, state, {
         accountsRetrieved: false
