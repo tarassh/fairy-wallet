@@ -5,25 +5,6 @@ import serialize from './helpers/ledgerserialize';
 
 const Api = require('./helpers/eosledjer').default;
 
-export function broadcastTransaction(tx) {
-  return (dispatch: () => void, getState) => {
-    dispatch({ type: types.BROADCAST_TRANSACTION_REQUEST });
-    const {
-      connection
-    } = getState();
-    eos(connection).pushTransaction(tx.transaction).then((response) => {
-        console.log(response);
-        dispatch({type: types.BROADCAST_TRANSACTION_SUCCESS});
-        return response;
-    }).catch((err) => {
-        console.log(err);
-        dispatch({ type: types.BROADCAST_TRANSACTION_FAILURE,
-          err
-        });
-      });
-  };
-}
-
 export function transfer(from, to, asset, memo = '') {
   return (dispatch: () => void, getState) => {
     dispatch({

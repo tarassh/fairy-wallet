@@ -29,15 +29,15 @@ export function createConnection(url) {
 
       const modified = {
         ...connection,
-        httpEndpoint,
-        sign: false
+        httpEndpoint
       };
 
       eos(modified).getInfo({}).then((result) => {
         if (result.head_block_num > 0) {
           dispatch({
             type: types.CREATE_CONNECTION_SUCCESS,
-            httpEndpoint
+            httpEndpoint,
+            chainId: result.chain_id
           });
 
           return dispatch(getAccounts(getState().accounts.publicKey.wif));

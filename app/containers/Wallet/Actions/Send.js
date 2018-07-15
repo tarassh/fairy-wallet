@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Segment, Modal } from 'semantic-ui-react';
+import { Form, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -45,8 +45,7 @@ class SendContainer extends Component<Props> {
       token,
       recipient,
       amount,
-      memo, 
-      open
+      memo
     } = this.state;
 
     const tokens = _.map(settings.tokens[accounts.account.account_name], (name) => ({ text: name, value: name, key: name }));
@@ -62,14 +61,6 @@ class SendContainer extends Component<Props> {
             onChange={this.handleChange}
           />
           <Form.Group widths='equal'>
-            <Form.Input
-              id='form-textarea-control-amount'
-              label='Amount'
-              placeholder='0.00000'
-              name='amount'
-              value={amount}
-              onChange={this.handleChange}
-            />
             <Form.Dropdown
               id='form-input-control-token'
               label='Token'
@@ -77,6 +68,14 @@ class SendContainer extends Component<Props> {
               options={tokens}
               text={token}
               defaultValue='EOS'
+              onChange={this.handleChange}
+            />
+            <Form.Input
+              id='form-textarea-control-amount'
+              label='Amount'
+              placeholder='0.00000'
+              name='amount'
+              value={amount}
               onChange={this.handleChange}
             />
           </Form.Group>
@@ -93,9 +92,6 @@ class SendContainer extends Component<Props> {
             content='Confirm'
           />
         </Form>
-        <Modal open={open} closeOnDimmerClick={false} closeOnDocumentClick={false}>
-          <Modal.Header>Use Ledger to verify transaction.</Modal.Header>
-        </Modal>
       </Segment>
     );
   }

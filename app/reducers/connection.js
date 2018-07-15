@@ -3,9 +3,7 @@ import * as types from '../actions/types';
 
 const initialState = {
   httpEndpoint: null,
-  // sign: false,
-  // broadcast: false,
-  // verbose: true,
+  chainId: '',
   err: null
 };
 
@@ -14,6 +12,7 @@ export default function connection(state = initialState, action) {
     case types.CREATE_CONNECTION_SUCCESS: {
       return Object.assign({}, state, {
         httpEndpoint: action.httpEndpoint,
+        chainId: action.chainId,
         err: null
       });
     }
@@ -21,6 +20,7 @@ export default function connection(state = initialState, action) {
     case types.CREATE_CONNECTION_FAILURE: {
       return Object.assign({}, state, {
         httpEndpoint: null,
+        chainId: '',
         err: action.err
       });
     }
