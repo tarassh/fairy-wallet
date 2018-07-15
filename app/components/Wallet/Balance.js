@@ -98,6 +98,7 @@ class Balance extends Component<Props> {
             </Modal.Content>
             <Modal.Actions>
               <Button basic onClick={this.addToken}>Add</Button>
+              <Button basic onClick={this.handleClose}>Close</Button>
             </Modal.Actions>
           </Modal>
         </Segment>
