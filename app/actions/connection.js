@@ -48,7 +48,7 @@ export function createConnection(url) {
       }).catch((err) => {
         dispatch({
           type: types.CREATE_CONNECTION_FAILURE,
-          err
+          err: JSON.parse(err)
         });
       });
 

@@ -18,7 +18,7 @@ export function getAccounts(publicKey) {
       accounts: result.account_names
     })).catch((err) => dispatch({
       type: types.GET_ACCOUNTS_REQUEST,
-      err
+      err: JSON.parse(err)
     }));
   };
 }
@@ -43,7 +43,7 @@ export function getAccount(name) {
     }).catch((err) => {
       dispatch({
         type: types.GET_ACCOUNT_FAILURE,
-        err
+        err: JSON.parse(err)
       });
     });
   };
@@ -63,7 +63,7 @@ export function getActions(name) {
     })).catch((err) => {
       dispatch({
         type: types.GET_ACTIONS_FAILURE,
-        err
+        err: JSON.parse(err)
       });
     });
 
@@ -102,8 +102,11 @@ export function getCurrencyBalance(account) {
           type: types.GET_CURRENCY_BALANCE_SUCCESS,
           balances: balancesObject
         });
-      }).catch((error) => {
-        dispatch({ type: types.GET_CURRENCY_BALANCE_FAILURE, error });
+      }).catch((err) => {
+        dispatch({ 
+          type: types.GET_CURRENCY_BALANCE_FAILURE, 
+          err: JSON.parse(err) 
+        });
       });
   };
 }
