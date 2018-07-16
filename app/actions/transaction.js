@@ -48,7 +48,7 @@ export function transfer(from, to, asset, memo = '') {
     }).catch((err) => {
       dispatch({
         type: types.TRANSFER_TOKEN_FAILURE,
-        err
+        err: JSON.parse(err)
       })
     });
   };
@@ -87,7 +87,7 @@ export function delegate(from, receiver, net, cpu) {
       })).catch((err) => {
       dispatch({ 
         type: types.DELEGATE_FAILURE,
-        err
+        err: JSON.parse(err)
       });
     });
   };
@@ -126,7 +126,7 @@ export function undelegate(from, receiver, net, cpu) {
       })).catch((err) => {
       dispatch({ 
         type: types.UNDELEGATE_FAILURE,
-        err
+        err: JSON.parse(err)
       });
     });
   };

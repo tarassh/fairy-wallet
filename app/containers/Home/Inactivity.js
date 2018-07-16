@@ -16,7 +16,7 @@ class InactivityContainer extends Component<Props> {
       loading
     } = this.props;
 
-    const noAccountsText = `Cannot connect. Make sure your device is unlocked.`;
+    const noAccountsText = `Cannot read device properties. Make sure your device is unlocked.`;
 
     let disabled = false;
     if (loading.CREATE_CONNECTION) {

@@ -136,6 +136,7 @@ class SendContainer extends Component<Props> {
               value={amount}
               onChange={this.handleChange}
               action={<Form.Dropdown button basic floating options={tokens} defaultValue='EOS' name='token' text={token} onChange={this.handleChange} />}
+              actionPosition='left'
             />
           </Form.Group>
           <Form.Input
