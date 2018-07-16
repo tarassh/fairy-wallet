@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { Button, Form, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as LedgerActions from '../../actions/ledger';
+import { getPublicKey } from '../../actions/ledger';
 
-class PublicKeyContainer extends Component<Props> {
+class InactivityContainer extends Component<Props> {
 
   retry = () => {
     this.props.getPublicKey();
@@ -16,7 +16,7 @@ class PublicKeyContainer extends Component<Props> {
       loading
     } = this.props;
 
-    const noAccountsText = `Cannot retrieve Public Key. Make sure your device is unlocked.`;
+    const noAccountsText = `Cannot connect. Make sure your device is unlocked.`;
 
     let disabled = false;
     if (loading.CREATE_CONNECTION) {
@@ -47,7 +47,7 @@ function mapStateToProps(state) {
 };
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({
-  ...LedgerActions
+  getPublicKey
 }, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicKeyContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(InactivityContainer)

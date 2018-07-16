@@ -49,6 +49,9 @@ class SendContainer extends Component<Props> {
     } = this.state;
 
     const tokens = _.map(settings.tokens[accounts.account.account_name], (name) => ({ text: name, value: name, key: name }));
+    if (!tokens.find((element) => element.key === 'EOS')) {
+      tokens.push({ text: 'EOS', value: 'EOS', key: 'EOS' });
+    }
 
     return (
       <Segment className='no-border'>
@@ -61,15 +64,6 @@ class SendContainer extends Component<Props> {
             onChange={this.handleChange}
           />
           <Form.Group widths='equal'>
-            <Form.Dropdown
-              id='form-input-control-token'
-              label='Token'
-              name='token'
-              options={tokens}
-              text={token}
-              defaultValue='EOS'
-              onChange={this.handleChange}
-            />
             <Form.Input
               id='form-textarea-control-amount'
               label='Amount'
@@ -77,6 +71,7 @@ class SendContainer extends Component<Props> {
               name='amount'
               value={amount}
               onChange={this.handleChange}
+              action={<Form.Dropdown button basic floating options={tokens} defaultValue='EOS' name='token' text={token} onChange={this.handleChange} />}
             />
           </Form.Group>
           <Form.Input

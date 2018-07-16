@@ -6,7 +6,7 @@ import Lock from './Home/Lock';
 import NoAccounts from './Home/NoAccounts';
 import Connection from './Home/Connection';
 import ListAccounts from './Home/ListAccounts';
-import PublicKey from './Home/PublicKey';
+import Inactivity from './Home/Inactivity';
 
 type Props = {
   states: {},
@@ -39,7 +39,7 @@ export default class Home extends Component<Props> {
 
     let mainSegment = <Lock />;
     if (states.deviceConnected && accounts.publicKey === null) {
-      mainSegment = <PublicKey />;
+      mainSegment = <Inactivity />;
     }
 
     if (states.deviceConnected && !states.nodeConnected && accounts.publicKey !== null) {
