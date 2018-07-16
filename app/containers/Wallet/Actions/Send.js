@@ -113,6 +113,7 @@ class SendContainer extends Component<Props> {
     }
 
     const maxAmount = parseFloat(accounts.balances[token]);
+    const enableRequest = (token !== '' && recipient !== '' && amount !== '');
 
     return (
       <Segment className='no-border'>
@@ -150,6 +151,7 @@ class SendContainer extends Component<Props> {
           <Form.Button
             id='form-button-control-public'
             content='Confirm'
+            disabled={!enableRequest}
           />
         </Form>
       </Segment>
