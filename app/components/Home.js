@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
-import styles from './Home.css';
 import Lock from './Home/Lock';
 import NoAccounts from './Home/NoAccounts';
 import Connection from './Home/Connection';
