@@ -57,12 +57,13 @@ class Balance extends Component<Props> {
         } = this.props;
 
         const { token } = this.state
+        const staked = `${parseFloat(accounts.account.voter_info.staked / 10000).toFixed(4)} EOS`;
         
         return (
             <Segment.Group className='no-border no-padding'>
                 <Segment>
                     <Label>
-                        Account:
+                        Account
                         <Label.Detail>
                             {accounts.account.account_name}
                         </Label.Detail>
@@ -70,11 +71,26 @@ class Balance extends Component<Props> {
                 </Segment>
                 <Segment>
                     <Label>
-                        Balance:
+                        Balance
                         <Label.Detail>
-                            {accounts.account.core_liquid_balance}
+                            Staked/Delegated {staked}
+                        </Label.Detail>
+                        <Label.Detail>
+                            Liquid {accounts.account.core_liquid_balance}
                         </Label.Detail>
                     </Label>
+                </Segment>
+                <Segment>
+                    <Modal size='tiny' open={this.state.modalOpen} trigger={<Button onClick={this.handleOpen}>Add new token</Button>}>
+                        <Modal.Content>
+                            <Modal.Description>
+                                <Input name='token' value={token} placeholder='Token name...' onChange={this.handleChange} />
+                            </Modal.Description>
+                        </Modal.Content>
+                        <Modal.Actions>
+                            <Button basic onClick={this.addToken}>Add</Button>
+                        </Modal.Actions>
+                    </Modal>
                 </Segment>
                 <Segment>
                     <Table celled basic='very' compact='very' unstackable>
@@ -97,18 +113,6 @@ class Balance extends Component<Props> {
                           ))}
                         </Table.Body>
                     </Table>
-                </Segment>
-                <Segment>
-                    <Modal size='tiny' open={this.state.modalOpen} trigger={<Button onClick={this.handleOpen}>Add new token</Button>}>
-                        <Modal.Content>
-                            <Modal.Description>
-                                <Input name='token' value={token} placeholder='Token name...' onChange={this.handleChange} />
-                            </Modal.Description>
-                        </Modal.Content>
-                        <Modal.Actions>
-                            <Button basic onClick={this.addToken}>Add</Button>
-                        </Modal.Actions>
-                    </Modal>
                 </Segment>
             </Segment.Group>
         );
