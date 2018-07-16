@@ -14,26 +14,48 @@ type Props = {
 
 const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
 
-const handleValidationOnChange = (e, v, onChange) => {
+const handleFloatInputValidationOnChange = (e, v, onChange) => {
   const { value, min, max } = v;
   const number = parseFloat(value);
   if (value === '' || (floatRegExp.test(value) && (min <= number && number <= max))) {
     onChange(e, v);
   }
-}
+};
 
 const InputFloat = props => {
   if (typeof props.onChange !== 'function') {
-    return <Form.Input {...props} />
+    return <Form.Input {...props} />;
   }
 
-  const { onChange, ...parentProps } = props
+  const { onChange, ...parentProps } = props;
 
   return (<Form.Input
     {...parentProps}
-    onChange={(e, v) => handleValidationOnChange(e, v, onChange)}
-  />)
-}
+    onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange)}
+  />);
+};
+
+const accountNameRegExp = new RegExp('^[a-z12345.]{1,12}$');
+
+const handleAccountNameInputValidationOnChange = (e, v, onChange) => {
+  const { value } = v;
+  if (value === '' || accountNameRegExp.test(value)) {
+    onChange(e, v);
+  }
+};
+
+const InputAccountName = props => {
+  if (typeof props.onChange !== 'function') {
+    return <Form.Input {...props} />;
+  }
+
+  const { onChange, ...parentProps } = props;
+
+  return (<Form.Input
+    {...parentProps}
+    onChange={(e, v) => handleAccountNameInputValidationOnChange(e, v, onChange)}
+  />);
+};
 
 class SendContainer extends Component<Props> {
 
@@ -95,7 +117,7 @@ class SendContainer extends Component<Props> {
     return (
       <Segment className='no-border'>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Input
+          <InputAccountName
             id='form-input-control-recipient'
             label='Recipient'
             name='recipient'
@@ -122,6 +144,8 @@ class SendContainer extends Component<Props> {
             name='memo'
             value={memo}
             onChange={this.handleChange}
+            maxLength={128}
+            placeholder='128 symbols long...'
           />
           <Form.Button
             id='form-button-control-public'
