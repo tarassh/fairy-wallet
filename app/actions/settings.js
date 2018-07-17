@@ -2,22 +2,23 @@
 import * as types from './types';
 import { getCurrencyBalance } from './accounts';
 
-export function addToken(account, token) {
+export function addToken(account, tokenName) {
     return (dispatch: () => void, getState) => {
+        if (!tokenName) return;
+        const token = tokenName.toUpperCase();
+
         const {
-            settings
+            accounts
         } = getState();
-        
-        if (!token) return;
         
         dispatch({
             type: types.ADD_TOKEN,
             account,
-            token: token.toUpperCase()
+            token
         })
         
-        if (!settings.balances[token]){
-            getCurrencyBalance(account);
+        if (!accounts.balances[account] || !accounts.balances[account][token]){
+            dispatch(getCurrencyBalance(account));
         }
     }
 }

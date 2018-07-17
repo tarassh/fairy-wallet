@@ -1,14 +1,17 @@
 // @flow
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Label, Table, Segment, Modal, Button, Input } from 'semantic-ui-react';
+import { Label, Table, Segment, Modal, Button, Input, Message } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addToken } from '../../actions/settings'
+import { addToken } from '../../actions/settings';
+import { getCurrencyStats } from '../../actions/currency';
 
 type Props = {
   accounts: {},
-  actions: {}
+  actions: {},
+  loading: {},
+  currency: {}
 };
 
 class Balance extends Component<Props> {
@@ -17,39 +20,66 @@ class Balance extends Component<Props> {
 
     this.state = {
       token: '',
-      modalOpen: false
+      modalOpen: false,
+      tokenChanged: false
     }
   }
 
-  handleOpen = () => this.setState({ modalOpen: true })
-
-  handleClose = () => this.setState({ modalOpen: false })
-
-  handleChange = (e, { name, value }) => {
-    this.setState({ [name]: value })
-  };
-
-  addToken = () => {
+  componentDidUpdate() {
     const {
+      loading,
+      currency,
       accounts
     } = this.props;
 
+    const { token, modalOpen } = this.state;
+    const { tokens } = currency;
+    const { account_name } = accounts.account;
+
+    if (modalOpen && loading.GET_CURRENCYSTATS === false) {
+      if (tokens.find((el) => el.symbol === token.toUpperCase()) && !accounts.balances[account_name]) {
+        this.props.actions.addToken(account_name, token);
+        this.handleClose();
+      }
+    }
+  }
+
+
+  handleOpen = () => this.setState({ modalOpen: true });
+  handleClose = () => this.setState({ modalOpen: false });
+  handleChange = (e, { name, value }) => this.setState({ [name]: value, tokenChanged: name === 'token' });
+
+  getCurrency = () => {
     const {
       token
     } = this.state;
-
-    this.props.actions.addToken(accounts.account.account_name, token);
-    this.handleClose();
+    this.props.actions.getCurrencyStats('eosio.token', token);
+    this.setState({ tokenChanged: false });
   }
 
   render() {
     const {
       accounts,
-      settings
+      loading,
+      currency
     } = this.props;
 
-    const { token } = this.state
+    const { token, tokenChanged } = this.state;
     const staked = `${parseFloat(accounts.account.voter_info.staked / 10000).toFixed(4)} EOS`;
+
+    const requested = !!loading.GET_CURRENCYSTATS;
+    let message = '';
+    const { tokens } = currency;
+
+    if (!tokenChanged &&
+      loading.GET_CURRENCYSTATS === false &&
+      !tokens.find((el) => el.symbol === token.toUpperCase())
+    ) {
+      message = (<Message
+        error
+        content={`Token ${token.toUpperCase()} not found.`}
+      />);
+    }
 
     return (
       <Segment.Group className='no-border no-padding'>
@@ -76,11 +106,19 @@ class Balance extends Component<Props> {
           <Modal size='tiny' open={this.state.modalOpen} trigger={<Button fluid onClick={this.handleOpen}>Add new token</Button>}>
             <Modal.Content>
               <Modal.Description>
-                <Input name='token' value={token} placeholder='Token name...' onChange={this.handleChange} />
+                <Input
+                  name='token'
+                  value={token}
+                  disabled={requested}
+                  placeholder='Token name...'
+                  onChange={this.handleChange}
+                />
+                {message}
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>
-              <Button basic onClick={this.addToken}>Add</Button>
+              <Button basic loading={requested} onClick={this.getCurrency}>Add</Button>
+              <Button onClick={this.handleClose}>Close</Button>
             </Modal.Actions>
           </Modal>
         </Segment>
@@ -89,7 +127,7 @@ class Balance extends Component<Props> {
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>
-                  Currency
+                  Token
                 </Table.HeaderCell>
                 <Table.HeaderCell>
                   Balance
@@ -112,12 +150,14 @@ class Balance extends Component<Props> {
 }
 
 const mapStateToProps = state => ({
-  settings: state.settings
+  loading: state.loading,
+  currency: state.currency
 })
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    addToken
+    addToken,
+    getCurrencyStats
   }, dispatch)
 })
 
