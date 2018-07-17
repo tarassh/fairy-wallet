@@ -11,7 +11,7 @@ const initialState = {
   requested: false
 }
 
-class TokenModal extends Component<Props> {
+class TokenAddModal extends Component<Props> {
   state = initialState;
 
   checkToken = () => {
@@ -124,4 +124,4 @@ const mapDispatchToProps = dispatch => ({
   }, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(TokenModal);
+export default connect(mapStateToProps, mapDispatchToProps)(TokenAddModal);

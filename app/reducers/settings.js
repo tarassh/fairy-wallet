@@ -26,6 +26,19 @@ export default function settings(state = initialState, action) {
         tokens
       });
     }
+    case types.REMOVE_TOKEN: {
+      const { account, token } = action;
+      const { tokens } = state;
+      if (tokens[account]) {
+        const index = tokens[account].indexOf(token);
+        if (index !== -1) {
+          tokens[account].splice(index, 1);
+        }
+      }
+      return Object.assign({}, state, {
+        tokens
+      });
+    }
     case types.CREATE_CONNECTION_SUCCESS: {
       const { nodes } = state;
       const { httpEndpoint } = action;
