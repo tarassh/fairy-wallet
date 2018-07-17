@@ -2,53 +2,27 @@
 import * as types from './types';
 import { getCurrencyBalance } from './accounts';
 
-const EOS = 'EOS';
-
-export function setupNativeToken() {
+export function addToken(account, tokenName) {
     return (dispatch: () => void, getState) => {
-        const {
-            accounts,
-            settings
-        } = getState();
-        
-        const account = accounts.names[accounts.activeAccount];
-        let tokens = settings.tokens[account] || [];
-        if (!tokens.includes(EOS)){
-           dispatch({
-            type: types.ADD_TOKEN,
-            account,
-            token: EOS
-           }) 
-        }
-        
-        if (!accounts.balances[EOS]){
-            getCurrencyBalance(account);
-        }
-    }
-}
+        if (!tokenName) return;
+        const token = tokenName.toUpperCase();
 
-export function addToken(account, token) {
-    return (dispatch: () => void, getState) => {
         const {
-            accounts,
-            settings
+            accounts
         } = getState();
-        
-        if (!token) return;
         
         dispatch({
             type: types.ADD_TOKEN,
             account,
-            token: token.toUpperCase()
+            token
         })
         
-        if (!settings.balances[token]){
-            getCurrencyBalance(account);
+        if (!accounts.balances[account] || !accounts.balances[account][token]){
+            dispatch(getCurrencyBalance(account));
         }
     }
 }
 
 export default {
-    addToken,
-    setupNativeToken
+    addToken
 };

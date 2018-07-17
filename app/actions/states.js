@@ -2,7 +2,7 @@
 import * as types from './types';
 
 export function getDeviceState (devicePath){
-    return (dispatch: () => void, getState) => {
+    return (dispatch: () => void) => {
         dispatch({ type: types.DEVICE_CONNECTING });
         if(!devicePath){
             return dispatch({
@@ -11,13 +11,13 @@ export function getDeviceState (devicePath){
         }
         return dispatch({
             type: types.DEVICE_CONNECTED,
-            devicePath: devicePath
+            devicePath
         });
     }
 }
 
 export function getNodeState (node){
-    return (dispatch: () => void, getState) => {
+    return (dispatch: () => void) => {
         dispatch({ type: types.NODE_CONNECTING });
         if(!node){
             return dispatch({
@@ -30,8 +30,8 @@ export function getNodeState (node){
     }
 }
 
-export function getAccountState (acount){
-    return (dispatch: () => void, getState) => {
+export function getAccountState (account){
+    return (dispatch: () => void) => {
         dispatch({ type: types.NO_ACCOUNT });
         if(!account){
             return dispatch({

@@ -6,14 +6,13 @@ import { getAccount } from '../actions/accounts';
 import Wallet from '../components/Wallet';
 import { signTransaction } from '../actions/ledger';
 import { broadcastTransaction } from '../actions/transaction';
-import { setupNativeToken } from '../actions/settings';
 
 
 type Props = {
   actions: {},
   states: {},
   loading: {},
-  transaction: {}
+  accounts: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -26,23 +25,6 @@ class WalletContainer extends Component<Props> {
     } = this.props;
 
     actions.getAccount(accounts.names[accounts.activeAccount]);
-    actions.setupNativeToken();
-  }
-
-  componentDidUpdate() {
-//    const { 
-//      transaction,
-//      actions,
-//      loading
-//    } = this.props;
-//
-//    console.log(transaction);
-//    if (transaction.tx != null && transaction.tx.transaction.signatures.length === 0 && (loading.SIGN_TRANSACTION === undefined)) {
-//      actions.signTransaction(transaction.raw);      
-//    }
-//    if (transaction.tx != null && transaction.tx.transaction.signatures.length > 0 && loading.BROADCAST_TRANSACTION === undefined) {
-//      actions.broadcastTransaction(transaction.tx);
-//    }
   }
 
   render() {
@@ -72,8 +54,7 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators({
       getAccount,
       signTransaction,
-      broadcastTransaction,
-      setupNativeToken
+      broadcastTransaction
     }, dispatch)
   };
 }

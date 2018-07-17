@@ -9,8 +9,52 @@ import { transfer } from '../../../actions/transaction';
 type Props = {
   settings: {},
   accounts: {},
-  actions: {},
-  transaction: {}
+  actions: {}
+};
+
+const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
+
+const handleFloatInputValidationOnChange = (e, v, onChange) => {
+  const { value, min, max } = v;
+  const number = parseFloat(value);
+  if (value === '' || (floatRegExp.test(value) && (min <= number && number <= max))) {
+    onChange(e, v);
+  }
+};
+
+const InputFloat = props => {
+  if (typeof props.onChange !== 'function') {
+    return <Form.Input {...props} />;
+  }
+
+  const { onChange, ...parentProps } = props;
+
+  return (<Form.Input
+    {...parentProps}
+    onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange)}
+  />);
+};
+
+const accountNameRegExp = new RegExp('^[a-z12345.]{1,12}$');
+
+const handleAccountNameInputValidationOnChange = (e, v, onChange) => {
+  const { value } = v;
+  if (value === '' || accountNameRegExp.test(value)) {
+    onChange(e, v);
+  }
+};
+
+const InputAccountName = props => {
+  if (typeof props.onChange !== 'function') {
+    return <Form.Input {...props} />;
+  }
+
+  const { onChange, ...parentProps } = props;
+
+  return (<Form.Input
+    {...parentProps}
+    onChange={(e, v) => handleAccountNameInputValidationOnChange(e, v, onChange)}
+  />);
 };
 
 class SendContainer extends Component<Props> {
@@ -19,10 +63,14 @@ class SendContainer extends Component<Props> {
     token: 'EOS',
     recipient: '',
     amount: '',
-    memo: ''
+    memo: '',
+    resetValue: false
   }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
+  handleChange = (e, { name, value }) => {
+    const resetValue = (name === 'token');
+    this.setState({ [name]: value, resetValue })
+  };
 
   handleSubmit = () => {
     const { token, recipient, amount, memo } = this.state
@@ -45,17 +93,32 @@ class SendContainer extends Component<Props> {
     const {
       token,
       recipient,
-      amount,
-      memo, 
-      open
+      memo,
+      resetValue
+    } = this.state;
+    let {
+      amount
     } = this.state;
 
+    if (resetValue) {
+      amount = '';
+    }
+
     const tokens = _.map(settings.tokens[accounts.account.account_name], (name) => ({ text: name, value: name, key: name }));
+    if (!tokens.find((element) => element.key === 'EOS')) {
+      tokens.push({ text: 'EOS', value: 'EOS', key: 'EOS' });
+    }
+    if (!accounts.balances.EOS) {
+      [accounts.balances.EOS, _] = accounts.account.core_liquid_balance.split(' ');
+    }
+
+    const maxAmount = parseFloat(accounts.balances[token]);
+    const enableRequest = (token !== '' && recipient !== '' && amount !== '');
 
     return (
       <Segment className='no-border'>
         <Form onSubmit={this.handleSubmit}>
-          <Form.Input
+          <InputAccountName
             id='form-input-control-recipient'
             label='Recipient'
             name='recipient'
@@ -63,22 +126,17 @@ class SendContainer extends Component<Props> {
             onChange={this.handleChange}
           />
           <Form.Group widths='equal'>
-            <Form.Input
+            <InputFloat
               id='form-textarea-control-amount'
               label='Amount'
-              placeholder='0.00000'
+              placeholder='0.0000'
+              min={0}
+              max={maxAmount}
               name='amount'
               value={amount}
               onChange={this.handleChange}
-            />
-            <Form.Dropdown
-              id='form-input-control-token'
-              label='Token'
-              name='token'
-              options={tokens}
-              text={token}
-              defaultValue='EOS'
-              onChange={this.handleChange}
+              action={<Form.Dropdown button basic floating options={tokens} defaultValue='EOS' name='token' text={token} onChange={this.handleChange} />}
+              actionPosition='left'
             />
           </Form.Group>
           <Form.Input
@@ -88,15 +146,15 @@ class SendContainer extends Component<Props> {
             name='memo'
             value={memo}
             onChange={this.handleChange}
+            maxLength={128}
+            placeholder='128 symbols long...'
           />
           <Form.Button
             id='form-button-control-public'
             content='Confirm'
+            disabled={!enableRequest}
           />
         </Form>
-        <Modal open={open} closeOnDimmerClick={false} closeOnDocumentClick={false}>
-          <Modal.Header>Use Ledger to verify transaction.</Modal.Header>
-        </Modal>
       </Segment>
     );
   }

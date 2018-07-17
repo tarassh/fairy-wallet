@@ -8,6 +8,7 @@ import accounts from './accounts';
 import settings from './settings';
 import transaction from './transaction';
 import loading from './loading';
+import currency from './currency';
 
 const rootReducer = combineReducers({
     ledger,
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
     router,
     settings,
     transaction,
-    loading
+    loading,
+    currency
 });
 
 export default rootReducer;

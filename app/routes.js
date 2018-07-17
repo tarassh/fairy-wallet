@@ -8,10 +8,10 @@ import Wallet from './containers/Wallet';
 export default () => (
   <App>
     <HashRouter>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/wallet" component={Wallet} />
-        </Switch>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/wallet" component={Wallet} />
+      </Switch>
     </HashRouter>
   </App>
 );

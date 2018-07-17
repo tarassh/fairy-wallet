@@ -56,3 +56,8 @@
 .ui.label .detail {
     float: right;
 }
+
+/* Input */
+input {
+    height: 36px;
+}

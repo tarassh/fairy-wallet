@@ -1,40 +1,34 @@
 // @flow
 import * as types from './types';
-
 import eos from './helpers/eos';
 import serialize from './helpers/ledgerserialize';
 
-export function broadcastTransaction(tx) {
-  return (dispatch: () => void, getState) => {
-    dispatch({ type: types.BROADCAST_TRANSACTION_REQUEST });
-    const {
-      connection
-    } = getState();
-    eos(connection).pushTransaction(tx.transaction).then((response) => {
-        console.log(response);
-        dispatch({type: types.BROADCAST_TRANSACTION_SUCCESS});
-        return response;
-    }).catch((err) => {
-        console.log(err);
-        dispatch({ type: types.BROADCAST_TRANSACTION_FAILURE,
-          err
-        });
-      });
-  };
-}
+const Api = require('./helpers/eosledjer').default;
 
 export function transfer(from, to, asset, memo = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
-      type: types.CREATE_TRANSFER_TX_REQUEST
+      type: types.TRANSFER_TOKEN_REQUEST
     });
     const {
-      connection
+      connection,
+      ledger
     } = getState();
+
+    const signProvider = async ({transaction}) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(ledger.bip44Path, buffer.toString('hex'));
+      const rawSig = result.v + result.r + result.s;
+      return rawSig;
+    };
+    const promiseSigner = (args) => Promise.resolve(signProvider(args));
 
     const modified = {
       ...connection,
-      sign: false
+      signProvider: promiseSigner
     };
 
     return eos(modified).transaction('eosio.token', contract => {
@@ -44,28 +38,102 @@ export function transfer(from, to, asset, memo = '') {
         asset,
         memo
       );
-    }, {
-      broadcast: connection.broadcast,
-      expireInSeconds: 60,
-      sign: connection.sign
+      
     }).then((tx) => {
-      const { fc } = eos(modified);
-      const buffer = serialize(fc.types.config.chainId, tx.transaction.transaction, fc.types);
       dispatch({
-        type: types.CREATE_TRANSFER_TX_SUCCESS,
-        tx,
-        raw: buffer.toString('hex')
+        type: types.TRANSFER_TOKEN_SUCCESS,
+        tx
       });
       return tx;
     }).catch((err) => {
       dispatch({
-        type: types.CREATE_TRANSFER_TX_FAILURE,
-        err
+        type: types.TRANSFER_TOKEN_FAILURE,
+        err: JSON.parse(err)
       })
     });
   };
 }
 
+export function delegate(from, receiver, net, cpu) {
+  return (dispatch: () => void, getState) => {
+    dispatch({ type: types.DELEGATE_REQUEST });
+
+    const {
+      connection,
+      ledger
+    } = getState();
+
+    const signProvider = async ({transaction}) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(ledger.bip44Path, buffer.toString('hex'));
+      const rawSig = result.v + result.r + result.s;
+      return rawSig;
+    };
+    const promiseSigner = (args) => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    return eos(modified).transaction('eosio', contract => {
+      contract.delegatebw(from, receiver, net, cpu);
+    }).then((tx) => dispatch({
+        type: types.DELEGATE_SUCCESS,
+        tx
+      })).catch((err) => {
+      dispatch({ 
+        type: types.DELEGATE_FAILURE,
+        err: JSON.parse(err)
+      });
+    });
+  };
+}
+
+export function undelegate(from, receiver, net, cpu) {
+  return (dispatch: () => void, getState) => {
+    dispatch({ type: types.UNDELEGATE_REQUEST });
+
+    const {
+      connection,
+      ledger
+    } = getState();
+
+    const signProvider = async ({transaction}) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(ledger.bip44Path, buffer.toString('hex'));
+      const rawSig = result.v + result.r + result.s;
+      return rawSig;
+    };
+    const promiseSigner = (args) => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    return eos(modified).transaction('eosio', contract => {
+      contract.undelegatebw(from, receiver, net, cpu);
+    }).then((tx) => dispatch({
+        type: types.UNDELEGATE_SUCCESS,
+        tx
+      })).catch((err) => {
+      dispatch({ 
+        type: types.UNDELEGATE_FAILURE,
+        err: JSON.parse(err)
+      });
+    });
+  };
+}
+
 export default {
-  transfer
+  transfer,
+  delegate,
+  undelegate
 }

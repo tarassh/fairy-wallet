@@ -2,6 +2,7 @@
   "javascript.validate.enable": false,
   "eslint.autoFixOnSave": true,
   "flow.useNPMPackagedFlow": true,
+  "editor.tabSize": 2,
   "search.exclude": {
     ".git": true,
     ".eslintcache": true,

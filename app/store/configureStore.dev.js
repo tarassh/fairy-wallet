@@ -1,19 +1,17 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
-import createHistory from 'history/createBrowserHistory'
-import { routerMiddleware, routerActions, push } from 'react-router-redux';
+import { routerMiddleware, routerActions } from 'react-router-redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import * as ledgerActions from '../actions/ledger';
 import * as stateActions from '../actions/states';
 import * as connectionActions from '../actions/connection';
 import * as accountsActions from '../actions/accounts';
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
 
 const history = createHashHistory();
-//const history = createHistory();
 
 const configureStore = (initialState = {}) => {
   // Redux Configuration
@@ -60,10 +58,11 @@ const configureStore = (initialState = {}) => {
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers(...enhancers);
 
-  //configure persistor
+  // configure persistor
   const persistConfig = {
     key: 'root',
     storage,
+    whitelist: ['settings']
   }
     
   const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -71,7 +70,7 @@ const configureStore = (initialState = {}) => {
   // Create Store
   const store = createStore(persistedReducer, initialState, enhancer);
     
-    const persistor = persistStore(store);
+  const persistor = persistStore(store);
     
   if (module.hot) {
     module.hot.accept(

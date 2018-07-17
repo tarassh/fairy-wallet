@@ -2,8 +2,9 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../routes';
-import { PersistGate } from 'redux-persist/integration/react'
+
 
 type Props = {
   store: {},
@@ -12,23 +13,23 @@ type Props = {
 };
 
 export default class Root extends Component<Props> {
-    Props: props;
-    
-    render() {
-        const {
-            store,
-            persistor,
-            history
-        } = this.props
+  Props: props;
 
-        return (
-        <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-                <ConnectedRouter history={history}>
-                    <Routes />
-                </ConnectedRouter>
-            </PersistGate>
-        </Provider>
-        );
-    }
+  render() {
+    const {
+      store,
+      persistor,
+      history
+    } = this.props
+
+    return (
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ConnectedRouter history={history}>
+            <Routes />
+          </ConnectedRouter>
+        </PersistGate>
+      </Provider>
+    );
+  }
 }
