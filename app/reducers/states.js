@@ -10,9 +10,9 @@ const initialState = {
 
 export default function states(state = initialState, action) {
   switch (action.type) {
-    case types.APP_LEDGER_CONNECTION_STATUS: {
+    case types.GET_PUBLIC_KEY_SUCCESS: {
       return Object.assign({}, state, {
-        deviceConnected: action.deviceConnected
+        deviceConnected: !!action.publicKey
       });
     }
 
@@ -41,7 +41,7 @@ export default function states(state = initialState, action) {
     case types.GET_ACCOUNTS_REQUEST: {
       return Object.assign({}, state, {
         accountsRequested: true,
-        accountsRetrieved: false,
+        accountsRetrieved: false
       });
     }
     case types.GET_ACCOUNTS_FAILURE: {
@@ -64,5 +64,4 @@ export default function states(state = initialState, action) {
       return state;
     }
   }
-};
-
+}

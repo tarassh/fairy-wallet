@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Home from '../components/Home';
 
-import * as LedgerActions from "../actions/ledger";
-import * as StateActions from "../actions/states";
+import * as LedgerActions from '../actions/ledger';
+import * as StateActions from '../actions/states';
 
 type Props = {
   history: {},
@@ -21,28 +21,19 @@ class HomeContainer extends Component<Props> {
   props: Props;
 
   componentDidMount() {
-    const {
-      actions
-    } = this.props;
+    const { actions } = this.props;
     actions.startListen();
   }
 
-  componentWillUnmount() {
-    const {
-      actions
-    } = this.props;
-    actions.stopListen();
-  }
+  // componentWillUnmount() {
+  //   const {
+  //     actions
+  //   } = this.props;
+  //   actions.stopListen();
+  // }
 
   render() {
-    const {
-      history,
-      ledger,
-      actions,
-      states,
-      accounts,
-      loading
-    } = this.props;
+    const { history, ledger, actions, states, accounts, loading } = this.props;
     return (
       <Home
         history={history}
@@ -63,15 +54,20 @@ function mapStateToProps(state) {
     accounts: state.accounts,
     loading: state.loading
   };
-};
+}
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({
-      ...StateActions,
-      ...LedgerActions
-    }, dispatch)
+    actions: bindActionCreators(
+      {
+        ...StateActions,
+        ...LedgerActions
+      },
+      dispatch
+    )
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeContainer));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+);
