@@ -24,8 +24,7 @@ class ConnectionContainer extends Component<Props> {
   render() {
     const {
       loading,
-      connection,
-      settings
+      connection
     } = this.props;
 
     let disabled = false;
@@ -55,6 +54,7 @@ class ConnectionContainer extends Component<Props> {
         {errorMessage}
         <Container textAlign="center">
           <Button
+            loading={disabled}
             content="Connect"
             disabled={disabled}
             primary
@@ -70,8 +70,7 @@ class ConnectionContainer extends Component<Props> {
 function mapStateToProps(state) {
   return {
     loading: state.loading,
-    connection: state.connection,
-    settings: state.settings
+    connection: state.connection
   };
 };
 

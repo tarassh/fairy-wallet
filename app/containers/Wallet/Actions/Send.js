@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Segment } from 'semantic-ui-react';
+import { Form, Segment, Modal } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
