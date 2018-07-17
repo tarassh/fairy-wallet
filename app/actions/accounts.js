@@ -74,9 +74,9 @@ export function getActions(name) {
     };
 
     eos(modified).getActions(name).then((result) => dispatch({
-        type: types.GET_ACTIONS_SUCCESS,
-        actions: result
-      })).catch((err) => {
+      type: types.GET_ACTIONS_SUCCESS,
+      actions: result
+    })).catch((err) => {
       dispatch({
         type: types.GET_ACTIONS_FAILURE,
         err
@@ -92,8 +92,8 @@ export function getCurrencyBalance(account) {
       type: types.GET_CURRENCY_BALANCE_REQUEST
     });
 
-    const  {
-      connection, 
+    const {
+      connection,
       settings,
       accounts
     } = getState();
@@ -101,28 +101,28 @@ export function getCurrencyBalance(account) {
     const { tokens } = settings;
     const selectedTokens = tokens[account];
     if (!selectedTokens) {
-      return dispatch({type: types.GET_CURRENCY_BALANCE_SUCCESS, balances: {}});
+      return dispatch({ type: types.GET_CURRENCY_BALANCE_SUCCESS, balances: {} });
     }
-    
+
     const promisses = [];
     selectedTokens.forEach(symbol => {
       promisses.push(eos(connection).getCurrencyBalance('eosio.token', account, symbol))
     });
     Promise.all(promisses).then(
-        values => {
-            const pairs = _.map(_.flatten(values), value => {
-                let valueKey = value.split(' ');
-                return valueKey.reverse();
-            });
-            const balancesObject = _.fromPairs(pairs);
-            dispatch({ 
-                type: types.GET_CURRENCY_BALANCE_SUCCESS,
-                balances: balancesObject
-            });
-        }, error => {
-            dispatch({type: types.GET_CURRENCY_BALANCE_FAILURE, error});
+      values => {
+        const pairs = _.map(_.flatten(values), value => {
+          const valueKey = value.split(' ');
+          return valueKey.reverse();
         });
-    };
+        const balancesObject = _.fromPairs(pairs);
+        dispatch({
+          type: types.GET_CURRENCY_BALANCE_SUCCESS,
+          balances: balancesObject
+        });
+      }, error => {
+        dispatch({ type: types.GET_CURRENCY_BALANCE_FAILURE, error });
+      });
+  };
 }
 
 function formatBalance(balance) {
@@ -134,7 +134,7 @@ function formatBalance(balance) {
 
 export default {
   getAccounts,
-  getAccount, 
+  getAccount,
   getActions,
   getCurrencyBalance
 }
