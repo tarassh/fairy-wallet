@@ -34,6 +34,7 @@
     width: 60%;
 }
 
+.ui.segment.no-border,
 .ui.segments.wallet .segments.no-border,
 .ui.segments.wallet .segments.no-border >.segment,
 .ui.segments.wallet .segments.no-border >.segment+.segments,
@@ -60,4 +61,15 @@
 /* Input */
 input {
     height: 36px;
+}
+
+/* Form */
+.ui.form.stake div.field {
+    width: 50%;
+} 
+
+.ui.form.stake div.submit {
+    width: auto;
+    float: right;
+    margin: 1em 0;
 }

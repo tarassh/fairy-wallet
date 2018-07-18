@@ -1,12 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-// import { render } from 'react-dom';
 import { Tab, Form, Segment } from 'semantic-ui-react';
-import Confirm from '../../Shared/Confirm';
-
-type Props = {
-
-};
+import ModalComponent from '../../Shared/Modal';
 
 export default class Stake extends Component<Props> {
   constructor(props) {
@@ -22,28 +17,33 @@ export default class Stake extends Component<Props> {
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
+  onActionClick = (event, data) => {
+      this.setState({ open: false });
+  };
+
+  renderModal = () => {
+    const {open, content, actions} = this.state;
+    return <ModalComponent open={open} content={content} actions={actions} onActionClick={this.onActionClick} />;
+  };
+
   handleSubmit = () => {
     this.setState({ open: true, content: 'Please confirm', actions: [{ key: 'cancel', content: 'Cancel', positive: false }, { key: 'confirm', content: 'Confirm', positive: true }], closable: true });
   };
 
   render() {
-    const { cpu, bandwidth, open, content, actions, closable } = this.state;
+    const { cpu, bandwidth } = this.state;
 
-    const tabContent = (
+    return (
       <Segment className='no-border'>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit} className='stake'>
           <Form.Group>
             <Form.Input label='CPU' name='cpu' value={cpu} onChange={this.handleChange} />
             <Form.Input label='Bandwidth' name='bandwidth' value={bandwidth} onChange={this.handleChange} />
           </Form.Group>
-          <Form.Button content='Submit' />
+          <Form.Button className='submit' content='Submit' />
         </Form>
-        <Confirm open={open} content={content} actions={actions} closable={closable} />
+        {this.renderModal()}
       </Segment>
-    );
-
-    return (
-      <Tab.Pane content={tabContent} className='stake' />
     );
   }
 }
