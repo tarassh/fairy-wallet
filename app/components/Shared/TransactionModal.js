@@ -15,15 +15,18 @@ class TransactionModal extends Component<Props> {
       transaction,
       handleClose
     } = this.props;
-    const { context, receipt, error } = transaction;
+    const { context, receipt } = transaction;
+    let { error } = transaction;
 
     let content = '';
+    let header = '';
     if (context !== null) {
+      header = 'Use ledger to verify transaction';
       content = (
         <Table definition>
           <Table.Body>
             <Table.Row>
-              <Table.Cell width={4}>
+              <Table.Cell width={3}>
                 Contract
               </Table.Cell>
               <Table.Cell>
@@ -58,18 +61,28 @@ class TransactionModal extends Component<Props> {
         </Table>
       );
     }
+    if (receipt !== null) {
+      header = 'Success';
+      content = (
+        <Message success >
+          <Message.Content>
+            <p> Transaction id {receipt.transaction_id}</p>
+          </Message.Content>
+        </Message>
+      );
+    }
     let message = '';
     if (error !== null) {
-      message = (
-        <Message
-          error
-          content={error.message}
-        />
-      );
+      if (typeof error === 'string' ) {
+        [error] = JSON.parse(error).error.details;
+      }
+
+      header = 'Error';
+      message = <Message error content={error.message} />;
     }
     let modalAction = '';
     if (receipt !== null || error !== null) {
-      modalAction = <Button primary onClick={handleClose}>Close</Button>
+      modalAction = <Button primary onClick={handleClose}>Close</Button>;
     }
 
     return (
@@ -79,7 +92,7 @@ class TransactionModal extends Component<Props> {
           size='tiny'
           onClose={this.onClose}
         >
-          <Modal.Header>Use ledger to verify transaction</Modal.Header>
+          <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Modal.Description>
               {content}

@@ -123,7 +123,10 @@ class SendContainer extends Component<Props> {
     {
       contract: 'eosio.token',
       action: 'transfer',
-      data: ['from', account.account_name, 'to', recipient, `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`, memo].join(' ')
+      data: ['from', account.account_name, 
+            'to', recipient, 
+            `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`, 
+            memo].join(' ')
     } : null;
     const txContext = Object.assign({}, {
       context,
@@ -163,8 +166,8 @@ class SendContainer extends Component<Props> {
             name='memo'
             value={memo}
             onChange={this.handleChange}
-            maxLength={128}
-            placeholder='128 symbols long...'
+            maxLength={80}
+            placeholder='80 symbols long...'
           />
           <Form.Button
             id='form-button-control-public'
