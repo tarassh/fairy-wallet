@@ -1,36 +1,36 @@
 // @flow
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+// import { render } from 'react-dom';
 import { Tab, Form, Segment } from 'semantic-ui-react';
-import { ModalWindow } from '../../Shared/Modal';
+import Confirm from '../../Shared/Confirm';
 
 type Props = {
+
 };
 
 export default class Stake extends Component<Props> {
-  props: Props;
-
-  state = {
-    cpu: 0,
-    bandwidth: 0,
-    open: false
-  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      cpu: 0,
+      bandwidth: 0,
+      open: false,
+      content: '',
+      actions: []
+    }
+  };
 
   handleChange = (e, { name, value }) => this.setState({ [name]: value });
 
   handleSubmit = () => {
-    const { token, recipient, amount, memo } = this.state;
-    const { accounts, actions } = this.props;
-
-    const content = 'Please confirm';
-    const modalActions = [{ key: 'cancel', content: 'Cancel', positive: false }, { key: 'confirm', content: 'Confirm', positive: true }];
-  }
+    this.setState({ open: true, content: 'Please confirm', actions: [{ key: 'cancel', content: 'Cancel', positive: false }, { key: 'confirm', content: 'Confirm', positive: true }], closable: true });
+  };
 
   render() {
-    const { cpu, bandwidth, open } = this.state;
+    const { cpu, bandwidth, open, content, actions, closable } = this.state;
 
-    const content =
-      (<Segment className='no-border'>
+    const tabContent = (
+      <Segment className='no-border'>
         <Form onSubmit={this.handleSubmit}>
           <Form.Group>
             <Form.Input label='CPU' name='cpu' value={cpu} onChange={this.handleChange} />
@@ -38,11 +38,12 @@ export default class Stake extends Component<Props> {
           </Form.Group>
           <Form.Button content='Submit' />
         </Form>
-        <ModalWindow open={open} />
-      </Segment>);
+        <Confirm open={open} content={content} actions={actions} closable={closable} />
+      </Segment>
+    );
 
     return (
-      <Tab.Pane content={content} className='stake' />
+      <Tab.Pane content={tabContent} className='stake' />
     );
   }
 }
