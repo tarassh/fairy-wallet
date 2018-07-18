@@ -7,29 +7,34 @@ import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings';
 import { getCurrencyStats } from '../../actions/currency';
 
-import TokenModal from './TokenModal';
+import TokenAddModal from './TokenAddModal';
+import TokenRemoveModal from './TokenRemoveModal';
 
 type Props = {
-  accounts: {},
-  loading: {}
+  accounts: {}
 };
 
 class Balance extends Component<Props> {
-  state = { open: false };
+  state = { openTokenAddModal: false, openTokenRemoveModal: false, tokenSymbol: '' };
 
-  handleOpen = () => this.setState({ open: true });
-  handleClose = () => this.setState({ open: false }); 
-
+  handleTokenAddOpen = () => this.setState({ openTokenAddModal: true });
+  handleTokenAddClose = () => this.setState({ openTokenAddModal: false }); 
+  handleTokenRemoveOpen = (e) => this.setState({ openTokenRemoveModal: true, tokenSymbol: e.target.id });
+  handleTokenRemoveClose = () => this.setState({ openTokenRemoveModal: false, tokenSymbol: '' }); 
 
   render() {
     const {
-      accounts,
-      loading
+      accounts
     } = this.props;
     const {
-      open
+      openTokenAddModal, 
+      openTokenRemoveModal,
+      tokenSymbol
     } = this.state;
 
+    if (accounts.balances !== null) {
+      delete accounts.balances.EOS;
+    }
     const staked = `${parseFloat(accounts.account.voter_info.staked / 10000).toFixed(4)} EOS`;
 
     return (
@@ -54,11 +59,12 @@ class Balance extends Component<Props> {
           </Label>
         </Segment>
         <Segment>
-          <Button fluid onClick={this.handleOpen}>Add new token</Button>
-          <TokenModal open={open} handleClose={this.handleClose} />
+          <Button fluid onClick={this.handleTokenAddOpen}>Add new token</Button>
+          <TokenAddModal open={openTokenAddModal} handleClose={this.handleTokenAddClose} />
         </Segment>
         <Segment>
-          <Table celled basic='very' compact='very' unstackable>
+          <TokenRemoveModal open={openTokenRemoveModal} handleClose={this.handleTokenRemoveClose} symbol={tokenSymbol} />
+          <Table basic='very' compact='very' unstackable>
             <Table.Header>
               <Table.Row>
                 <Table.HeaderCell>
@@ -70,10 +76,18 @@ class Balance extends Component<Props> {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {_.map(accounts.balances, (balance, currency) => (
-                <Table.Row key={currency}>
-                  <Table.Cell collapsing>{currency}</Table.Cell>
+              {_.map(accounts.balances, (balance, symbol) => (
+                <Table.Row key={symbol}>
+                  <Table.Cell collapsing>{symbol}</Table.Cell>
                   <Table.Cell collapsing>{balance}</Table.Cell>
+                  <Table.Cell collapsing>
+                    <Button 
+                      icon='close' 
+                      basic 
+                      id={symbol} 
+                      onClick={this.handleTokenRemoveOpen}
+                    />
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

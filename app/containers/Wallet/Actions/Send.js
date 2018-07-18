@@ -1,15 +1,17 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Segment, Modal } from 'semantic-ui-react';
+import { Form, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { transfer } from '../../../actions/transaction';
+import TransactionModal from '../../../components/Shared/TransactionModal';
 
 type Props = {
   settings: {},
   accounts: {},
-  actions: {}
+  actions: {},
+  transaction: {}
 };
 
 const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
@@ -64,7 +66,8 @@ class SendContainer extends Component<Props> {
     recipient: '',
     amount: '',
     memo: '',
-    resetValue: false
+    resetValue: false,
+    openModal: false
   }
 
   handleChange = (e, { name, value }) => {
@@ -82,41 +85,58 @@ class SendContainer extends Component<Props> {
       `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`,
       memo
     );
+    this.setState({ openModal: true });
+  }
+  handleClose = () => {
+    this.setState({ openModal: false });
   }
 
   render() {
     const {
       accounts,
-      settings
+      settings,
+      transaction
     } = this.props;
 
     const {
       token,
       recipient,
       memo,
-      resetValue
-    } = this.state;
-    let {
-      amount
+      resetValue,
+      openModal
     } = this.state;
 
-    if (resetValue) {
-      amount = '';
-    }
+    const { balances, account } = accounts; 
+    const { amount } = resetValue ? { amount: '' }: this.state;
+    const tokens = _.map(settings.tokens[account.account_name], (name) => ({ text: name, value: name, key: name }));
 
-    const tokens = _.map(settings.tokens[accounts.account.account_name], (name) => ({ text: name, value: name, key: name }));
     if (!tokens.find((element) => element.key === 'EOS')) {
       tokens.push({ text: 'EOS', value: 'EOS', key: 'EOS' });
     }
-    if (!accounts.balances.EOS) {
-      [accounts.balances.EOS, _] = accounts.account.core_liquid_balance.split(' ');
+    if (!balances.EOS) {
+      [balances.EOS, _] = account.core_liquid_balance.split(' ');
     }
 
-    const maxAmount = parseFloat(accounts.balances[token]);
+    const maxAmount = parseFloat(balances[token]);
     const enableRequest = (token !== '' && recipient !== '' && amount !== '');
+    const context = enableRequest ?
+    {
+      contract: 'eosio.token',
+      action: 'transfer',
+      data: ['from', account.account_name, 
+            'to', recipient, 
+            `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`, 
+            memo].join(' ')
+    } : null;
+    const txContext = Object.assign({}, {
+      context,
+      receipt: transaction.tx,
+      error: transaction.err
+    });
 
     return (
       <Segment className='no-border'>
+        <TransactionModal open={openModal} transaction={txContext} handleClose={this.handleClose} />
         <Form onSubmit={this.handleSubmit}>
           <InputAccountName
             id='form-input-control-recipient'
@@ -146,8 +166,8 @@ class SendContainer extends Component<Props> {
             name='memo'
             value={memo}
             onChange={this.handleChange}
-            maxLength={128}
-            placeholder='128 symbols long...'
+            maxLength={80}
+            placeholder='80 symbols long...'
           />
           <Form.Button
             id='form-button-control-public'

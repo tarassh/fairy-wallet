@@ -72,6 +72,17 @@ export default function accounts(state = initialState, action) {
       });
     }
 
+    case types.REMOVE_TOKEN: {
+      const { token } = action;
+      const { balances } = state;
+      if (balances[token]) {
+        delete balances[token];
+      }
+      return Object.assign({}, state, {
+        balances
+      });
+    }
+
     default: {
       return state;
     }
