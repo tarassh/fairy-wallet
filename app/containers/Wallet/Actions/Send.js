@@ -11,7 +11,7 @@ type Props = {
   settings: {},
   accounts: {},
   actions: {},
-  loading: {}
+  transaction: {}
 };
 
 const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
@@ -95,7 +95,7 @@ class SendContainer extends Component<Props> {
     const {
       accounts,
       settings,
-      loading
+      transaction
     } = this.props;
 
     const {
@@ -119,15 +119,21 @@ class SendContainer extends Component<Props> {
 
     const maxAmount = parseFloat(balances[token]);
     const enableRequest = (token !== '' && recipient !== '' && amount !== '');
-    const action = {
+    const context = enableRequest ?
+    {
       contract: 'eosio.token',
       action: 'transfer',
       data: ['from', account.account_name, 'to', recipient, `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`, memo].join(' ')
-    };
+    } : null;
+    const txContext = Object.assign({}, {
+      context,
+      receipt: transaction.tx,
+      error: transaction.err
+    });
 
     return (
       <Segment className='no-border'>
-        <TransactionModal open={openModal} action={action} />
+        <TransactionModal open={openModal} transaction={txContext} handleClose={this.handleClose} />
         <Form onSubmit={this.handleSubmit}>
           <InputAccountName
             id='form-input-control-recipient'
@@ -176,8 +182,7 @@ function mapStateToProps(state) {
     history: state.actions,
     accounts: state.accounts,
     settings: state.settings,
-    transaction: state.transaction,
-    loading: state.loading
+    transaction: state.transaction
   }
 }
 
