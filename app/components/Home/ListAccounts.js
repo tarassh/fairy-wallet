@@ -33,8 +33,8 @@ export class ListAccountsContainer extends Component<Props> {
             accounts
         } = this.props;
 
-        const accountRender = accounts.names.map((account, i) =>                                       
-          (<List.Item as='a' onClick={this.gotoWallet} key={i}>
+        const accountRender = accounts.names.map((account) =>                                       
+          (<List.Item as='a' onClick={this.gotoWallet} key={account}>
             <Icon name='user' />
             <List.Content>
               <List.Description>

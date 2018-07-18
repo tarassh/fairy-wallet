@@ -64,7 +64,8 @@ app.on('ready', async () => {
     show: false,
     width: 730,
     height: 600,
-    resizable: true
+    resizable: true,
+    titleBarStyle: 'hidden'
   });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);

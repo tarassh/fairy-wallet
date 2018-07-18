@@ -17,4 +17,18 @@ html, body {
     height: 100%;
     width: 100%;
 }
- 
+
+body {
+    -ms-overflow-style: scrollbar;
+    -webkit-app-region:drag;
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="text"],
+button,
+textarea,
+.dropdown, {
+	-webkit-app-region: no-drag;
+}

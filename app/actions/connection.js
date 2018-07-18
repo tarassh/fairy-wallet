@@ -20,7 +20,8 @@ export function createConnection(url) {
         connection
       } = getState();
 
-      let { host, protocol, path } = new URL(url);
+      let { host, protocol } = new URL(url);
+      const { path } = new URL(url);
       if (`${protocol}${path}` === url) {
         host = url;
         protocol = 'http:';

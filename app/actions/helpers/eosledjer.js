@@ -71,7 +71,7 @@ export default class Eos {
         chainCode?: string
     }> {
         const paths = bippath.fromString(path).toPathArray();
-        const buffer = new Buffer.alloc(1 + paths.length * 4);
+        const buffer = Buffer.alloc(1 + paths.length * 4);
         buffer[0] = paths.length;
         paths.forEach((element, index) => {
             buffer.writeUInt32BE(element, 1 + 4 * index);
@@ -125,7 +125,7 @@ export default class Eos {
     }> {
         const paths = bippath.fromString(path).toPathArray();
         let offset = 0;
-        const rawTx = new Buffer.from(rawTxHex, "hex");
+        const rawTx = Buffer.from(rawTxHex, "hex");
         const toSend = [];
         let response;
         while (offset !== rawTx.length) {
@@ -134,7 +134,7 @@ export default class Eos {
                 offset + maxChunkSize > rawTx.length
                     ? rawTx.length - offset
                     : maxChunkSize;
-            const buffer = new Buffer.alloc(
+            const buffer = Buffer.alloc(
                 offset === 0 ? 1 + paths.length * 4 + chunkSize : chunkSize
             );
             if (offset === 0) {

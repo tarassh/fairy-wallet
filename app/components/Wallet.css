@@ -26,7 +26,9 @@
 
 .ui.segments.wallet > .balance {
     width: 40%;
-    padding: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 15;
     margin: 0;
 }
 
