@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Message, Modal, Input, Table } from 'semantic-ui-react';
+import { Button, Message, Modal, Input, Table, Transition } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings';
@@ -45,7 +45,7 @@ class TokenAddModal extends Component<Props> {
     const { tokenSymbol, typing, requested } = this.state;
     const token = currency.tokens.find((el) => el.symbol === tokenSymbol);
     const requesting = !!loading.GET_CURRENCYSTATS;
-    const message = (requested && !typing && !token) ? (<Message
+    const message = ((!requesting && requested) && !typing && !token) ? (<Message
       error
       content={`Token ${tokenSymbol.toUpperCase()} not found.`}
     />) : '';
@@ -90,22 +90,24 @@ class TokenAddModal extends Component<Props> {
       );
 
     return (
-      <Modal
-        open={open}
-        size='tiny'
-        onClose={this.onClose}
-      >
-        <Modal.Content>
-          <Modal.Description>
-            {content}
-            {message}
-          </Modal.Description>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button primary loading={requesting} onClick={handleClick}>Add</Button>
-          <Button onClick={this.handleClose}>Close</Button>
-        </Modal.Actions>
-      </Modal>
+      <Transition visible={open} animation='scale' duration={500}>
+        <Modal
+          open={open}
+          size='tiny'
+          onClose={this.onClose}
+        >
+          <Modal.Content>
+            <Modal.Description>
+              {content}
+              {message}
+            </Modal.Description>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button primary loading={requesting} onClick={handleClick}>Add</Button>
+            <Button onClick={this.handleClose}>Close</Button>
+          </Modal.Actions>
+        </Modal>
+      </Transition>
     );
   }
 }

@@ -32,6 +32,9 @@ class Balance extends Component<Props> {
       tokenSymbol
     } = this.state;
 
+    if (accounts.balances !== null) {
+      delete accounts.balances.EOS;
+    }
     const staked = `${parseFloat(accounts.account.voter_info.staked / 10000).toFixed(4)} EOS`;
 
     return (

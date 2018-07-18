@@ -19,21 +19,23 @@ export default class Wallet extends Component<Props> {
       accounts
     } = this.props;
 
-    let leftSegment =
-      (<Message icon>
+    let leftSegment = (
+      <Message icon>
         <Icon name='circle notched' loading />
         <Message.Content>
           <Message.Header>Retrieving account info</Message.Header>
         </Message.Content>
-       </Message>);
+      </Message>
+    );
 
-    let rightSegment =
-      (<Message icon>
+    let rightSegment = (
+      <Message icon>
         <Icon name='circle notched' loading />
         <Message.Content>
           <Message.Header>Retrieving history</Message.Header>
         </Message.Content>
-       </Message>);
+      </Message>
+    );
 
     if (states.accountInfoRetrieved) {
       leftSegment = <WalletBalance accounts={accounts} />
