@@ -49,11 +49,11 @@ class PublicKeyComponent extends Component<Props> {
         </Label>
         <Button icon="copy" />
         <Transition animation="scale" duration={200}>
-          <Modal open={opened}>
+          <Modal open={opened} size="tiny">
             <Modal.Header>Verify Public Key with Ledger</Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <p>{publicKey.wif}</p>
+                <p id="publickey">{publicKey.wif}</p>
                 {message}
               </Modal.Description>
             </Modal.Content>

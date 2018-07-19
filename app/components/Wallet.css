@@ -25,7 +25,7 @@
 }
 
 .ui.segments.wallet > .balance {
-    width: 40%;
+    width: 50%;
     padding-left: 0;
     padding-right: 0;
     padding-top: 15;
@@ -33,7 +33,7 @@
 }
 
 .ui.segments.wallet > .actions {
-    width: 60%;
+    width: 50%;
 }
 
 .ui.segments.wallet .segments.no-border,

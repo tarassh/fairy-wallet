@@ -52,11 +52,7 @@ class NoAccountsContainer extends Component<Props> {
             onClick={this.onRetry}
             style={{ marginTop: '1em' }}
           />
-          <Button
-            content="Go Back"
-            disabled={disabled}
-            onClick={this.onGoBack}
-          />
+          <Button content="Back" disabled={disabled} onClick={this.onGoBack} />
         </div>
       </Form>
     );

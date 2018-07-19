@@ -28,7 +28,10 @@ input[type="reset"],
 input[type="button"],
 input[type="text"],
 button,
-textarea,
-.dropdown, {
+textarea{
 	-webkit-app-region: no-drag;
+}
+
+#publickey {
+    user-select: none;  
 }
