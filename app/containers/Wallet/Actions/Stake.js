@@ -1,12 +1,13 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Stake from '../../../components/Wallet/Actions/Stake';
-import _ from 'lodash';
+import { delegate, undelegate } from '../../../actions/transaction';
 
 type Props = {
   actions: {},
-  states: {},
+  settings: {},
   loading: {},
   accounts: {}
 };
@@ -15,15 +16,21 @@ class StakeContainer extends Component<Props> {
   props: Props;
 
   render() {
+    const { actions, accounts, loading, settings } = this.props;
+
     return(
-      <Stake />
+      <Stake 
+        actions={actions} 
+        accounts={accounts} 
+        loading={loading}
+        settings={settings}
+      />
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    history: state.actions,
     accounts: state.accounts,
     settings: state.settings,
     transaction: state.transaction
@@ -33,7 +40,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      getAccount
+      delegate,
+      undelegate
     }, dispatch)
   };
 }

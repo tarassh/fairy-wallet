@@ -1,14 +1,27 @@
 // @flow
 import React, { Component } from 'react';
-import { Tab, Form, Segment } from 'semantic-ui-react';
+import { Input, Label, Form, Segment, Popup, Icon } from 'semantic-ui-react';
 import ModalComponent from '../../Shared/Modal';
 
 export default class Stake extends Component<Props> {
   constructor(props) {
-    super(props)
+		super(props)
+		
+		const {
+			accounts
+		} = this.props;
+
     this.state = {
-      cpu: 0,
-      bandwidth: 0,
+      cpu: { 
+				used: accounts.account.cpu_limit.used,
+				max: accounts.account.cpu_limit.max,
+				available: accounts.account.cpu_limit.available
+			},
+      bandwidth: { 
+				used: accounts.account.net_limit.used,
+				max: accounts.account.net_limit.max,
+				available: accounts.account.net_limit.available
+			},
       open: false,
       content: '',
       actions: []
@@ -31,14 +44,51 @@ export default class Stake extends Component<Props> {
   };
 
   render() {
+		const { accounts } = this.props;
     const { cpu, bandwidth } = this.state;
 
     return (
       <Segment className='no-border'>
         <Form onSubmit={this.handleSubmit} className='stake'>
           <Form.Group>
-            <Form.Input label='CPU' name='cpu' value={cpu} onChange={this.handleChange} />
-            <Form.Input label='Bandwidth' name='bandwidth' value={bandwidth} onChange={this.handleChange} />
+            <Form.Field> 
+              <Input
+                name='cpu'
+                type='text' 
+                value={cpu.used} 
+                onChange={this.handleChange} 
+                labelPosition='right'
+              >
+                <Label basic>CPU</Label>
+                <input />
+                <Label>
+                  <Popup
+                    trigger={<Icon name='info circle' />}
+                    content={`Total: ${cpu.max}\nAvailable: ${cpu.available}`}
+                    position='top'
+                  />
+                </Label>
+              </Input>
+            </Form.Field>
+            <Form.Field> 
+              <Input
+                name='bandwidth'
+                type='text' 
+                value={bandwidth.used} 
+                onChange={this.handleChange} 
+                labelPosition='right'
+              >
+                <Label basic>Bandwidth</Label>
+                <input />
+                <Label>
+                  <Popup
+                    trigger={<Icon name='info circle' />}
+                    content={`Total: ${bandwidth.max}\nAvailable: ${bandwidth.available}`}
+                    position='top'
+                  />
+                </Label>
+              </Input>
+            </Form.Field>
           </Form.Group>
           <Form.Button className='submit' content='Submit' />
         </Form>

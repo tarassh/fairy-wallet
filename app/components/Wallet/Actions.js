@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
-import ActionsStake from './Actions/Stake';
+import ActionsStake from '../../containers/Wallet/Actions/Stake';
 
 type Props = {
 };

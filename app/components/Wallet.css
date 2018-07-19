@@ -67,11 +67,27 @@ input {
 
 /* Form */
 .ui.form.stake div.field {
-    width: 50%;
+    margin: 1em 0 0 0;
+}
+
+.ui.form.stake input {
+    height: 100%;
+}
+
+.ui.form.stake div.field {
+    width: 100%;
+} 
+
+.ui.form.stake div.label:first-child {
+    width: 25%;
+} 
+
+.ui.form.stake div.label:last-child {
+    cursor: pointer;
+    width: 10%;
 } 
 
 .ui.form.stake div.submit {
     width: auto;
     float: right;
-    margin: 1em 0;
 }
