@@ -6,6 +6,7 @@ import NoAccounts from './Home/NoAccounts';
 import Connection from './Home/Connection';
 import ListAccounts from './Home/ListAccounts';
 import Inactivity from './Home/Inactivity';
+import styles from './Home.css';
 
 type Props = {
   states: {},
@@ -66,12 +67,12 @@ export default class Home extends Component<Props> {
     }
 
     return (
-      <Grid stretched textAlign="center" verticalAlign="middle">
+      <Grid stretched textAlign="center" verticalAlign="middle" className="locker">
         <Grid.Row />
         <Grid.Row columns={3} className="container">
-          <Grid.Column width={5} />
-          <Grid.Column width={6}>{mainSegment}</Grid.Column>
-          <Grid.Column width={5} />
+          <Grid.Column width={6} />
+          <Grid.Column width={4}>{mainSegment}</Grid.Column>
+          <Grid.Column width={6} />
         </Grid.Row>
         <Grid.Row />
       </Grid>

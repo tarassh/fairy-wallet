@@ -9,15 +9,17 @@ import { createConnection } from '../../actions/connection';
 class ConnectionContainer extends Component<Props> {
   state = {
     value: '',
+    changing: false,
     results: []
   };
 
   onConnect = () => {
     this.props.createConnection(this.state.value);
+    this.setState({ changing: false });
   };
 
   onResultSelect = (e, { result }) => {
-    this.setState({ value: result.text });
+    this.setState({ value: result.text, changing: true });
   };
 
   onChange = (e, { value }) => {
@@ -40,8 +42,7 @@ class ConnectionContainer extends Component<Props> {
 
   render() {
     const { loading, connection } = this.props;
-
-    const { results } = this.state;
+    const { results, changing } = this.state;
 
     let disabled = false;
     if (loading.CREATE_CONNECTION) {
@@ -49,7 +50,7 @@ class ConnectionContainer extends Component<Props> {
     }
 
     let errorMessage = '';
-    if (!disabled && connection.err !== null) {
+    if (!changing && !disabled && connection.err !== null) {
       errorMessage = (
         <Message
           error
@@ -71,7 +72,7 @@ class ConnectionContainer extends Component<Props> {
           disabled={disabled}
           loading={disabled}
           results={results}
-          resultRenderer={({ text }) => text}
+          resultRenderer={({ text }) => <p>{text}</p>}
           icon={false}
         />
         {errorMessage}

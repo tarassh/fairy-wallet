@@ -33,15 +33,16 @@ export class ListAccountsContainer extends Component<Props> {
             accounts
         } = this.props;
 
-        const accountRender = accounts.names.map((account) =>                                       
-          (<List.Item as='a' onClick={this.gotoWallet} key={account}>
+        const accountRender = accounts.names.map((account) => (
+          <List.Item as='a' onClick={this.gotoWallet} key={account}>
             <Icon name='user' />
             <List.Content>
               <List.Description>
                 {account}
               </List.Description>
             </List.Content>
-           </List.Item>))
+          </List.Item>)
+        )
         
         return (
           <Segment raised>
