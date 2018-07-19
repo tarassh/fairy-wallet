@@ -20,20 +20,6 @@ type Props = {
 class HomeContainer extends Component<Props> {
   props: Props;
 
-  componentDidMount() {
-    const {
-      actions
-    } = this.props;
-    actions.startListen();
-  }
-
-  componentWillUnmount() {
-    const {
-      actions
-    } = this.props;
-    actions.stopListen();
-  }
-
   render() {
     const {
       history,

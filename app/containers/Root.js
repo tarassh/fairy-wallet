@@ -1,19 +1,32 @@
 // @flow
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import { Provider, connect } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
+import { bindActionCreators } from 'redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../routes';
 
+import * as LedgerActions from "../actions/ledger";
 
 type Props = {
+  actions: {},
   store: {},
   persistor: {},
   history: {}
 };
 
-export default class Root extends Component<Props> {
+class Root extends Component<Props> {
   Props: props;
+
+  componentWillMount() {
+    const { actions } = this.props;
+    actions.startListen();
+  }
+
+  componentWillUnmount() {
+    const { actions } = this.props;
+    actions.stopListen();
+  }
 
   render() {
     const {
@@ -33,3 +46,13 @@ export default class Root extends Component<Props> {
     );
   }
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({
+      ...LedgerActions
+    }, dispatch)
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Root);

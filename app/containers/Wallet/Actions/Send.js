@@ -125,8 +125,8 @@ class SendContainer extends Component<Props> {
       action: 'transfer',
       data: ['from', account.account_name, 
             'to', recipient, 
-            `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`, 
-            memo].join(' ')
+            `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`].join(' '),
+      memo
     } : null;
     const txContext = Object.assign({}, {
       context,

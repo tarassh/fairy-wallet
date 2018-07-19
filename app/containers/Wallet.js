@@ -12,7 +12,8 @@ type Props = {
   actions: {},
   states: {},
   loading: {},
-  accounts: {}
+  accounts: {},
+  history: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -31,11 +32,17 @@ class WalletContainer extends Component<Props> {
     const {
       states,
       accounts,
-      loading
+      loading,
+      history
     } = this.props;
 
     return (
-      <Wallet accounts={accounts} states={states} loading={loading} />
+      <Wallet 
+        accounts={accounts} 
+        states={states} 
+        loading={loading} 
+        history={history}
+      />
     );
   }
 };

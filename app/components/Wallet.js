@@ -7,11 +7,19 @@ import WalletActions from './Wallet/Actions';
 
 type Props = {
   states: {},
-  accounts: {}
+  accounts: {},
+  history: {}
 };
 
 export default class Wallet extends Component<Props> {
   props: Props;
+
+  componentDidUpdate() {
+    const { states, history } = this.props;
+    if (!states.deviceConnected) {
+      history.goBack();
+    }
+  }
 
   render() {
     const {
