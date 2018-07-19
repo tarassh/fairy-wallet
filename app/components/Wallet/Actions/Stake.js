@@ -58,28 +58,27 @@ export default class Stake extends Component<Props> {
     const cpuDelta = cpu.new - cpu.used;
     const netDelta = bandwidth.new - bandwidth.used;
 
-    if (cpuDelta > 0 && netDelta > 0) {
-      return actions.delegate(accountName, accountName, netDelta, cpuDelta);
+    const needDelegation = cpuDelta > 0 || netDelta > 0;
+    const needUndelegation = cpuDelta < 0 || netDelta < 0;
+
+    if (needDelegation) {
+      const args = [
+        accountName,
+        accountName,
+        netDelta > 0 ? netDelta : 0,
+        cpuDelta > 0 ? cpuDelta : 0
+      ];
+      actions.delegate.apply(null, args);
     }
-    if (cpuDelta < 0 && netDelta < 0) {
-      return actions.undelegate(accountName, accountName, netDelta, cpuDelta);
-    }
-    if (cpuDelta > 0) {
-      actions.delegate(accountName, accountName, 0, cpuDelta);
-      if (netDelta < 0) {
-        return actions.undelegate(
-          accountName,
-          accountName,
-          Math.abs(netDelta),
-          0
-        );
-      }
-    }
-    if (cpuDelta < 0) {
-      actions.undelegate(accountName, accountName, 0, Math.abs(cpuDelta));
-      if (netDelta > 0) {
-        return actions.delegate(accountName, accountName, netDelta, 0);
-      }
+
+    if (needUndelegation) {
+      const args = [
+        accountName,
+        accountName,
+        netDelta < 0 ? Math.abs(netDelta) : 0,
+        cpuDelta < 0 ? Math.abs(cpuDelta) : 0
+      ];
+      actions.undelegate.apply(null, args);
     }
   };
 
