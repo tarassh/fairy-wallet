@@ -1,96 +1,125 @@
 // @flow
 import React, { Component } from 'react';
-import { Input, Label, Form, Segment, Popup, Icon } from 'semantic-ui-react';
+import { Input, Label, Form, Segment } from 'semantic-ui-react';
 import ModalComponent from '../../Shared/Modal';
 
 export default class Stake extends Component<Props> {
   constructor(props) {
-		super(props)
-		
-		const {
-			accounts
-		} = this.props;
+    super(props);
+
+    const { accounts } = this.props;
 
     this.state = {
-      cpu: { 
-				used: accounts.account.cpu_limit.used,
-				max: accounts.account.cpu_limit.max,
-				available: accounts.account.cpu_limit.available
-			},
-      bandwidth: { 
-				used: accounts.account.net_limit.used,
-				max: accounts.account.net_limit.max,
-				available: accounts.account.net_limit.available
-			},
+      cpu: {
+        used: accounts.account.self_delegated_bandwidth.cpu_weight.split(
+          ' '
+        )[0],
+        new: accounts.account.self_delegated_bandwidth.cpu_weight.split(' ')[0]
+      },
+      bandwidth: {
+        used: accounts.account.self_delegated_bandwidth.net_weight.split(
+          ' '
+        )[0],
+        new: accounts.account.self_delegated_bandwidth.net_weight.split(' ')[0]
+      },
       open: false,
       content: '',
-      actions: []
-    }
-  };
+      actions: [],
+      changes: {
+        delegate: [],
+        undelegate: []
+      }
+    };
+  }
 
-  handleChange = (e, { name, value }) => this.setState({ [name]: value });
-
-  onActionClick = (event, data) => {
-      this.setState({ open: false });
+  handleChange = (e, { name, value }) => {
+    this.setState(prev => ({
+      [name]: Object.assign(prev[name], { new: value })
+    }));
   };
 
   renderModal = () => {
-    const {open, content, actions} = this.state;
-    return <ModalComponent open={open} content={content} actions={actions} onActionClick={this.onActionClick} />;
+    const { open, content, actions } = this.state;
+    return (
+      <ModalComponent
+        open={open}
+        content={content}
+        actions={actions}
+        onActionClick={this.onActionClick}
+      />
+    );
   };
 
   handleSubmit = () => {
-    this.setState({ open: true, content: 'Please confirm', actions: [{ key: 'cancel', content: 'Cancel', positive: false }, { key: 'confirm', content: 'Confirm', positive: true }], closable: true });
+    const { accounts, actions } = this.props;
+    const { cpu, bandwidth } = this.state;
+
+    const accountName = accounts.account.account_name;
+    const cpuDelta = cpu.new - cpu.used;
+    const netDelta = bandwidth.new - bandwidth.used;
+
+    if (cpuDelta > 0 && netDelta > 0) {
+      return actions.delegate(accountName, accountName, netDelta, cpuDelta);
+    }
+    if (cpuDelta < 0 && netDelta < 0) {
+      return actions.undelegate(accountName, accountName, netDelta, cpuDelta);
+    }
+    if (cpuDelta > 0) {
+      actions.delegate(accountName, accountName, 0, cpuDelta);
+      if (netDelta < 0) {
+        return actions.undelegate(
+          accountName,
+          accountName,
+          Math.abs(netDelta),
+          0
+        );
+      }
+    }
+    if (cpuDelta < 0) {
+      actions.undelegate(accountName, accountName, 0, Math.abs(cpuDelta));
+      if (netDelta > 0) {
+        return actions.delegate(accountName, accountName, netDelta, 0);
+      }
+    }
   };
 
   render() {
-		const { accounts } = this.props;
-    const { cpu, bandwidth } = this.state;
+    const { cpu, bandwidth, changes } = this.state;
+
+    console.log(changes);
 
     return (
-      <Segment className='no-border'>
-        <Form onSubmit={this.handleSubmit} className='stake'>
+      <Segment className="no-border">
+        <Form onSubmit={this.handleSubmit} className="stake">
           <Form.Group>
-            <Form.Field> 
+            <Form.Field>
               <Input
-                name='cpu'
-                type='text' 
-                value={cpu.used} 
-                onChange={this.handleChange} 
-                labelPosition='right'
+                name="cpu"
+                type="text"
+                value={cpu.new}
+                onChange={this.handleChange}
+                labelPosition="right"
               >
                 <Label basic>CPU</Label>
                 <input />
-                <Label>
-                  <Popup
-                    trigger={<Icon name='info circle' />}
-                    content={`Total: ${cpu.max}\nAvailable: ${cpu.available}`}
-                    position='top'
-                  />
-                </Label>
+                <Label />
               </Input>
             </Form.Field>
-            <Form.Field> 
+            <Form.Field>
               <Input
-                name='bandwidth'
-                type='text' 
-                value={bandwidth.used} 
-                onChange={this.handleChange} 
-                labelPosition='right'
+                name="bandwidth"
+                type="text"
+                value={bandwidth.new}
+                onChange={this.handleChange}
+                labelPosition="right"
               >
                 <Label basic>Bandwidth</Label>
                 <input />
-                <Label>
-                  <Popup
-                    trigger={<Icon name='info circle' />}
-                    content={`Total: ${bandwidth.max}\nAvailable: ${bandwidth.available}`}
-                    position='top'
-                  />
-                </Label>
+                <Label />
               </Input>
             </Form.Field>
           </Form.Group>
-          <Form.Button className='submit' content='Submit' />
+          <Form.Button className="submit" content="Submit" />
         </Form>
         {this.renderModal()}
       </Segment>
