@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getPublicKey } from '../../actions/ledger';
 import { getAccounts } from '../../actions/accounts';
+import PublicKeyComponent from '../../components/Shared/PublicKeyComponent';
 
 type Props = {
   accounts: {},
@@ -14,19 +15,17 @@ type Props = {
 };
 
 class NoAccountsContainer extends Component<Props> {
-
   onRevealePublicKey = () => {
     this.props.getPublicKey(true);
-  }
+  };
 
   onRetry = () => {
     const { accounts } = this.props;
     this.props.getAccounts(accounts.publicKey.wif);
-  }
+  };
 
   render() {
-    const { accounts, loading } = this.props;
-    const noAccountsText = `Public Key ${accounts.publicKey.wif} doesn't have any registered account. Please create account for this Public Key.`;
+    const { loading } = this.props;
 
     let disabled = false;
     if (loading.CREATE_CONNECTION) {
@@ -35,10 +34,17 @@ class NoAccountsContainer extends Component<Props> {
 
     return (
       <Form>
-        <Message
-          content={noAccountsText}
-        />
-        <Button 
+        <Message>
+          <Message.Content>
+            <p>Public Key </p>
+            <PublicKeyComponent />
+            <p>
+              do not have any registered account. Please create account for this
+              Public Key.
+            </p>
+          </Message.Content>
+        </Message>
+        <Button
           content="Retry"
           disabled={disabled}
           primary
@@ -55,11 +61,18 @@ function mapStateToProps(state) {
     accounts: state.accounts,
     loading: state.loading
   };
-};
+}
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  getPublicKey,
-  getAccounts
-}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getPublicKey,
+      getAccounts
+    },
+    dispatch
+  );
 
-export default connect(mapStateToProps, mapDispatchToProps)(NoAccountsContainer)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NoAccountsContainer);
