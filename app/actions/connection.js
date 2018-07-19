@@ -16,9 +16,7 @@ export function createConnection(url) {
     });
 
     try {
-      const {
-        connection
-      } = getState();
+      const { connection } = getState();
 
       let { host, protocol } = new URL(url);
       const { path } = new URL(url);
@@ -33,26 +31,28 @@ export function createConnection(url) {
         httpEndpoint
       };
 
-      eos(modified).getInfo({}).then((result) => {
-        if (result.head_block_num > 0) {
-          dispatch({
-            type: types.CREATE_CONNECTION_SUCCESS,
-            httpEndpoint,
-            chainId: result.chain_id
+      eos(modified)
+        .getInfo({})
+        .then(result => {
+          if (result.head_block_num > 0) {
+            dispatch({
+              type: types.CREATE_CONNECTION_SUCCESS,
+              httpEndpoint,
+              chainId: result.chain_id
+            });
+
+            return dispatch(getAccounts(getState().accounts.publicKey.wif));
+          }
+          return dispatch({
+            type: types.CREATE_CONNECTION_FAILURE
           });
-
-          return dispatch(getAccounts(getState().accounts.publicKey.wif));
-        }
-        return dispatch({
-          type: types.CREATE_CONNECTION_FAILURE
+        })
+        .catch(err => {
+          dispatch({
+            type: types.CREATE_CONNECTION_FAILURE,
+            err
+          });
         });
-      }).catch((err) => {
-        dispatch({
-          type: types.CREATE_CONNECTION_FAILURE,
-          err
-        });
-      });
-
     } catch (err) {
       return dispatch({
         type: types.CREATE_CONNECTION_FAILURE,
@@ -62,6 +62,13 @@ export function createConnection(url) {
   };
 }
 
-export default {
-  createConnection
+export function clearConnection() {
+  return (dispatch: () => void) => {
+    dispatch({ type: types.CLEAR_CONNECTION, err: null });
+  };
 }
+
+export default {
+  createConnection,
+  clearConnection
+};

@@ -6,7 +6,7 @@ const initialState = {
   accountsRetrieved: false,
   accountsRequested: false,
   accountInfoRetrieved: false,
-  displayPublicKey: false,
+  displayPublicKey: false
 };
 
 export default function states(state = initialState, action) {
@@ -28,6 +28,7 @@ export default function states(state = initialState, action) {
         nodeConnected: true
       });
     }
+    case types.CLEAR_CONNECTION:
     case types.CREATE_CONNECTION_REQUEST:
     case types.CREATE_CONNECTION_FAILURE: {
       return Object.assign({}, state, {
@@ -42,7 +43,7 @@ export default function states(state = initialState, action) {
     case types.GET_ACCOUNTS_REQUEST: {
       return Object.assign({}, state, {
         accountsRequested: true,
-        accountsRetrieved: false,
+        accountsRetrieved: false
       });
     }
     case types.GET_ACCOUNTS_FAILURE: {
@@ -70,12 +71,11 @@ export default function states(state = initialState, action) {
     case types.PUBLIC_KEY_DISPLAY_SUCCESS: {
       return Object.assign({}, state, {
         displayPublicKey: true
-      }); 
+      });
     }
 
     default: {
       return state;
     }
   }
-};
-
+}

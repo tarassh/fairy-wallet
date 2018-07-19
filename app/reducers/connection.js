@@ -1,6 +1,5 @@
 import * as types from '../actions/types';
 
-
 const initialState = {
   httpEndpoint: null,
   chainId: '',
@@ -17,6 +16,7 @@ export default function connection(state = initialState, action) {
       });
     }
 
+    case types.CLEAR_CONNECTION:
     case types.CREATE_CONNECTION_FAILURE: {
       return Object.assign({}, state, {
         httpEndpoint: null,

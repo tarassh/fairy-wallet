@@ -3,25 +3,25 @@ import React, { Component } from 'react';
 import { Form, Message, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getPublicKey } from '../../actions/ledger';
 import { getAccounts } from '../../actions/accounts';
+import { clearConnection } from '../../actions/connection';
 import PublicKeyComponent from '../../components/Shared/PublicKeyComponent';
 
 type Props = {
   accounts: {},
   loading: {},
-  getPublicKey: () => {},
-  getAccounts: () => {}
+  getAccounts: () => {},
+  clearConnection: () => {}
 };
 
 class NoAccountsContainer extends Component<Props> {
-  onRevealePublicKey = () => {
-    this.props.getPublicKey(true);
-  };
-
   onRetry = () => {
     const { accounts } = this.props;
     this.props.getAccounts(accounts.publicKey.wif);
+  };
+
+  onGoBack = () => {
+    this.props.clearConnection();
   };
 
   render() {
@@ -44,13 +44,20 @@ class NoAccountsContainer extends Component<Props> {
             </p>
           </Message.Content>
         </Message>
-        <Button
-          content="Retry"
-          disabled={disabled}
-          primary
-          onClick={this.onRetry}
-          style={{ marginTop: '1em' }}
-        />
+        <div>
+          <Button
+            content="Retry"
+            disabled={disabled}
+            primary
+            onClick={this.onRetry}
+            style={{ marginTop: '1em' }}
+          />
+          <Button
+            content="Go Back"
+            disabled={disabled}
+            onClick={this.onGoBack}
+          />
+        </div>
       </Form>
     );
   }
@@ -66,8 +73,8 @@ function mapStateToProps(state) {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getPublicKey,
-      getAccounts
+      getAccounts,
+      clearConnection
     },
     dispatch
   );
