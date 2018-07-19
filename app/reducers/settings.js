@@ -51,7 +51,7 @@ export default function settings(state = initialState, action) {
         nodes[index].accessdate = Date.now();
       }
       return Object.assign({}, state, {
-        nodes: nodes.slice(0, 5).sort((a, b) => a.accessdate > b.accessdate)
+        nodes: nodes.slice(0, 5).sort((a, b) => a.accessdate < b.accessdate)
       });
     }
     default: {

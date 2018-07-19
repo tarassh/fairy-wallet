@@ -9,6 +9,7 @@ import { getCurrencyStats } from '../../actions/currency';
 
 import TokenAddModal from './TokenAddModal';
 import TokenRemoveModal from './TokenRemoveModal';
+import PublicKeyComponent from '../Shared/PublicKeyComponent';
 
 type Props = {
   accounts: {}
@@ -46,6 +47,7 @@ class Balance extends Component<Props> {
               {accounts.account.account_name}
             </Label.Detail>
           </Label>
+          <PublicKeyComponent />
         </Segment>
         <Segment>
           <Label>
