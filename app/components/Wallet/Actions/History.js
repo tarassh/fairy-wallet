@@ -17,8 +17,8 @@ export default class History extends Component<Props> {
       { currency: 'EosDolliar', total: 700000 },
     ]
 
-    const content =
-      (<Segment className='no-border'>
+    const content = (
+      <Segment className='no-border'>
         <Table celled basic='very' compact='very' unstackable>
           <Table.Header>
             <Table.Row>
@@ -48,7 +48,8 @@ export default class History extends Component<Props> {
             ))}
           </Table.Body>
         </Table>
-       </Segment>);
+      </Segment>
+    );
 
     return (
       <Tab.Pane content={content} className='history' />

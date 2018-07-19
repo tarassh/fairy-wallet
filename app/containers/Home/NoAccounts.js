@@ -8,7 +8,9 @@ import { getAccounts } from '../../actions/accounts';
 
 type Props = {
   accounts: {},
-  loading: {}
+  loading: {},
+  getPublicKey: () => {},
+  getAccounts: () => {}
 };
 
 class NoAccountsContainer extends Component<Props> {

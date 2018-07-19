@@ -60,18 +60,19 @@ const configureStore = (initialState = {}) => {
 
   // configure persistor
   const persistConfig = {
+    version: 1,
     key: 'root',
     storage,
     whitelist: ['settings']
-  }
-    
+  };
+
   const persistedReducer = persistReducer(persistConfig, rootReducer);
-    
+
   // Create Store
   const store = createStore(persistedReducer, initialState, enhancer);
-    
+
   const persistor = persistStore(store);
-    
+
   if (module.hot) {
     module.hot.accept(
       '../reducers',
@@ -79,16 +80,15 @@ const configureStore = (initialState = {}) => {
     );
   }
 
-    history.push('/');
-    
+  history.push('/');
+
   return {
-      store, 
-      persistor 
+    store,
+    persistor
   };
 };
 
 export default {
-    configureStore,
-    history
-}
-
+  configureStore,
+  history
+};
