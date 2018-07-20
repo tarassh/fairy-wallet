@@ -6,7 +6,7 @@ const initialState = {
   err: null
 };
 
-export default function transaction(state = initialState, action) {
+export default function transactions(state = initialState, action) {
   switch (action.type) {
     case types.TRANSFER_TOKEN_SUCCESS: {
       return Object.assign({}, state, {
