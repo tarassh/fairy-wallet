@@ -4,7 +4,7 @@ import { Form, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { transfer, resetState } from '../../../actions/transaction';
+import { transfer, resetState } from '../../../actions/transactions';
 import TransactionModal from '../../../components/Shared/TransactionModal';
 
 type Props = {

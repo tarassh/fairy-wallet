@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Stake from '../../../components/Wallet/Actions/Stake';
-import { delegate, undelegate } from '../../../actions/transaction';
+import { delegate, undelegate } from '../../../actions/transactions';
 
 type Props = {
   actions: {},
