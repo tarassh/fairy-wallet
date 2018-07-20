@@ -4,14 +4,15 @@ import { Form, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { transfer } from '../../../actions/transaction';
+import { transfer, resetState } from '../../../actions/transaction';
 import TransactionModal from '../../../components/Shared/TransactionModal';
 
 type Props = {
   settings: {},
   accounts: {},
   transactions: {},
-  transfer: (string, string, string, string) => {}
+  transfer: (string, string, string, string) => {},
+  resetState: () => {}
 };
 
 type inputProps = {
@@ -84,7 +85,10 @@ class SendContainer extends Component<Props> {
     openModal: false
   };
 
-  handleClose = () => this.setState({ openModal: false });
+  handleClose = () => {
+    this.props.resetState();
+    this.setState({ openModal: false });
+  };
   handleChange = (e, { name, value }) =>
     this.setState({ [name]: value, resetValue: name === 'token' });
   handleSubmit = () => {
@@ -136,8 +140,8 @@ class SendContainer extends Component<Props> {
       {},
       {
         context,
-        receipt: transactions.tx,
-        error: transactions.err
+        receipt: transactions.transfer.receipt,
+        error: transactions.transfer.err
       }
     );
 
@@ -211,7 +215,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ transfer }, dispatch);
+  return bindActionCreators({ transfer, resetState }, dispatch);
 }
 
 export default connect(
