@@ -35,3 +35,7 @@ textarea{
 #publickey {
     user-select: none;  
 }
+
+.accordion.ui.remove-my-icons .title .dropdown.icon {
+    display: none;
+}

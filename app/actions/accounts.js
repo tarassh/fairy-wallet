@@ -9,22 +9,28 @@ export function getAccounts(publicKey) {
       type: types.GET_ACCOUNTS_REQUEST
     });
 
-    const {
-      connection
-    } = getState();
+    const { connection } = getState();
 
-    eos(connection).getKeyAccounts(publicKey).then((result) => dispatch({
-      type: types.GET_ACCOUNTS_SUCCESS,
-      accounts: result.account_names
-    })).catch((err) => dispatch({
-      type: types.GET_ACCOUNTS_REQUEST,
-      err: JSON.parse(err)
-    }));
+    eos(connection)
+      .getKeyAccounts(publicKey)
+      .then(result =>
+        dispatch({
+          type: types.GET_ACCOUNTS_SUCCESS,
+          accounts: result.account_names
+        })
+      )
+      .catch(err =>
+        dispatch({
+          type: types.GET_ACCOUNTS_REQUEST,
+          err
+        })
+      );
   };
 }
 
 export function setActiveAccount(index) {
-  return (dispatch: () => void) => dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
+  return (dispatch: () => void) =>
+    dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
 }
 
 export function getAccount(name) {
@@ -34,18 +40,21 @@ export function getAccount(name) {
     });
     const { connection } = getState();
 
-    eos(connection).getAccount(name).then((result) => {
-      dispatch(getCurrencyBalance(name));
-      return dispatch({
-        type: types.GET_ACCOUNT_SUCCESS,
-        account: result
+    eos(connection)
+      .getAccount(name)
+      .then(result => {
+        dispatch(getCurrencyBalance(name));
+        return dispatch({
+          type: types.GET_ACCOUNT_SUCCESS,
+          account: result
+        });
+      })
+      .catch(err => {
+        dispatch({
+          type: types.GET_ACCOUNT_FAILURE,
+          err
+        });
       });
-    }).catch((err) => {
-      dispatch({
-        type: types.GET_ACCOUNT_FAILURE,
-        err: JSON.parse(err)
-      });
-    });
   };
 }
 
@@ -57,16 +66,20 @@ export function getActions(name) {
 
     const { connection } = getState();
 
-    eos(connection).getActions(name).then((result) => dispatch({
-      type: types.GET_ACTIONS_SUCCESS,
-      actions: result
-    })).catch((err) => {
-      dispatch({
-        type: types.GET_ACTIONS_FAILURE,
-        err: JSON.parse(err)
+    eos(connection)
+      .getActions(name)
+      .then(result =>
+        dispatch({
+          type: types.GET_ACTIONS_SUCCESS,
+          actions: result
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.GET_ACTIONS_FAILURE,
+          err: JSON.parse(err)
+        });
       });
-    });
-
   };
 }
 
@@ -76,23 +89,25 @@ export function getCurrencyBalance(account) {
       type: types.GET_CURRENCY_BALANCE_REQUEST
     });
 
-    const {
-      connection,
-      settings
-    } = getState();
+    const { connection, settings } = getState();
 
     const { tokens } = settings;
     const selectedTokens = tokens[account];
     if (!selectedTokens) {
-      return dispatch({ type: types.GET_CURRENCY_BALANCE_SUCCESS, balances: {} });
+      return dispatch({
+        type: types.GET_CURRENCY_BALANCE_SUCCESS,
+        balances: {}
+      });
     }
 
     const promisses = [];
     selectedTokens.forEach(symbol => {
-      promisses.push(eos(connection).getCurrencyBalance('eosio.token', account, symbol))
+      promisses.push(
+        eos(connection).getCurrencyBalance('eosio.token', account, symbol)
+      );
     });
-    Promise.all(promisses).then(
-      (values) => {
+    Promise.all(promisses)
+      .then(values => {
         const pairs = _.map(_.flatten(values), value => {
           const valueKey = value.split(' ');
           return valueKey.reverse();
@@ -102,10 +117,11 @@ export function getCurrencyBalance(account) {
           type: types.GET_CURRENCY_BALANCE_SUCCESS,
           balances: balancesObject
         });
-      }).catch((err) => {
-        dispatch({ 
-          type: types.GET_CURRENCY_BALANCE_FAILURE, 
-          err: JSON.parse(err) 
+      })
+      .catch(err => {
+        dispatch({
+          type: types.GET_CURRENCY_BALANCE_FAILURE,
+          err: JSON.parse(err)
         });
       });
   };
@@ -116,4 +132,4 @@ export default {
   getAccount,
   getActions,
   getCurrencyBalance
-}
+};

@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Modal, Transition, Button, Message } from 'semantic-ui-react';
+import {
+  Modal,
+  Transition,
+  Button,
+  Message,
+  Accordion
+} from 'semantic-ui-react';
 import TransferContext from './TransferContext';
 
 type Props = {
@@ -8,45 +14,71 @@ type Props = {
   handleClose: () => {}
 };
 
+function createAccordionPanel(transaction) {
+  const { context, receipt, err } = transaction;
+  const { action } = context;
+  let status = <Message content={action} />;
+
+  const content = <TransferContext context={context} />;
+
+  if (receipt !== null) {
+    status = (
+      <Message success>
+        <Message.Content>
+          <p>{`${action}: transaction id ${receipt.transaction_id}`}</p>
+        </Message.Content>
+      </Message>
+    );
+  }
+
+  if (err !== null) {
+    let error = err;
+    if (typeof error === 'string') {
+      [error] = JSON.parse(error).error.details;
+    }
+    status = <Message error content={error.message} />;
+  }
+
+  return {
+    key: `panel-${action}`,
+    title: { key: `title-${action}`, content: status },
+    content: { key: `content-${action}`, content }
+  };
+}
+
 class TransactionsModal extends Component<Props> {
+  state = { activeIndex: 0 };
+
+  handleClick = (e, { index }) => {
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+    this.setState({ activeIndex: newIndex });
+  };
+
   render() {
     const { open, transactions, handleClose } = this.props;
-    const { context, receipt, err } = transactions.transfer;
+    const { receipt, err } = transactions.transfer;
 
-    let content = '';
     let header = '';
-    if (context !== null) {
-      header = 'Use ledger to verify transaction';
-      content = <TransferContext context={context} />;
-    }
+    header = 'Use ledger to verify transaction';
     if (receipt !== null) {
       header = 'Success';
-      content = (
-        <Message success>
-          <Message.Content>
-            <p> Transaction id {receipt.transaction_id}</p>
-          </Message.Content>
-        </Message>
-      );
     }
-    let message = '';
     if (err !== null) {
-      let error = err;
-      if (typeof error === 'string') {
-        [error] = JSON.parse(error).error.details;
-      }
-
       header = 'Error';
-      message = <Message error content={error.message} />;
     }
     let modalAction = '';
     if (receipt !== null || err !== null) {
-      modalAction = (
-        <Button primary onClick={handleClose}>
-          Close
-        </Button>
-      );
+      modalAction = <Button primary onClick={handleClose} content="Close" />;
     }
+
+    const panels = [];
+    Object.keys(transactions).forEach(key => {
+      const tx = transactions[key];
+      if (tx.context !== null) {
+        panels.push(createAccordionPanel(tx));
+      }
+    });
 
     return (
       <Transition visible={open} animation="scale" duration={500}>
@@ -54,8 +86,11 @@ class TransactionsModal extends Component<Props> {
           <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              {content}
-              {message}
+              <Accordion
+                defaultActiveIndex={0}
+                panels={panels}
+                className="remove-my-icons"
+              />
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>{modalAction}</Modal.Actions>

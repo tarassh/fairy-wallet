@@ -1,26 +1,19 @@
 // @flow
 import * as types from '../actions/types';
 
-const transactionInitialState = {
-  context: null,
-  receipt: null,
-  err: null
-};
-
 const initialState = {
-  transfer: transactionInitialState,
-  delegate: transactionInitialState,
-  undelegate: transactionInitialState
+  transfer: { context: null, receipt: null, err: null },
+  delegate: { context: null, receipt: null, err: null },
+  undelegate: { context: null, receipt: null, err: null }
 };
 
 export default function transactions(state = initialState, action) {
   switch (action.type) {
     case types.RESET_TRANSACTIONS_STATE: {
-      const newState = { context: null, receipt: null, err: null };
       return Object.assign({}, state, {
-        transfer: newState,
-        delegate: newState,
-        undelegate: newState
+        transfer: { context: null, receipt: null, err: null },
+        delegate: { context: null, receipt: null, err: null },
+        undelegate: { context: null, receipt: null, err: null }
       });
     }
 
