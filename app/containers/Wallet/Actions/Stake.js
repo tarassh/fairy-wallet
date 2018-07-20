@@ -32,7 +32,7 @@ function mapStateToProps(state) {
   return {
     accounts: state.accounts,
     settings: state.settings,
-    transaction: state.transaction
+    transactions: state.transactions
   };
 }
 

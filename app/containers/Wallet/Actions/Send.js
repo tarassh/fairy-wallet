@@ -10,7 +10,7 @@ import TransactionModal from '../../../components/Shared/TransactionModal';
 type Props = {
   settings: {},
   accounts: {},
-  transaction: {},
+  transactions: {},
   transfer: (string, string, string, string) => {}
 };
 
@@ -98,7 +98,7 @@ class SendContainer extends Component<Props> {
   };
 
   render() {
-    const { accounts, settings, transaction } = this.props;
+    const { accounts, settings, transactions } = this.props;
     const { token, recipient, memo, resetValue, openModal } = this.state;
 
     const { balances, account } = accounts;
@@ -136,8 +136,8 @@ class SendContainer extends Component<Props> {
       {},
       {
         context,
-        receipt: transaction.tx,
-        error: transaction.err
+        receipt: transactions.tx,
+        error: transactions.err
       }
     );
 
@@ -206,7 +206,7 @@ function mapStateToProps(state) {
   return {
     accounts: state.accounts,
     settings: state.settings,
-    transaction: state.transaction
+    transactions: state.transactions
   };
 }
 
