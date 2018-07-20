@@ -10,7 +10,7 @@ export default function transaction(state = initialState, action) {
   switch (action.type) {
     case types.TRANSFER_TOKEN_SUCCESS: {
       return Object.assign({}, state, {
-        tx: action.tx,
+        tx: action.tx
       });
     }
 
