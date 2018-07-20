@@ -10,9 +10,15 @@ import TransactionModal from '../../../components/Shared/TransactionModal';
 type Props = {
   settings: {},
   accounts: {},
-  actions: {},
-  transaction: {}
+  transaction: {},
+  transfer: (string, string, string, string) => {}
 };
+
+type inputProps = {
+  onChange: () => {}
+};
+
+const eosToken = 'EOS';
 
 const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
 
@@ -25,10 +31,6 @@ const handleFloatInputValidationOnChange = (e, v, onChange) => {
   ) {
     onChange(e, v);
   }
-};
-
-type inputProps = {
-  onChange: () => {}
 };
 
 const InputFloat = (props: inputProps) => {
@@ -74,7 +76,7 @@ const InputAccountName = (props: inputProps) => {
 
 class SendContainer extends Component<Props> {
   state = {
-    token: 'EOS',
+    token: eosToken,
     recipient: '',
     amount: '',
     memo: '',
@@ -82,30 +84,21 @@ class SendContainer extends Component<Props> {
     openModal: false
   };
 
-  handleChange = (e, { name, value }) => {
-    const resetValue = name === 'token';
-    this.setState({ [name]: value, resetValue });
-  };
-
+  handleClose = () => this.setState({ openModal: false });
+  handleChange = (e, { name, value }) =>
+    this.setState({ [name]: value, resetValue: name === 'token' });
   handleSubmit = () => {
     const { token, recipient, amount, memo } = this.state;
-    const { accounts, actions } = this.props;
+    const { accounts } = this.props;
+    const accountName = accounts.account.account_name;
+    const asset = `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`;
 
-    actions.transfer(
-      accounts.account.account_name,
-      recipient,
-      `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`,
-      memo
-    );
+    this.props.transfer(accountName, recipient, asset, memo);
     this.setState({ openModal: true });
-  };
-  handleClose = () => {
-    this.setState({ openModal: false });
   };
 
   render() {
     const { accounts, settings, transaction } = this.props;
-
     const { token, recipient, memo, resetValue, openModal } = this.state;
 
     const { balances, account } = accounts;
@@ -116,8 +109,8 @@ class SendContainer extends Component<Props> {
       key: name
     }));
 
-    if (!tokens.find(element => element.key === 'EOS')) {
-      tokens.push({ text: 'EOS', value: 'EOS', key: 'EOS' });
+    if (!tokens.find(element => element.key === eosToken)) {
+      tokens.push({ text: eosToken, value: eosToken, key: eosToken });
     }
     if (!balances.EOS) {
       [balances.EOS, _] = account.core_liquid_balance.split(' ');
@@ -211,7 +204,6 @@ class SendContainer extends Component<Props> {
 
 function mapStateToProps(state) {
   return {
-    history: state.actions,
     accounts: state.accounts,
     settings: state.settings,
     transaction: state.transaction
@@ -219,14 +211,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        transfer
-      },
-      dispatch
-    )
-  };
+  return bindActionCreators({ transfer }, dispatch);
 }
 
 export default connect(
