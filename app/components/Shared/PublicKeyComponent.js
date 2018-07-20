@@ -43,11 +43,11 @@ class PublicKeyComponent extends Component<Props> {
     }
 
     return (
-      <Button as="div" labelPosition="left" onClick={this.verifyPublicKey}>
+      <Button as="div" labelPosition="right" onClick={this.verifyPublicKey}>
+        <Button icon="copy" basic />
         <Label as="a" basic>
           {publicKey.wif}
         </Label>
-        <Button icon="copy" />
         <Transition animation="scale" duration={200}>
           <Modal open={opened} size="tiny">
             <Modal.Header>Verify Public Key with Ledger</Modal.Header>

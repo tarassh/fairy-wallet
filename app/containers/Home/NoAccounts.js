@@ -26,11 +26,7 @@ class NoAccountsContainer extends Component<Props> {
 
   render() {
     const { loading } = this.props;
-
-    let disabled = false;
-    if (loading.CREATE_CONNECTION) {
-      disabled = true;
-    }
+    const disabled = !!loading.CREATE_CONNECTION;
 
     return (
       <Form>
