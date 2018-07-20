@@ -61,28 +61,28 @@ class TransactionsModal extends Component<Props> {
 
   render() {
     const { open, transactions, handleClose } = this.props;
-    const { receipt, err } = transactions.transfer;
-
-    let header = '';
-    header = 'Use ledger to verify transaction';
-    if (receipt !== null) {
-      header = 'Success';
-    }
-    if (err !== null) {
-      header = 'Error';
-    }
-    let modalAction = '';
-    if (receipt !== null || err !== null) {
-      modalAction = <Button primary onClick={handleClose} content="Close" />;
-    }
 
     const panels = [];
+    let successCounter = 0;
+    let failureCounter = 0;
     Object.keys(transactions).forEach(key => {
       const tx = transactions[key];
       if (tx.context !== null) {
         panels.push(createAccordionPanel(tx));
       }
+      successCounter += tx.receipt !== null ? 1 : 0;
+      failureCounter += tx.err !== null ? 1 : 0;
     });
+
+    let header = 'Use ledger to verify transaction';
+    let modalAction = '';
+    if (successCounter === panels.length) {
+      header = 'Success';
+      modalAction = <Button primary onClick={handleClose} content="Close" />;
+    } else if (failureCounter > 0) {
+      header = 'Error';
+      modalAction = <Button primary onClick={handleClose} content="Close" />;
+    }
 
     return (
       <Transition visible={open} animation="scale" duration={500}>
