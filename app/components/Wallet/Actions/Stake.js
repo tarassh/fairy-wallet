@@ -1,46 +1,127 @@
 // @flow
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import { Tab, Form } from 'semantic-ui-react';
-import { ModalWindow } from '../../Shared/Modal';
-
-type Props = {
-};
+import { Input, Label, Form, Segment } from 'semantic-ui-react';
+import ModalComponent from '../../Shared/Modal';
 
 export default class Stake extends Component<Props> {
-    props: Props;
-		
-		state = {
-			cpu: 0,
-			bandwidth: 0
-		}
+  constructor(props) {
+    super(props);
 
-		handleChange = (e, { name, value }) => this.setState({ [name]: value });
+    const { accounts } = this.props;
 
-		handleSubmit = () => {
-				const { token, recipient, amount, memo } = this.state;
-				const { accounts, actions } = this.props;
-				
-				const content = 'Please confirm';
-				const modalActions = [ { key: 'cancel', content: 'Cancel', positive: false }, { key: 'confirm', content: 'Confirm', positive: true } ];
+    this.state = {
+      cpu: {
+        used: accounts.account.self_delegated_bandwidth.cpu_weight.split(
+          ' '
+        )[0],
+        new: accounts.account.self_delegated_bandwidth.cpu_weight.split(' ')[0]
+      },
+      bandwidth: {
+        used: accounts.account.self_delegated_bandwidth.net_weight.split(
+          ' '
+        )[0],
+        new: accounts.account.self_delegated_bandwidth.net_weight.split(' ')[0]
+      },
+      open: false,
+      content: '',
+      actions: [],
+      changes: {
+        delegate: [],
+        undelegate: []
+      }
+    };
+  }
 
-				return <ModalWindow open={true} content={confirm} actions={modalActions} />
-		}
-    
-    render() {
-				const { cpu, bandwidth } = this.state;
-				
-        const content = 
-					<Form  onSubmit={this.handleSubmit}>
-						<Form.Group>
-							<Form.Input label='CPU' name='cpu' value={cpu} onChange={this.handleChange} />
-							<Form.Input label='Bandwidth' name='bandwidth' value={bandwidth}  onChange={this.handleChange} />
-						</Form.Group>
-						<Form.Button content='Submit'/>
-					</Form>
-        
-        return (
-						<Tab.Pane content={content} className='stake' />
-				);
+  handleChange = (e, { name, value }) => {
+    this.setState(prev => ({
+      [name]: Object.assign(prev[name], { new: value })
+    }));
+  };
+
+  renderModal = () => {
+    const { open, content, actions } = this.state;
+    return (
+      <ModalComponent
+        open={open}
+        content={content}
+        actions={actions}
+        onActionClick={this.onActionClick}
+      />
+    );
+  };
+
+  handleSubmit = () => {
+    const { accounts, actions } = this.props;
+    const { cpu, bandwidth } = this.state;
+
+    const accountName = accounts.account.account_name;
+    const cpuDelta = cpu.new - cpu.used;
+    const netDelta = bandwidth.new - bandwidth.used;
+
+    const needDelegation = cpuDelta > 0 || netDelta > 0;
+    const needUndelegation = cpuDelta < 0 || netDelta < 0;
+
+    if (needDelegation) {
+      const args = [
+        accountName,
+        accountName,
+        netDelta > 0 ? netDelta : 0,
+        cpuDelta > 0 ? cpuDelta : 0
+      ];
+      actions.delegate.apply(null, args);
     }
+
+    if (needUndelegation) {
+      const args = [
+        accountName,
+        accountName,
+        netDelta < 0 ? Math.abs(netDelta) : 0,
+        cpuDelta < 0 ? Math.abs(cpuDelta) : 0
+      ];
+      actions.undelegate.apply(null, args);
+    }
+  };
+
+  render() {
+    const { cpu, bandwidth, changes } = this.state;
+
+    console.log(changes);
+
+    return (
+      <Segment className="no-border">
+        <Form onSubmit={this.handleSubmit} className="stake">
+          <Form.Group>
+            <Form.Field>
+              <Input
+                name="cpu"
+                type="text"
+                value={cpu.new}
+                onChange={this.handleChange}
+                labelPosition="right"
+              >
+                <Label basic>CPU</Label>
+                <input />
+                <Label />
+              </Input>
+            </Form.Field>
+            <Form.Field>
+              <Input
+                name="bandwidth"
+                type="text"
+                value={bandwidth.new}
+                onChange={this.handleChange}
+                labelPosition="right"
+              >
+                <Label basic>Bandwidth</Label>
+                <input />
+                <Label />
+              </Input>
+            </Form.Field>
+          </Form.Group>
+          <Form.Button className="submit" content="Submit" />
+        </Form>
+        {this.renderModal()}
+      </Segment>
+    );
+  }
 }

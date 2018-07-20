@@ -2,28 +2,19 @@
 import React, { Component } from 'react';
 import { Modal } from 'semantic-ui-react';
 
-
-class ModalWindow extends Component<Props> {
-  state = { open: false, content: '', actions: {}, closable: true }
-
-  handleAction = (event: SyntheticEvent, data: object) => {
-
-  }
+export default class ModalComponent extends Component<Props> {
+  props: Props;
 
   render() {
-    const { open, content, actions } = this.state
+    const { open, content, actions, onActionClick } = this.props;
 
     return (
       <Modal
         content={content}
         actions={actions}
         open={open}
-        closeOnDimmerClick={closable}
-        closeOnDocumentClick={closable}
-        onActionClick={this.handleAction}
+        onActionClick={onActionClick}
       />
     );
   }
 }
-
-export default ModalWindow;

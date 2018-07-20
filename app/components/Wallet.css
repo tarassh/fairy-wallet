@@ -36,6 +36,7 @@
     width: 50%;
 }
 
+.ui.segment.no-border,
 .ui.segments.wallet .segments.no-border,
 .ui.segments.wallet .segments.no-border >.segment,
 .ui.segments.wallet .segments.no-border >.segment+.segments,
@@ -62,4 +63,31 @@
 /* Input */
 input {
     height: 36px;
+}
+
+/* Form */
+.ui.form.stake div.field {
+    margin: 1em 0 0 0;
+}
+
+.ui.form.stake input {
+    height: 100%;
+}
+
+.ui.form.stake div.field {
+    width: 100%;
+} 
+
+.ui.form.stake div.label:first-child {
+    width: 25%;
+} 
+
+.ui.form.stake div.label:last-child {
+    cursor: pointer;
+    width: 10%;
+} 
+
+.ui.form.stake div.submit {
+    width: auto;
+    float: right;
 }

@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
-import ActionsStake from './Actions/Stake';
+import ActionsStake from '../../containers/Wallet/Actions/Stake';
 
-type Props = {
-};
+type Props = {};
 
 export default class Actions extends Component<Props> {
   props: Props;
@@ -16,10 +15,8 @@ export default class Actions extends Component<Props> {
       { menuItem: 'History', render: () => <ActionsHistory /> },
       { menuItem: 'Send', render: () => <ActionsSend /> },
       { menuItem: 'Stake\\Unstake', render: () => <ActionsStake /> }
-    ]
+    ];
 
-    return (
-      <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
-    );
+    return <Tab menu={{ secondary: true, pointing: true }} panes={panes} />;
   }
 }
