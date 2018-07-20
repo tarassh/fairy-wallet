@@ -122,34 +122,12 @@ class SendContainer extends Component<Props> {
 
     const maxAmount = parseFloat(balances[token]);
     const enableRequest = token !== '' && recipient !== '' && amount !== '';
-    const context = enableRequest
-      ? {
-          contract: 'eosio.token',
-          action: 'transfer',
-          data: [
-            'from',
-            account.account_name,
-            'to',
-            recipient,
-            `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`
-          ].join(' '),
-          memo
-        }
-      : null;
-    const txContext = Object.assign(
-      {},
-      {
-        context,
-        receipt: transactions.transfer.receipt,
-        error: transactions.transfer.err
-      }
-    );
 
     return (
       <Segment className="no-border">
         <TransactionModal
           open={openModal}
-          transaction={txContext}
+          transaction={transactions.transfer}
           handleClose={this.handleClose}
         />
         <Form onSubmit={this.handleSubmit}>

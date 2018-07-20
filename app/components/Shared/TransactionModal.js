@@ -8,15 +8,9 @@ type Props = {
 };
 
 class TransactionModal extends Component<Props> {
-
   render() {
-    const {
-      open,
-      transaction,
-      handleClose
-    } = this.props;
-    const { context, receipt } = transaction;
-    let { error } = transaction;
+    const { open, transaction, handleClose } = this.props;
+    const { context, receipt, err } = transaction;
 
     let content = '';
     let header = '';
@@ -26,36 +20,20 @@ class TransactionModal extends Component<Props> {
         <Table definition>
           <Table.Body>
             <Table.Row>
-              <Table.Cell width={3}>
-                Contract
-              </Table.Cell>
-              <Table.Cell>
-                {context.contract}
-              </Table.Cell>
+              <Table.Cell width={3}>Contract</Table.Cell>
+              <Table.Cell>{context.contract}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>
-                Action
-              </Table.Cell>
-              <Table.Cell>
-                {context.action}
-              </Table.Cell>
+              <Table.Cell>Action</Table.Cell>
+              <Table.Cell>{context.action}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>
-                Data
-              </Table.Cell>
-              <Table.Cell>
-                {context.data}
-              </Table.Cell>
+              <Table.Cell>Data</Table.Cell>
+              <Table.Cell>{context.data}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>
-                Memo
-              </Table.Cell>
-              <Table.Cell>
-                {context.memo}
-              </Table.Cell>
+              <Table.Cell>Memo</Table.Cell>
+              <Table.Cell>{context.memo}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -64,7 +42,7 @@ class TransactionModal extends Component<Props> {
     if (receipt !== null) {
       header = 'Success';
       content = (
-        <Message success >
+        <Message success>
           <Message.Content>
             <p> Transaction id {receipt.transaction_id}</p>
           </Message.Content>
@@ -72,8 +50,9 @@ class TransactionModal extends Component<Props> {
       );
     }
     let message = '';
-    if (error !== null) {
-      if (typeof error === 'string' ) {
+    if (err !== null) {
+      let error = err;
+      if (typeof error === 'string') {
         [error] = JSON.parse(error).error.details;
       }
 
@@ -81,17 +60,17 @@ class TransactionModal extends Component<Props> {
       message = <Message error content={error.message} />;
     }
     let modalAction = '';
-    if (receipt !== null || error !== null) {
-      modalAction = <Button primary onClick={handleClose}>Close</Button>;
+    if (receipt !== null || err !== null) {
+      modalAction = (
+        <Button primary onClick={handleClose}>
+          Close
+        </Button>
+      );
     }
 
     return (
-      <Transition visible={open} animation='scale' duration={500}>
-        <Modal
-          open={open}
-          size='tiny'
-          onClose={this.onClose}
-        >
+      <Transition visible={open} animation="scale" duration={500}>
+        <Modal open={open} size="tiny" onClose={this.onClose}>
           <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Modal.Description>
@@ -99,9 +78,7 @@ class TransactionModal extends Component<Props> {
               {message}
             </Modal.Description>
           </Modal.Content>
-          <Modal.Actions>
-            {modalAction}
-          </Modal.Actions>
+          <Modal.Actions>{modalAction}</Modal.Actions>
         </Modal>
       </Transition>
     );
