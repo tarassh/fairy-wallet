@@ -101,31 +101,42 @@ class StakeContainer extends Component<Props> {
     const cpu = `${parseFloat(Math.abs(cpuDelta)).toFixed(4)} ${eosToken}`;
     const net = `${parseFloat(Math.abs(netDelta)).toFixed(4)} ${eosToken}`;
 
-    const incrementCPU = cpuDelta > 0;
-    const incrementNet = netDelta > 0;
-    const decrementCPU = cpuDelta < 0;
-    const decrementNet = netDelta < 0;
-    const keepCPU = cpuDelta === 0;
-    const keepNet = netDelta === 0;
+    // Use of Karnaugh map
+    // https://en.wikipedia.org/wiki/Karnaugh_map
+    const iC = cpuDelta > 0 ? 1 : 0;
+    const iN = netDelta > 0 ? 1 : 0;
+    const dC = cpuDelta < 0 ? 1 : 0;
+    const dN = netDelta < 0 ? 1 : 0;
 
-    // No changes
-    if (keepCPU && keepNet) return;
+    const f = (dN << 3) | (dC << 2) | (iN << 1) | iC; // eslint-disable-line no-bitwise
 
-    // One or both values are incremented
-    if ((incrementCPU || incrementNet) && (!keepCPU || !keepNet)) {
-      this.props.delegate(accountName, accountName, net, cpu);
-    }
-    // One or both values are decreased
-    else if ((decrementCPU || decrementNet) && (!keepCPU || !keepNet)) {
-      this.props.undelegate(accountName, accountName, net, cpu);
-    }
-    // Both values are changed
-    else {
-      this.props.delegate(accountName, accountName, net, cpu);
-      this.props.undelegate(accountName, accountName, net, cpu);
+    switch (f) {
+      case 1:
+      case 2:
+      case 3:
+      case 7:
+      case 11:
+        this.props.delegate(accountName, accountName, net, cpu);
+        break;
+
+      case 4:
+      case 8:
+      case 12:
+      case 13:
+      case 14:
+        this.props.undelegate(accountName.accountName, net, cpu);
+        break;
+
+      case 6:
+      case 9:
+        this.props.delegate(accountName, accountName, net, cpu);
+        this.props.undelegate(accountName.accountName, net, cpu);
+
+        break;
+      default:
     }
 
-    this.setState({ openModal: true });
+    // this.setState({ openModal: true });
   };
 
   handleClose = () => {
