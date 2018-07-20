@@ -1,43 +1,23 @@
 import React, { Component } from 'react';
-import { Modal, Transition, Table, Button, Message } from 'semantic-ui-react';
+import { Modal, Transition, Button, Message } from 'semantic-ui-react';
+import TransferContext from './TransferContext';
 
 type Props = {
   open: boolean,
-  transaction: {},
+  transactions: {},
   handleClose: () => {}
 };
 
-class TransactionModal extends Component<Props> {
+class TransactionsModal extends Component<Props> {
   render() {
-    const { open, transaction, handleClose } = this.props;
-    const { context, receipt, err } = transaction;
+    const { open, transactions, handleClose } = this.props;
+    const { context, receipt, err } = transactions.transfer;
 
     let content = '';
     let header = '';
     if (context !== null) {
       header = 'Use ledger to verify transaction';
-      content = (
-        <Table definition>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell width={3}>Contract</Table.Cell>
-              <Table.Cell>{context.contract}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Action</Table.Cell>
-              <Table.Cell>{context.action}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Data</Table.Cell>
-              <Table.Cell>{context.data}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Memo</Table.Cell>
-              <Table.Cell>{context.memo}</Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table>
-      );
+      content = <TransferContext context={context} />;
     }
     if (receipt !== null) {
       header = 'Success';
@@ -70,7 +50,7 @@ class TransactionModal extends Component<Props> {
 
     return (
       <Transition visible={open} animation="scale" duration={500}>
-        <Modal open={open} size="tiny" onClose={this.onClose}>
+        <Modal open={open} size="small" onClose={this.onClose}>
           <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Modal.Description>
@@ -85,4 +65,4 @@ class TransactionModal extends Component<Props> {
   }
 }
 
-export default TransactionModal;
+export default TransactionsModal;

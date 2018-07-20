@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { transfer, resetState } from '../../../actions/transactions';
-import TransactionModal from '../../../components/Shared/TransactionModal';
+import TransactionsModal from '../../../components/Shared/TransactionsModal';
 
 type Props = {
   settings: {},
@@ -125,9 +125,9 @@ class SendContainer extends Component<Props> {
 
     return (
       <Segment className="no-border">
-        <TransactionModal
+        <TransactionsModal
           open={openModal}
-          transaction={transactions.transfer}
+          transactions={transactions}
           handleClose={this.handleClose}
         />
         <Form onSubmit={this.handleSubmit}>
