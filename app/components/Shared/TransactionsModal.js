@@ -7,6 +7,7 @@ import {
   Accordion
 } from 'semantic-ui-react';
 import TransferContext from './TransferContext';
+import DelegateContext from './DelegateContext';
 
 type Props = {
   open: boolean,
@@ -19,7 +20,10 @@ function createAccordionPanel(transaction) {
   const { action } = context;
   let status = <Message content={action} />;
 
-  const content = <TransferContext context={context} />;
+  let content = <TransferContext context={context} />;
+  if (action === 'delegatebw' || action === 'undelegatebw') {
+    content = <DelegateContext context={context} />;
+  }
 
   if (receipt !== null) {
     status = (

@@ -60,34 +60,11 @@
     float: right;
 }
 
-/* Input */
-input {
-    height: 36px;
+.dropdown {
+    height: 38px;
 }
 
-/* Form */
-.ui.form.stake div.field {
-    margin: 1em 0 0 0;
-}
-
-.ui.form.stake input {
-    height: 100%;
-}
-
-.ui.form.stake div.field {
-    width: 100%;
-} 
-
-.ui.form.stake div.label:first-child {
-    width: 25%;
-} 
-
-.ui.form.stake div.label:last-child {
-    cursor: pointer;
-    width: 10%;
-} 
-
-.ui.form.stake div.submit {
-    width: auto;
-    float: right;
+.arrow.alternate.circle.up.icon,
+.arrow.alternate.circle.down.icon {
+    margin: 0;
 }

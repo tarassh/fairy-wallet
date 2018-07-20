@@ -23,10 +23,10 @@ export class ListAccountsContainer extends Component<Props> {
     this.props.clearConnection();
   };
 
-  gotoWallet = e => {
+  gotoWallet = (e, { value }) => {
     const { history, accounts } = this.props;
 
-    this.props.setActiveAccount(accounts.names.indexOf(e.target.innerText));
+    this.props.setActiveAccount(accounts.names.indexOf(value));
     history.push('/wallet');
   };
 
@@ -34,7 +34,7 @@ export class ListAccountsContainer extends Component<Props> {
     const { accounts } = this.props;
 
     const accountRender = accounts.names.map(account => (
-      <List.Item as="a" onClick={this.gotoWallet} key={account}>
+      <List.Item as="a" onClick={this.gotoWallet} key={account} value={account}>
         <Icon name="user" />
         <List.Content>
           <List.Description>{account}</List.Description>

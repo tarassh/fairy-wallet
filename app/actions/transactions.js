@@ -5,14 +5,15 @@ import serialize from './helpers/ledgerserialize';
 
 const Api = require('./helpers/eosledjer').default;
 
-const contractName = 'eosio.token';
+const tokenContract = 'eosio.token';
+const eosioContract = 'eosio';
 
 export function transfer(from, to, asset, memo = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.TRANSFER_TOKEN_REQUEST,
       context: {
-        contract: contractName,
+        contract: tokenContract,
         action: 'transfer',
         from,
         to,
@@ -42,7 +43,7 @@ export function transfer(from, to, asset, memo = '') {
     };
 
     return eos(modified)
-      .transaction(contractName, contract => {
+      .transaction(tokenContract, contract => {
         contract.transfer(from, to, asset, memo);
       })
       .then(receipt => {
@@ -69,7 +70,17 @@ export function resetState() {
 
 export function delegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    dispatch({ type: types.DELEGATE_REQUEST });
+    dispatch({
+      type: types.DELEGATE_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: 'delegatebw',
+        from,
+        receiver,
+        net,
+        cpu
+      }
+    });
 
     const { connection, ledger } = getState();
 
@@ -94,12 +105,12 @@ export function delegate(from, receiver, net, cpu) {
 
     return eos(modified)
       .transaction('eosio', contract => {
-        contract.delegatebw(from, receiver, net, cpu);
+        contract.delegatebw(from, receiver, net, cpu, 0);
       })
-      .then(tx =>
+      .then(receipt =>
         dispatch({
           type: types.DELEGATE_SUCCESS,
-          tx
+          receipt
         })
       )
       .catch(err => {
@@ -113,7 +124,17 @@ export function delegate(from, receiver, net, cpu) {
 
 export function undelegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    dispatch({ type: types.UNDELEGATE_REQUEST });
+    dispatch({
+      type: types.UNDELEGATE_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: 'undelegatebw',
+        from,
+        receiver,
+        net,
+        cpu
+      }
+    });
 
     const { connection, ledger } = getState();
 
@@ -140,10 +161,10 @@ export function undelegate(from, receiver, net, cpu) {
       .transaction('eosio', contract => {
         contract.undelegatebw(from, receiver, net, cpu);
       })
-      .then(tx =>
+      .then(receipt =>
         dispatch({
           type: types.UNDELEGATE_SUCCESS,
-          tx
+          receipt
         })
       )
       .catch(err => {

@@ -29,6 +29,9 @@ export function getAccounts(publicKey) {
 }
 
 export function setActiveAccount(index) {
+  if (index === -1) {
+    console.log('asdfasdfasdf');
+  }
   return (dispatch: () => void) =>
     dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
 }
@@ -36,7 +39,8 @@ export function setActiveAccount(index) {
 export function getAccount(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
-      type: types.GET_ACCOUNT_REQUEST
+      type: types.GET_ACCOUNT_REQUEST,
+      name
     });
     const { connection } = getState();
 

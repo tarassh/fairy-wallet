@@ -40,6 +40,54 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.DELEGATE_REQUEST: {
+      const { delegate } = state;
+      delegate.context = action.context;
+      return Object.assign({}, state, {
+        delegate
+      });
+    }
+
+    case types.DELEGATE_FAILURE: {
+      const { delegate } = state;
+      delegate.err = action.err;
+      return Object.assign({}, state, {
+        delegate
+      });
+    }
+
+    case types.DELEGATE_SUCCESS: {
+      const { delegate } = state;
+      delegate.receipt = action.receipt;
+      return Object.assign({}, state, {
+        delegate
+      });
+    }
+
+    case types.UNDELEGATE_REQUEST: {
+      const { undelegate } = state;
+      undelegate.context = action.context;
+      return Object.assign({}, state, {
+        undelegate
+      });
+    }
+
+    case types.UNDELEGATE_FAILURE: {
+      const { undelegate } = state;
+      undelegate.err = action.err;
+      return Object.assign({}, state, {
+        undelegate
+      });
+    }
+
+    case types.UNDELEGATE_SUCCESS: {
+      const { undelegate } = state;
+      undelegate.receipt = action.receipt;
+      return Object.assign({}, state, {
+        undelegate
+      });
+    }
+
     default: {
       return state;
     }
