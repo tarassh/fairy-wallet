@@ -19,7 +19,7 @@ export default class Actions extends Component<Props> {
 
     return (
       <Tab
-        menu={{ color: 'grey', borderless: false, widths: 3, secondary: true }}
+        menu={{ color: 'grey', widths: 3, secondary: false }}
         panes={panes}
       />
     );

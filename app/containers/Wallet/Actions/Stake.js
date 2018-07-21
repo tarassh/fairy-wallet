@@ -197,7 +197,6 @@ class StakeContainer extends Component<Props> {
               label="CPU"
               name="cpu"
               min={0.0001}
-              // max={maxCPUAmount}
               value={cpu}
               onChange={this.handleChange}
               labelPosition="left"
@@ -212,7 +211,6 @@ class StakeContainer extends Component<Props> {
               id="form-textarea-control-amount"
               label="Network"
               min={0.0001}
-              // max={maxNETAmount}
               name="net"
               value={net}
               onChange={this.handleChange}

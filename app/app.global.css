@@ -37,6 +37,10 @@ textarea{
     user-select: none;  
 }
 
+.ui.basic.label {
+    font-weight: lighter;
+}
+
 .publickeycontainer .label {
     font-weight: lighter;
 }

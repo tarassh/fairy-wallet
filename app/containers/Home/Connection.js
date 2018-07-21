@@ -78,6 +78,7 @@ class ConnectionContainer extends Component<Props> {
           resultRenderer={({ text }) => <p>{text}</p>}
           icon={false}
           value={value}
+          showNoResults={false}
         />
         {errorMessage}
         <Container textAlign="center">
@@ -109,6 +110,7 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  ConnectionContainer
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ConnectionContainer);

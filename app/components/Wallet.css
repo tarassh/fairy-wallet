@@ -24,16 +24,18 @@
     margin: 0;
 }
 
+.ui.segments.wallet {
+    margin: 0;
+}
+
 .ui.segments.wallet > .balance {
     width: 50%;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 15;
-    margin: 0;
+    padding-top: 15px;
 }
 
 .ui.segments.wallet > .actions {
     width: 50%;
+    padding-top: 28px;
 }
 
 .ui.segment.no-border,
