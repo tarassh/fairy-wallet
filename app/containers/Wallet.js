@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getAccount } from '../actions/accounts';
+import { getAccount, getActions } from '../actions/accounts';
 import Wallet from '../components/Wallet';
 import { signTransaction } from '../actions/ledger';
 
@@ -18,8 +18,18 @@ class WalletContainer extends Component<Props> {
   props: Props;
 
   componentDidMount() {
+    this.tick();
+    this.interval = setInterval(this.tick.bind(this), 60000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  tick() {
     const { actions, accounts } = this.props;
     actions.getAccount(accounts.names[accounts.activeAccount]);
+    actions.getActions(accounts.names[accounts.activeAccount]);
   }
 
   render() {
@@ -50,6 +60,7 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(
       {
         getAccount,
+        getActions,
         signTransaction
       },
       dispatch
