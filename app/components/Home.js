@@ -23,6 +23,7 @@ export default class Home extends Component<Props> {
       states.deviceConnected &&
       states.nodeConnected &&
       states.accountsRetrieved &&
+      states.accountInfoRetrieved &&
       accounts.names.length === 1
     ) {
       history.push('/wallet');

@@ -19,7 +19,6 @@ class WalletContainer extends Component<Props> {
 
   componentDidMount() {
     const { actions, accounts } = this.props;
-
     actions.getAccount(accounts.names[accounts.activeAccount]);
   }
 

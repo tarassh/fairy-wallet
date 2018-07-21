@@ -8,7 +8,7 @@ import {
   delegateUndelegate,
   resetState
 } from '../../../actions/transactions';
-import { getAccount } from '../../../actions/accounts';
+import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 
 type Props = {
@@ -18,7 +18,8 @@ type Props = {
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (boolean, string, string, string, string) => {},
   resetState: () => {},
-  getAccount: string => {}
+  getAccount: (string) => {},
+  getActions: (string) => {}
 };
 
 type inputProps = {
@@ -128,7 +129,7 @@ class StakeContainer extends Component<Props> {
       case 12:
       case 13:
       case 14:
-        this.props.undelegate(accountName.accountName, net, cpu);
+        this.props.undelegate(accountName, accountName, net, cpu);
         break;
 
       case 6:
@@ -157,6 +158,7 @@ class StakeContainer extends Component<Props> {
     this.props.resetState();
     this.setState({ openModal: false });
     this.props.getAccount(accounts.account.account_name);
+    this.props.getActions(accounts.account.account_name);
   };
 
   render() {
@@ -255,7 +257,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { delegate, undelegate, delegateUndelegate, resetState, getAccount },
+    { delegate, undelegate, delegateUndelegate, resetState, getAccount, getActions },
     dispatch
   );
 }

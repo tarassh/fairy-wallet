@@ -13,21 +13,28 @@ type Props = {
   clearConnection: () => {},
   setActiveAccount: string => {},
   accounts: {},
-  history: {}
+  history: {},
+  states: {}
 };
 
 export class ListAccountsContainer extends Component<Props> {
   props: Props;
+
+  componentDidUpdate() {
+    const { history, states } = this.props;
+    if (states.accountInfoRetrieved) {
+      history.push('/wallet');
+    }
+  }
 
   onGoBack = () => {
     this.props.clearConnection();
   };
 
   gotoWallet = (e, { value }) => {
-    const { history, accounts } = this.props;
+    const { accounts } = this.props;
 
     this.props.setActiveAccount(accounts.names.indexOf(value));
-    history.push('/wallet');
   };
 
   render() {
@@ -67,7 +74,8 @@ export class ListAccountsContainer extends Component<Props> {
 
 function mapStateToProps(state) {
   return {
-    accounts: state.accounts
+    accounts: state.accounts,
+    states: state.states
   };
 }
 

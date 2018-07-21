@@ -29,11 +29,11 @@ export function getAccounts(publicKey) {
 }
 
 export function setActiveAccount(index) {
-  if (index === -1) {
-    console.log('asdfasdfasdf');
-  }
-  return (dispatch: () => void) =>
+  return (dispatch: () => void, getState) => {
     dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
+    const { accounts } = getState();
+    return dispatch(getAccount(accounts.names[index]));
+  }
 }
 
 export function getAccount(name) {
