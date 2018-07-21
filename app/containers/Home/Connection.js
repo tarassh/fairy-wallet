@@ -7,11 +7,17 @@ import { bindActionCreators } from 'redux';
 import { createConnection } from '../../actions/connection';
 
 class ConnectionContainer extends Component<Props> {
-  state = {
-    value: '',
-    changing: false,
-    results: []
-  };
+  constructor(props) {
+    super(props);
+
+    const { nodes } = this.props.settings;
+
+    this.state = {
+      value: nodes.length === 0 ? '' : nodes[0].text,
+      changing: false,
+      results: []
+    };
+  }
 
   onConnect = () => {
     this.props.createConnection(this.state.value);
@@ -42,12 +48,9 @@ class ConnectionContainer extends Component<Props> {
 
   render() {
     const { loading, connection } = this.props;
-    const { results, changing } = this.state;
+    const { results, changing, value } = this.state;
 
-    let disabled = false;
-    if (loading.CREATE_CONNECTION) {
-      disabled = true;
-    }
+    const disabled = !!loading.CREATE_CONNECTION;
 
     let errorMessage = '';
     if (!changing && !disabled && connection.err !== null) {
@@ -74,6 +77,7 @@ class ConnectionContainer extends Component<Props> {
           results={results}
           resultRenderer={({ text }) => <p>{text}</p>}
           icon={false}
+          value={value}
         />
         {errorMessage}
         <Container textAlign="center">
@@ -81,9 +85,7 @@ class ConnectionContainer extends Component<Props> {
             loading={disabled}
             content="Connect"
             disabled={disabled}
-            primary
             onClick={this.onConnect}
-            style={{ marginTop: '1em' }}
           />
         </Container>
       </Form>

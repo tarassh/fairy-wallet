@@ -31,9 +31,7 @@ class InactivityContainer extends Component<Props> {
         <Button 
           content="Retry"
           disabled={disabled}
-          primary
           onClick={this.retry}
-          style={{ marginTop: '1em' }}
         />
       </Form>
     );

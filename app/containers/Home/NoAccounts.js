@@ -32,7 +32,7 @@ class NoAccountsContainer extends Component<Props> {
       <Form>
         <Message>
           <Message.Content>
-            <p>Public Key </p>
+            <p>Public Key</p>
             <PublicKeyComponent />
             <p>
               do not have any registered account. Please create account for this
@@ -44,9 +44,7 @@ class NoAccountsContainer extends Component<Props> {
           <Button
             content="Retry"
             disabled={disabled}
-            primary
             onClick={this.onRetry}
-            style={{ marginTop: '1em' }}
           />
           <Button content="Back" disabled={disabled} onClick={this.onGoBack} />
         </div>

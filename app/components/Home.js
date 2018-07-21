@@ -70,9 +70,9 @@ export default class Home extends Component<Props> {
       <Grid stretched textAlign="center" verticalAlign="middle" className="locker">
         <Grid.Row />
         <Grid.Row columns={3} className="container">
-          <Grid.Column width={6} />
-          <Grid.Column width={4}>{mainSegment}</Grid.Column>
-          <Grid.Column width={6} />
+          <Grid.Column width={4} />
+          <Grid.Column width={8}>{mainSegment}</Grid.Column>
+          <Grid.Column width={4} />
         </Grid.Row>
         <Grid.Row />
       </Grid>
