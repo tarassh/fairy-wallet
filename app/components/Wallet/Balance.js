@@ -10,6 +10,7 @@ import { getCurrencyStats } from '../../actions/currency';
 import TokenAddModal from './TokenAddModal';
 import TokenRemoveModal from './TokenRemoveModal';
 import AccountSwitcher from '../Shared/AccountSwitcher';
+import BalanceComponent from '../Shared/BalanceComponent';
 import PublicKeyComponent from '../Shared/PublicKeyComponent';
 import StakedStats from './StakedStats';
 
@@ -71,7 +72,7 @@ class Balance extends Component<Props> {
                   />
                 </Table.Cell>
               </Table.Row>
-              ))}
+            ))}
           </Table.Body>
         </Table>
       </div>
@@ -91,20 +92,21 @@ class Balance extends Component<Props> {
             onChange={this.handleAccountSwitch}
           />
         </Segment>
-        { !showStakedData &&
+        <Segment>
+          <BalanceComponent account={accounts.account} />
+        </Segment>
+        {!showStakedData && (
           <Segment>
             <Button fluid onClick={this.handleTokenAddOpen}>
-            Add new token
+              Add new token
             </Button>
             <TokenAddModal
               open={openTokenAddModal}
               handleClose={this.handleTokenAddClose}
             />
           </Segment>
-        }
-        <Segment>
-          {details}
-        </Segment>
+        )}
+        <Segment>{details}</Segment>
       </Segment.Group>
     );
   }
@@ -125,7 +127,4 @@ const mapDispatchToProps = dispatch => ({
   )
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Balance);
+export default connect(mapStateToProps, mapDispatchToProps)(Balance);

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
-import BalanceComponent from './BalanceComponent';
 
 type Props = {
   accounts: {},
@@ -29,7 +28,6 @@ class AccountSwitcher extends Component<Props> {
             ))}
           </Dropdown.Menu>
         </Dropdown>
-        <BalanceComponent account={accounts.account} />
       </div>
     );
   }
