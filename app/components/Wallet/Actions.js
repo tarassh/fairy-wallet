@@ -14,9 +14,14 @@ export default class Actions extends Component<Props> {
     const panes = [
       { menuItem: 'History', render: () => <ActionsHistory /> },
       { menuItem: 'Send', render: () => <ActionsSend /> },
-      { menuItem: 'Stake\\Unstake', render: () => <ActionsStake /> }
+      { menuItem: 'Staking [Delegation]', render: () => <ActionsStake /> }
     ];
 
-    return <Tab menu={{ secondary: true, pointing: true }} panes={panes} />;
+    return (
+      <Tab
+        menu={{ color: 'grey', borderless: false, widths: 3, secondary: true }}
+        panes={panes}
+      />
+    );
   }
 }
