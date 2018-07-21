@@ -5,6 +5,7 @@ import { Form, Segment, Label } from 'semantic-ui-react';
 import {
   delegate,
   undelegate,
+  delegateUndelegate,
   resetState
 } from '../../../actions/transactions';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
@@ -14,6 +15,7 @@ type Props = {
   transactions: {},
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
+  delegateUndelegate: (boolean, string, string, string, string) => {},
   resetState: () => {}
 };
 
@@ -128,15 +130,24 @@ class StakeContainer extends Component<Props> {
         break;
 
       case 6:
-      case 9:
-        this.props.delegate(accountName, accountName, net, cpu);
-        this.props.undelegate(accountName.accountName, net, cpu);
-
+        this.props.delegateUndelegate(true, accountName, accountName, net, cpu);
         break;
+
+      case 9:
+        this.props.delegateUndelegate(
+          false,
+          accountName,
+          accountName,
+          net,
+          cpu
+        );
+        break;
+
       default:
+        return;
     }
 
-    // this.setState({ openModal: true });
+    this.setState({ openModal: true });
   };
 
   handleClose = () => {
@@ -241,7 +252,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ delegate, undelegate, resetState }, dispatch);
+  return bindActionCreators(
+    { delegate, undelegate, delegateUndelegate, resetState },
+    dispatch
+  );
 }
 
 export default connect(

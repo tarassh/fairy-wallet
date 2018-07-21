@@ -88,6 +88,16 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.DELEGATE_UNDELEGATE_REQUEST: {
+      const { delegate, undelegate } = state;
+      delegate.context = action.delegateContext;
+      undelegate.context = action.undelegateContext;
+      return Object.assign({}, state, {
+        delegate,
+        undelegate
+      });
+    }
+
     default: {
       return state;
     }
