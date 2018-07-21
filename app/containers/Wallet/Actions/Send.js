@@ -159,7 +159,7 @@ class SendContainer extends Component<Props> {
                 text={token}
                 onChange={this.handleChange}
                 className="tokendropdown"
-                style={{ paddingTop: '12px', paddingBottom: '12px' }}
+                style={{ paddingTop: '1em', paddingBottom: '1em' }}
               />
               <input />
             </InputFloat>
