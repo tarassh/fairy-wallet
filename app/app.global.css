@@ -37,6 +37,10 @@ textarea{
     user-select: none;  
 }
 
+.publickeycontainer .label {
+    font-weight: lighter;
+}
+
 .accordion.ui.remove-my-icons .title .dropdown.icon {
     display: none;
 }

@@ -43,7 +43,12 @@ class PublicKeyComponent extends Component<Props> {
     }
 
     return (
-      <Button as="div" labelPosition="right" onClick={this.verifyPublicKey}>
+      <Button
+        as="div"
+        labelPosition="right"
+        onClick={this.verifyPublicKey}
+        className="publickeycontainer"
+      >
         <Button icon="copy" basic />
         <Label as="a" basic>
           {publicKey.wif}
