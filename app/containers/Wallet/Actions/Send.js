@@ -148,20 +148,21 @@ class SendContainer extends Component<Props> {
               name="amount"
               value={amount}
               onChange={this.handleChange}
-              action={
-                <Form.Dropdown
-                  button
-                  basic
-                  floating
-                  options={tokens}
-                  defaultValue="EOS"
-                  name="token"
-                  text={token}
-                  onChange={this.handleChange}
-                />
-              }
-              actionPosition="left"
-            />
+            >
+              <Form.Dropdown
+                button
+                basic
+                floating
+                options={tokens}
+                defaultValue="EOS"
+                name="token"
+                text={token}
+                onChange={this.handleChange}
+                className="tokendropdown"
+                style={{ paddingTop: '12px', paddingBottom: '12px' }}
+              />
+              <input />
+            </InputFloat>
           </Form.Group>
           <Form.Input
             id="form-button-control-public"
