@@ -8,6 +8,7 @@ import {
   delegateUndelegate,
   resetState
 } from '../../../actions/transactions';
+import { getAccount } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 
 type Props = {
@@ -16,7 +17,8 @@ type Props = {
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (boolean, string, string, string, string) => {},
-  resetState: () => {}
+  resetState: () => {},
+  getAccount: string => {}
 };
 
 type inputProps = {
@@ -151,8 +153,10 @@ class StakeContainer extends Component<Props> {
   };
 
   handleClose = () => {
+    const { accounts } = this.props;
     this.props.resetState();
     this.setState({ openModal: false });
+    this.props.getAccount(accounts.account.account_name);
   };
 
   render() {
@@ -251,7 +255,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { delegate, undelegate, delegateUndelegate, resetState },
+    { delegate, undelegate, delegateUndelegate, resetState, getAccount },
     dispatch
   );
 }

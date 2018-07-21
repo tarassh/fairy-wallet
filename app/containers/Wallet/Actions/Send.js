@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { transfer, resetState } from '../../../actions/transactions';
+import { getAccount } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 
 type Props = {
@@ -12,7 +13,8 @@ type Props = {
   accounts: {},
   transactions: {},
   transfer: (string, string, string, string) => {},
-  resetState: () => {}
+  resetState: () => {},
+  getAccount: string => {}
 };
 
 type inputProps = {
@@ -86,8 +88,10 @@ class SendContainer extends Component<Props> {
   };
 
   handleClose = () => {
+    const { accounts } = this.props;
     this.props.resetState();
     this.setState({ openModal: false });
+    this.props.getAccount(accounts.account.account_name);
   };
   handleChange = (e, { name, value }) =>
     this.setState({ [name]: value, resetValue: name === 'token' });
@@ -194,7 +198,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ transfer, resetState }, dispatch);
+  return bindActionCreators({ transfer, resetState, getAccount }, dispatch);
 }
 
 export default connect(
