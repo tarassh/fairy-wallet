@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Icon, Form, Button, Segment } from 'semantic-ui-react';
+import { List, Icon, Form, Button, Segment, Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import { bindActionCreators } from 'redux';
@@ -43,14 +43,24 @@ export class ListAccountsContainer extends Component<Props> {
     ));
 
     return (
-      <Form>
-        <Segment>
-          <List>{accountRender}</List>
-        </Segment>
-        <div>
-          <Button content="Back" onClick={this.onGoBack} />
-        </div>
-      </Form>
+      <Grid>
+        <Grid.Row columns={3} className="container">
+          <Grid.Column width={5} />
+          <Grid.Column width={6}>
+            <Form>
+              <Segment>
+                <List divided relaxed>
+                  {accountRender}
+                </List>
+              </Segment>
+              <div>
+                <Button content="Back" onClick={this.onGoBack} />
+              </div>
+            </Form>
+          </Grid.Column>
+          <Grid.Column width={5} />
+        </Grid.Row>
+      </Grid>
     );
   }
 }
