@@ -18,8 +18,8 @@ type Props = {
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (boolean, string, string, string, string) => {},
   resetState: () => {},
-  getAccount: (string) => {},
-  getActions: (string) => {}
+  getAccount: string => {},
+  getActions: string => {}
 };
 
 type inputProps = {
@@ -155,10 +155,18 @@ class StakeContainer extends Component<Props> {
 
   handleClose = () => {
     const { accounts } = this.props;
+    const bandwidht = accounts.account.self_delegated_bandwidth;
+
     this.props.resetState();
-    this.setState({ openModal: false });
     this.props.getAccount(accounts.account.account_name);
     this.props.getActions(accounts.account.account_name);
+    this.setState({
+      net: assetToString(bandwidht.net_weight),
+      cpu: assetToString(bandwidht.cpu_weight),
+      openModal: false,
+      cpuDelta: 0,
+      netDelta: 0
+    });
   };
 
   render() {
@@ -257,7 +265,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { delegate, undelegate, delegateUndelegate, resetState, getAccount, getActions },
+    {
+      delegate,
+      undelegate,
+      delegateUndelegate,
+      resetState,
+      getAccount,
+      getActions
+    },
     dispatch
   );
 }
