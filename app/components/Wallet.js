@@ -13,6 +13,9 @@ type Props = {
 
 export default class Wallet extends Component<Props> {
   props: Props;
+  state = {
+    showStakedData: false
+  }
 
   componentDidUpdate() {
     const { states, history } = this.props;
@@ -21,13 +24,16 @@ export default class Wallet extends Component<Props> {
     }
   }
 
-  render() {
-    const {
-      accounts
-    } = this.props;
+  onTabChange = (e, { activeIndex, panes }) => {
+    this.setState({ showStakedData: panes[activeIndex].key === "stake" })
+  }
 
-    const leftSegment = <WalletBalance accounts={accounts} />
-    const rightSegment = <WalletActions />
+  render() {
+    const { accounts } = this.props;
+    const { showStakedData } = this.state;
+
+    const leftSegment = <WalletBalance accounts={accounts} showStakedData={showStakedData} />
+    const rightSegment = <WalletActions onTabChange={this.onTabChange} />
 
     return (
       <Segment.Group horizontal className='wallet'>
