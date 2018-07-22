@@ -16,8 +16,8 @@ class Tokens extends Component<Props> {
     symbol: ''
   };
 
-  handleRemoveOpen = e =>
-    this.setState({ openRemove: true, symbol: e.target.id });
+  handleRemoveOpen = (e, { value }) =>
+    this.setState({ openRemove: true, symbol: value });
   handleRemoveClose = () => this.setState({ openRemove: false, symbol: '' });
   handleAddOpen = () => this.setState({ openAdd: true });
   handleAddClose = () => this.setState({ openAdd: false });
@@ -52,7 +52,7 @@ class Tokens extends Component<Props> {
                   <Button
                     className="no-border"
                     basic
-                    id={s}
+                    value={s}
                     onClick={this.handleRemoveOpen}
                   >
                     <Icon name="close" className="opacue-2" />
