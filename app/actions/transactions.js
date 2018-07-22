@@ -7,6 +7,9 @@ const Api = require('./helpers/eosledjer').default;
 
 const tokenContract = 'eosio.token';
 const eosioContract = 'eosio';
+const transferAction = 'transfer';
+const delegateAction = 'delegatebw';
+const undelegateAction = 'undelegatebw';
 
 export function transfer(from, to, asset, memo = '') {
   return (dispatch: () => void, getState) => {
@@ -14,7 +17,7 @@ export function transfer(from, to, asset, memo = '') {
       type: types.TRANSFER_TOKEN_REQUEST,
       context: {
         contract: tokenContract,
-        action: 'transfer',
+        action: transferAction,
         from,
         to,
         asset,
@@ -26,6 +29,10 @@ export function transfer(from, to, asset, memo = '') {
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
       const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.TRANSFER_TOKEN_CONSTRUCTED,
+        constructed: true
+      });
 
       const api = new Api(ledger.transport);
       const result = await api.signTransaction(
@@ -74,7 +81,7 @@ export function delegate(from, receiver, net, cpu) {
       type: types.DELEGATE_REQUEST,
       context: {
         contract: eosioContract,
-        action: 'delegatebw',
+        action: delegateAction,
         from,
         receiver,
         net,
@@ -87,6 +94,10 @@ export function delegate(from, receiver, net, cpu) {
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
       const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.DELEGATE_CONSTRUCTED,
+        constructed: true
+      });
 
       const api = new Api(ledger.transport);
       const result = await api.signTransaction(
@@ -128,7 +139,7 @@ export function undelegate(from, receiver, net, cpu) {
       type: types.UNDELEGATE_REQUEST,
       context: {
         contract: eosioContract,
-        action: 'undelegatebw',
+        action: delegateAction,
         from,
         receiver,
         net,
@@ -141,6 +152,10 @@ export function undelegate(from, receiver, net, cpu) {
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
       const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.UNDELEGATE_CONSTRUCTED,
+        constructed: true
+      });
 
       const api = new Api(ledger.transport);
       const result = await api.signTransaction(
@@ -185,6 +200,15 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
       const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      const [action] = transaction.actions;
+      const type =
+        action.name === delegateAction
+          ? types.DELEGATE_CONSTRUCTED
+          : types.UNDELEGATE_CONSTRUCTED;
+      dispatch({
+        type,
+        constructed: true
+      });
 
       const api = new Api(ledger.transport);
       const result = await api.signTransaction(
@@ -206,7 +230,7 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
         type: types.DELEGATE_UNDELEGATE_REQUEST,
         delegateContext: {
           contract: eosioContract,
-          action: 'delegatebw',
+          action: delegateAction,
           from,
           receiver,
           net,
@@ -214,7 +238,7 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
         },
         undelegateContext: {
           contract: eosioContract,
-          action: 'undelegatebw',
+          action: undelegateAction,
           from,
           receiver,
           net: zero,
@@ -253,7 +277,7 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
       type: types.DELEGATE_UNDELEGATE_REQUEST,
       delegateContext: {
         contract: eosioContract,
-        action: 'delegatebw',
+        action: delegateAction,
         from,
         receiver,
         net: zero,
@@ -261,7 +285,7 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
       },
       undelegateContext: {
         contract: eosioContract,
-        action: 'undelegatebw',
+        action: undelegateAction,
         from,
         receiver,
         net,

@@ -4,7 +4,8 @@ import {
   Transition,
   Button,
   Message,
-  Accordion
+  Accordion,
+  Icon
 } from 'semantic-ui-react';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
@@ -16,13 +17,21 @@ type Props = {
 };
 
 function createAccordionPanel(transaction) {
-  const { context, receipt, err } = transaction;
+  const { context, receipt, err, constructed } = transaction;
   const actionName = context.action.replace(/\b\w/g, l => l.toUpperCase());
   const { action } = context;
 
   const messageHeader = <Message.Header content={actionName} />;
 
-  let status = <Message header={messageHeader} />;
+  let status = (
+    <Message icon={!constructed}>
+      {!constructed && <Icon name="circle notched" loading />}
+      <Message.Content>
+        {messageHeader}
+        {constructed ? 'Ready for signing' : 'Preparing'}
+      </Message.Content>
+    </Message>
+  );
 
   let content = <TransferContext context={context} />;
   if (action === 'delegatebw' || action === 'undelegatebw') {
