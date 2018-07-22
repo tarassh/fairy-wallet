@@ -1,12 +1,12 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "electron-react-boilerplate",
+  "name": "eos-ledger-nano-s-wallet",
+  "productName": "Fairy Wallet",
   "version": "1.0.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "EOS desktop wallet application for Ledger Nano S",
   "main": "./main.prod.js",
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
+    "name": "Taras Shchybovyk",
+    "email": "thchybo@gmail.com",
     "url": "https://github.com/chentsulin"
   },
   "scripts": {
