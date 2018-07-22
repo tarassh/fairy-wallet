@@ -50,7 +50,7 @@ class PublicKeyComponent extends Component<Props> {
         </Label>
         <Transition animation="scale" duration={200}>
           <Modal open={opened} size="tiny">
-            <Modal.Header>Verify Public Key with you device</Modal.Header>
+            <Modal.Header>Verify public key with your device</Modal.Header>
             <Modal.Content>
               <Modal.Description>
                 <p id="publickey">{publicKey.wif}</p>
@@ -79,7 +79,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PublicKeyComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(PublicKeyComponent);

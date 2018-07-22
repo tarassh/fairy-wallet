@@ -17,8 +17,12 @@ type Props = {
 
 function createAccordionPanel(transaction) {
   const { context, receipt, err } = transaction;
+  const actionName = context.action.replace(/\b\w/g, l => l.toUpperCase());
   const { action } = context;
-  let status = <Message content={action} />;
+
+  const messageHeader = <Message.Header content={actionName} />;
+
+  let status = <Message header={messageHeader} />;
 
   let content = <TransferContext context={context} />;
   if (action === 'delegatebw' || action === 'undelegatebw') {
@@ -28,8 +32,9 @@ function createAccordionPanel(transaction) {
   if (receipt !== null) {
     status = (
       <Message success>
+        {messageHeader}
         <Message.Content>
-          <p>{`${action}: transaction id ${receipt.transaction_id}`}</p>
+          {`Transaction id ${receipt.transaction_id}`}
         </Message.Content>
       </Message>
     );
@@ -37,10 +42,25 @@ function createAccordionPanel(transaction) {
 
   if (err !== null) {
     let error = err;
-    if (typeof error === 'string') {
-      [error] = JSON.parse(error).error.details;
+    let message = '';
+    let unused; // eslint-disable-line no-unused-vars
+    try {
+      if (typeof error === 'string') {
+        [error] = JSON.parse(error).error.details;
+      }
+      [unused, message] = error.message.split(':');
+      if (message) {
+        error = message.trim();
+      }
+    } catch (e) {
+      message = error;
     }
-    status = <Message error content={error.message} />;
+    status = (
+      <Message error>
+        {messageHeader}
+        <Message.Content>{message}</Message.Content>
+      </Message>
+    );
   }
 
   return {
@@ -74,14 +94,14 @@ class TransactionsModal extends Component<Props> {
       failureCounter += tx.err !== null ? 1 : 0;
     });
 
-    let header = 'Use ledger to verify transaction';
+    let header = 'Use your device to validate transaction';
     let modalAction = '';
     if (successCounter === panels.length) {
       header = 'Success';
-      modalAction = <Button primary onClick={handleClose} content="Close" />;
+      modalAction = <Button onClick={handleClose} content="Close" />;
     } else if (failureCounter > 0) {
       header = 'Error';
-      modalAction = <Button primary onClick={handleClose} content="Close" />;
+      modalAction = <Button onClick={handleClose} content="Close" />;
     }
 
     return (
