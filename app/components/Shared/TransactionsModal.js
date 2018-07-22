@@ -28,7 +28,7 @@ function createAccordionPanel(transaction) {
       {!constructed && <Icon name="circle notched" loading />}
       <Message.Content>
         {messageHeader}
-        {constructed ? 'Ready for signing' : 'Preparing'}
+        {constructed ? 'Ready to sign' : 'Preparing'}
       </Message.Content>
     </Message>
   );
