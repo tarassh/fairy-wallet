@@ -62,7 +62,7 @@ class TokenAddModal extends Component<Props> {
     const handleClick = requested && !!token ? this.addToken : this.checkToken;
     const content =
       requested && !!token ? (
-        <Table definition>
+        <Table basic="very">
           <Table.Body>
             <Table.Row>
               <Table.Cell width={4}>Issuer</Table.Cell>
@@ -86,12 +86,13 @@ class TokenAddModal extends Component<Props> {
           disabled={requesting}
           placeholder="Token name..."
           onChange={this.handleChange}
+          fluid
         />
       );
 
     return (
       <Transition visible={open} animation="scale" duration={500}>
-        <Modal open={open} size="tiny" onClose={this.onClose}>
+        <Modal open={open} size="mini" onClose={this.onClose}>
           <Modal.Content>
             <Modal.Description>
               {content}
@@ -99,7 +100,11 @@ class TokenAddModal extends Component<Props> {
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>
-            <Button primary loading={requesting} onClick={handleClick}>
+            <Button
+              loading={requesting}
+              onClick={handleClick}
+              disabled={tokenSymbol.length === 0}
+            >
               Add
             </Button>
             <Button onClick={this.handleClose}>Close</Button>
