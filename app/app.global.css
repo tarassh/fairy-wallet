@@ -33,6 +33,11 @@ textarea{
 	-webkit-app-region: no-drag;
 }
 
+.ui.form .field>label {
+    color: gray;
+    font-weight: lighter;
+}
+
 #publickey {
     user-select: none;  
 }
