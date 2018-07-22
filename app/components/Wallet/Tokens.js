@@ -41,8 +41,12 @@ class Tokens extends Component<Props> {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell />
-              <Table.HeaderCell>Token</Table.HeaderCell>
-              <Table.HeaderCell>Balance</Table.HeaderCell>
+              <Table.HeaderCell className="token-header">
+                Token
+              </Table.HeaderCell>
+              <Table.HeaderCell className="token-header">
+                Balance
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
           <Table.Body>

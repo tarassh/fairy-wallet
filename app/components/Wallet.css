@@ -55,15 +55,6 @@
     padding: 0;
 }
 
-/* Label */
-.ui.label {
-    border-bottom: 2px black dotted;
-}
-
-.ui.label .detail {
-    float: right;
-}
-
 .arrow.alternate.circle.up.icon,
 .arrow.alternate.circle.down.icon {
     margin: 0;

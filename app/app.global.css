@@ -35,19 +35,17 @@ textarea{
 
 .ui.form .field>label {
     color: gray;
+}
+
+.ui.basic.label,
+.publickeycontainer .label,
+.ui.table thead th.token-header,
+.ui.form .field>label {
     font-weight: lighter;
 }
 
 #publickey {
     user-select: none;  
-}
-
-.ui.basic.label {
-    font-weight: lighter;
-}
-
-.publickeycontainer .label {
-    font-weight: lighter;
 }
 
 .accordion.ui.remove-my-icons .title .dropdown.icon {
