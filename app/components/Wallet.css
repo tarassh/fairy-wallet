@@ -38,6 +38,8 @@
     padding-top: 28px;
 }
 
+.ui.basic.button.no-border,
+.ui.basic.button.no-border:hover,
 .ui.segment.no-border,
 .ui.segments.wallet .segments.no-border,
 .ui.segments.wallet .segments.no-border >.segment,

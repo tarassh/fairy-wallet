@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'semantic-ui-react';
+import { Table, Button, Icon } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import TokenRemoveModal from './TokenRemoveModal';
@@ -40,6 +40,7 @@ class Tokens extends Component<Props> {
         <Table basic="very" compact="very" unstackable>
           <Table.Header>
             <Table.Row>
+              <Table.HeaderCell />
               <Table.HeaderCell>Token</Table.HeaderCell>
               <Table.HeaderCell>Balance</Table.HeaderCell>
             </Table.Row>
@@ -47,16 +48,18 @@ class Tokens extends Component<Props> {
           <Table.Body>
             {_.map(accounts.balances, (balance, s) => (
               <Table.Row key={s}>
-                <Table.Cell collapsing>{s}</Table.Cell>
-                <Table.Cell collapsing>{balance}</Table.Cell>
-                <Table.Cell collapsing>
+                <Table.Cell collapsing textAlign="center" width={1}>
                   <Button
-                    icon="close"
+                    className="no-border"
                     basic
                     id={s}
                     onClick={this.handleRemoveOpen}
-                  />
+                  >
+                    <Icon name="close" className="opacue-2" />
+                  </Button>
                 </Table.Cell>
+                <Table.Cell collapsing>{s}</Table.Cell>
+                <Table.Cell collapsing>{balance}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
