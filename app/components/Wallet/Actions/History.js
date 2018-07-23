@@ -28,7 +28,7 @@ export default class History extends Component<Props> {
 
       let dayActions = _.find(days, { day });
       if (!dayActions) {
-        dayActions = { day, actions: [] };
+        dayActions = { day, actions: [], timestamp: date.getTime() };
         days.push(dayActions);
       }
 
@@ -49,12 +49,12 @@ export default class History extends Component<Props> {
       dayActions.actions.push(action);
     });
 
-    const items = _.map(days, dayGroup => (
+    const items = _.map(_.reverse(days), dayGroup => (
       <List.Item key={dayGroup.day} style={{ marginBottom: '1em' }}>
         {dayGroup.day}
         <List.Content>
           <List selection relaxed divided>
-            {_.map(dayGroup.actions, action => (
+            {_.map(_.reverse(dayGroup.actions), action => (
               <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
                 <List.Content>{renderAction(action)}</List.Content>
               </List.Item>
@@ -64,7 +64,11 @@ export default class History extends Component<Props> {
       </List.Item>
     ));
 
-    return <List id="scrollable-history">{items}</List>;
+    return (
+      <div id="scrollable-history">
+        <List>{items}</List>
+      </div>
+    );
   }
 }
 
