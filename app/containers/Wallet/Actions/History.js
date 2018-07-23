@@ -25,8 +25,9 @@ class HistoryContainer extends Component<Props> {
 
   render() {
     const { accounts } = this.props;
+    const actions = accounts.actions === null ? [] : accounts.actions.actions;
     return (
-      <History accounts={accounts} />
+      <History actions={actions} />
     );
   }
 }

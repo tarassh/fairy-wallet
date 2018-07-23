@@ -66,7 +66,8 @@ class StakedStats extends Component<Props> {
                 staked<p>{self_delegated_bandwidth.net_weight}</p>
               </Table.Cell>
               <Table.Cell width={4}>
-                usage<p>
+                usage
+                <p>
                   {pretty(parseInt(net_limit.used, 10))} /{' '}
                   {pretty(parseInt(net_limit.max, 10))}
                 </p>

@@ -1,9 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
-import styles from './Wallet.css';
 import WalletBalance from './Wallet/Balance';
 import WalletActions from './Wallet/Actions';
+import styles from './Wallet.css';
 
 type Props = {
   states: {},

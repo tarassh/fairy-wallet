@@ -10,30 +10,14 @@ import styles from './Home.css';
 
 type Props = {
   states: {},
-  accounts: {},
-  history: {}
+  accounts: {}
 };
 
 export default class Home extends Component<Props> {
   props: Props;
 
-  componentDidUpdate() {
-    const { states, accounts, history } = this.props;
-    if (
-      states.deviceConnected &&
-      states.nodeConnected &&
-      states.accountsRetrieved &&
-      states.accountInfoRetrieved &&
-      accounts.names.length === 1
-    ) {
-      history.push('/wallet');
-    }
-  }
-
   render() {
     const { states, accounts } = this.props;
-
-    console.log(this.props);
 
     let mainSegment = <Lock />;
     if (states.deviceConnected && accounts.publicKey === null) {
@@ -62,7 +46,7 @@ export default class Home extends Component<Props> {
       states.deviceConnected &&
       states.nodeConnected &&
       states.accountsRetrieved &&
-      accounts.names.length > 1
+      accounts.names.length > 0
     ) {
       mainSegment = <ListAccounts accounts={accounts.names} />;
     }
