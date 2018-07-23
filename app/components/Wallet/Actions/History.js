@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Tab, Segment, List } from 'semantic-ui-react';
+import { List } from 'semantic-ui-react';
 import _ from 'lodash';
 
 type Props = {
@@ -21,7 +21,7 @@ export default class History extends Component<Props> {
     const options2 = { hour: '2-digit', minute: '2-digit' };
     const days = [];
     actions.forEach(value => {
-      const { block_time } = value;   // eslint-disable-line camelcase
+      const { block_time } = value; // eslint-disable-line camelcase
       const date = new Date(block_time);
       const day = date.toLocaleDateString('en-US', options);
       const time = date.toLocaleTimeString('en-US', options2);
@@ -30,15 +30,15 @@ export default class History extends Component<Props> {
       if (!dayActions) {
         dayActions = { day, actions: [] };
         days.push(dayActions);
-      } 
+      }
 
-      const { trx_id } = value.action_trace;    // eslint-disable-line camelcase
+      const { trx_id } = value.action_trace; // eslint-disable-line camelcase
       const { account, name, data } = value.action_trace.act;
       const { act_digest } = value.action_trace.receipt; // eslint-disable-line camelcase
-      const action = { 
+      const action = {
         block_time,
-        time, 
-        txId: trx_id, 
+        time,
+        txId: trx_id,
         txIdShort: `${trx_id.slice(0, 5)}...${trx_id.slice(-5)}`,
         account,
         name,
@@ -49,33 +49,23 @@ export default class History extends Component<Props> {
       dayActions.actions.push(action);
     });
 
-    const items = (
-      _.map(days, (dayGroup) => (
-        <List.Item key={dayGroup.day}>
-          {dayGroup.day}
-          <List.Content>
-            <List selection relaxed divided>
-              {
-                _.map(dayGroup.actions, (action) => (
-                  <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
-                    <List.Content>
-                      {`${action.time} ${action.txIdShort} ${action.name}`}
-                    </List.Content>
-                  </List.Item>
-                ))
-              }
-            </List>
-          </List.Content>
-        </List.Item>
-      ))
-    );
+    const items = _.map(days, dayGroup => (
+      <List.Item key={dayGroup.day} style={{ marginBottom: '1em' }}>
+        {dayGroup.day}
+        <List.Content>
+          <List selection relaxed divided>
+            {_.map(dayGroup.actions, action => (
+              <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
+                <List.Content>
+                  {`${action.time} ${action.txIdShort} ${action.name}`}
+                </List.Content>
+              </List.Item>
+            ))}
+          </List>
+        </List.Content>
+      </List.Item>
+    ));
 
-    const content = (
-      <Segment className="no-border no-padding">
-        <List>{items}</List>
-      </Segment>
-    );
-
-    return <Tab.Pane content={content} className="history" />;
+    return <List id="scrollable-history">{items}</List>;
   }
 }

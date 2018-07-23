@@ -59,3 +59,24 @@
 .arrow.alternate.circle.down.icon {
     margin: 0;
 }
+
+.history {
+    height: 620px;
+}
+
+#scrollable-history {
+    overflow: hidden;
+    height: 100%;
+}
+
+#scrollable-history:hover {
+    overflow-y: scroll;
+}
+
+#scrollable-history::-webkit-scrollbar {
+    width: 5px;
+}
+
+#scrollable-history::-webkit-scrollbar-track {
+    border-radius: 5px;
+}

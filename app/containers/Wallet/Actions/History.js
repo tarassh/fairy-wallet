@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Segment } from 'semantic-ui-react';
 import History from '../../../components/Wallet/Actions/History';
 import { getActions } from '../../../actions/accounts';
 
@@ -14,10 +15,7 @@ class HistoryContainer extends Component<Props> {
   props: Props;
 
   componentDidMount() {
-    const {
-      actions,
-      accounts
-    } = this.props;
+    const { actions, accounts } = this.props;
 
     const name = accounts.account.account_name;
     actions.getActions(name);
@@ -27,7 +25,9 @@ class HistoryContainer extends Component<Props> {
     const { accounts } = this.props;
     const actions = accounts.actions === null ? [] : accounts.actions.actions;
     return (
-      <History actions={actions} />
+      <Segment className="no-border history">
+        <History actions={actions} />
+      </Segment>
     );
   }
 }
@@ -35,14 +35,17 @@ class HistoryContainer extends Component<Props> {
 function mapStateToProps(state) {
   return {
     accounts: state.accounts
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({
-      getActions
-    }, dispatch)
+    actions: bindActionCreators(
+      {
+        getActions
+      },
+      dispatch
+    )
   };
 }
 
