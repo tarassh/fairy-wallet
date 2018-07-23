@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { List } from 'semantic-ui-react';
+import { List, Grid } from 'semantic-ui-react';
 import _ from 'lodash';
 
 type Props = {
@@ -56,9 +56,7 @@ export default class History extends Component<Props> {
           <List selection relaxed divided>
             {_.map(dayGroup.actions, action => (
               <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
-                <List.Content>
-                  {`${action.time} ${action.txIdShort} ${action.name}`}
-                </List.Content>
+                <List.Content>{renderAction(action)}</List.Content>
               </List.Item>
             ))}
           </List>
@@ -68,4 +66,20 @@ export default class History extends Component<Props> {
 
     return <List id="scrollable-history">{items}</List>;
   }
+}
+
+function renderAction(action) {
+  let data = '';
+  Object.keys(action.data).forEach(key => {
+    data = [data, key, action.data[key]].join(' ');
+  });
+
+  return (
+    <Grid>
+      <Grid.Column width={3}>{action.time}</Grid.Column>
+      <Grid.Column width={3}>{action.txIdShort}</Grid.Column>
+      <Grid.Column width={3}>{action.name}</Grid.Column>
+      <Grid.Column width={7}>{data.trim()}</Grid.Column>
+    </Grid>
+  );
 }
