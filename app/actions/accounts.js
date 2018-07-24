@@ -48,6 +48,7 @@ export function getAccount(name) {
       .getAccount(name)
       .then(result => {
         dispatch(getCurrencyBalance(name));
+        dispatch(getActions(name));
         return dispatch({
           type: types.GET_ACCOUNT_SUCCESS,
           account: result

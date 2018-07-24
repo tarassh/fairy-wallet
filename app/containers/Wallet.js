@@ -29,7 +29,6 @@ class WalletContainer extends Component<Props> {
   tick() {
     const { actions, accounts } = this.props;
     actions.getAccount(accounts.names[accounts.activeAccount]);
-    actions.getActions(accounts.names[accounts.activeAccount]);
   }
 
   render() {
@@ -68,7 +67,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(WalletContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(WalletContainer);

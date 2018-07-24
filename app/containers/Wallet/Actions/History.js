@@ -14,13 +14,6 @@ type Props = {
 class HistoryContainer extends Component<Props> {
   props: Props;
 
-  componentDidMount() {
-    const { actions, accounts } = this.props;
-
-    const name = accounts.account.account_name;
-    actions.getActions(name);
-  }
-
   render() {
     const { accounts, actions } = this.props;
     const history = accounts.actions === null ? [] : accounts.actions;
