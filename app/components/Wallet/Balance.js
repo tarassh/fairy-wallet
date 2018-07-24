@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings';
 import { getCurrencyStats } from '../../actions/currency';
+import { getAccount } from '../../actions/accounts';
 
 import AccountSwitcher from '../Shared/AccountSwitcher';
 import BalanceComponent from '../Shared/BalanceComponent';
@@ -13,12 +14,15 @@ import StakedStats from './StakedStats';
 import Tokens from './Tokens';
 
 type Props = {
+  actions: {},
   showStakedData: boolean,
   accounts: {}
 };
 
 class Balance extends Component<Props> {
   handleAccountSwitch = name => {
+    const { actions } = this.props;
+    actions.getAccount(name);
     console.log(name);
   };
 
@@ -43,7 +47,7 @@ class Balance extends Component<Props> {
         <Segment>
           <AccountSwitcher
             accounts={accounts}
-            onChange={this.handleAccountSwitch}
+            onAccountSwitch={this.handleAccountSwitch}
           />
         </Segment>
         <Segment>
@@ -63,6 +67,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
+      getAccount,
       addToken,
       getCurrencyStats
     },
