@@ -1,7 +1,7 @@
 {
   "name": "eos-ledger-nano-s-wallet",
   "productName": "Fairy Wallet",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "EOS desktop wallet application for Ledger Nano S",
   "main": "./main.prod.js",
   "author": {
