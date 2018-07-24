@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { transfer, resetState } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
+import { numberToAsset } from '../../../utils/asset';
 
 type Props = {
   settings: {},
@@ -14,8 +15,8 @@ type Props = {
   transactions: {},
   transfer: (string, string, string, string) => {},
   resetState: () => {},
-  getAccount: (string) => {},
-  getActions: (string) => {}
+  getAccount: string => {},
+  getActions: string => {}
 };
 
 type inputProps = {
@@ -101,7 +102,7 @@ class SendContainer extends Component<Props> {
     const { token, recipient, amount, memo } = this.state;
     const { accounts } = this.props;
     const accountName = accounts.account.account_name;
-    const asset = `${parseFloat(amount).toFixed(4)} ${token.toUpperCase()}`;
+    const asset = numberToAsset(amount, token.toUpperCase);
 
     this.props.transfer(accountName, recipient, asset, memo);
     this.setState({ openModal: true });
@@ -200,10 +201,10 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ transfer, resetState, getAccount, getActions }, dispatch);
+  return bindActionCreators(
+    { transfer, resetState, getAccount, getActions },
+    dispatch
+  );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SendContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SendContainer);

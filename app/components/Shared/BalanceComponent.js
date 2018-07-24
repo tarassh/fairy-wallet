@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Label, Icon, Popup, Header, Table } from 'semantic-ui-react';
+import { numberToAsset, assetToNumber } from '../../utils/asset';
 
 const moment = require('moment');
 
@@ -99,13 +100,13 @@ class BalanceComponent extends Component<Props> {
 function balanceStats(account) {
   const staked = account.voter_info.staked / 10000;
   const unstaking = totalRefund(account.refund_request);
-  const liquid = assetToFloat(account.core_liquid_balance);
+  const liquid = assetToNumber(account.core_liquid_balance);
   const total = staked + unstaking + liquid;
 
   const stats = {
-    total: `${parseFloat(total).toFixed(4)} EOS`,
-    liquid: `${parseFloat(liquid).toFixed(4)} EOS`,
-    staked: `${parseFloat(staked).toFixed(4)} EOS`
+    total: numberToAsset(total),
+    liquid: numberToAsset(liquid),
+    staked: numberToAsset(staked)
   };
 
   const detailed = {
@@ -119,7 +120,7 @@ function balanceStats(account) {
     const time = moment(timeLeft).fromNow();
 
     Object.assign(stats, {
-      unstaking: `${parseFloat(unstaking).toFixed(4)} EOS`,
+      unstaking: numberToAsset(unstaking),
       unstakingTime: time
     });
 
@@ -135,14 +136,11 @@ function balanceStats(account) {
 
 function totalRefund(request) {
   if (request && request !== null) {
-    return assetToFloat(request.cpu_amount) + assetToFloat(request.net_amount);
+    return (
+      assetToNumber(request.cpu_amount) + assetToNumber(request.net_amount)
+    );
   }
   return 0;
-}
-
-function assetToFloat(asset) {
-  const [amount] = asset.split(' ');
-  return parseFloat(amount);
 }
 
 export default BalanceComponent;

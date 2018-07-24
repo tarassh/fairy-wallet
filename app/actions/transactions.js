@@ -2,6 +2,7 @@
 import * as types from './types';
 import eos from './helpers/eos';
 import serialize from './helpers/ledgerserialize';
+import { numberToAsset } from '../utils/asset';
 
 const Api = require('./helpers/eosledjer').default;
 
@@ -193,7 +194,7 @@ export function undelegate(from, receiver, net, cpu) {
 
 export function delegateUndelegate(netFist, from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    const zero = `${parseFloat(0).toFixed(4)} EOS`;
+    const zero = numberToAsset(0);
 
     const { connection, ledger } = getState();
 

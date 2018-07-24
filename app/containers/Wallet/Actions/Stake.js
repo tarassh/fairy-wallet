@@ -10,6 +10,7 @@ import {
 } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
+import { numberToAsset, assetToNumber } from '../../../utils/asset';
 
 type Props = {
   accounts: {},
@@ -25,8 +26,6 @@ type Props = {
 type inputProps = {
   onChange: () => {}
 };
-
-const eosToken = 'EOS';
 
 const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
 
@@ -82,10 +81,10 @@ class StakeContainer extends Component<Props> {
   handleChange = (e, { name, value }) => {
     const { accounts } = this.props;
     let { cpuDelta, netDelta } = this.state;
-    const stakedCpu = assetToFloat(
+    const stakedCpu = assetToNumber(
       accounts.account.self_delegated_bandwidth.cpu_weight
     );
-    const stakedNet = assetToFloat(
+    const stakedNet = assetToNumber(
       accounts.account.self_delegated_bandwidth.net_weight
     );
     const newValue = parseFloat(value);
@@ -103,8 +102,8 @@ class StakeContainer extends Component<Props> {
     const { accounts } = this.props;
     const accountName = accounts.account.account_name;
 
-    const cpu = `${parseFloat(Math.abs(cpuDelta)).toFixed(4)} ${eosToken}`;
-    const net = `${parseFloat(Math.abs(netDelta)).toFixed(4)} ${eosToken}`;
+    const cpu = numberToAsset(cpuDelta);
+    const net = numberToAsset(netDelta);
 
     // Use of Karnaugh map
     // https://en.wikipedia.org/wiki/Karnaugh_map
@@ -246,11 +245,6 @@ class StakeContainer extends Component<Props> {
   }
 }
 
-function assetToFloat(asset) {
-  const [amount] = asset.split(' ');
-  return parseFloat(amount);
-}
-
 function assetToString(asset) {
   const [amount] = asset.split(' ');
   return amount;
@@ -277,7 +271,4 @@ function mapDispatchToProps(dispatch) {
   );
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(StakeContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(StakeContainer);
