@@ -207,6 +207,8 @@
     "eosjs": "15.0.0",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
+    "moment": "^2.22.2",
+    "prettysize": "^1.1.0",
     "react": "^16.4.1",
     "react-animated-css": "^1.0.4",
     "react-copy-to-clipboard": "^5.0.1",
@@ -222,9 +224,7 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.3.2",
-    "source-map-support": "^0.5.6",
-    "prettysize": "^1.1.0",
-    "pretty-time": "^1.1.0"
+    "source-map-support": "^0.5.6"
   },
   "devEngines": {
     "node": ">=7.x",

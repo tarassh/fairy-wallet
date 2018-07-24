@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Label, Icon, Popup, Header, Table } from 'semantic-ui-react';
 
-const pretty = require('pretty-time');
+const moment = require('moment');
 
 type Props = {
   account: {}
@@ -11,15 +11,14 @@ class BalanceComponent extends Component<Props> {
   render() {
     const { account } = this.props;
 
-    let timeLeft = '';
-
-    const { total, liquid, staked, unstaking } = balanceStats(account);
-    if (unstaking) {
-      const { refund_request } = account; // eslint-disable-line camelcase
-      timeLeft = new Date(refund_request.request_time);
-      timeLeft.setDate(timeLeft.getDate() + 3);
-      timeLeft = pretty(timeLeft.getTime() * 100);
-    }
+    const {
+      total,
+      liquid,
+      staked,
+      unstaking,
+      unstakingTime,
+      detailed
+    } = balanceStats(account);
 
     const content = (
       <div>
@@ -35,13 +34,27 @@ class BalanceComponent extends Component<Props> {
               <Table.Cell textAlign="right">{liquid}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell textAlign="left">Staked</Table.Cell>
-              <Table.Cell textAlign="right">{staked}</Table.Cell>
+              <Table.Cell textAlign="left">Staked CPU</Table.Cell>
+              <Table.Cell textAlign="right">{detailed.stakedCpu}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell textAlign="left">Staked Net</Table.Cell>
+              <Table.Cell textAlign="right">{detailed.stakedNet}</Table.Cell>
             </Table.Row>
             {unstaking && (
               <Table.Row>
-                <Table.Cell>Unstaking</Table.Cell>
-                <Table.Cell>{`${timeLeft} ${unstaking}`}</Table.Cell>
+                <Table.Cell>Unstaking CPU</Table.Cell>
+                <Table.Cell>{`${unstakingTime} ${
+                  detailed.unstakingCpu
+                }`}</Table.Cell>
+              </Table.Row>
+            )}
+            {unstaking && (
+              <Table.Row>
+                <Table.Cell>Unstaking Net</Table.Cell>
+                <Table.Cell>{`${unstakingTime} ${
+                  detailed.unstakingNet
+                }`}</Table.Cell>
               </Table.Row>
             )}
           </Table.Body>
@@ -72,7 +85,7 @@ class BalanceComponent extends Component<Props> {
               {!!unstaking && (
                 <Label as="div" basic>
                   <Icon name="clock" color="grey" />
-                  {`${unstaking} [${timeLeft}]`}
+                  {`${unstaking} [${unstakingTime}]`}
                 </Label>
               )}
             </Button>
@@ -95,11 +108,28 @@ function balanceStats(account) {
     staked: `${parseFloat(staked).toFixed(4)} EOS`
   };
 
+  const detailed = {
+    stakedCpu: account.self_delegated_bandwidth.cpu_weight,
+    stakedNet: account.self_delegated_bandwidth.net_weight
+  };
+
   if (unstaking > 0) {
+    const timeLeft = new Date(account.refund_request.request_time);
+    timeLeft.setDate(timeLeft.getDate() + 3);
+    const time = moment(timeLeft).fromNow();
+
     Object.assign(stats, {
-      unstaking: `${parseFloat(unstaking).toFixed(4)} EOS`
+      unstaking: `${parseFloat(unstaking).toFixed(4)} EOS`,
+      unstakingTime: time
+    });
+
+    Object.assign(detailed, {
+      unstakingCpu: account.refund_request.cpu_amount,
+      unstakingNet: account.refund_request.net_amount
     });
   }
+  Object.assign(stats, { detailed });
+
   return stats;
 }
 
