@@ -33,7 +33,7 @@ export function setActiveAccount(index) {
     dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
     const { accounts } = getState();
     return dispatch(getAccount(accounts.names[index]));
-  }
+  };
 }
 
 export function getAccount(name) {
@@ -62,22 +62,36 @@ export function getAccount(name) {
   };
 }
 
-export function getActions(name) {
+export function getActions(name, position = -1, offset = -20) {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.GET_ACTIONS_REQUEST
     });
 
-    const { connection } = getState();
-
+    const { connection, accounts } = getState();
     eos(connection)
-      .getActions(name)
-      .then(result =>
-        dispatch({
+      .getActions(name, position, offset)
+      .then(result => {
+        const { actions } = accounts;
+
+        if (actions === null) {
+          return dispatch({
+            type: types.GET_ACTIONS_SUCCESS,
+            actions: result.actions
+          });
+        }
+
+        const history = _.unionBy(
+          result.actions,
+          actions,
+          'account_action_seq'
+        );
+
+        return dispatch({
           type: types.GET_ACTIONS_SUCCESS,
-          actions: result
-        })
-      )
+          actions: _.sortBy(history, ['account_action_seq'])
+        });
+      })
       .catch(err => {
         dispatch({
           type: types.GET_ACTIONS_FAILURE,

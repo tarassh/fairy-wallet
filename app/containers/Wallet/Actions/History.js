@@ -22,11 +22,15 @@ class HistoryContainer extends Component<Props> {
   }
 
   render() {
-    const { accounts } = this.props;
-    const actions = accounts.actions === null ? [] : accounts.actions.actions;
+    const { accounts, actions } = this.props;
+    const history = accounts.actions === null ? [] : accounts.actions;
     return (
       <Segment className="no-border history">
-        <History actions={actions} />
+        <History
+          account={accounts.account}
+          actions={history}
+          getActions={actions.getActions}
+        />
       </Segment>
     );
   }
