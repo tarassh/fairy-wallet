@@ -14,7 +14,8 @@ class StakedStats extends Component<Props> {
       cpu_limit, // eslint-disable-line camelcase
       net_limit, // eslint-disable-line camelcase
       self_delegated_bandwidth, // eslint-disable-line camelcase
-      total_resources // eslint-disable-line camelcase
+      total_resources, // eslint-disable-line camelcase
+      refund_request // eslint-disable-line camelcase
     } = account;
 
     return (
@@ -38,6 +39,12 @@ class StakedStats extends Component<Props> {
                 staked
                 <p>{self_delegated_bandwidth.cpu_weight}</p>
               </Table.Cell>
+              {!!refund_request && ( // eslint-disable-line camelcase
+                <Table.Cell width={4}>
+                  unstaking
+                  <p>{refund_request.cpu_amount}</p>
+                </Table.Cell>
+              )}
               <Table.Cell width={4}>
                 usage
                 <p>
@@ -65,6 +72,12 @@ class StakedStats extends Component<Props> {
               <Table.Cell width={4}>
                 staked<p>{self_delegated_bandwidth.net_weight}</p>
               </Table.Cell>
+              {!!refund_request && ( // eslint-disable-line camelcase
+                <Table.Cell width={4}>
+                  unstaking
+                  <p>{refund_request.net_amount}</p>
+                </Table.Cell>
+              )}
               <Table.Cell width={4}>
                 usage
                 <p>

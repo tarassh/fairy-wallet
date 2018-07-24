@@ -44,17 +44,17 @@ class BalanceComponent extends Component<Props> {
             {unstaking && (
               <Table.Row>
                 <Table.Cell>Unstaking CPU</Table.Cell>
-                <Table.Cell>{`${unstakingTime} ${
-                  detailed.unstakingCpu
-                }`}</Table.Cell>
+                <Table.Cell>
+                  {`${unstakingTime} ${detailed.unstakingCpu}`}
+                </Table.Cell>
               </Table.Row>
             )}
             {unstaking && (
               <Table.Row>
                 <Table.Cell>Unstaking Net</Table.Cell>
-                <Table.Cell>{`${unstakingTime} ${
-                  detailed.unstakingNet
-                }`}</Table.Cell>
+                <Table.Cell>
+                  {`${unstakingTime} ${detailed.unstakingNet}`}
+                </Table.Cell>
               </Table.Row>
             )}
           </Table.Body>
