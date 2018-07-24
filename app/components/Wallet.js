@@ -24,6 +24,12 @@ export default class Wallet extends Component<Props> {
     }
   }
 
+  componentDidCatch(error) {
+    const { history } = this.props;
+    console.log(error);
+    history.goBack();
+  }
+
   onTabChange = (e, { activeIndex, panes }) => {
     this.setState({ showStakedData: panes[activeIndex].key === "stake" })
   }
