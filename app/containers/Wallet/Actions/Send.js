@@ -102,7 +102,7 @@ class SendContainer extends Component<Props> {
     const { token, recipient, amount, memo } = this.state;
     const { accounts } = this.props;
     const accountName = accounts.account.account_name;
-    const asset = numberToAsset(amount, token.toUpperCase);
+    const asset = numberToAsset(amount, token.toUpperCase());
 
     this.props.transfer(accountName, recipient, asset, memo);
     this.setState({ openModal: true });

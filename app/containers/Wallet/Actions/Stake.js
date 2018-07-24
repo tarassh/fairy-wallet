@@ -102,8 +102,8 @@ class StakeContainer extends Component<Props> {
     const { accounts } = this.props;
     const accountName = accounts.account.account_name;
 
-    const cpu = numberToAsset(cpuDelta);
-    const net = numberToAsset(netDelta);
+    const cpu = numberToAsset(Math.abs(cpuDelta));
+    const net = numberToAsset(Math.abs(netDelta));
 
     // Use of Karnaugh map
     // https://en.wikipedia.org/wiki/Karnaugh_map
