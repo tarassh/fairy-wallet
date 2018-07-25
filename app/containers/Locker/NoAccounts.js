@@ -41,11 +41,7 @@ class NoAccountsContainer extends Component<Props> {
           </Message.Content>
         </Message>
         <div>
-          <Button
-            content="Retry"
-            disabled={disabled}
-            onClick={this.onRetry}
-          />
+          <Button content="Retry" disabled={disabled} onClick={this.onRetry} />
           <Button content="Back" disabled={disabled} onClick={this.onGoBack} />
         </div>
       </Form>
@@ -69,7 +65,6 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NoAccountsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  NoAccountsContainer
+);

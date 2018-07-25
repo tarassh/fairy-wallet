@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
-import ConnectionContainer from '../../containers/Home/Connection';
+import ConnectionContainer from '../../containers/Locker/Connection';
 
 class Connection extends Component<Props> {
   render() {

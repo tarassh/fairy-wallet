@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import Home from '../components/Home';
+import Locker from '../components/Locker';
 
-import * as LedgerActions from "../actions/ledger";
-import * as StateActions from "../actions/states";
+import * as LedgerActions from '../actions/ledger';
+import * as StateActions from '../actions/states';
 
 type Props = {
   history: {},
@@ -21,16 +21,9 @@ class HomeContainer extends Component<Props> {
   props: Props;
 
   render() {
-    const {
-      history,
-      ledger,
-      actions,
-      states,
-      accounts,
-      loading
-    } = this.props;
+    const { history, ledger, actions, states, accounts, loading } = this.props;
     return (
-      <Home
+      <Locker
         history={history}
         ledger={ledger}
         actions={actions}
@@ -49,15 +42,20 @@ function mapStateToProps(state) {
     accounts: state.accounts,
     loading: state.loading
   };
-};
+}
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators({
-      ...StateActions,
-      ...LedgerActions
-    }, dispatch)
+    actions: bindActionCreators(
+      {
+        ...StateActions,
+        ...LedgerActions
+      },
+      dispatch
+    )
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeContainer));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+);

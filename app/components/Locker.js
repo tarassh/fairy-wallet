@@ -1,19 +1,19 @@
 // @flow
 import React, { Component } from 'react';
 import { Grid } from 'semantic-ui-react';
-import Lock from './Home/Lock';
-import NoAccounts from './Home/NoAccounts';
-import Connection from './Home/Connection';
-import ListAccounts from './Home/ListAccounts';
-import Inactivity from './Home/Inactivity';
-import styles from './Home.css';
+import Lock from './Locker/Lock';
+import NoAccounts from './Locker/NoAccounts';
+import Connection from './Locker/Connection';
+import ListAccounts from './Locker/ListAccounts';
+import Inactivity from './Locker/Inactivity';
+import styles from './Locker.css'; // eslint-disable-line no-unused-vars
 
 type Props = {
   states: {},
   accounts: {}
 };
 
-export default class Home extends Component<Props> {
+export default class Locker extends Component<Props> {
   props: Props;
 
   render() {
@@ -52,7 +52,12 @@ export default class Home extends Component<Props> {
     }
 
     return (
-      <Grid stretched textAlign="center" verticalAlign="middle" className="locker">
+      <Grid
+        stretched
+        textAlign="center"
+        verticalAlign="middle"
+        className="locker"
+      >
         <Grid.Row />
         <Grid.Row columns={3} className="container">
           <Grid.Column width={4} />

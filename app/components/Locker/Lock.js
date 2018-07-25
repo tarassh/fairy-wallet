@@ -2,11 +2,8 @@
 import React, { Component } from 'react';
 import { Message, Form } from 'semantic-ui-react';
 
-
 class Lock extends Component<Props> {
-
   render() {
-
     return (
       <Form>
         <Message>

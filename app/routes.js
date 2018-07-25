@@ -2,14 +2,14 @@
 import React from 'react';
 import { Switch, Route, HashRouter } from 'react-router-dom';
 import App from './containers/App';
-import Home from './containers/Home';
+import Locker from './containers/Locker';
 import Wallet from './containers/Wallet';
 
 export default () => (
   <App>
     <HashRouter>
       <Switch>
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" component={Locker} />
         <Route path="/wallet" component={Wallet} />
       </Switch>
     </HashRouter>
