@@ -80,6 +80,10 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
+  mainWindow.on('close', () => {
+    app.quit();
+  });
+
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 });
