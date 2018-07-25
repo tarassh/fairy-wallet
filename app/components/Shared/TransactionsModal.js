@@ -24,8 +24,8 @@ function createAccordionPanel(transaction) {
   const messageHeader = <Message.Header content={actionName} />;
 
   let status = (
-    <Message icon={!constructed}>
-      {!constructed && <Icon name="circle notched" loading />}
+    <Message icon>
+      <Icon name="circle notched" loading />
       <Message.Content>
         {messageHeader}
         {constructed ? 'Ready to sign' : 'Preparing'}
