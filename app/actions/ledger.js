@@ -2,7 +2,7 @@
 import * as types from './types';
 
 const Api = require('./helpers/eosledjer').default;
-const Transport = require("@ledgerhq/hw-transport-node-hid").default;
+const Transport = require('@ledgerhq/hw-transport-node-hid').default;
 
 export function startListen() {
   return (dispatch: () => void, getState) => {
@@ -18,43 +18,50 @@ export function startListen() {
     }
 
     const subscriber = Transport.listen({
-      next: (event) => {
+      next: event => {
         if (event.type === 'add') {
           if (getState().ledger.devicePath === null) {
-
-            if (getState().ledger.devicePath !== event.device.path && getState().ledger.application === null) {
+            if (
+              getState().ledger.devicePath !== event.device.path &&
+              getState().ledger.application === null
+            ) {
               dispatch(stopListen());
 
-              Transport.open(event.device.path).then((transport) => {
-                transport.setDebugMode(true);
-                const api = new Api(transport);
-                api.getAppConfiguration().then((result) => {
-                  // transport.close();
+              Transport.open(event.device.path)
+                .then(transport => {
+                  if (process.env.NODE_ENV === 'development') {
+                    transport.setDebugMode(true);
+                  }
+                  const api = new Api(transport);
+                  api
+                    .getAppConfiguration()
+                    .then(result => {
+                      dispatch({
+                        type: types.GET_APP_STATS_SUCCESS,
+                        application: result,
+                        transport
+                      });
 
-                  dispatch({
-                    type: types.GET_APP_STATS_SUCCESS,
-                    application: result,
-                    transport
-                  });
+                      dispatch(getPublicKey());
+                      dispatch(startListen());
+                      return result;
+                    })
+                    .catch(err => {
+                      transport.close();
 
-                  dispatch(getPublicKey());
-                  dispatch(startListen());
-                  return result;
-                }).catch((err) => {
-                  transport.close();
+                      dispatch({
+                        type: types.GET_APP_STATS_FAILURE,
+                        err
+                      });
 
-                  dispatch({
-                    type: types.GET_APP_STATS_FAILURE,
-                    err
-                  });
-
+                      dispatch(startListen());
+                    });
+                  return transport;
+                })
+                .catch(err => {
+                  console.log(err);
                   dispatch(startListen());
                 });
-                return transport;
-              }).catch((err) => {
-                console.log(err);
-                dispatch(startListen());
-              });
             }
 
             dispatch({
@@ -62,8 +69,6 @@ export function startListen() {
               devicePath: event.device.path
             });
           }
-
-
         } else if (event.type === 'remove') {
           dispatch({ type: types.DEVICE_DISCONNECTED });
         }
@@ -101,13 +106,20 @@ export function getPublicKey(display = false) {
       });
     }
 
-    api.getPublicKey(ledger.bip44Path, display).then((result) => {
-      const type = display ? types.PUBLIC_KEY_DISPLAY_SUCCESS : types.GET_PUBLIC_KEY_SUCCESS;
-      return dispatch({ type, publicKey: result });
-    }).catch((err) => {
-      const type = display ? types.PUBLIC_KEY_DISPLAY_FAILURE : types.GET_PUBLIC_KEY_FAILURE;
-      dispatch({ type, err });
-    });
+    api
+      .getPublicKey(ledger.bip44Path, display)
+      .then(result => {
+        const type = display
+          ? types.PUBLIC_KEY_DISPLAY_SUCCESS
+          : types.GET_PUBLIC_KEY_SUCCESS;
+        return dispatch({ type, publicKey: result });
+      })
+      .catch(err => {
+        const type = display
+          ? types.PUBLIC_KEY_DISPLAY_FAILURE
+          : types.GET_PUBLIC_KEY_FAILURE;
+        dispatch({ type, err });
+      });
   };
 }
 
