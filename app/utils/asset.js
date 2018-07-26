@@ -1,7 +1,12 @@
-function assetToNumber(asset, defaultValue=0) {
+function assetToNumber(asset, finite=false, defaultValue=0) {
   if (typeof asset === 'string') {
     const [amount] = asset.split(' ');
-    return parseFloat(amount);
+    let n = parseFloat(amount); 
+    if (finite) {
+      n *= 10000;
+    }
+
+    return n;
   }
   return defaultValue;
 }

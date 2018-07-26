@@ -13,7 +13,7 @@ import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 
 type Props = {
-  accounts: {},
+  account: {},
   transactions: {},
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
@@ -66,12 +66,12 @@ class StakeContainer extends Component<Props> {
   constructor(props: Props) {
     super(props);
 
-    const { accounts } = this.props;
-    const bandwidth = parseBandwidth(accounts.account);
+    const { account } = this.props;
+    const bandwidth = parseBandwidth(account);
 
     this.state = {
-      net: assetToNumber(bandwidth.net).toString(),
-      cpu: assetToNumber(bandwidth.cpu).toString(),
+      net: assetToNumber(bandwidth.net),
+      cpu: assetToNumber(bandwidth.cpu),
       openModal: false,
       cpuDelta: 0,
       netDelta: 0
@@ -79,28 +79,30 @@ class StakeContainer extends Component<Props> {
   }
 
   handleChange = (e, { name, value }) => {
-    const { accounts } = this.props;
+    const { account } = this.props;
     let { cpuDelta, netDelta } = this.state;
     const stakedCpu = assetToNumber(
-      accounts.account.self_delegated_bandwidth.cpu_weight
+      account.self_delegated_bandwidth.cpu_weight,
+      true
     );
     const stakedNet = assetToNumber(
-      accounts.account.self_delegated_bandwidth.net_weight
+      account.self_delegated_bandwidth.net_weight,
+      true
     );
-    const newValue = parseFloat(value);
-    if (name === 'net') {
-      netDelta = newValue - stakedNet;
-    } else if (name === 'cpu') {
-      cpuDelta = newValue - stakedCpu;
-    }
+    const total = stakedCpu + stakedNet;
+
+    const delta = parseFloat(value)*10000 - total;
+    
+    netDelta = Math.floor(delta / 2) / 10000;
+    cpuDelta = (Math.floor(delta / 2) + (delta % 2 ? 1 : 0)) / 10000;
 
     this.setState({ [name]: value, cpuDelta, netDelta });
   };
 
   handleSubmit = () => {
     const { cpuDelta, netDelta } = this.state;
-    const { accounts } = this.props;
-    const accountName = accounts.account.account_name;
+    const { account } = this.props;
+    const accountName = account.account_name;
 
     const cpu = numberToAsset(Math.abs(cpuDelta));
     const net = numberToAsset(Math.abs(netDelta));
@@ -153,15 +155,15 @@ class StakeContainer extends Component<Props> {
   };
 
   handleClose = () => {
-    const { accounts } = this.props;
-    const bandwidht = parseBandwidth(accounts.account);
+    const { account } = this.props;
+    const bandwidht = parseBandwidth(account);
 
     this.props.resetState();
-    this.props.getAccount(accounts.account.account_name);
-    this.props.getActions(accounts.account.account_name);
+    this.props.getAccount(account.account_name);
+    this.props.getActions(account.account_name);
     this.setState({
-      net: assetToNumber(bandwidht.net).toString(),
-      cpu: assetToNumber(bandwidht.cpu).toString(),
+      net: assetToNumber(bandwidht.net),
+      cpu: assetToNumber(bandwidht.cpu),
       openModal: false,
       cpuDelta: 0,
       netDelta: 0
@@ -169,32 +171,23 @@ class StakeContainer extends Component<Props> {
   };
 
   render() {
-    const { accounts, transactions } = this.props;
+    const { transactions, account } = this.props;
     const { net, cpu, cpuDelta, netDelta, openModal } = this.state;
-    const bandwidth = parseBandwidth(accounts.account);
 
     const enableRequest =
-      net !== '' && cpu !== '' && (cpuDelta !== 0 || netDelta !== 0);
-    let netDeltaIcon = '';
-    let cpuDeltaIcon = '';
-    if (netDelta > 0) {
-      netDeltaIcon = (
+      net !== 0 && cpu !== 0 && (cpuDelta !== 0 || netDelta !== 0);
+    let deltaIcon = '';
+    if (netDelta > 0 || cpuDelta > 0) {
+      deltaIcon = (
         <Label basic floating circular icon="arrow alternate circle up" />
       );
-    } else if (netDelta < 0) {
-      netDeltaIcon = (
+    } else if (netDelta < 0 || cpuDelta < 0) {
+      deltaIcon = (
         <Label basic floating circular icon="arrow alternate circle down" />
       );
     }
-    if (cpuDelta > 0) {
-      cpuDeltaIcon = (
-        <Label basic floating circular icon="arrow alternate circle up" />
-      );
-    } else if (cpuDelta < 0) {
-      cpuDeltaIcon = (
-        <Label basic floating circular icon="arrow alternate circle down" />
-      );
-    }
+    const value = ((net + cpu) + (netDelta + cpuDelta)).toFixed(4);
+    const { total } = balanceStats(account);
 
     return (
       <Segment className="no-border">
@@ -206,32 +199,17 @@ class StakeContainer extends Component<Props> {
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <InputFloat
-              id="form-input-control-recipient"
-              label="CPU"
-              name="cpu"
-              min={0.0001}
-              value={cpu}
+              label='Value'  
+              name='stake'
+              step='0.0001'
+              min={1.0000}
+              max={total}
+              value={value}
+              type='number'
               onChange={this.handleChange}
-              labelPosition="left"
             >
-              <Label basic>{bandwidth.cpu}</Label>
               <input />
-              {cpuDeltaIcon}
-            </InputFloat>
-          </Form.Field>
-          <Form.Field>
-            <InputFloat
-              id="form-textarea-control-amount"
-              label="Network"
-              min={0.0001}
-              name="net"
-              value={net}
-              onChange={this.handleChange}
-              labelPosition="left"
-            >
-              <Label basic>{bandwidth.net}</Label>
-              <input />
-              {netDeltaIcon}
+              {deltaIcon}
             </InputFloat>
           </Form.Field>
           <Form.Button
@@ -243,6 +221,32 @@ class StakeContainer extends Component<Props> {
       </Segment>
     );
   }
+}
+
+function balanceStats(account) {
+  const { voter_info, refund_request, core_liquid_balance } = account; // eslint-disable-line camelcase
+  const staked = voter_info.staked / 10000;
+  const unstaking = totalRefund(refund_request);
+  const liquid =
+    core_liquid_balance != null ? assetToNumber(core_liquid_balance) : 0; // eslint-disable-line camelcase
+  const total = staked + unstaking + liquid;
+
+  const stats = {
+    total,
+    liquid,
+    staked
+  };
+
+  return stats;
+}
+
+function totalRefund(request) {
+  if (request && request !== null) {
+    return (
+      assetToNumber(request.cpu_amount) + assetToNumber(request.net_amount)
+    );
+  }
+  return 0;
 }
 
 function parseBandwidth(account) {
@@ -260,7 +264,7 @@ function parseBandwidth(account) {
 
 function mapStateToProps(state) {
   return {
-    accounts: state.accounts,
+    account: state.accounts.account,
     transactions: state.transactions
   };
 }

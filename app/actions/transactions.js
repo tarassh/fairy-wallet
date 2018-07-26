@@ -149,7 +149,7 @@ export function undelegate(from, receiver, net, cpu) {
       type: types.UNDELEGATE_REQUEST,
       context: {
         contract: eosioContract,
-        action: delegateAction,
+        action: undelegateAction,
         from,
         receiver,
         net,
