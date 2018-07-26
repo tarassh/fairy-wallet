@@ -112,37 +112,31 @@ export function getCurrencyBalance(account) {
 
     const { tokens } = settings;
     const selectedTokens = tokens[account];
-    if (!selectedTokens) {
+    if (selectedTokens.length === 0) {
       return dispatch({
         type: types.GET_CURRENCY_BALANCE_SUCCESS,
-        balances: {}
+        balance: {}
       });
     }
 
-    const promisses = [];
-    selectedTokens.forEach(symbol => {
-      promisses.push(
-        eos(connection).getCurrencyBalance('eosio.token', account, symbol)
-      );
+    selectedTokens.forEach(({symbol, contract}) => {
+      eos(connection).getCurrencyBalance(contract, account, symbol)
+        .then(values => {
+          const [amount, s] = values[0].split(' ');
+          return dispatch({
+            type: types.GET_CURRENCY_BALANCE_SUCCESS,
+            balance: { contract, symbol: s, amount}
+          });
+        })
+        .catch(err => {
+          dispatch({
+            type: types.GET_CURRENCY_BALANCE_FAILURE,
+            err
+          });
+        });
+
     });
-    Promise.all(promisses)
-      .then(values => {
-        const pairs = _.map(_.flatten(values), value => {
-          const valueKey = value.split(' ');
-          return valueKey.reverse();
-        });
-        const balancesObject = _.fromPairs(pairs);
-        return dispatch({
-          type: types.GET_CURRENCY_BALANCE_SUCCESS,
-          balances: balancesObject
-        });
-      })
-      .catch(err => {
-        dispatch({
-          type: types.GET_CURRENCY_BALANCE_FAILURE,
-          err: JSON.parse(err)
-        });
-      });
+
   };
 }
 

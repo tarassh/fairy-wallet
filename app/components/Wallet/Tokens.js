@@ -13,18 +13,19 @@ class Tokens extends Component<Props> {
   state = {
     openAdd: false,
     openRemove: false,
-    symbol: ''
+    symbol: '',
+    contract: ''
   };
 
-  handleRemoveOpen = (e, { value }) =>
-    this.setState({ openRemove: true, symbol: value });
-  handleRemoveClose = () => this.setState({ openRemove: false, symbol: '' });
+  handleRemoveOpen = (e, { symbol, contract }) =>
+    this.setState({ openRemove: true, symbol, contract });
+  handleRemoveClose = () => this.setState({ openRemove: false, symbol: '', contract: '' });
   handleAddOpen = () => this.setState({ openAdd: true });
   handleAddClose = () => this.setState({ openAdd: false });
 
   render() {
     const { accounts } = this.props;
-    const { openAdd, openRemove, symbol } = this.state;
+    const { openAdd, openRemove, symbol, contract } = this.state;
 
     return (
       <div>
@@ -36,6 +37,7 @@ class Tokens extends Component<Props> {
           open={openRemove}
           handleClose={this.handleRemoveClose}
           symbol={symbol}
+          contract={contract}
         />
         <Table basic="very" compact="very" unstackable>
           <Table.Header>
@@ -50,20 +52,21 @@ class Tokens extends Component<Props> {
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {_.map(accounts.balances, (balance, s) => (
-              <Table.Row key={s}>
-                <Table.Cell collapsing textAlign="center" width={1}>
+            {_.map(accounts.balances, balance => (
+              <Table.Row key={balance.symbol}>
+                <Table.Cell collapsing textAlign='center' width={1}>
                   <Button
                     className="no-border"
                     basic
-                    value={s}
+                    symbol={balance.symbol}
+                    contract={balance.contract}
                     onClick={this.handleRemoveOpen}
                   >
                     <Icon name="close" className="opacue-2" />
                   </Button>
                 </Table.Cell>
-                <Table.Cell collapsing>{s}</Table.Cell>
-                <Table.Cell collapsing>{balance}</Table.Cell>
+                <Table.Cell collapsing>{balance.symbol}</Table.Cell>
+                <Table.Cell collapsing>{balance.amount}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>

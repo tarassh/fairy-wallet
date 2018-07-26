@@ -6,13 +6,12 @@ import { numberToAsset } from '../utils/asset';
 
 const Api = require('./helpers/eosledjer').default;
 
-const tokenContract = 'eosio.token';
 const eosioContract = 'eosio';
 const transferAction = 'transfer';
 const delegateAction = 'delegatebw';
 const undelegateAction = 'undelegatebw';
 
-export function transfer(from, to, asset, memo = '') {
+export function transfer(from, to, asset, memo = '', tokenContract = 'eosio.token') {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.TRANSFER_TOKEN_REQUEST,
@@ -41,6 +40,11 @@ export function transfer(from, to, asset, memo = '') {
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
+      
+      dispatch({
+        type: types.TRANSFER_TOKEN_SIGNED,
+        signed: true
+      });
       return rawSig;
     };
     const promiseSigner = args => Promise.resolve(signProvider(args));
@@ -106,6 +110,11 @@ export function delegate(from, receiver, net, cpu) {
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.DELEGATE_SIGNED,
+        signed: true
+      });
       return rawSig;
     };
     const promiseSigner = args => Promise.resolve(signProvider(args));
@@ -164,6 +173,11 @@ export function undelegate(from, receiver, net, cpu) {
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.UNDELEGATE_SIGNED,
+        signed: true
+      });
       return rawSig;
     };
     const promiseSigner = args => Promise.resolve(signProvider(args));
@@ -217,6 +231,13 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
+        
+      dispatch({
+        type: action.name === delegateAction
+        ? types.DELEGATE_SIGNED
+        : types.UNDELEGATE_SIGNED,
+        signed: true
+      });
       return rawSig;
     };
     const promiseSigner = args => Promise.resolve(signProvider(args));

@@ -7,7 +7,7 @@ import _ from 'lodash';
 import { transfer, resetState } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
-import { numberToAsset } from '../../../utils/asset';
+import { numberToAsset, assetToNumber } from '../../../utils/asset';
 
 type Props = {
   settings: {},
@@ -96,15 +96,25 @@ class SendContainer extends Component<Props> {
     this.props.getAccount(accounts.account.account_name);
     this.props.getActions(accounts.account.account_name);
   };
-  handleChange = (e, { name, value }) =>
-    this.setState({ [name]: value, resetValue: name === 'token' });
+  handleChange = (e, { name, value }) => {
+    const obj = { [name]: value, resetValue: false };
+    if (name === 'token') {
+      const [contract, symbol] = value.split('-');
+      Object.assign(obj, { 
+        contract, 
+        [name]: symbol,
+        resetValue: true 
+      });
+    }
+    this.setState(obj);
+  }
   handleSubmit = () => {
-    const { token, recipient, amount, memo } = this.state;
+    const { contract, token, recipient, amount, memo } = this.state;
     const { accounts } = this.props;
     const accountName = accounts.account.account_name;
     const asset = numberToAsset(amount, token.toUpperCase());
 
-    this.props.transfer(accountName, recipient, asset, memo);
+    this.props.transfer(accountName, recipient, asset, memo, contract);
     this.setState({ openModal: true });
   };
 
@@ -114,24 +124,22 @@ class SendContainer extends Component<Props> {
 
     const { balances, account } = accounts;
     const { amount } = resetValue ? { amount: '' } : this.state;
-    const tokens = _.map(settings.tokens[account.account_name], name => ({
-      text: name,
-      value: name,
-      key: name
+    const tokens = _.map(settings.tokens[account.account_name], elem => ({
+      text: elem.symbol,
+      value: `${elem.contract}-${elem.symbol}`,
+      key: `${elem.contract}-${elem.symbol}`
     }));
 
     if (!tokens.find(element => element.key === eosToken)) {
-      tokens.push({ text: eosToken, value: eosToken, key: eosToken });
-    }
-    if (!balances.EOS) {
-      const coreLiquidBalance = account.core_liquid_balance;
-      [balances.EOS, _] =
-        typeof coreLiquidBalance === 'string'
-          ? coreLiquidBalance.split(' ')
-          : [0, 0];
+      tokens.push({ text: eosToken, value: `eosio.token-${eosToken}`, key: `eosio.token-${eosToken}` });
     }
 
-    const maxAmount = parseFloat(balances[token]);
+    let maxAmount = assetToNumber(account.core_liquid_balance);
+    if (token !== eosToken) {
+      const t = balances.find(el => el.symbol === token);
+      maxAmount = t ? parseFloat(t.amount) : 0;
+    }
+
     const enableRequest = token !== '' && recipient !== '' && amount !== '';
 
     return (

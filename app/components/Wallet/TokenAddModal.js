@@ -3,6 +3,7 @@ import {
   Button,
   Message,
   Modal,
+  Form,
   Input,
   Table,
   Transition
@@ -14,6 +15,7 @@ import { getCurrencyStats } from '../../actions/currency';
 
 const initialState = {
   tokenSymbol: '',
+  contract: '',
   typing: false,
   requested: false
 };
@@ -22,22 +24,24 @@ class TokenAddModal extends Component<Props> {
   state = initialState;
 
   checkToken = () => {
-    const { tokenSymbol } = this.state;
-    this.props.actions.getCurrencyStats('eosio.token', tokenSymbol);
+    const { tokenSymbol, contract } = this.state;
+    this.props.actions.getCurrencyStats(contract, tokenSymbol);
     this.setState({ typing: false, requested: true });
   };
   addToken = () => {
     const { account, handleClose } = this.props;
-    const { tokenSymbol } = this.state;
-    this.props.actions.addToken(account.account_name, tokenSymbol);
+    const { tokenSymbol, contract } = this.state;
+    this.props.actions.addToken(account.account_name, tokenSymbol, contract);
     handleClose();
     this.setState(initialState);
   };
-  handleChange = (e, { name, value }) =>
+  handleChange = (e, { name, value }) => {
+    const newValue = name === 'tokenSymbol' ? value.trim().toUpperCase() : value.trim().toLowerCase();
     this.setState({
-      [name]: value.trim().toUpperCase(),
-      typing: name === 'tokenSymbol'
+      [name]: newValue,
+      typing: true
     });
+  }
   handleClose = () => {
     if (typeof this.props.handleClose === 'function') {
       this.props.handleClose();
@@ -47,7 +51,7 @@ class TokenAddModal extends Component<Props> {
 
   render() {
     const { open, loading, currency } = this.props;
-    const { tokenSymbol, typing, requested } = this.state;
+    const { tokenSymbol, typing, requested, contract } = this.state;
     const token = currency.tokens.find(el => el.symbol === tokenSymbol);
     const requesting = !!loading.GET_CURRENCYSTATS;
     const message =
@@ -79,15 +83,25 @@ class TokenAddModal extends Component<Props> {
           </Table.Body>
         </Table>
       ) : (
-        <Input
-          autoFocus
-          name="tokenSymbol"
-          value={tokenSymbol}
-          disabled={requesting}
-          placeholder="Token name..."
-          onChange={this.handleChange}
-          fluid
-        />
+        <Form>
+          <Input
+            autoFocus
+            name="contract"
+            value={contract}
+            disabled={requesting}
+            placeholder="Contract name..."
+            onChange={this.handleChange}
+            fluid 
+          />
+          <Input          
+            name="tokenSymbol"
+            value={tokenSymbol}
+            disabled={requesting}
+            placeholder="Token name..."
+            onChange={this.handleChange}
+            fluid
+          />
+        </Form>
       );
 
     return (

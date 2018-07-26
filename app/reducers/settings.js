@@ -15,22 +15,22 @@ export default function settings(state = initialState, action) {
       return Object.assign({}, state, action.payload);
     }
     case types.ADD_TOKEN: {
-      const { account, token } = action;
+      const { account, symbol, contract } = action;
       const { tokens } = state;
       if (!tokens[account]) {
-        tokens[account] = [token];
-      } else if (tokens[account].indexOf(token) === -1) {
-        tokens[account].push(token);
+        tokens[account] = [{ symbol, contract }];
+      } else if (tokens[account].findIndex(el => el.symbol === symbol && el.contract === contract) === -1) {
+        tokens[account].push({symbol, contract});
       }
       return Object.assign({}, state, {
         tokens
       });
     }
     case types.REMOVE_TOKEN: {
-      const { account, token } = action;
+      const { account, symbol, contract } = action;
       const { tokens } = state;
       if (tokens[account]) {
-        const index = tokens[account].indexOf(token);
+        const index = tokens[account].findIndex(el => el.symbol === symbol && el.contract === contract);
         if (index !== -1) {
           tokens[account].splice(index, 1);
         }

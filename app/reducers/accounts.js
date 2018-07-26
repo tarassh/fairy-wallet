@@ -5,7 +5,7 @@ const initialState = {
   names: null,
   account: null,
   actions: null,
-  balances: null,
+  balances: [],
   activeAccount: 0
 };
 
@@ -14,6 +14,7 @@ export default function accounts(state = initialState, action) {
     case types.GET_ACCOUNTS_SUCCESS: {
       return Object.assign({}, state, {
         names: action.accounts
+        // names: ['gy3tsmzrgage', 'cryptolions1', 'cryptofairy1']
       });
     }
 
@@ -67,16 +68,31 @@ export default function accounts(state = initialState, action) {
     }
 
     case types.GET_CURRENCY_BALANCE_SUCCESS: {
+      const { amount, symbol, contract } = action.balance;
+      const { balances } = state;
+      if (!amount || !symbol || !contract) {
+        return Object.assign({}, state, {
+          balances
+        });
+      }
+
+      const index = balances.findIndex(el => el.contract === contract && el.symbol === symbol);
+      if (index === -1) {
+        balances.push({ amount, symbol, contract })
+      } else {
+        balances[index].amount = amount;
+      }
       return Object.assign({}, state, {
-        balances: action.balances
+        balances
       });
     }
 
     case types.REMOVE_TOKEN: {
-      const { token } = action;
+      const { symbol, contract } = action;
       const { balances } = state;
-      if (balances[token]) {
-        delete balances[token];
+      const index = balances.findIndex(el => el.contract === contract && el.symbol === symbol);
+      if (index !== -1) {
+        balances.splice(index, 1);
       }
       return Object.assign({}, state, {
         balances

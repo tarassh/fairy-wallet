@@ -6,8 +6,8 @@ import { removeToken } from '../../actions/settings';
 
 class TokenRemove extends Component<Props> {
   removeToken = () => {
-    const { account, handleClose, symbol } = this.props;
-    this.props.actions.removeToken(account.account_name, symbol);
+    const { account, handleClose, symbol, contract } = this.props;
+    this.props.actions.removeToken(account.account_name, symbol, contract);
     handleClose();
   };
 

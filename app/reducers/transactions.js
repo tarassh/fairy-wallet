@@ -2,9 +2,9 @@
 import * as types from '../actions/types';
 
 const initialState = {
-  transfer: { context: null, receipt: null, err: null, contructed: false },
-  delegate: { context: null, receipt: null, err: null, contructed: false },
-  undelegate: { context: null, receipt: null, err: null, contructed: false }
+  transfer: { context: null, receipt: null, err: null, contructed: false, signed: false },
+  delegate: { context: null, receipt: null, err: null, contructed: false, signed: false },
+  undelegate: { context: null, receipt: null, err: null, contructed: false, signed: false }
 };
 
 export default function transactions(state = initialState, action) {
@@ -15,19 +15,22 @@ export default function transactions(state = initialState, action) {
           context: null,
           receipt: null,
           err: null,
-          contructed: false
+          contructed: false,
+          signed: false
         },
         delegate: {
           context: null,
           receipt: null,
           err: null,
-          contructed: false
+          contructed: false,
+          signed: false
         },
         undelegate: {
           context: null,
           receipt: null,
           err: null,
-          contructed: false
+          contructed: false,
+          signed: false
         }
       });
     }
@@ -44,6 +47,7 @@ export default function transactions(state = initialState, action) {
       const { transfer } = state;
       transfer.context = action.context;
       transfer.constructed = false;
+      transfer.signed = false;
       return Object.assign({}, state, {
         transfer
       });
@@ -60,6 +64,7 @@ export default function transactions(state = initialState, action) {
       const { delegate } = state;
       delegate.context = action.context;
       delegate.constructed = false;
+      delegate.signed = false;
       return Object.assign({}, state, {
         delegate
       });
@@ -85,6 +90,7 @@ export default function transactions(state = initialState, action) {
       const { undelegate } = state;
       undelegate.context = action.context;
       undelegate.constructed = false;
+      undelegate.signed = false;
       return Object.assign({}, state, {
         undelegate
       });
@@ -110,8 +116,10 @@ export default function transactions(state = initialState, action) {
       const { delegate, undelegate } = state;
       delegate.context = action.delegateContext;
       delegate.constructed = false;
+      delegate.signed = false;
       undelegate.context = action.undelegateContext;
       undelegate.constructed = false;
+      undelegate.signed = false;
       return Object.assign({}, state, {
         delegate,
         undelegate
@@ -137,6 +145,30 @@ export default function transactions(state = initialState, action) {
     case types.UNDELEGATE_CONSTRUCTED: {
       const { undelegate } = state;
       undelegate.constructed = action.constructed;
+      return Object.assign({}, state, {
+        undelegate
+      });
+    }
+
+    case types.TRANSFER_TOKEN_SIGNED: {
+      const { transfer } = state;
+      transfer.signed = action.signed;
+      return Object.assign({}, state, {
+        transfer
+      });
+    }
+
+    case types.DELEGATE_SIGNED: {
+      const { delegate } = state;
+      delegate.signed = action.signed;
+      return Object.assign({}, state, {
+        delegate
+      });
+    }
+
+    case types.UNDELEGATE_SIGNED: {
+      const { undelegate } = state;
+      undelegate.signed = action.signed;
       return Object.assign({}, state, {
         undelegate
       });

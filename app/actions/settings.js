@@ -2,33 +2,33 @@
 import * as types from './types';
 import { getCurrencyBalance } from './accounts';
 
-export function addToken(account, tokenName) {
+export function addToken(account, tokenSymbol, contract='eosio.token') {
   return (dispatch: () => void, getState) => {
-    if (!tokenName) return;
-    const token = tokenName.toUpperCase();
+    const symbol = tokenSymbol.toUpperCase();
     const { accounts } = getState();
 
     dispatch({
       type: types.ADD_TOKEN,
       account,
-      token
+      symbol,
+      contract
     });
 
-    if (!accounts.balances[account] || !accounts.balances[account][token]) {
+    if (!accounts.balances[account] || !accounts.balances[account][symbol]) {
       dispatch(getCurrencyBalance(account));
     }
   }
 }
 
-export function removeToken(account, tokenName) {
+export function removeToken(account, tokenSymbol, contract='eosio.token') {
   return (dispatch: () => void) => {
-    if (!tokenName) return;
-    const token = tokenName.toUpperCase();
+    const symbol = tokenSymbol.toUpperCase();
 
     dispatch({
       type: types.REMOVE_TOKEN,
       account,
-      token
+      symbol,
+      contract
     });
   }
 }

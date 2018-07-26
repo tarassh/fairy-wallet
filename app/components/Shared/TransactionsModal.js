@@ -17,18 +17,22 @@ type Props = {
 };
 
 function createAccordionPanel(transaction) {
-  const { context, receipt, err, constructed } = transaction;
+  const { context, receipt, err, constructed, signed } = transaction;
   const actionName = context.action.replace(/\b\w/g, l => l.toUpperCase());
   const { action } = context;
 
   const messageHeader = <Message.Header content={actionName} />;
+  let helperMessage = constructed ? 'Ready to sign' : 'Preparing...';
+  if (signed) {
+    helperMessage = 'Sending...'
+  }
 
   let status = (
     <Message icon>
       <Icon name="circle notched" loading />
       <Message.Content>
         {messageHeader}
-        {constructed ? 'Ready to sign' : 'Preparing'}
+        {helperMessage}
       </Message.Content>
     </Message>
   );
