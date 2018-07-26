@@ -16,7 +16,8 @@ import Tokens from './Tokens';
 type Props = {
   actions: {},
   showStakedData: boolean,
-  accounts: {}
+  accounts: {},
+  loading: {}
 };
 
 class Balance extends Component<Props> {
@@ -27,7 +28,7 @@ class Balance extends Component<Props> {
   };
 
   render() {
-    const { accounts, showStakedData } = this.props;
+    const { accounts, showStakedData, loading } = this.props;
 
     if (accounts.balances !== null) {
       delete accounts.balances.EOS;
@@ -48,6 +49,7 @@ class Balance extends Component<Props> {
           <AccountSwitcher
             accounts={accounts}
             onAccountSwitch={this.handleAccountSwitch}
+            loading={loading}
           />
         </Segment>
         <Segment>

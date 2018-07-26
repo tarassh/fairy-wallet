@@ -111,10 +111,7 @@ function balanceStats(account) {
     staked: numberToAsset(staked)
   };
 
-  const detailed = {
-    stakedCpu: account.self_delegated_bandwidth.cpu_weight,
-    stakedNet: account.self_delegated_bandwidth.net_weight
-  };
+  const detailed = selfDelegatedStats(account);
 
   if (unstaking > 0) {
     const timeLeft = new Date(account.refund_request.request_time);
@@ -143,6 +140,16 @@ function totalRefund(request) {
     );
   }
   return 0;
+}
+
+function selfDelegatedStats(account) {
+  const selfDelegated = account.self_delegated_bandwidth;
+  const stats = { stakedCpu: numberToAsset(0), stakedNet: numberToAsset(0) }
+  if (selfDelegated && selfDelegated !== null) {
+    stats.stakedCpu = selfDelegated.cpu_weight;
+    stats.stakedNet = selfDelegated.cpu_weight;
+  }
+  return stats;
 }
 
 export default BalanceComponent;

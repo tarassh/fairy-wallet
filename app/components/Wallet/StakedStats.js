@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, TableBody, Header } from 'semantic-ui-react';
+import { numberToAsset } from '../../utils/asset';
 
 const pretty = require('prettysize');
 
@@ -37,7 +38,9 @@ class StakedStats extends Component<Props> {
               </Table.Cell>
               <Table.Cell width={4}>
                 staked
-                <p>{self_delegated_bandwidth.cpu_weight}</p>
+                <p>
+                  {self_delegated_bandwidth === null ? numberToAsset(0) : self_delegated_bandwidth.cpu_weight} 
+                </p> 
               </Table.Cell>
               {!!refund_request && ( // eslint-disable-line camelcase
                 <Table.Cell width={4}>
@@ -70,7 +73,7 @@ class StakedStats extends Component<Props> {
                 total<p>{total_resources.net_weight}</p>
               </Table.Cell>
               <Table.Cell width={4}>
-                staked<p>{self_delegated_bandwidth.net_weight}</p>
+                staked<p>{self_delegated_bandwidth === null ? numberToAsset(0) : self_delegated_bandwidth.net_weight}</p>
               </Table.Cell>
               {!!refund_request && ( // eslint-disable-line camelcase
                 <Table.Cell width={4}>

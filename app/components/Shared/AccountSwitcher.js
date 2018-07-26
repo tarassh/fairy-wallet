@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Dropdown } from 'semantic-ui-react';
+import _ from 'lodash';
 
 type Props = {
   accounts: {},
@@ -24,8 +25,15 @@ class AccountSwitcher extends Component<Props> {
   };
 
   render() {
-    const { accounts } = this.props;
+    const { accounts, loading } = this.props;
     const { text } = this.state;
+    let isLoading = false;
+    _.forEach(loading, value => {
+      if (value === true) {
+        isLoading = true;
+        return false;
+       }
+    });
 
     return (
       <Dropdown
@@ -34,6 +42,7 @@ class AccountSwitcher extends Component<Props> {
         labeled
         button
         basic
+        loading={isLoading}
         className="icon"
         text={text}
       >

@@ -67,11 +67,11 @@ class StakeContainer extends Component<Props> {
     super(props);
 
     const { accounts } = this.props;
-    const bandwidht = accounts.account.self_delegated_bandwidth;
+    const bandwidth = parseBandwidth(accounts.account);
 
     this.state = {
-      net: assetToString(bandwidht.net_weight),
-      cpu: assetToString(bandwidht.cpu_weight),
+      net: assetToNumber(bandwidth.net).toString(),
+      cpu: assetToNumber(bandwidth.cpu).toString(),
       openModal: false,
       cpuDelta: 0,
       netDelta: 0
@@ -154,14 +154,14 @@ class StakeContainer extends Component<Props> {
 
   handleClose = () => {
     const { accounts } = this.props;
-    const bandwidht = accounts.account.self_delegated_bandwidth;
+    const bandwidht = parseBandwidth(accounts.account);
 
     this.props.resetState();
     this.props.getAccount(accounts.account.account_name);
     this.props.getActions(accounts.account.account_name);
     this.setState({
-      net: assetToString(bandwidht.net_weight),
-      cpu: assetToString(bandwidht.cpu_weight),
+      net: assetToNumber(bandwidht.net).toString(),
+      cpu: assetToNumber(bandwidht.cpu).toString(),
       openModal: false,
       cpuDelta: 0,
       netDelta: 0
@@ -171,7 +171,7 @@ class StakeContainer extends Component<Props> {
   render() {
     const { accounts, transactions } = this.props;
     const { net, cpu, cpuDelta, netDelta, openModal } = this.state;
-    const bandwidth = accounts.account.self_delegated_bandwidth;
+    const bandwidth = parseBandwidth(accounts.account);
 
     const enableRequest =
       net !== '' && cpu !== '' && (cpuDelta !== 0 || netDelta !== 0);
@@ -214,7 +214,7 @@ class StakeContainer extends Component<Props> {
               onChange={this.handleChange}
               labelPosition="left"
             >
-              <Label basic>{bandwidth.cpu_weight}</Label>
+              <Label basic>{bandwidth.cpu}</Label>
               <input />
               {cpuDeltaIcon}
             </InputFloat>
@@ -229,7 +229,7 @@ class StakeContainer extends Component<Props> {
               onChange={this.handleChange}
               labelPosition="left"
             >
-              <Label basic>{bandwidth.net_weight}</Label>
+              <Label basic>{bandwidth.net}</Label>
               <input />
               {netDeltaIcon}
             </InputFloat>
@@ -245,9 +245,17 @@ class StakeContainer extends Component<Props> {
   }
 }
 
-function assetToString(asset) {
-  const [amount] = asset.split(' ');
-  return amount;
+function parseBandwidth(account) {
+  const bandwidth = {
+    net: numberToAsset(0),
+    cpu: numberToAsset(0)
+  }
+  if (account.self_delegated_bandwidth && !account.self_delegated_bandwidth !== null) {
+    bandwidth.net = account.self_delegated_bandwidth.net_weight;
+    bandwidth.cpu = account.self_delegated_bandwidth.cpu_weight;
+  }
+
+  return bandwidth;
 }
 
 function mapStateToProps(state) {
