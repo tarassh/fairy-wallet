@@ -98,9 +98,11 @@ class BalanceComponent extends Component<Props> {
 }
 
 function balanceStats(account) {
-  const staked = account.voter_info.staked / 10000;
-  const unstaking = totalRefund(account.refund_request);
-  const liquid = assetToNumber(account.core_liquid_balance);
+  const { voter_info, refund_request, core_liquid_balance } = account; // eslint-disable-line camelcase
+  const staked = voter_info.staked / 10000;
+  const unstaking = totalRefund(refund_request);
+  const liquid =
+    core_liquid_balance != null ? assetToNumber(core_liquid_balance) : 0; // eslint-disable-line camelcase
   const total = staked + unstaking + liquid;
 
   const stats = {

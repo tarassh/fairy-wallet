@@ -124,7 +124,11 @@ class SendContainer extends Component<Props> {
       tokens.push({ text: eosToken, value: eosToken, key: eosToken });
     }
     if (!balances.EOS) {
-      [balances.EOS, _] = account.core_liquid_balance.split(' ');
+      const coreLiquidBalance = account.core_liquid_balance;
+      [balances.EOS, _] =
+        typeof coreLiquidBalance === 'string'
+          ? coreLiquidBalance.split(' ')
+          : [0, 0];
     }
 
     const maxAmount = parseFloat(balances[token]);
