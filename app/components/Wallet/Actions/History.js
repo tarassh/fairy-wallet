@@ -130,9 +130,8 @@ function renderAction(action) {
   return (
     <Grid>
       <Grid.Column width={3}>{action.time}</Grid.Column>
-      <Grid.Column width={3}>{action.txIdShort}</Grid.Column>
       <Grid.Column width={3}>{action.name}</Grid.Column>
-      <Grid.Column width={7}>{data.trim()}</Grid.Column>
+      <Grid.Column width={10}>{data.trim()}</Grid.Column>
     </Grid>
   );
 }
