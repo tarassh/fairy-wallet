@@ -12,14 +12,14 @@ function assetToNumber(asset, finite=false, defaultValue=0) {
 }
 
 function numberToAsset(amount, symbol = 'EOS', defaultValue='0.000') {
-  if (isNumber) {
+  if (isNumber(amount)) {
     return `${parseFloat(amount).toFixed(4)} ${symbol}`;
   }
   return `${defaultValue} ${symbol}`;
 }
 
 function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+  return !Number.isNaN(parseFloat(n)) && Number.isFinite(n);
 }
 
 export default {

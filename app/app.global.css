@@ -43,6 +43,7 @@ input[type="submit"],
 input[type="reset"],
 input[type="button"],
 input[type="text"],
+input[type="range"],
 button,
 textarea{
 	-webkit-app-region: no-drag;

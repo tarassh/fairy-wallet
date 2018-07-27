@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Segment, Label } from 'semantic-ui-react';
+import { Form, Segment, Label, Input } from 'semantic-ui-react';
 import {
   delegate,
   undelegate,
@@ -11,6 +11,7 @@ import {
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
+import EosStakeChart from '../../../components/Shared/EosStakeChart';
 
 type Props = {
   account: {},
@@ -76,6 +77,10 @@ class StakeContainer extends Component<Props> {
       cpuDelta: 0,
       netDelta: 0
     };
+  }
+
+  handleValueChange = (value) => {
+    this.handleChange(null, { name: 'value', value: value.toString() } )
   }
 
   handleChange = (e, { name, value }) => {
@@ -191,6 +196,7 @@ class StakeContainer extends Component<Props> {
 
     return (
       <Segment className="no-border">
+        <EosStakeChart account={account} newStake={value*10000} />
         <TransactionsModal
           open={openModal}
           transactions={transactions}
@@ -198,8 +204,18 @@ class StakeContainer extends Component<Props> {
         />
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
+            <Input 
+              name='stake'
+              step='0.0001'
+              min={1.0000} 
+              max={total/10000} 
+              value={value}
+              type='range' 
+              onChange={this.handleChange}
+              style={{padding: '2em'}} 
+            />
             <InputFloat
-              label='Value'  
+              label='Value (EOS)'  
               name='stake'
               step='0.0001'
               min={1.0000}
@@ -224,29 +240,24 @@ class StakeContainer extends Component<Props> {
 }
 
 function balanceStats(account) {
-  const { voter_info, refund_request, core_liquid_balance } = account; // eslint-disable-line camelcase
-  const staked = voter_info.staked / 10000;
-  const unstaking = totalRefund(refund_request);
-  const liquid =
-    core_liquid_balance != null ? assetToNumber(core_liquid_balance) : 0; // eslint-disable-line camelcase
-  const total = staked + unstaking + liquid;
-
-  const stats = {
-    total,
-    liquid,
-    staked
-  };
-
-  return stats;
-}
-
-function totalRefund(request) {
-  if (request && request !== null) {
-    return (
-      assetToNumber(request.cpu_amount) + assetToNumber(request.net_amount)
-    );
+  const liquid = assetToNumber(account.core_liquid_balance, true);
+  let staked = 0;
+  if (account.self_delegated_bandwidth && account.self_delegated_bandwidth !== null) {
+    staked = assetToNumber(account.self_delegated_bandwidth.cpu_weight, true) 
+      + assetToNumber(account.self_delegated_bandwidth.net_weight, true);
   }
-  return 0;
+  let unstaking = 0;
+  if (account.refund_request && account.refund_request !== null) {
+    unstaking = assetToNumber(account.refund_request.net_amount, true) 
+      + assetToNumber(account.refund_request.cpu_amount, true);
+  }
+  
+  return {
+    total: liquid + staked + unstaking,
+    liquid,
+    staked,
+    unstaking
+  };
 }
 
 function parseBandwidth(account) {
