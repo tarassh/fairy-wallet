@@ -19,7 +19,7 @@ function numberToAsset(amount, symbol = 'EOS', defaultValue='0.000') {
 }
 
 function isNumber(n) {
-  return !Number.isNaN(parseFloat(n)) && Number.isFinite(n);
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 export default {

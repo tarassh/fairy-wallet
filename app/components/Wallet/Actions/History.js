@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { List, Grid, Pagination } from 'semantic-ui-react';
 import _ from 'lodash';
+import { parseAction } from '../../../utils/parser';
 
 type Props = {
   actions: {},
@@ -33,7 +34,7 @@ export default class History extends Component<Props> {
   };
 
   render() {
-    const { actions } = this.props;
+    const { actions, account } = this.props;
     const { activePage } = this.state;
     const options = {
       weekday: 'long',
@@ -73,7 +74,6 @@ export default class History extends Component<Props> {
         sequence: account_action_seq,
         time,
         txId: trx_id,
-        txIdShort: `${trx_id.slice(0, 5)}...${trx_id.slice(-5)}`,
         account,
         name,
         data,
@@ -84,6 +84,7 @@ export default class History extends Component<Props> {
         dayActions.actions.push(action);
       }
     });
+    const accountName = account.account_name;
 
     const items = _.map(_.reverse(days), dayGroup => (
       <List.Item key={dayGroup.day} style={{ marginBottom: '1em' }}>
@@ -92,7 +93,7 @@ export default class History extends Component<Props> {
           <List selection relaxed divided>
             {_.map(_.reverse(dayGroup.actions), action => (
               <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
-                <List.Content>{renderAction(action)}</List.Content>
+                <List.Content>{renderAction(action, accountName)}</List.Content>
               </List.Item>
             ))}
           </List>
@@ -104,7 +105,7 @@ export default class History extends Component<Props> {
       <div id="scrollable-history">
         <List style={{ marginBottom: '2em' }}>{items}</List>
         <div />
-        {days.length > 0 && (
+        {days.length > 0 && totalPages > 1 && (
           <Grid>
             <Grid.Row centered>
               <Pagination
@@ -121,17 +122,20 @@ export default class History extends Component<Props> {
   }
 }
 
-function renderAction(action) {
+function renderAction(action, account) {
   let data = '';
   Object.keys(action.data).forEach(key => {
     data = [data, key, action.data[key]].join(' ');
   });
 
+  const { desc, quantity } = parseAction(action, account);
+
   return (
     <Grid>
       <Grid.Column width={3}>{action.time}</Grid.Column>
       <Grid.Column width={3}>{action.name}</Grid.Column>
-      <Grid.Column width={10}>{data.trim()}</Grid.Column>
+      {desc && <Grid.Column width={5}>{desc}</Grid.Column>}
+      {desc && <Grid.Column width={5}>{quantity}</Grid.Column>}
     </Grid>
   );
 }
