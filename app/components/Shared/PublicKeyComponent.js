@@ -10,7 +10,8 @@ type Props = {
   getPublicKey: () => {},
   publicKey: {},
   loading: {},
-  states: {}
+  states: {},
+  short: undefined
 };
 
 class PublicKeyComponent extends Component<Props> {
@@ -24,8 +25,11 @@ class PublicKeyComponent extends Component<Props> {
   handleClose = () => this.setState({ opened: false });
 
   render() {
-    const { publicKey, loading, states } = this.props;
+    const { publicKey, loading, states, short } = this.props;
     const { opened } = this.state;
+    const formattedKey = short
+      ? `${publicKey.wif.slice(0, 5)}...${publicKey.wif.slice(-5)}`
+      : publicKey.wif;
 
     let action = '';
     let message = '';
@@ -46,7 +50,7 @@ class PublicKeyComponent extends Component<Props> {
       <Button as="div" labelPosition="right" className="publickeycontainer">
         <Button icon="copy" basic onClick={this.verifyPublicKey} />
         <Label as="div" basic>
-          {publicKey.wif}
+          {formattedKey}
         </Label>
         <Transition animation="scale" duration={200}>
           <Modal open={opened} size="tiny">

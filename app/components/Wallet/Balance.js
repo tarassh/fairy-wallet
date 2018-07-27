@@ -43,7 +43,7 @@ class Balance extends Component<Props> {
     return (
       <Segment.Group className="no-border no-padding">
         <Segment>
-          <PublicKeyComponent />
+          <PublicKeyComponent short />
         </Segment>
         <Segment>
           <AccountSwitcher
