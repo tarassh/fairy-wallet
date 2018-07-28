@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Label, Icon, Popup, Header, Table } from 'semantic-ui-react';
-import { numberToAsset, assetToNumber } from '../../utils/asset';
+import {
+  numberToAsset,
+  assetToNumber,
+  numberToPrettyAsset
+} from '../../utils/asset';
 
 const moment = require('moment');
 
@@ -98,20 +102,23 @@ class BalanceComponent extends Component<Props> {
 }
 
 function balanceStats(account) {
-  const { voter_info, refund_request, core_liquid_balance } = account; // eslint-disable-line camelcase
-  const staked = voter_info.staked / 10000;
-  const unstaking = totalRefund(refund_request);
-  const liquid =
-    core_liquid_balance != null ? assetToNumber(core_liquid_balance) : 0; // eslint-disable-line camelcase
+  const {
+    refund_request,
+    core_liquid_balance,
+    self_delegated_bandwidth
+  } = account; // eslint-disable-line camelcase
+  const staked = stakedBalance(self_delegated_bandwidth);
+  const unstaking = unstakingBalance(refund_request);
+  const liquid = liquidBalance(core_liquid_balance);
   const total = staked + unstaking + liquid;
 
   const stats = {
-    total: numberToAsset(total),
-    liquid: numberToAsset(liquid),
-    staked: numberToAsset(staked)
+    total: numberToPrettyAsset(total),
+    liquid: numberToPrettyAsset(liquid),
+    staked: numberToPrettyAsset(staked)
   };
 
-  const detailed = selfDelegatedStats(account);
+  const detailed = selfDelegatedStats(self_delegated_bandwidth);
 
   if (unstaking > 0) {
     const timeLeft = new Date(account.refund_request.request_time);
@@ -133,7 +140,23 @@ function balanceStats(account) {
   return stats;
 }
 
-function totalRefund(request) {
+function liquidBalance(liqidBalance) {
+  if (liqidBalance && liqidBalance !== null) {
+    return assetToNumber(liqidBalance);
+  }
+  return 0;
+}
+
+function stakedBalance(delegated) {
+  if (delegated && delegated !== null) {
+    return (
+      assetToNumber(delegated.cpu_weight) + assetToNumber(delegated.net_weight)
+    );
+  }
+  return 0;
+}
+
+function unstakingBalance(request) {
   if (request && request !== null) {
     return (
       assetToNumber(request.cpu_amount) + assetToNumber(request.net_amount)
@@ -142,12 +165,11 @@ function totalRefund(request) {
   return 0;
 }
 
-function selfDelegatedStats(account) {
-  const selfDelegated = account.self_delegated_bandwidth;
-  const stats = { stakedCpu: numberToAsset(0), stakedNet: numberToAsset(0) }
+function selfDelegatedStats(selfDelegated) {
+  const stats = { stakedCpu: numberToAsset(0), stakedNet: numberToAsset(0) };
   if (selfDelegated && selfDelegated !== null) {
     stats.stakedCpu = selfDelegated.cpu_weight;
-    stats.stakedNet = selfDelegated.cpu_weight;
+    stats.stakedNet = selfDelegated.net_weight;
   }
   return stats;
 }
