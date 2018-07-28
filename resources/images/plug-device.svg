@@ -1,0 +1,51 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="404.96" height="66.58" viewBox="0 0 404.96 66.58">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-5 {
+        stroke: #666;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-5 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1 {
+        stroke-width: 2px;
+      }
+
+      .cls-3, .cls-5 {
+        fill: aqua;
+      }
+
+      .cls-4 {
+        stroke-width: 4px;
+        fill: url(#Blue_Sky);
+        stroke: url(#linear-gradient);
+      }
+
+      .cls-5 {
+        opacity: 0;
+      }
+    </style>
+    <linearGradient id="Blue_Sky" data-name="Blue Sky" y1="35.12" x2="59.4" y2="35.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3ddeed"/>
+      <stop offset="1" stop-color="#3ddeed" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient" y1="35.12" x2="59.4" y2="35.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#353535"/>
+    </linearGradient>
+  </defs>
+  <title>Untitled-8</title>
+  <rect class="cls-1" x="99.11" y="6.3" width="207.08" height="59.28" rx="3" ry="3"/>
+  <rect class="cls-2" x="134.84" y="20.21" width="135.61" height="31.46"/>
+  <path class="cls-3" d="M61.39,25.29H99.11a0,0,0,0,1,0,0V44.95a0,0,0,0,1,0,0H61.39a2,2,0,0,1-2-2V27.29A2,2,0,0,1,61.39,25.29Z"/>
+  <line class="cls-4" y1="35.12" x2="59.4" y2="35.12"/>
+  <path class="cls-2" d="M125.8.5h21.05a2,2,0,0,1,2,2V6.3a0,0,0,0,1,0,0H123.8a0,0,0,0,1,0,0V2.5a2,2,0,0,1,2-2Z"/>
+  <path class="cls-2" d="M259.06.5h21.05a2,2,0,0,1,2,2V6.3a0,0,0,0,1,0,0H257.06a0,0,0,0,1,0,0V2.5a2,2,0,0,1,2-2Z"/>
+  <polyline class="cls-5" points="404.96 63.58 307.48 63.58 307.48 45.46 404.96 45.46"/>
+</svg>

@@ -15,7 +15,7 @@ export default function accounts(state = initialState, action) {
     case types.GET_ACCOUNTS_SUCCESS: {
       return Object.assign({}, state, {
         names: action.accounts
-        // names: ['gy3tsmzrgage', 'cryptolions1', 'cryptofairy1']
+        // names: ['gy3tsmzrgage', 'cryptolions1', 'cryptofairy1', 'eosnewyorkio', 'cypherglasss']
       });
     }
 
@@ -82,9 +82,11 @@ export default function accounts(state = initialState, action) {
         });
       }
 
-      const index = balances.findIndex(el => el.contract === contract && el.symbol === symbol);
+      const index = balances.findIndex(
+        el => el.contract === contract && el.symbol === symbol
+      );
       if (index === -1) {
-        balances.push({ amount, symbol, contract })
+        balances.push({ amount, symbol, contract });
       } else {
         balances[index].amount = amount;
       }
@@ -96,7 +98,9 @@ export default function accounts(state = initialState, action) {
     case types.REMOVE_TOKEN: {
       const { symbol, contract } = action;
       const { balances } = state;
-      const index = balances.findIndex(el => el.contract === contract && el.symbol === symbol);
+      const index = balances.findIndex(
+        el => el.contract === contract && el.symbol === symbol
+      );
       if (index !== -1) {
         balances.splice(index, 1);
       }

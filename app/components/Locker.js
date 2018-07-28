@@ -10,16 +10,17 @@ import styles from './Locker.css'; // eslint-disable-line no-unused-vars
 
 type Props = {
   states: {},
-  accounts: {}
+  accounts: {},
+  ledger: {}
 };
 
 export default class Locker extends Component<Props> {
   props: Props;
 
   render() {
-    const { states, accounts } = this.props;
+    const { states, accounts, ledger } = this.props;
 
-    let mainSegment = <Lock />;
+    let mainSegment = <Lock ledger={ledger} />;
     if (states.deviceConnected && accounts.publicKey === null) {
       mainSegment = <Inactivity />;
     }
