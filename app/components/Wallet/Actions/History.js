@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Grid, Pagination, Icon } from 'semantic-ui-react';
+import { List, Grid, Pagination, Icon, Button } from 'semantic-ui-react';
+import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
 
@@ -18,6 +19,10 @@ export default class History extends Component<Props> {
   handleClick = (sequence) => {
     const activeAction = this.state.activeAction === sequence ? -1: sequence;
     this.setState({ activeAction });
+  }
+
+  handleGoto = (e, { txid }) => {
+    shell.openExternal(`https://eosflare.io/tx/${txid}`)
   }
 
   handlePaginationChange = (e, { activePage }) => {
@@ -103,7 +108,7 @@ export default class History extends Component<Props> {
               <List.Item 
                 key={`${action.time}-${action.txId}-${action.digest}`} 
               >
-                <List.Content>{renderAction(action, accountName, this.handleClick)}</List.Content>
+                <List.Content>{renderAction(action, accountName, this.handleClick, this.handleGoto)}</List.Content>
               </List.Item>
             ))}
           </List>
@@ -132,7 +137,7 @@ export default class History extends Component<Props> {
   }
 }
 
-function renderAction(action, account, handler) {
+function renderAction(action, account, handler, goto) {
   let data = '';
   Object.keys(action.data).forEach(key => {
     data = [data, key, action.data[key]].join(' ');
@@ -152,9 +157,10 @@ function renderAction(action, account, handler) {
     status = <Icon name='check' />
   }
 
+  // 
   return (
     <Grid>
-      <Grid.Row onClick={() => handler(action.sequence)}>
+      <Grid.Row onClick={() => handler(action.sequence)} color={action.active ? 'grey' : undefined}>
         <Grid.Column widht={1}>
           { status } 
         </Grid.Column>
@@ -164,9 +170,12 @@ function renderAction(action, account, handler) {
         {quant}
       </Grid.Row>
       {action.active &&
-        <Grid.Row> 
-          <Grid.Column color='grey' style={{padding: '1em' }}>
-            <p>Transaction ID: </p><a>{action.txId}</a>
+        <Grid.Row style={{fontSize: 'small'}}> 
+          <Grid.Column style={{padding: '1em' }}>
+            <p>Transaction ID: </p>
+            <Button icon="info circle" basic txid={action.txId} onClick={goto} />
+            &nbsp;
+            {action.txId}
           </Grid.Column>
         </Grid.Row>
       }
