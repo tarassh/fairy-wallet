@@ -5,7 +5,8 @@ import {
   Button,
   Message,
   Accordion,
-  Icon
+  Icon,
+  Image
 } from 'semantic-ui-react';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
@@ -24,7 +25,7 @@ function createAccordionPanel(transaction) {
   const messageHeader = <Message.Header content={actionName} />;
   let helperMessage = constructed ? 'Ready to sign' : 'Preparing...';
   if (signed) {
-    helperMessage = 'Sending...'
+    helperMessage = 'Sending...';
   }
 
   let status = (
@@ -127,6 +128,11 @@ class TransactionsModal extends Component<Props> {
                 defaultActiveIndex={0}
                 panels={panels}
                 className="remove-my-icons"
+              />
+              <Image
+                src="../resources/images/confirm-transaction.svg"
+                centered
+                style={{ marginTop: '1em', marginBottom: '1em' }}
               />
             </Modal.Description>
           </Modal.Content>

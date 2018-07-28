@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Modal, Transition, Button, Message, Label } from 'semantic-ui-react';
+import {
+  Modal,
+  Transition,
+  Button,
+  Message,
+  Label,
+  Image
+} from 'semantic-ui-react';
 
 import { getPublicKey } from '../../actions/ledger';
 
@@ -59,6 +66,11 @@ class PublicKeyComponent extends Component<Props> {
               <Modal.Description>
                 <p id="publickey">{publicKey.wif}</p>
                 {message}
+                <Image
+                  src="../resources/images/verify-public-key.svg"
+                  centered
+                  style={{ marginTop: '1em', marginBottom: '1em' }}
+                />
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>{action}</Modal.Actions>
