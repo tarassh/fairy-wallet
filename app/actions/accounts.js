@@ -2,7 +2,6 @@
 import _ from 'lodash';
 import * as types from './types';
 import eos from './helpers/eos';
-import { numberToAsset } from '../utils/asset';
 
 export function getAccounts(publicKey) {
   return (dispatch: () => void, getState) => {
@@ -92,7 +91,8 @@ export function getActions(name, position = -1, offset = -20) {
 
         return dispatch({
           type: types.GET_ACTIONS_SUCCESS,
-          actions: _.sortBy(history, ['account_action_seq'])
+          actions: _.sortBy(history, ['account_action_seq']),
+          lastIrreversibleBlock: result.last_irreversible_block
         });
       })
       .catch(err => {

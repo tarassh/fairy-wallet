@@ -20,21 +20,23 @@ type Props = {
 };
 
 type inputProps = {
-  onChange: () => {}
+  onChange: () => {},
+  onError: undefined
 };
 
 const eosToken = 'EOS';
 
 const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
 
-const handleFloatInputValidationOnChange = (e, v, onChange) => {
+const handleFloatInputValidationOnChange = (e, v, onChange, onError) => {
   const { value, min, max } = v;
   const number = parseFloat(value);
-  if (
-    value === '' ||
-    (floatRegExp.test(value) && (min <= number && number <= max))
-  ) {
+  const inRange = min <= number && number <= max;
+  const isNumber = floatRegExp.test(value);
+  if (value === '' || (isNumber && inRange)) {
     onChange(e, v);
+  } else {
+    onError(e, { isNaN: !isNumber, inRange, ...v });
   }
 };
 
@@ -43,12 +45,12 @@ const InputFloat = (props: inputProps) => {
     return <Form.Input {...props} />;
   }
 
-  const { onChange, ...parentProps } = props;
+  const { onChange, onError, ...parentProps } = props;
 
   return (
     <Form.Input
       {...parentProps}
-      onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange)}
+      onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange, onError)}
     />
   );
 };
@@ -86,7 +88,7 @@ class SendContainer extends Component<Props> {
     amount: '',
     memo: '',
     resetValue: false,
-    openModal: false
+    openModal: false,
   };
 
   handleClose = () => {
@@ -97,7 +99,7 @@ class SendContainer extends Component<Props> {
     this.props.getActions(accounts.account.account_name);
   };
   handleChange = (e, { name, value }) => {
-    const obj = { [name]: value, resetValue: false };
+    const obj = { [name]: value, resetValue: false, typeError: false, inRange: true };
     if (name === 'token') {
       const [contract, symbol] = value.split('-');
       Object.assign(obj, { 
@@ -108,6 +110,7 @@ class SendContainer extends Component<Props> {
     }
     this.setState(obj);
   }
+  handleTypeError = () => {}
   handleSubmit = () => {
     const { contract, token, recipient, amount, memo } = this.state;
     const { accounts } = this.props;
@@ -167,6 +170,7 @@ class SendContainer extends Component<Props> {
               name="amount"
               value={amount}
               onChange={this.handleChange}
+              onError={this.handleTypeError}
             >
               <Form.Dropdown
                 button

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, TableBody, Header } from 'semantic-ui-react';
 import { numberToPrettyAsset, assetToNumber } from '../../utils/asset';
+import { aproxTxCpuUsage, aproxTxNetUsage } from '../../utils/usage';
 
 const pretty = require('prettysize');
 
@@ -50,6 +51,7 @@ class StakedStats extends Component<Props> {
                 <Table.Cell width={4}>
                   usage
                   <p>{usage.cpu}</p>
+                  <p>{usage.txCpu}</p>
                 </Table.Cell>
               )}
             </Table.Row>
@@ -86,6 +88,7 @@ class StakedStats extends Component<Props> {
                 <Table.Cell width={4}>
                   usage
                   <p>{usage.net}</p>
+                  <p>{usage.txNet}</p>
                 </Table.Cell>
               )}
             </Table.Row>
@@ -140,14 +143,22 @@ function formatStats(account) {
   if (cpu_limit && cpu_limit !== null && net_limit && net_limit !== null) {
     // eslint-disable-line camelcase
     const usage = {};
+    const availableCpu = cpu_limit.max - cpu_limit.used;
+    const aproxTxBasedOnCpu = `${Math.floor(availableCpu / aproxTxCpuUsage)} tx available`;
+
     const cpu = `${(cpu_limit.used / 1000000).toFixed(4)} s / ${(
       cpu_limit.max / 1000000
     ).toFixed(4)} s`;
+
+    const availableNet = net_limit.max - net_limit.used;
+    const aproxTxBasedOnNet = `${Math.floor(availableNet / aproxTxNetUsage)} tx available`;
     const net = `${pretty(parseInt(net_limit.used, 10))} / ${pretty(
       parseInt(net_limit.max, 10)
     )}`;
     usage.cpu = cpu;
     usage.net = net;
+    usage.txCpu = aproxTxBasedOnCpu;
+    usage.txNet = aproxTxBasedOnNet;
     Object.assign(result, { usage });
   }
 
