@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Button, Form, Message } from 'semantic-ui-react';
+import { Button, Form } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getPublicKey } from '../../actions/ledger';
@@ -22,7 +22,7 @@ class InactivityContainer extends Component<Props> {
 
     return (
       <Form>
-        <Message content={noAccountsText} />
+        <p>{noAccountsText}</p>
         <Button content="Retry" disabled={disabled} onClick={this.retry} />
       </Form>
     );

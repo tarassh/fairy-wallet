@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Message, Button } from 'semantic-ui-react';
+import { Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getAccounts } from '../../actions/accounts';
@@ -30,16 +30,12 @@ class NoAccountsContainer extends Component<Props> {
 
     return (
       <Form>
-        <Message>
-          <Message.Content>
-            <p>Public Key</p>
-            <PublicKeyComponent />
-            <p>
-              do not have any registered account. Please create account for this
-              Public Key.
-            </p>
-          </Message.Content>
-        </Message>
+        <p>Public Key</p>
+        <PublicKeyComponent />
+        <p>
+          do not have any registered account. Please create account for this
+          Public Key.
+        </p>
         <div>
           <Button content="Retry" disabled={disabled} onClick={this.onRetry} />
           <Button content="Back" disabled={disabled} onClick={this.onGoBack} />

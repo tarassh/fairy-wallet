@@ -148,22 +148,14 @@ export default class MenuBuilder {
         {
           label: 'Documentation',
           click() {
-            shell.openExternal(
-              'https://github.com/tarassh/eos-ledger-wallet/wiki'
-            );
-          }
-        },
-        {
-          label: 'Community Discussions',
-          click() {
-            shell.openExternal('https://discuss.atom.io/c/electron');
+            shell.openExternal('https://github.com/tarassh/fairy-wallet/wiki');
           }
         },
         {
           label: 'Search Issues',
           click() {
             shell.openExternal(
-              'https://github.com/tarassh/eos-ledger-wallet/issues'
+              'https://github.com/tarassh/fairy-wallet/issues'
             );
           }
         }
@@ -242,21 +234,15 @@ export default class MenuBuilder {
             label: 'Documentation',
             click() {
               shell.openExternal(
-                'https://github.com/tarassh/eos-ledger-wallet/wiki'
+                'https://github.com/tarassh/fairy-wallet/wiki'
               );
-            }
-          },
-          {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://discuss.atom.io/c/electron');
             }
           },
           {
             label: 'Search Issues',
             click() {
               shell.openExternal(
-                'https://github.com/tarassh/eos-ledger-wallet/issues'
+                'https://github.com/tarassh/fairy-wallet/issues'
               );
             }
           }

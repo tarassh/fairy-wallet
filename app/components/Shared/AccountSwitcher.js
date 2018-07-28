@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 type Props = {
   accounts: {},
+  loading: {},
   onAccountSwitch: string => {}
 };
 
@@ -32,7 +33,7 @@ class AccountSwitcher extends Component<Props> {
       if (value === true) {
         isLoading = true;
         return false;
-       }
+      }
     });
 
     return (
