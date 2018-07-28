@@ -6,7 +6,8 @@ const initialState = {
   account: null,
   actions: null,
   balances: [],
-  activeAccount: 0
+  activeAccount: 0,
+  lastIrreversibleBlock: 0
 };
 
 export default function accounts(state = initialState, action) {
@@ -37,8 +38,13 @@ export default function accounts(state = initialState, action) {
     }
 
     case types.GET_ACTIONS_SUCCESS: {
+      let block = state.lastIrreversibleBlock;
+      if (action.lastIrreversibleBlock) {
+        block = action.lastIrreversibleBlock;
+      }
       return Object.assign({}, state, {
-        actions: action.actions
+        actions: action.actions,
+        lastIrreversibleBlock: block
       });
     }
 

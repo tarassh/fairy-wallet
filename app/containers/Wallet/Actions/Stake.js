@@ -11,7 +11,6 @@ import {
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
-import EosStakeChart from '../../../components/Shared/EosStakeChart';
 
 type Props = {
   account: {},
@@ -196,7 +195,6 @@ class StakeContainer extends Component<Props> {
 
     return (
       <Segment className="no-border">
-        <EosStakeChart account={account} newStake={value*10000} />
         <TransactionsModal
           open={openModal}
           transactions={transactions}

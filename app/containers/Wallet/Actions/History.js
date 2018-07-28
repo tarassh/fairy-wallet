@@ -23,6 +23,7 @@ class HistoryContainer extends Component<Props> {
           account={accounts.account}
           actions={history}
           getActions={actions.getActions}
+          lastIrreversibleBlock={accounts.lastIrreversibleBlock}
         />
       </Segment>
     );

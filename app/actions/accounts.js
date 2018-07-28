@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import * as types from './types';
 import eos from './helpers/eos';
+import { numberToAsset } from '../utils/asset';
 
 export function getAccounts(publicKey) {
   return (dispatch: () => void, getState) => {
@@ -78,7 +79,8 @@ export function getActions(name, position = -1, offset = -20) {
         if (actions === null) {
           return dispatch({
             type: types.GET_ACTIONS_SUCCESS,
-            actions: result.actions
+            actions: result.actions,
+            lastIrreversibleBlock: result.last_irreversible_block
           });
         }
 
@@ -123,10 +125,13 @@ export function getCurrencyBalance(account) {
       eos(connection)
         .getCurrencyBalance(contract, account, symbol)
         .then(values => {
-          const [amount, s] = values[0].split(' ');
+          const balance = { contract, symbol, amount: "0.0000" };
+          if (values.length > 0) {
+            [balance.amount] = values[0].split(' ');
+          }
           return dispatch({
             type: types.GET_CURRENCY_BALANCE_SUCCESS,
-            balance: { contract, symbol: s, amount }
+            balance
           });
         })
         .catch(err => {

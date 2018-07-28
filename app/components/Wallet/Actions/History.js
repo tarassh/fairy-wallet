@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Grid, Pagination } from 'semantic-ui-react';
+import { List, Grid, Pagination, Icon } from 'semantic-ui-react';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
 
 type Props = {
   actions: {},
   account: {},
+  lastIrreversibleBlock: number,
   getActions: string => {}
 };
 
@@ -34,7 +35,7 @@ export default class History extends Component<Props> {
   };
 
   render() {
-    const { actions, account } = this.props;
+    const { actions, account, lastIrreversibleBlock } = this.props;
     const { activePage } = this.state;
     const options = {
       weekday: 'long',
@@ -56,7 +57,7 @@ export default class History extends Component<Props> {
     const pageHistory = _.slice(actions, start, end + 1);
 
     pageHistory.forEach(value => {
-      const { block_time, account_action_seq } = value; // eslint-disable-line camelcase
+      const { block_time, account_action_seq, block_num } = value; // eslint-disable-line camelcase
       const date = new Date(block_time);
       const day = date.toLocaleDateString('en-US', options);
       const time = date.toLocaleTimeString('en-US', options2);
@@ -77,7 +78,8 @@ export default class History extends Component<Props> {
         account,
         name,
         data,
-        digest: act_digest
+        digest: act_digest,
+        irreversible: block_num <= lastIrreversibleBlock // eslint-disable-line camelcase
       };
 
       if (!dayActions.actions.find(el => el.digest === action.digest)) {
@@ -129,13 +131,28 @@ function renderAction(action, account) {
   });
 
   const { desc, quantity } = parseAction(action, account);
+  let description = <Grid.Column width={5} />;
+  if (desc) {
+    description = <Grid.Column width={5}>{desc}</Grid.Column>;
+  }
+  let quant = <Grid.Column width={4} />;
+  if (quantity) {
+    quant = <Grid.Column width={4} textAlign='right'>{quantity}</Grid.Column>
+  }
+  let status = <Icon name='circle notched' loading />
+  if (action.irreversible) {
+    status = <Icon name='check' />
+  }
 
   return (
     <Grid>
+      <Grid.Column widht={1}>
+        { status } 
+      </Grid.Column>
       <Grid.Column width={3}>{action.time}</Grid.Column>
       <Grid.Column width={3}>{action.name}</Grid.Column>
-      {desc && <Grid.Column width={5}>{desc}</Grid.Column>}
-      {desc && <Grid.Column width={5}>{quantity}</Grid.Column>}
+      {description}
+      {quant}
     </Grid>
   );
 }
