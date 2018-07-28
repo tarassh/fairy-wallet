@@ -13,7 +13,12 @@ type Props = {
 
 export default class History extends Component<Props> {
   props: Props;
-  state = { activePage: 1 };
+  state = { activePage: 1, activeAction: -1 };
+
+  handleClick = (sequence) => {
+    const activeAction = this.state.activeAction === sequence ? -1: sequence;
+    this.setState({ activeAction });
+  }
 
   handlePaginationChange = (e, { activePage }) => {
     const { getActions, account, actions } = this.props;
@@ -36,7 +41,7 @@ export default class History extends Component<Props> {
 
   render() {
     const { actions, account, lastIrreversibleBlock } = this.props;
-    const { activePage } = this.state;
+    const { activePage, activeAction } = this.state;
     const options = {
       weekday: 'long',
       year: 'numeric',
@@ -79,7 +84,8 @@ export default class History extends Component<Props> {
         name,
         data,
         digest: act_digest,
-        irreversible: block_num <= lastIrreversibleBlock // eslint-disable-line camelcase
+        irreversible: block_num <= lastIrreversibleBlock, // eslint-disable-line camelcase
+        active: activeAction === account_action_seq       // eslint-disable-line camelcase
       };
 
       if (!dayActions.actions.find(el => el.digest === action.digest)) {
@@ -92,10 +98,12 @@ export default class History extends Component<Props> {
       <List.Item key={dayGroup.day} style={{ marginBottom: '1em' }}>
         {dayGroup.day}
         <List.Content>
-          <List selection relaxed divided>
+          <List selection divided>
             {_.map(_.reverse(dayGroup.actions), action => (
-              <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
-                <List.Content>{renderAction(action, accountName)}</List.Content>
+              <List.Item 
+                key={`${action.time}-${action.txId}-${action.digest}`} 
+              >
+                <List.Content>{renderAction(action, accountName, this.handleClick)}</List.Content>
               </List.Item>
             ))}
           </List>
@@ -124,7 +132,7 @@ export default class History extends Component<Props> {
   }
 }
 
-function renderAction(action, account) {
+function renderAction(action, account, handler) {
   let data = '';
   Object.keys(action.data).forEach(key => {
     data = [data, key, action.data[key]].join(' ');
@@ -146,13 +154,22 @@ function renderAction(action, account) {
 
   return (
     <Grid>
-      <Grid.Column widht={1}>
-        { status } 
-      </Grid.Column>
-      <Grid.Column width={3}>{action.time}</Grid.Column>
-      <Grid.Column width={3}>{action.name}</Grid.Column>
-      {description}
-      {quant}
+      <Grid.Row onClick={() => handler(action.sequence)}>
+        <Grid.Column widht={1}>
+          { status } 
+        </Grid.Column>
+        <Grid.Column width={3}>{action.time}</Grid.Column>
+        <Grid.Column width={3}>{action.name}</Grid.Column>
+        {description}
+        {quant}
+      </Grid.Row>
+      {action.active &&
+        <Grid.Row> 
+          <Grid.Column color='grey' style={{padding: '1em' }}>
+            <p>Transaction ID: </p><a>{action.txId}</a>
+          </Grid.Column>
+        </Grid.Row>
+      }
     </Grid>
   );
 }
