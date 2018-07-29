@@ -44,10 +44,16 @@ class Tokens extends Component<Props> {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell />
-              <Table.HeaderCell className="token-header">
+              <Table.HeaderCell
+                className="token-header"
+                style={{ color: 'grey' }}
+              >
                 Token
               </Table.HeaderCell>
-              <Table.HeaderCell className="token-header">
+              <Table.HeaderCell
+                className="token-header"
+                style={{ color: 'grey' }}
+              >
                 Balance
               </Table.HeaderCell>
             </Table.Row>
@@ -66,8 +72,12 @@ class Tokens extends Component<Props> {
                     <Icon name="close" className="opacue-2" />
                   </Button>
                 </Table.Cell>
-                <Table.Cell collapsing>{balance.symbol}</Table.Cell>
-                <Table.Cell collapsing>{balance.amount}</Table.Cell>
+                <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
+                  {balance.symbol}
+                </Table.Cell>
+                <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
+                  {balance.amount}
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
