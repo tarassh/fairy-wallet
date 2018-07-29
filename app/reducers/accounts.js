@@ -15,7 +15,6 @@ export default function accounts(state = initialState, action) {
     case types.GET_ACCOUNTS_SUCCESS: {
       return Object.assign({}, state, {
         names: action.accounts
-        // names: ['gy3tsmzrgage', 'cryptolions1', 'cryptofairy1', 'eosnewyorkio', 'cypherglasss']
       });
     }
 
