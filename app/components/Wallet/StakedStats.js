@@ -29,19 +29,19 @@ class StakedStats extends Component<Props> {
             <Table.Row textAlign="center">
               {totalResources && (
                 <Table.Cell width={4}>
-                  <h5>total</h5>
+                  <h5>Total</h5>
                   <h5>{totalResources.cpu}</h5>
                 </Table.Cell>
               )}
               {selfDelegated && (
                 <Table.Cell width={4}>
-                  <h5>staked</h5>
+                  <h5>Staked</h5>
                   <h5>{selfDelegated.cpu} </h5>
                 </Table.Cell>
               )}
               {usage && (
                 <Table.Cell width={4}>
-                  <h5>usage</h5>
+                  <h5>Usage</h5>
                   <h5>{usage.cpu}</h5>
                 </Table.Cell>
               )}
@@ -61,19 +61,19 @@ class StakedStats extends Component<Props> {
             <Table.Row textAlign="center">
               {totalResources && (
                 <Table.Cell width={4}>
-                  <h5>total</h5>
+                  <h5>Total</h5>
                   <h5>{totalResources.net}</h5>
                 </Table.Cell>
               )}
               {selfDelegated && (
                 <Table.Cell width={4}>
-                  <h5>staked</h5>
+                  <h5>Staked</h5>
                   <h5>{selfDelegated.net}</h5>
                 </Table.Cell>
               )}
               {usage && (
                 <Table.Cell width={4}>
-                  <h5>usage</h5>
+                  <h5>Usage</h5>
                   <h5>{usage.net}</h5>
                 </Table.Cell>
               )}
@@ -93,7 +93,7 @@ class StakedStats extends Component<Props> {
             <Table.Row textAlign="center">
               {ram && (
                 <Table.Cell width={16}>
-                  <h5>usage</h5>
+                  <h5>Usage</h5>
                   <h5>{ram}</h5>
                 </Table.Cell>
               )}

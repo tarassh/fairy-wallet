@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Segment, Label, Input } from 'semantic-ui-react';
+import { Form, Segment, Label, Input, Grid } from 'semantic-ui-react';
 import {
   delegate,
   undelegate,
@@ -10,7 +10,7 @@ import {
 } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
-import { numberToAsset, assetToNumber } from '../../../utils/asset';
+import { numberToAsset, assetToNumber, numberToPrettyAsset } from '../../../utils/asset';
 import { InputFloat } from '../../../components/Shared/EosComponents';
 
 const fraction10000 = 10000;
@@ -30,8 +30,14 @@ class StakeContainer extends Component<Props> {
   state = {
     openModal: false,
     cpuDelta: 0,
-    netDelta: 0
+    netDelta: 0,
+    showDetails: false,
   };
+
+  handleClick = () => {
+    const { showDetails } = this.state;
+    this.setState({ showDetails: !showDetails });
+  }
 
   handleValueChange = value => {
     this.handleChange(null, { name: 'value', value: value.toString() });
@@ -120,10 +126,9 @@ class StakeContainer extends Component<Props> {
 
   render() {
     const { transactions, account } = this.props;
-    const { net, cpu, cpuDelta, netDelta, openModal } = this.state;
+    const { cpuDelta, netDelta, openModal, showDetails } = this.state;
 
-    const enableRequest =
-      net !== 0 && cpu !== 0 && (cpuDelta !== 0 || netDelta !== 0);
+    const enableRequest = cpuDelta !== 0 || netDelta !== 0;
     let deltaIcon = '';
     if (netDelta > 0 || cpuDelta > 0) {
       deltaIcon = (
@@ -134,8 +139,17 @@ class StakeContainer extends Component<Props> {
         <Label basic floating circular icon="arrow alternate circle down" />
       );
     }
-    const { staked, total } = balanceStats(account);
+    const { staked, total, detailed } = balanceStats(account);
     const value = ((staked + netDelta + cpuDelta) / fraction10000).toFixed(4);
+    const stakedAssets = numberToPrettyAsset(staked / fraction10000);
+    const newValue = numberToPrettyAsset((staked + netDelta + cpuDelta) / fraction10000);
+    const newValueDelta = numberToPrettyAsset((netDelta + cpuDelta) / fraction10000);
+    const detailedCpu = numberToPrettyAsset(detailed.cpu / fraction10000);
+    const newCpu = numberToPrettyAsset((detailed.cpu + cpuDelta)/ fraction10000);
+    const deltaCpuSt = numberToPrettyAsset(cpuDelta / fraction10000);
+    const detailedNet = numberToPrettyAsset(detailed.net / fraction10000);
+    const newNet = numberToPrettyAsset((detailed.net + netDelta)/ fraction10000);
+    const deltaNetSt = numberToPrettyAsset(netDelta / fraction10000);
 
     return (
       <Segment className="no-border">
@@ -145,17 +159,39 @@ class StakeContainer extends Component<Props> {
           handleClose={this.handleClose}
         />
         <Form onSubmit={this.handleSubmit}>
+          <Segment>
+            <Grid columns='equal' divided inverted>
+              <Grid.Row 
+                onClick={() => this.handleClick()} 
+              >
+                <Grid.Column width={3} verticalAlign='bottom' ><h5>Total</h5></Grid.Column>
+                <Grid.Column width={4} textAlign='right'><h5>Staked</h5><h5>{stakedAssets}</h5></Grid.Column>
+                <Grid.Column width={4} textAlign='right'><h5>New</h5><h5>{newValue}</h5></Grid.Column>
+                <Grid.Column width={4} textAlign='right'><h5>Delta</h5><h5>{newValueDelta}</h5></Grid.Column>
+              </Grid.Row>
+              {
+                showDetails && (
+                  <Grid.Row>
+                    <Grid.Column width={3}><h5>CPU</h5></Grid.Column>
+                    <Grid.Column width={4} textAlign='right'><h5>{detailedCpu}</h5></Grid.Column>
+                    <Grid.Column width={4} textAlign='right'><h5>{newCpu}</h5></Grid.Column>
+                    <Grid.Column width={4} textAlign='right'><h5>{deltaCpuSt}</h5></Grid.Column>
+                  </Grid.Row>
+                )
+              }
+              { 
+                showDetails && (
+                  <Grid.Row>
+                    <Grid.Column width={3}><h5>Network</h5></Grid.Column>
+                    <Grid.Column width={4} textAlign='right'><h5>{detailedNet}</h5></Grid.Column>
+                    <Grid.Column width={4} textAlign='right'><h5>{newNet}</h5></Grid.Column>
+                    <Grid.Column width={4} textAlign='right'><h5>{deltaNetSt}</h5></Grid.Column>
+                  </Grid.Row>
+                )
+              }
+            </Grid>
+          </Segment>
           <Form.Field>
-            <Input
-              name="stake"
-              step="0.0001"
-              min={1.0}
-              max={total / fraction10000}
-              value={value}
-              type="range"
-              onChange={this.handleChange}
-              style={{ padding: '2em' }}
-            />
             <InputFloat
               label="Value (EOS)"
               name="stake"
@@ -169,6 +205,16 @@ class StakeContainer extends Component<Props> {
               <input />
               {deltaIcon}
             </InputFloat>
+            <Input
+              name="stake"
+              step="0.0001"
+              min={1.0}
+              max={total / fraction10000}
+              value={value}
+              type="range"
+              onChange={this.handleChange}
+              style={{ padding: '2em' }}
+            />
           </Form.Field>
           <Form.Button
             id="form-button-control-public"
@@ -182,15 +228,21 @@ class StakeContainer extends Component<Props> {
 }
 
 function balanceStats(account) {
+  const detailed = { net: 0, cpu: 0 };
   const liquid = assetToNumber(account.core_liquid_balance, true);
   let staked = 0;
   if (
     account.self_delegated_bandwidth &&
     account.self_delegated_bandwidth !== null
   ) {
-    staked =
-      assetToNumber(account.self_delegated_bandwidth.cpu_weight, true) +
-      assetToNumber(account.self_delegated_bandwidth.net_weight, true);
+    const cpu = assetToNumber(account.self_delegated_bandwidth.cpu_weight, true);
+    const net = assetToNumber(account.self_delegated_bandwidth.net_weight, true);
+    staked = cpu + net;
+
+    Object.assign(detailed, {
+      cpu,
+      net
+    })
   }
   let unstaking = 0;
   if (account.refund_request && account.refund_request !== null) {
@@ -198,12 +250,14 @@ function balanceStats(account) {
       assetToNumber(account.refund_request.net_amount, true) +
       assetToNumber(account.refund_request.cpu_amount, true);
   }
+  
 
   return {
     total: liquid + staked + unstaking,
     liquid,
     staked,
-    unstaking
+    unstaking,
+    detailed
   };
 }
 
