@@ -19,7 +19,8 @@ class Tokens extends Component<Props> {
 
   handleRemoveOpen = (e, { symbol, contract }) =>
     this.setState({ openRemove: true, symbol, contract });
-  handleRemoveClose = () => this.setState({ openRemove: false, symbol: '', contract: '' });
+  handleRemoveClose = () =>
+    this.setState({ openRemove: false, symbol: '', contract: '' });
   handleAddOpen = () => this.setState({ openAdd: true });
   handleAddClose = () => this.setState({ openAdd: false });
 
@@ -30,7 +31,7 @@ class Tokens extends Component<Props> {
     return (
       <div>
         <Button fluid onClick={this.handleAddOpen}>
-          Add new token
+          Add Token
         </Button>
         <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
         <TokenRemoveModal
@@ -54,7 +55,7 @@ class Tokens extends Component<Props> {
           <Table.Body>
             {_.map(accounts.balances, balance => (
               <Table.Row key={balance.symbol}>
-                <Table.Cell collapsing textAlign='center' width={1}>
+                <Table.Cell collapsing textAlign="center" width={1}>
                   <Button
                     className="no-border"
                     basic

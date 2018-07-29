@@ -14,36 +14,65 @@ import { getCurrencyStats } from '../../actions/currency';
 import { InputAccount, InputSymbol } from '../Shared/EosComponents';
 
 const initialState = {
-  tokenSymbol: '',
+  symbol: '',
   contract: '',
   typing: false,
-  requested: false
+  requested: false,
+  selectValue: ''
 };
+
+const predefinedTokens = [
+  { key: 'everipediaiq-iq', value: 'everipediaiq-iq', text: 'Everipedia (IQ)' },
+  {
+    key: 'therealkarma-karma',
+    value: 'therealkarma-karma',
+    text: 'Karma (KARMA)'
+  },
+  {
+    key: 'challengedac-chl',
+    value: 'challengedac-chl',
+    text: 'Challenge (CHL)'
+  },
+  {
+    key: 'horustokenio-horus',
+    value: 'horustokenio-horus',
+    text: 'Horus (HORUS)'
+  }
+];
 
 class TokenAddModal extends Component<Props> {
   state = initialState;
 
   checkToken = () => {
-    const { tokenSymbol, contract } = this.state;
-    this.props.actions.getCurrencyStats(contract, tokenSymbol);
+    const { symbol, contract } = this.state;
+    this.props.actions.getCurrencyStats(contract, symbol);
     this.setState({ typing: false, requested: true });
   };
   addToken = () => {
     const { account, handleClose } = this.props;
-    const { tokenSymbol, contract } = this.state;
-    this.props.actions.addToken(account.account_name, tokenSymbol, contract);
+    const { symbol, contract } = this.state;
+    this.props.actions.addToken(account.account_name, symbol, contract);
     handleClose();
     this.setState(initialState);
   };
   handleChange = (e, { name, value }) => {
-    const newValue =
-      name === 'tokenSymbol'
-        ? value.trim().toUpperCase()
-        : value.trim().toLowerCase();
-    this.setState({
-      [name]: newValue,
-      typing: true
-    });
+    const newState = { typing: true };
+    if (name === 'token') {
+      const [contract, symbol] = value.split('-');
+      Object.assign(newState, {
+        contract: contract.toLowerCase(),
+        symbol: symbol.toUpperCase(),
+        selectValue: value
+      });
+    } else {
+      const newValue =
+        name === 'symbol'
+          ? value.trim().toUpperCase()
+          : value.trim().toLowerCase();
+      Object.assign(newState, { [name]: newValue, selectValue: '' });
+    }
+
+    this.setState(newState);
   };
   handleClose = () => {
     if (typeof this.props.handleClose === 'function') {
@@ -54,15 +83,12 @@ class TokenAddModal extends Component<Props> {
 
   render() {
     const { open, loading, currency } = this.props;
-    const { tokenSymbol, typing, requested, contract } = this.state;
-    const token = currency.tokens.find(el => el.symbol === tokenSymbol);
+    const { symbol, typing, requested, contract, selectValue } = this.state;
+    const token = currency.tokens.find(el => el.symbol === symbol);
     const requesting = !!loading.GET_CURRENCYSTATS;
     const message =
       !requesting && requested && !typing && !token ? (
-        <Message
-          error
-          content={`Token ${tokenSymbol.toUpperCase()} not found.`}
-        />
+        <Message error content={`Token ${symbol} not found.`} />
       ) : (
         ''
       );
@@ -73,15 +99,15 @@ class TokenAddModal extends Component<Props> {
           <Table.Body>
             <Table.Row>
               <Table.Cell width={4}>Issuer</Table.Cell>
-              <Table.Cell>{token.stats[tokenSymbol].issuer}</Table.Cell>
+              <Table.Cell>{token.stats[symbol].issuer}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Supply</Table.Cell>
-              <Table.Cell>{token.stats[tokenSymbol].supply}</Table.Cell>
+              <Table.Cell>{token.stats[symbol].supply}</Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>Maximum Supply</Table.Cell>
-              <Table.Cell>{token.stats[tokenSymbol].max_supply}</Table.Cell>
+              <Table.Cell>{token.stats[symbol].max_supply}</Table.Cell>
             </Table.Row>
           </Table.Body>
         </Table>
@@ -98,13 +124,20 @@ class TokenAddModal extends Component<Props> {
             fluid
           />
           <Form.Input
-            name="tokenSymbol"
+            name="symbol"
             control={InputSymbol}
-            value={tokenSymbol}
+            value={symbol}
             disabled={requesting}
             placeholder="Token name..."
             onChange={this.handleChange}
             fluid
+          />
+          <Form.Select
+            placeholder="... or select one"
+            options={predefinedTokens}
+            onChange={this.handleChange}
+            name="token"
+            value={selectValue}
           />
         </Form>
       );
@@ -122,7 +155,7 @@ class TokenAddModal extends Component<Props> {
             <Button
               loading={requesting}
               onClick={handleClick}
-              disabled={tokenSymbol.length === 0}
+              disabled={symbol.length === 0}
             >
               Add
             </Button>
