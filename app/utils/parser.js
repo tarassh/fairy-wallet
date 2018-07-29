@@ -2,8 +2,9 @@ import _ from 'lodash';
 import { assetToNumber, numberToAsset } from './asset';
 
 const float = '([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})';
+const symbol = '[A-Z]{1,8}';
 const account = '[a-z12345.]{1,12}';
-const asset = `${float} [A-Z]{1,8}`;
+const asset = `${float} ${symbol}`;
 
 const transfer = new RegExp(
   `^from ${account} to ${account} quantity ${asset} memo (.+)?$`
@@ -19,6 +20,7 @@ const buyram = new RegExp(
 );
 
 const re = {
+  symbol: new RegExp(`^${symbol}$`),
   float: new RegExp(`^${float}$`),
   account: new RegExp(`^${account}$`),
   asset: new RegExp(`^${asset}$`),

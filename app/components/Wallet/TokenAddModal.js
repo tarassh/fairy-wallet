@@ -4,7 +4,6 @@ import {
   Message,
   Modal,
   Form,
-  Input,
   Table,
   Transition
 } from 'semantic-ui-react';
@@ -12,6 +11,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings';
 import { getCurrencyStats } from '../../actions/currency';
+import { InputAccount, InputSymbol } from '../Shared/EosComponents';
 
 const initialState = {
   tokenSymbol: '',
@@ -36,12 +36,15 @@ class TokenAddModal extends Component<Props> {
     this.setState(initialState);
   };
   handleChange = (e, { name, value }) => {
-    const newValue = name === 'tokenSymbol' ? value.trim().toUpperCase() : value.trim().toLowerCase();
+    const newValue =
+      name === 'tokenSymbol'
+        ? value.trim().toUpperCase()
+        : value.trim().toLowerCase();
     this.setState({
       [name]: newValue,
       typing: true
     });
-  }
+  };
   handleClose = () => {
     if (typeof this.props.handleClose === 'function') {
       this.props.handleClose();
@@ -84,17 +87,19 @@ class TokenAddModal extends Component<Props> {
         </Table>
       ) : (
         <Form>
-          <Input
+          <Form.Input
             autoFocus
             name="contract"
+            control={InputAccount}
             value={contract}
             disabled={requesting}
             placeholder="Contract name..."
             onChange={this.handleChange}
-            fluid 
+            fluid
           />
-          <Input          
+          <Form.Input
             name="tokenSymbol"
+            control={InputSymbol}
             value={tokenSymbol}
             disabled={requesting}
             placeholder="Token name..."
