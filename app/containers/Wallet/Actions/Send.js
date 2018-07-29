@@ -8,6 +8,10 @@ import { transfer, resetState } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
+import {
+  InputAccount,
+  InputFloat
+} from '../../../components/Shared/EosComponents';
 
 type Props = {
   settings: {},
@@ -19,67 +23,7 @@ type Props = {
   getActions: string => {}
 };
 
-type inputProps = {
-  onChange: () => {},
-  onError: undefined
-};
-
 const eosToken = 'EOS';
-
-const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
-
-const handleFloatInputValidationOnChange = (e, v, onChange, onError) => {
-  const { value, min, max } = v;
-  const number = parseFloat(value);
-  const inRange = min <= number && number <= max;
-  const isNumber = floatRegExp.test(value);
-  if (value === '' || (isNumber && inRange)) {
-    onChange(e, v);
-  } else {
-    onError(e, { isNaN: !isNumber, inRange, ...v });
-  }
-};
-
-const InputFloat = (props: inputProps) => {
-  if (typeof props.onChange !== 'function') {
-    return <Form.Input {...props} />;
-  }
-
-  const { onChange, onError, ...parentProps } = props;
-
-  return (
-    <Form.Input
-      {...parentProps}
-      onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange, onError)}
-    />
-  );
-};
-
-const accountNameRegExp = new RegExp('^[a-z12345.]{1,12}$');
-
-const handleAccountNameInputValidationOnChange = (e, v, onChange) => {
-  const { value } = v;
-  if (value === '' || accountNameRegExp.test(value)) {
-    onChange(e, v);
-  }
-};
-
-const InputAccountName = (props: inputProps) => {
-  if (typeof props.onChange !== 'function') {
-    return <Form.Input {...props} />;
-  }
-
-  const { onChange, ...parentProps } = props;
-
-  return (
-    <Form.Input
-      {...parentProps}
-      onChange={(e, v) =>
-        handleAccountNameInputValidationOnChange(e, v, onChange)
-      }
-    />
-  );
-};
 
 class SendContainer extends Component<Props> {
   state = {
@@ -88,7 +32,7 @@ class SendContainer extends Component<Props> {
     amount: '',
     memo: '',
     resetValue: false,
-    openModal: false,
+    openModal: false
   };
 
   handleClose = () => {
@@ -99,18 +43,23 @@ class SendContainer extends Component<Props> {
     this.props.getActions(accounts.account.account_name);
   };
   handleChange = (e, { name, value }) => {
-    const obj = { [name]: value, resetValue: false, typeError: false, inRange: true };
+    const obj = {
+      [name]: value,
+      resetValue: false,
+      typeError: false,
+      inRange: true
+    };
     if (name === 'token') {
       const [contract, symbol] = value.split('-');
-      Object.assign(obj, { 
-        contract, 
+      Object.assign(obj, {
+        contract,
         [name]: symbol,
-        resetValue: true 
+        resetValue: true
       });
     }
     this.setState(obj);
-  }
-  handleTypeError = () => {}
+  };
+  handleTypeError = () => {};
   handleSubmit = () => {
     const { contract, token, recipient, amount, memo } = this.state;
     const { accounts } = this.props;
@@ -134,7 +83,11 @@ class SendContainer extends Component<Props> {
     }));
 
     if (!tokens.find(element => element.key === eosToken)) {
-      tokens.push({ text: eosToken, value: `eosio.token-${eosToken}`, key: `eosio.token-${eosToken}` });
+      tokens.push({
+        text: eosToken,
+        value: `eosio.token-${eosToken}`,
+        key: `eosio.token-${eosToken}`
+      });
     }
 
     let maxAmount = assetToNumber(account.core_liquid_balance);
@@ -153,7 +106,7 @@ class SendContainer extends Component<Props> {
           handleClose={this.handleClose}
         />
         <Form onSubmit={this.handleSubmit}>
-          <InputAccountName
+          <InputAccount
             id="form-input-control-recipient"
             label="Recipient"
             name="recipient"
