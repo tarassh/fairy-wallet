@@ -57,7 +57,7 @@ class PublicKeyComponent extends Component<Props> {
         );
       } else {
         action = <Button content="Close" onClick={this.handleClose} />;
-        helperContent = <Message error content="You clicked cancel." />;
+        helperContent = <Message content="You clicked cancel." />;
       }
     }
 
