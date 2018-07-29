@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Label, Icon, Popup, Header, Table } from 'semantic-ui-react';
+import { Segment, Grid } from 'semantic-ui-react';
 import {
   numberToAsset,
   assetToNumber,
@@ -16,86 +16,41 @@ class BalanceComponent extends Component<Props> {
   render() {
     const { account } = this.props;
 
-    const {
-      total,
-      liquid,
-      staked,
-      unstaking,
-      unstakingTime,
-      detailed
-    } = balanceStats(account);
-
-    const content = (
-      <div>
-        <Header as="h5" content="EOS Balance" />
-        <Table basic="very">
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell textAlign="left">Total</Table.Cell>
-              <Table.Cell textAlign="right">{total}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell textAlign="left">Liquid</Table.Cell>
-              <Table.Cell textAlign="right">{liquid}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell textAlign="left">Staked CPU</Table.Cell>
-              <Table.Cell textAlign="right">{detailed.stakedCpu}</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell textAlign="left">Staked Net</Table.Cell>
-              <Table.Cell textAlign="right">{detailed.stakedNet}</Table.Cell>
-            </Table.Row>
-            {unstaking && (
-              <Table.Row>
-                <Table.Cell>Unstaking CPU</Table.Cell>
-                <Table.Cell>
-                  {`${unstakingTime} ${detailed.unstakingCpu}`}
-                </Table.Cell>
-              </Table.Row>
-            )}
-            {unstaking && (
-              <Table.Row>
-                <Table.Cell>Unstaking Net</Table.Cell>
-                <Table.Cell>
-                  {`${unstakingTime} ${detailed.unstakingNet}`}
-                </Table.Cell>
-              </Table.Row>
-            )}
-          </Table.Body>
-        </Table>
-      </div>
+    const { total, liquid, staked, unstaking, unstakingTime } = balanceStats(
+      account
     );
 
     return (
       <div>
-        <Popup
-          content={content}
-          on="click"
-          trigger={
-            <Button as="div" labelPosition="right" onClick={this.toggle}>
-              <Button icon="dollar" basic />
-              <Label as="div" basic style={{ borderRadius: 'unset' }}>
-                <Icon name="lock open" color="grey" />
-                {liquid}
-              </Label>
-              <Label
-                as="div"
-                basic
-                style={unstaking ? { borderRadius: 'unset' } : {}}
-              >
-                <Icon name="lock" color="grey" />
-                {staked}
-              </Label>
-              {!!unstaking && (
-                <Label as="div" basic>
-                  <Icon name="clock" color="grey" />
-                  {`${unstaking} [${unstakingTime}]`}
-                </Label>
-              )}
-            </Button>
-          }
-        />
+        <Segment>
+          <Grid>
+            <Grid.Row>
+              <Grid.Column textAlign="center">
+                <h5>Total Balance</h5>
+                <h4>{total}</h4>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+        <Segment>
+          <Grid>
+            <Grid.Row textAlign="center">
+              <Grid.Column width={8}>
+                <h5>Available</h5>
+                <h4>{liquid}</h4>
+                {unstaking && (
+                  <h5>
+                    {unstaking} will be available {unstakingTime}
+                  </h5>
+                )}
+              </Grid.Column>
+              <Grid.Column width={8}>
+                <h5>Staked</h5>
+                <h4>{staked}</h4>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
       </div>
     );
   }
@@ -103,10 +58,10 @@ class BalanceComponent extends Component<Props> {
 
 function balanceStats(account) {
   const {
-    refund_request,
-    core_liquid_balance,
-    self_delegated_bandwidth
-  } = account; // eslint-disable-line camelcase
+    refund_request, // eslint-disable-line camelcase
+    core_liquid_balance, // eslint-disable-line camelcase
+    self_delegated_bandwidth // eslint-disable-line camelcase
+  } = account;
   const staked = stakedBalance(self_delegated_bandwidth);
   const unstaking = unstakingBalance(refund_request);
   const liquid = liquidBalance(core_liquid_balance);
@@ -118,8 +73,6 @@ function balanceStats(account) {
     staked: numberToPrettyAsset(staked)
   };
 
-  const detailed = selfDelegatedStats(self_delegated_bandwidth);
-
   if (unstaking > 0) {
     const timeLeft = new Date(account.refund_request.request_time);
     timeLeft.setDate(timeLeft.getDate() + 3);
@@ -129,13 +82,7 @@ function balanceStats(account) {
       unstaking: numberToAsset(unstaking),
       unstakingTime: time
     });
-
-    Object.assign(detailed, {
-      unstakingCpu: account.refund_request.cpu_amount,
-      unstakingNet: account.refund_request.net_amount
-    });
   }
-  Object.assign(stats, { detailed });
 
   return stats;
 }
@@ -163,15 +110,6 @@ function unstakingBalance(request) {
     );
   }
   return 0;
-}
-
-function selfDelegatedStats(selfDelegated) {
-  const stats = { stakedCpu: numberToAsset(0), stakedNet: numberToAsset(0) };
-  if (selfDelegated && selfDelegated !== null) {
-    stats.stakedCpu = selfDelegated.cpu_weight;
-    stats.stakedNet = selfDelegated.net_weight;
-  }
-  return stats;
 }
 
 export default BalanceComponent;

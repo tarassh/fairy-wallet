@@ -32,10 +32,11 @@ class PublicKeyComponent extends Component<Props> {
   handleClose = () => this.setState({ opened: false });
 
   render() {
+    const chars = 10;
     const { publicKey, loading, states, short } = this.props;
     const { opened } = this.state;
     const formattedKey = short
-      ? `${publicKey.wif.slice(0, 5)}...${publicKey.wif.slice(-5)}`
+      ? `${publicKey.wif.slice(0, chars)}...${publicKey.wif.slice(-chars)}`
       : publicKey.wif;
 
     const title = 'To copy public key, verify it with your device';

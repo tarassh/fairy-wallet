@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Segment, Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings';
@@ -43,14 +43,20 @@ class Balance extends Component<Props> {
     return (
       <Segment.Group className="no-border no-padding">
         <Segment>
-          <PublicKeyComponent short />
-        </Segment>
-        <Segment>
-          <AccountSwitcher
-            accounts={accounts}
-            onAccountSwitch={this.handleAccountSwitch}
-            loading={loading}
-          />
+          <Grid>
+            <Grid.Row>
+              <Grid.Column floated="left" width={4}>
+                <PublicKeyComponent short />
+              </Grid.Column>
+              <Grid.Column floated="left">
+                <AccountSwitcher
+                  accounts={accounts}
+                  onAccountSwitch={this.handleAccountSwitch}
+                  loading={loading}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Segment>
         <Segment>
           <BalanceComponent account={accounts.account} />

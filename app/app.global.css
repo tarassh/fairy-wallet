@@ -49,8 +49,23 @@ textarea{
 	-webkit-app-region: no-drag;
 }
 
+h5,
 .ui.form .field>label {
     color: gray;
+}
+
+h5, h4 {
+    font-weight: normal;
+    margin-top: 0.3em;
+}
+
+h4 {
+    font-size: 1.5em;
+    color: rgba(0,0,0,.6);
+}
+
+.ui.basic.label {
+    color: rgba(0,0,0,.6);
 }
 
 .ui.basic.label,

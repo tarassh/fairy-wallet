@@ -29,12 +29,12 @@
 }
 
 .ui.segments.wallet > .balance {
-    width: 50%;
+    width: 40%;
     padding-top: 15px;
 }
 
 .ui.segments.wallet > .actions {
-    width: 50%;
+    width: 60%;
     padding-top: 28px;
 }
 
