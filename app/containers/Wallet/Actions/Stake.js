@@ -11,6 +11,9 @@ import {
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
+import { InputFloat } from '../../../components/Shared/EosComponents';
+
+const fraction10000 = 10000;
 
 type Props = {
   account: {},
@@ -23,82 +26,26 @@ type Props = {
   getActions: string => {}
 };
 
-type inputProps = {
-  onChange: () => {}
-};
-
-const floatRegExp = new RegExp('^([0-9]+([.][0-9]{0,4})?|[.][0-9]{1,4})$');
-
-const handleFloatInputValidationOnChange = (e, v, onChange) => {
-  let { min, max } = v;
-  const { value } = v;
-  const number = parseFloat(value);
-  if (!min) {
-    min = 0;
-  }
-  if (!max) {
-    max = Number.MAX_VALUE;
-  }
-  if (
-    value === '' ||
-    (floatRegExp.test(value) && (min <= number && number <= max))
-  ) {
-    onChange(e, v);
-  }
-};
-
-const InputFloat = (props: inputProps) => {
-  if (typeof props.onChange !== 'function') {
-    return <Form.Input {...props} />;
-  }
-
-  const { onChange, ...parentProps } = props;
-
-  return (
-    <Form.Input
-      {...parentProps}
-      onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange)}
-    />
-  );
-};
-
 class StakeContainer extends Component<Props> {
-  constructor(props: Props) {
-    super(props);
+  state = {
+    openModal: false,
+    cpuDelta: 0,
+    netDelta: 0
+  };
 
-    const { account } = this.props;
-    const bandwidth = parseBandwidth(account);
-
-    this.state = {
-      net: assetToNumber(bandwidth.net),
-      cpu: assetToNumber(bandwidth.cpu),
-      openModal: false,
-      cpuDelta: 0,
-      netDelta: 0
-    };
-  }
-
-  handleValueChange = (value) => {
-    this.handleChange(null, { name: 'value', value: value.toString() } )
-  }
+  handleValueChange = value => {
+    this.handleChange(null, { name: 'value', value: value.toString() });
+  };
 
   handleChange = (e, { name, value }) => {
     const { account } = this.props;
     let { cpuDelta, netDelta } = this.state;
-    const stakedCpu = assetToNumber(
-      account.self_delegated_bandwidth.cpu_weight,
-      true
-    );
-    const stakedNet = assetToNumber(
-      account.self_delegated_bandwidth.net_weight,
-      true
-    );
-    const total = stakedCpu + stakedNet;
+    const { staked } = balanceStats(account);
 
-    const delta = parseFloat(value)*10000 - total;
-    
-    netDelta = Math.floor(delta / 2) / 10000;
-    cpuDelta = (Math.floor(delta / 2) + (delta % 2 ? 1 : 0)) / 10000;
+    const delta = Math.trunc(parseFloat(value) * fraction10000) - staked;
+
+    netDelta = Math.floor(delta / 2);
+    cpuDelta = Math.floor(delta / 2) + (delta % 2 ? 1 : 0);
 
     this.setState({ [name]: value, cpuDelta, netDelta });
   };
@@ -108,8 +55,8 @@ class StakeContainer extends Component<Props> {
     const { account } = this.props;
     const accountName = account.account_name;
 
-    const cpu = numberToAsset(Math.abs(cpuDelta));
-    const net = numberToAsset(Math.abs(netDelta));
+    const cpu = numberToAsset(Math.abs(cpuDelta / fraction10000));
+    const net = numberToAsset(Math.abs(netDelta / fraction10000));
 
     // Use of Karnaugh map
     // https://en.wikipedia.org/wiki/Karnaugh_map
@@ -160,14 +107,11 @@ class StakeContainer extends Component<Props> {
 
   handleClose = () => {
     const { account } = this.props;
-    const bandwidht = parseBandwidth(account);
 
     this.props.resetState();
     this.props.getAccount(account.account_name);
     this.props.getActions(account.account_name);
     this.setState({
-      net: assetToNumber(bandwidht.net),
-      cpu: assetToNumber(bandwidht.cpu),
       openModal: false,
       cpuDelta: 0,
       netDelta: 0
@@ -190,8 +134,8 @@ class StakeContainer extends Component<Props> {
         <Label basic floating circular icon="arrow alternate circle down" />
       );
     }
-    const value = ((net + cpu) + (netDelta + cpuDelta)).toFixed(4);
-    const { total } = balanceStats(account);
+    const { staked, total } = balanceStats(account);
+    const value = ((staked + netDelta + cpuDelta) / fraction10000).toFixed(4);
 
     return (
       <Segment className="no-border">
@@ -202,24 +146,24 @@ class StakeContainer extends Component<Props> {
         />
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
-            <Input 
-              name='stake'
-              step='0.0001'
-              min={1.0000} 
-              max={total/10000} 
+            <Input
+              name="stake"
+              step="0.0001"
+              min={1.0}
+              max={total / fraction10000}
               value={value}
-              type='range' 
+              type="range"
               onChange={this.handleChange}
-              style={{padding: '2em'}} 
+              style={{ padding: '2em' }}
             />
             <InputFloat
-              label='Value (EOS)'  
-              name='stake'
-              step='0.0001'
-              min={1.0000}
-              max={total}
+              label="Value (EOS)"
+              name="stake"
+              step="0.0001"
+              min={1.0}
+              max={total / fraction10000}
               value={value}
-              type='number'
+              type="number"
               onChange={this.handleChange}
             >
               <input />
@@ -240,35 +184,27 @@ class StakeContainer extends Component<Props> {
 function balanceStats(account) {
   const liquid = assetToNumber(account.core_liquid_balance, true);
   let staked = 0;
-  if (account.self_delegated_bandwidth && account.self_delegated_bandwidth !== null) {
-    staked = assetToNumber(account.self_delegated_bandwidth.cpu_weight, true) 
-      + assetToNumber(account.self_delegated_bandwidth.net_weight, true);
+  if (
+    account.self_delegated_bandwidth &&
+    account.self_delegated_bandwidth !== null
+  ) {
+    staked =
+      assetToNumber(account.self_delegated_bandwidth.cpu_weight, true) +
+      assetToNumber(account.self_delegated_bandwidth.net_weight, true);
   }
   let unstaking = 0;
   if (account.refund_request && account.refund_request !== null) {
-    unstaking = assetToNumber(account.refund_request.net_amount, true) 
-      + assetToNumber(account.refund_request.cpu_amount, true);
+    unstaking =
+      assetToNumber(account.refund_request.net_amount, true) +
+      assetToNumber(account.refund_request.cpu_amount, true);
   }
-  
+
   return {
     total: liquid + staked + unstaking,
     liquid,
     staked,
     unstaking
   };
-}
-
-function parseBandwidth(account) {
-  const bandwidth = {
-    net: numberToAsset(0),
-    cpu: numberToAsset(0)
-  }
-  if (account.self_delegated_bandwidth && !account.self_delegated_bandwidth !== null) {
-    bandwidth.net = account.self_delegated_bandwidth.net_weight;
-    bandwidth.cpu = account.self_delegated_bandwidth.cpu_weight;
-  }
-
-  return bandwidth;
 }
 
 function mapStateToProps(state) {
