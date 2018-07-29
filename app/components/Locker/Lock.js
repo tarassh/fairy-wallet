@@ -16,14 +16,8 @@ class Lock extends Component<Props> {
 
     return (
       <Form>
+        <Image centered src={src} />
         <p>{text}</p>
-        <Image
-          centered
-          src={src}
-          style={{
-            paddingTop: '2em'
-          }}
-        />
       </Form>
     );
   }

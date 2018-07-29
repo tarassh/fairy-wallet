@@ -22,15 +22,8 @@ class InactivityContainer extends Component<Props> {
 
     return (
       <Form>
+        <Image src="../resources/images/wakeup-device.svg" centered />
         <p>{noAccountsText}</p>
-        <Image
-          src="../resources/images/wakeup-device.svg"
-          centered
-          style={{
-            marginTop: '2em',
-            marginBottom: '2em'
-          }}
-        />
         <Button
           content="Retry"
           disabled={disabled}

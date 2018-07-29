@@ -38,8 +38,15 @@ class PublicKeyComponent extends Component<Props> {
       ? `${publicKey.wif.slice(0, 5)}...${publicKey.wif.slice(-5)}`
       : publicKey.wif;
 
+    const title = 'To copy public key, verify it with your device';
     let action = '';
-    let message = '';
+    let helperContent = (
+      <Image
+        src="../resources/images/verify-public-key.svg"
+        centered
+        style={{ marginTop: '1em', marginBottom: '1em' }}
+      />
+    );
     if (opened && loading.PUBLIC_KEY_DISPLAY === false) {
       if (states.displayPublicKey) {
         action = (
@@ -49,7 +56,7 @@ class PublicKeyComponent extends Component<Props> {
         );
       } else {
         action = <Button content="Close" onClick={this.handleClose} />;
-        message = <Message error content="Canceled." />;
+        helperContent = <Message error content="You clicked cancel." />;
       }
     }
 
@@ -60,17 +67,12 @@ class PublicKeyComponent extends Component<Props> {
           {formattedKey}
         </Label>
         <Transition animation="scale" duration={200}>
-          <Modal open={opened} size="tiny">
-            <Modal.Header>Verify public key with your device</Modal.Header>
+          <Modal open={opened} size="tiny" style={{ textAlign: 'center' }}>
+            <Modal.Header>{title}</Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                <p id="publickey">{publicKey.wif}</p>
-                {message}
-                <Image
-                  src="../resources/images/verify-public-key.svg"
-                  centered
-                  style={{ marginTop: '1em', marginBottom: '1em' }}
-                />
+                <p style={{ userSelect: 'none' }}>{publicKey.wif}</p>
+                {helperContent}
               </Modal.Description>
             </Modal.Content>
             <Modal.Actions>{action}</Modal.Actions>
