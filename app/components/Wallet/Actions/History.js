@@ -101,7 +101,7 @@ export default class History extends Component<Props> {
 
     const items = _.map(_.reverse(days), dayGroup => (
       <List.Item key={dayGroup.day} style={{ marginBottom: '1em' }}>
-        {dayGroup.day}
+        <h5>{dayGroup.day}</h5>
         <List.Content>
           <List selection divided>
             {_.map(_.reverse(dayGroup.actions), action => (
