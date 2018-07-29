@@ -57,7 +57,8 @@ export default function accounts(state = initialState, action) {
     case types.SET_ACTIVE_ACCOUNT: {
       return Object.assign({}, state, {
         activeAccount: action.index,
-        actions: null
+        actions: null,
+        balances: []
       });
     }
 
