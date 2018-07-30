@@ -39,14 +39,17 @@ class PublicKeyComponent extends Component<Props> {
       ? `${publicKey.wif.slice(0, chars)}...${publicKey.wif.slice(-chars)}`
       : publicKey.wif;
 
-    const title = 'To copy public key, verify it with your device';
     let action = '';
     let helperContent = (
-      <Image
-        src="../resources/images/verify-public-key.svg"
-        centered
-        style={{ marginTop: '1em', marginBottom: '1em' }}
-      />
+      <div>
+        <Image
+          src="../resources/images/verify-public-key.svg"
+          centered
+          style={{ marginTop: '1em', marginBottom: '1em' }}
+        />
+        <p>Confirm that the public key on your device matches.</p>
+        <p style={{ userSelect: 'none' }}>{publicKey.wif}</p>
+      </div>
     );
     if (opened && loading.PUBLIC_KEY_DISPLAY === false) {
       if (states.displayPublicKey) {
@@ -69,12 +72,9 @@ class PublicKeyComponent extends Component<Props> {
         </Label>
         <Transition animation="scale" duration={200}>
           <Modal open={opened} size="tiny" style={{ textAlign: 'center' }}>
-            <Modal.Header>{title}</Modal.Header>
+            <Modal.Header>Copy Public Key</Modal.Header>
             <Modal.Content>
-              <Modal.Description>
-                <p style={{ userSelect: 'none' }}>{publicKey.wif}</p>
-                {helperContent}
-              </Modal.Description>
+              <Modal.Description>{helperContent}</Modal.Description>
             </Modal.Content>
             <Modal.Actions>{action}</Modal.Actions>
           </Modal>
