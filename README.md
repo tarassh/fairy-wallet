@@ -1,6 +1,6 @@
 # Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
 
-`Fairy Wallet` is light and secure companion desktop application for Ledger Nano S internal EOS software. Application provides basic wallet functionality which allows to controll funds and initiate transfer for multiple accounts.
+`Fairy Wallet` is light and secure companion desktop application for Ledger Nano S for EOS software. Application provides basic wallet functionality which allows to controll funds and initiate transfer for multiple accounts.
 
 ![fairy-wallet screenshot](https://github.com/tarassh/fairy-wallet/blob/master/resources/application/Wallet.png)
 
@@ -32,12 +32,17 @@ cd fairy-wallet
 yarn package
 ```
 
+## User manual
+
+User manual you can find on [Wiki](https://github.com/tarassh/fairy-wallet/wiki/How-to-use-Ledger-Nano-S-with-Fairy-Wallet) page.
+
 ## Connect to Mainnet
 
 To connect to EOS Mainnet you can use one of the following endpoints:
 
 **NOTE**: You may expirience lack of account history as not all listed below endpoints provide it. Enpoints with checked box identifies history availability. 
 
+* [x] http://api.cypherglass.com - operated by [Cypherglass](https://www.cypherglass.com)
 * [x] https://api.eosnewyork.io - operated by [EOS New York](https://www.eosnewyork.io/)
 * [x] https://eos.greymass.com - operated by [Greymass](https://greymass.com)
 * [ ] https://bp.cryptolions.io - operated by [CryptoLions](http://CryptoLions.io/)
