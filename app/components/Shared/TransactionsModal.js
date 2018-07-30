@@ -10,6 +10,7 @@ import {
 } from 'semantic-ui-react';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
+import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 
 type Props = {
   open: boolean,
@@ -130,7 +131,7 @@ class TransactionsModal extends Component<Props> {
                 className="remove-my-icons"
               />
               <Image
-                src="../resources/images/confirm-transaction.svg"
+                src={confirmTransaction}
                 centered
                 style={{ marginTop: '1em', marginBottom: '1em' }}
               />

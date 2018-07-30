@@ -4,6 +4,7 @@ import { Button, Form, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getPublicKey } from '../../actions/ledger';
+import wakeupDevice from '../../../resources/images/wakeup-device.svg';
 
 class InactivityContainer extends Component<Props> {
   retry = () => {
@@ -22,7 +23,7 @@ class InactivityContainer extends Component<Props> {
 
     return (
       <Form>
-        <Image src="../resources/images/wakeup-device.svg" centered />
+        <Image src={wakeupDevice} centered />
         <p>{noAccountsText}</p>
         <Button
           content="Retry"

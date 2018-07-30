@@ -10,6 +10,7 @@ import {
   Label,
   Image
 } from 'semantic-ui-react';
+import publicKeySvg from '../../../resources/images/verify-public-key.svg';
 
 import { getPublicKey } from '../../actions/ledger';
 
@@ -43,7 +44,7 @@ class PublicKeyComponent extends Component<Props> {
     let helperContent = (
       <div>
         <Image
-          src="../resources/images/verify-public-key.svg"
+          src={publicKeySvg}
           centered
           style={{ marginTop: '1em', marginBottom: '1em' }}
         />
