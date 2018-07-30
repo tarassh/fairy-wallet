@@ -21,7 +21,7 @@ export function getAccounts(publicKey) {
       )
       .catch(err =>
         dispatch({
-          type: types.GET_ACCOUNTS_REQUEST,
+          type: types.GET_ACCOUNTS_FAILURE,
           err
         })
       );
@@ -125,7 +125,7 @@ export function getCurrencyBalance(account) {
       eos(connection)
         .getCurrencyBalance(contract, account, symbol)
         .then(values => {
-          const balance = { contract, symbol, amount: "0.0000" };
+          const balance = { contract, symbol, amount: '0.0000' };
           if (values.length > 0) {
             [balance.amount] = values[0].split(' ');
           }
