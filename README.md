@@ -38,6 +38,7 @@ To connect to EOS Mainnet you can use one of the following endpoints:
 
 **NOTE**: You may expirience lack of account history as not all listed below endpoints provide it. Enpoints with checked box identifies history availability. 
 
+* [x] http://api.cypherglass.com - operated by [Cypherglass](https://www.cypherglass.com)
 * [x] https://api.eosnewyork.io - operated by [EOS New York](https://www.eosnewyork.io/)
 * [x] https://eos.greymass.com - operated by [Greymass](https://greymass.com)
 * [ ] https://bp.cryptolions.io - operated by [CryptoLions](http://CryptoLions.io/)
