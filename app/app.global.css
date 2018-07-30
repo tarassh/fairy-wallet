@@ -91,4 +91,5 @@ h4 {
 
 .ui.segment.no-background {
     background: transparent;
+    height: 100%; 
 }
