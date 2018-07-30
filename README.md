@@ -8,7 +8,7 @@
 - **Multi account support** Application allows user to switch between EOS accounts if they have such. Accouns should be bounded to public key from hard wallet.
 - **Transfer funds** Application allows to transfer `eosio.token` contract compatible tokens from user account.
 - **Balance Staking** Application allows to stake/unstrake EOS funds.
-- **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that used is interested in.
+- **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that user is interested in.
 - **Transaction History** Apllication provides history transaction track.
 
 ## Releases
