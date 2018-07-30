@@ -2,6 +2,8 @@
 
 `Fairy Wallet` is light and secure companion desktop application for Ledger Nano S internal EOS software. Application provides basic wallet functionality which allows to controll funds and initiate transfer for multiple accounts.
 
+[![fairy-wallet screenshot](https://github.com/tarassh/fairy-wallet/blob/master/resources/application/Wallet.png)]
+
 ## Features
 
 - **Hard Wallet support** Application works with Ledger Nano S hard wallet. To sign the transaction, application upploads transaction data onto hard wallet and signing is done internally, so private key is never revealed to the world.
