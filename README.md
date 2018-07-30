@@ -13,7 +13,7 @@
 
 ## Releases
 
-The latest release version 0.2.0. To download application use one the following links:
+The latest release version is 0.2.0. To download application use one the following links:
 
 - [for MacOS](TBD)
 - [for Windows](TBD)
@@ -37,7 +37,7 @@ To connect to EOS Mainnet you can use one of the following endpoints:
 **NOTE**: You may expirience lack of account history as not all listed below endpoints provide it. Enpoints with checked box identifies history availability. 
 
 * [x] https://api.eosnewyork.io - operated by [EOS New York](https://www.eosnewyork.io/)
-* [x] https://eos.greymass.com - operated by [greymass](https://greymass.com)
+* [x] https://eos.greymass.com - operated by [Greymass](https://greymass.com)
 * [ ] https://bp.cryptolions.io - operated by [CryptoLions](http://CryptoLions.io/)
 * [ ] https://user-api.eoseoul.io - operated by [EOSeoul](https://portal.eoseoul.io/)
 * [x] https://api1.eosdublin.io - operated by [EOS Dublin](https://eosdublin.io)
