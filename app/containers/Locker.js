@@ -17,7 +17,7 @@ type Props = {
   loading: {}
 };
 
-class HomeContainer extends Component<Props> {
+class LockerContainer extends Component<Props> {
   props: Props;
 
   render() {
@@ -57,5 +57,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(HomeContainer)
+  connect(mapStateToProps, mapDispatchToProps)(LockerContainer)
 );
