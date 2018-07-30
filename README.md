@@ -1,14 +1,16 @@
-# Fairy Wallet - Ledger Nano S companion wallet for EOS software.
+# Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
 
-`Fairy Wallet` is light secure companion desktop application for Ledger Nano S internal EOS software. Application provides basic wallet functionality which allows to controll funds and initiate transfer for multiple accounts.
+`Fairy Wallet` is light and secure companion desktop application for Ledger Nano S internal EOS software. Application provides basic wallet functionality which allows to controll funds and initiate transfer for multiple accounts.
+
+![fairy-wallet screenshot](https://github.com/tarassh/fairy-wallet/blob/master/resources/application/Wallet.png)
 
 ## Features
 
-- **Hard Wallet support** Application works with Ledger Nano S hard wallet. To sign the transaction, application upploads transaction data onto hard wallet and signing is done internally, so private key is never revealed to the world.
-- **Multi account support** Application allows user to switch between EOS accounts if they have such. Accouns should be bounded to public key from hard wallet.
+- **Hardware Wallet support** Application works with Ledger Nano S hardware wallet. To sign the transaction, application upploads transaction data onto hardware wallet and signing is done internally, so private key is never revealed to the world.
+- **Multi account support** Application allows user to switch between EOS accounts if they have such. Accouns should be bounded to public key from hardware wallet.
 - **Transfer funds** Application allows to transfer `eosio.token` contract compatible tokens from user account.
 - **Balance Staking** Application allows to stake/unstrake EOS funds.
-- **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that used is interested in.
+- **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that user is interested in.
 - **Transaction History** Apllication provides history transaction track.
 
 ## Releases
