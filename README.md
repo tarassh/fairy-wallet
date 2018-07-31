@@ -17,9 +17,12 @@
 
 The latest release version is 0.2.0. To download application use one the following links:
 
-- [for MacOS](TBD)
-- [for Windows](TBD)
-- [for Linux](TBD)
+- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/FairyWallet-0.2.0.dmg)
+- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/FairyWallet.Setup.0.2.0.exe)
+- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/fairy-wallet_0.2.0_amd64.deb)
+
+Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.2.0
+
 
 **NOTE**: Wallet on Linux may require additional permitions for the device. To add permitions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 
 Windows users may expirience slow response from the device due to driver issues.
