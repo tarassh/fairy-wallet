@@ -58,14 +58,12 @@ function createAccordionPanel(transaction) {
   if (err !== null) {
     let error = err;
     let message = '';
-    let unused; // eslint-disable-line no-unused-vars
     try {
       if (typeof error === 'string') {
         [error] = JSON.parse(error).error.details;
       }
-      [unused, message] = error.message.split(':');
-      if (message) {
-        error = message.trim();
+      if (error.message) {
+        message = error.message.trim();
       }
     } catch (e) {
       message = error;
