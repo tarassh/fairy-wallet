@@ -70,7 +70,7 @@
 }
 
 #scrollable-history:hover {
-    overflow-y: scroll;
+    overflow-y: overlay;
 }
 
 #scrollable-history::-webkit-scrollbar {
