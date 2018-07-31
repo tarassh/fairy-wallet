@@ -83,7 +83,7 @@ class SendContainer extends Component<Props> {
     }));
 
     if (!tokens.find(element => element.key === eosToken)) {
-      tokens.push({
+      tokens.splice(0, 0, {
         text: eosToken,
         value: `eosio.token-${eosToken}`,
         key: `eosio.token-${eosToken}`
