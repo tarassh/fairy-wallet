@@ -21,6 +21,9 @@ The latest release version is 0.2.0. To download application use one the followi
 - [for Windows](TBD)
 - [for Linux](TBD)
 
+**NOTE**: Wallet on Linux may require additional permitions for the device. To add permitions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 
+Windows users may expirience slow response from the device due to driver issues.
+
 ## Building from source
 
 Please make sure that you have `yarn` preinstalled.
