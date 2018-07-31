@@ -3,7 +3,8 @@ import * as types from '../actions/types';
 const initialState = {
   httpEndpoint: null,
   chainId: '',
-  err: null
+  err: null,
+  expireInSeconds: 90
 };
 
 export default function connection(state = initialState, action) {

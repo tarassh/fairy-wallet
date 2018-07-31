@@ -31,7 +31,7 @@ class App extends React.Component<Props> {
     return (
       <Segment className="no-border no-padding no-background">
         <Modal
-          open={!_.isEmpty(failure)}
+          // open={!_.isEmpty(failure)}
           onClose={this.handleClose}
           as={Message}
           negative
