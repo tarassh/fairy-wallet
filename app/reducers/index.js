@@ -8,6 +8,7 @@ import accounts from './accounts';
 import settings from './settings';
 import transactions from './transactions';
 import loading from './loading';
+import failure from './failure';
 import currency from './currency';
 
 const rootReducer = combineReducers({
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   settings,
   transactions,
   loading,
+  failure,
   currency
 });
 
