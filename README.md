@@ -7,7 +7,7 @@
 ## Features
 
 - **Hardware Wallet support** Application works with Ledger Nano S hardware wallet. To sign the transaction, application upploads transaction data onto hardware wallet and signing is done internally, so private key is never revealed to the world.
-- **Multi account support** Application allows user to switch between EOS accounts if they have such. Accouns should be bounded to public key from hardware wallet.
+- **Multi account support** Application allows user to switch between EOS accounts if he have such. Accouns should be bounded to public key from hardware wallet.
 - **Transfer funds** Application allows to transfer `eosio.token` contract compatible tokens from user account.
 - **Balance Staking** Application allows to stake/unstrake EOS funds.
 - **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that user is interested in.
