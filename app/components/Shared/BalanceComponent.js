@@ -7,18 +7,28 @@ import {
 } from '../../utils/asset';
 
 const moment = require('moment');
+const numeral = require('numeral');
 
 type Props = {
-  account: {}
+  account: {},
+  currency: {}
 };
 
 class BalanceComponent extends Component<Props> {
   render() {
-    const { account } = this.props;
+    const { account, currency } = this.props;
 
     const { total, liquid, staked, unstaking, unstakingTime } = balanceStats(
       account
     );
+
+    let value = '';
+    let totalStr = total;
+    if (currency.exchangePairs.length > 0) {
+      value = assetToNumber(total) * currency.exchangePairs[0].value;
+      value = numeral(value).format('0,0.00$');
+      totalStr += ` (${value})`;
+    }
 
     return (
       <div>
@@ -27,7 +37,7 @@ class BalanceComponent extends Component<Props> {
             <Grid.Row>
               <Grid.Column textAlign="center">
                 <h5>Total Balance</h5>
-                <h4>{total}</h4>
+                <h4>{totalStr}</h4>
               </Grid.Column>
             </Grid.Row>
           </Grid>

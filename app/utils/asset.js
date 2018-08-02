@@ -3,7 +3,7 @@ const numeral = require('numeral');
 function assetToNumber(asset, finite = false, defaultValue = 0) {
   if (typeof asset === 'string') {
     const [amount] = asset.split(' ');
-    const n = parseFloat(amount);
+    const n = parseFloat(amount.replace(',', ''));
     if (finite) {
       return Math.trunc(n * 10000);
     }

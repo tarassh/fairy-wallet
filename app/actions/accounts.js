@@ -2,6 +2,7 @@
 import _ from 'lodash';
 import * as types from './types';
 import eos from './helpers/eos';
+import { getCurrencyExchangePrice } from './currency';
 
 export function getAccounts(publicKey) {
   return (dispatch: () => void, getState) => {
@@ -49,6 +50,7 @@ export function getAccount(name) {
       .then(result => {
         dispatch(getCurrencyBalance(name));
         dispatch(getActions(name));
+        dispatch(getCurrencyExchangePrice());
         return dispatch({
           type: types.GET_ACCOUNT_SUCCESS,
           account: result

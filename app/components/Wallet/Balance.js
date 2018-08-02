@@ -17,7 +17,8 @@ type Props = {
   actions: {},
   showStakedData: boolean,
   accounts: {},
-  loading: {}
+  loading: {},
+  currency: {}
 };
 
 class Balance extends Component<Props> {
@@ -28,7 +29,7 @@ class Balance extends Component<Props> {
   };
 
   render() {
-    const { accounts, showStakedData, loading } = this.props;
+    const { accounts, showStakedData, loading, currency } = this.props;
 
     if (accounts.balances !== null) {
       delete accounts.balances.EOS;
@@ -59,7 +60,7 @@ class Balance extends Component<Props> {
           </Grid>
         </Segment>
         <Segment>
-          <BalanceComponent account={accounts.account} />
+          <BalanceComponent account={accounts.account} currency={currency} />
         </Segment>
         <Segment>{details}</Segment>
       </Segment.Group>
