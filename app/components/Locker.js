@@ -30,7 +30,11 @@ export default class Locker extends Component<Props> {
       }
     });
 
-    let mainSegment = <Lock ledger={ledger} />;
+    let mainSegment = <div />;
+    if (!states.deviceConnected) {
+      mainSegment = <Lock ledger={ledger} />;
+    }
+
     if (states.deviceConnected && accounts.publicKey === null) {
       mainSegment = <Inactivity />;
     }
