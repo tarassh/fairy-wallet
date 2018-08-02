@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Form, Segment, Label, Input, Grid } from 'semantic-ui-react';
+import {
+  Form,
+  Segment,
+  Label,
+  Input,
+  Grid,
+  Icon,
+  Divider
+} from 'semantic-ui-react';
 import {
   delegate,
   undelegate,
@@ -10,8 +18,10 @@ import {
 } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
-import { numberToAsset, assetToNumber, numberToPrettyAsset } from '../../../utils/asset';
+import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat } from '../../../components/Shared/EosComponents';
+
+const numeral = require('numeral');
 
 const fraction10000 = 10000;
 
@@ -31,13 +41,13 @@ class StakeContainer extends Component<Props> {
     openModal: false,
     cpuDelta: 0,
     netDelta: 0,
-    showDetails: false,
+    showDetails: false
   };
 
   handleClick = () => {
     const { showDetails } = this.state;
     this.setState({ showDetails: !showDetails });
-  }
+  };
 
   handleValueChange = value => {
     this.handleChange(null, { name: 'value', value: value.toString() });
@@ -51,7 +61,15 @@ class StakeContainer extends Component<Props> {
     const delta = Math.trunc(parseFloat(value) * fraction10000) - staked;
 
     netDelta = Math.floor(delta / 2);
-    cpuDelta = Math.floor(delta / 2) + (delta % 2 ? 1 : 0);
+    cpuDelta = Math.floor(delta / 2);
+
+    if (Math.abs(delta % 2) === 1) {
+      if (delta > 0) {
+        cpuDelta += 1;
+      } else if (delta < 0) {
+        netDelta -= 1;
+      }
+    }
 
     this.setState({ [name]: value, cpuDelta, netDelta });
   };
@@ -141,15 +159,29 @@ class StakeContainer extends Component<Props> {
     }
     const { staked, total, detailed } = balanceStats(account);
     const value = ((staked + netDelta + cpuDelta) / fraction10000).toFixed(4);
-    const stakedAssets = numberToPrettyAsset(staked / fraction10000);
-    const newValue = numberToPrettyAsset((staked + netDelta + cpuDelta) / fraction10000);
-    const newValueDelta = numberToPrettyAsset((netDelta + cpuDelta) / fraction10000);
-    const detailedCpu = numberToPrettyAsset(detailed.cpu / fraction10000);
-    const newCpu = numberToPrettyAsset((detailed.cpu + cpuDelta)/ fraction10000);
-    const deltaCpuSt = numberToPrettyAsset(cpuDelta / fraction10000);
-    const detailedNet = numberToPrettyAsset(detailed.net / fraction10000);
-    const newNet = numberToPrettyAsset((detailed.net + netDelta)/ fraction10000);
-    const deltaNetSt = numberToPrettyAsset(netDelta / fraction10000);
+    const stakedAssets = numeral(staked / fraction10000).format('0,0.0000');
+    const newValue = numeral(
+      (staked + netDelta + cpuDelta) / fraction10000
+    ).format('0,0.0000');
+    const newValueDelta = numeral((netDelta + cpuDelta) / fraction10000).format(
+      '0,0.0000'
+    );
+    const detailedCpu = numeral(detailed.cpu / fraction10000).format(
+      '0,0.0000'
+    );
+    const newCpu = numeral((detailed.cpu + cpuDelta) / fraction10000).format(
+      '0,0.0000'
+    );
+    const deltaCpuSt = numeral(cpuDelta / fraction10000).format('0,0.0000');
+    const detailedNet = numeral(detailed.net / fraction10000).format(
+      '0,0.0000'
+    );
+    const newNet = numeral((detailed.net + netDelta) / fraction10000).format(
+      '0,0.0000'
+    );
+    const deltaNetSt = numeral(netDelta / fraction10000).format('0,0.0000');
+
+    const detailIcon = showDetails ? 'search minus' : 'search plus';
 
     return (
       <Segment className="no-border">
@@ -160,35 +192,62 @@ class StakeContainer extends Component<Props> {
         />
         <Form onSubmit={this.handleSubmit}>
           <Segment>
-            <Grid columns='equal' divided inverted>
-              <Grid.Row 
-                onClick={() => this.handleClick()} 
+            <Grid columns="equal" divided inverted>
+              <Grid.Row
+                style={{ cursor: 'pointer' }}
+                onClick={() => this.handleClick()}
               >
-                <Grid.Column width={3} verticalAlign='bottom' ><h5>Total</h5></Grid.Column>
-                <Grid.Column width={4} textAlign='right'><h5>Staked</h5><h5>{stakedAssets}</h5></Grid.Column>
-                <Grid.Column width={4} textAlign='right'><h5>New</h5><h5>{newValue}</h5></Grid.Column>
-                <Grid.Column width={4} textAlign='right'><h5>Delta</h5><h5>{newValueDelta}</h5></Grid.Column>
+                <Grid.Column width={3} verticalAlign="bottom">
+                  <h5>
+                    <Icon name={detailIcon} />Total
+                  </h5>
+                </Grid.Column>
+                <Grid.Column width={4} textAlign="right">
+                  <h5>Staked, EOS</h5>
+                  <h5>{stakedAssets}</h5>
+                </Grid.Column>
+                <Grid.Column width={4} textAlign="right">
+                  <h5>New, EOS</h5>
+                  <h5>{newValue}</h5>
+                </Grid.Column>
+                <Grid.Column width={4} textAlign="right">
+                  <h5>Delta, EOS</h5>
+                  <h5>{newValueDelta}</h5>
+                </Grid.Column>
               </Grid.Row>
-              {
-                showDetails && (
-                  <Grid.Row>
-                    <Grid.Column width={3}><h5>CPU</h5></Grid.Column>
-                    <Grid.Column width={4} textAlign='right'><h5>{detailedCpu}</h5></Grid.Column>
-                    <Grid.Column width={4} textAlign='right'><h5>{newCpu}</h5></Grid.Column>
-                    <Grid.Column width={4} textAlign='right'><h5>{deltaCpuSt}</h5></Grid.Column>
-                  </Grid.Row>
-                )
-              }
-              { 
-                showDetails && (
-                  <Grid.Row>
-                    <Grid.Column width={3}><h5>Network</h5></Grid.Column>
-                    <Grid.Column width={4} textAlign='right'><h5>{detailedNet}</h5></Grid.Column>
-                    <Grid.Column width={4} textAlign='right'><h5>{newNet}</h5></Grid.Column>
-                    <Grid.Column width={4} textAlign='right'><h5>{deltaNetSt}</h5></Grid.Column>
-                  </Grid.Row>
-                )
-              }
+              {showDetails && <Divider />}
+              {showDetails && (
+                <Grid.Row>
+                  <Grid.Column width={3}>
+                    <h5>CPU</h5>
+                  </Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <h5>{detailedCpu}</h5>
+                  </Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <h5>{newCpu}</h5>
+                  </Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <h5>{deltaCpuSt}</h5>
+                  </Grid.Column>
+                </Grid.Row>
+              )}
+              {showDetails && (
+                <Grid.Row>
+                  <Grid.Column width={3}>
+                    <h5>Network</h5>
+                  </Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <h5>{detailedNet}</h5>
+                  </Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <h5>{newNet}</h5>
+                  </Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <h5>{deltaNetSt}</h5>
+                  </Grid.Column>
+                </Grid.Row>
+              )}
             </Grid>
           </Segment>
           <Form.Field>
@@ -235,14 +294,20 @@ function balanceStats(account) {
     account.self_delegated_bandwidth &&
     account.self_delegated_bandwidth !== null
   ) {
-    const cpu = assetToNumber(account.self_delegated_bandwidth.cpu_weight, true);
-    const net = assetToNumber(account.self_delegated_bandwidth.net_weight, true);
+    const cpu = assetToNumber(
+      account.self_delegated_bandwidth.cpu_weight,
+      true
+    );
+    const net = assetToNumber(
+      account.self_delegated_bandwidth.net_weight,
+      true
+    );
     staked = cpu + net;
 
     Object.assign(detailed, {
       cpu,
       net
-    })
+    });
   }
   let unstaking = 0;
   if (account.refund_request && account.refund_request !== null) {
@@ -250,7 +315,6 @@ function balanceStats(account) {
       assetToNumber(account.refund_request.net_amount, true) +
       assetToNumber(account.refund_request.cpu_amount, true);
   }
-  
 
   return {
     total: liquid + staked + unstaking,
