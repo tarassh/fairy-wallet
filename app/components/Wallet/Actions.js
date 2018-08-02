@@ -14,9 +14,9 @@ export default class Actions extends Component<Props> {
 
   render() {
     const panes = [
-      { key: 'history', menuItem: 'History', render: () => <ActionsHistory />},
+      { key: 'history', menuItem: 'History', render: () => <ActionsHistory /> },
       { key: 'send', menuItem: 'Send', render: () => <ActionsSend /> },
-      { key: 'stake', menuItem: 'Staking [Delegation]', render: () => <ActionsStake /> }
+      { key: 'stake', menuItem: 'Stake', render: () => <ActionsStake /> }
     ];
     const { onTabChange } = this.props;
 

@@ -5,7 +5,8 @@ import {
   Modal,
   Form,
   Table,
-  Transition
+  Transition,
+  Divider
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -113,31 +114,36 @@ class TokenAddModal extends Component<Props> {
         </Table>
       ) : (
         <Form>
+          <Form.Select
+            placeholder="Select one"
+            options={predefinedTokens}
+            onChange={this.handleChange}
+            name="token"
+            label="Select Token"
+            value={selectValue}
+          />
+          <Divider horizontal>
+            <h5>Or Add</h5>
+          </Divider>
           <Form.Input
-            autoFocus
             name="contract"
             control={InputAccount}
             value={contract}
             disabled={requesting}
-            placeholder="Contract name..."
+            placeholder="Account..."
             onChange={this.handleChange}
             fluid
+            label="Contract Account"
           />
           <Form.Input
             name="symbol"
             control={InputSymbol}
             value={symbol}
             disabled={requesting}
-            placeholder="Token name..."
+            placeholder="Symbol..."
             onChange={this.handleChange}
             fluid
-          />
-          <Form.Select
-            placeholder="... or select one"
-            options={predefinedTokens}
-            onChange={this.handleChange}
-            name="token"
-            value={selectValue}
+            label="Token Symbol"
           />
         </Form>
       );

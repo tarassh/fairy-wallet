@@ -40,48 +40,50 @@ class Tokens extends Component<Props> {
           symbol={symbol}
           contract={contract}
         />
-        <Table basic="very" compact="very" unstackable>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell />
-              <Table.HeaderCell
-                className="token-header"
-                style={{ color: 'grey' }}
-              >
-                Token
-              </Table.HeaderCell>
-              <Table.HeaderCell
-                className="token-header"
-                style={{ color: 'grey' }}
-              >
-                Balance
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {_.map(accounts.balances, balance => (
-              <Table.Row key={balance.symbol}>
-                <Table.Cell collapsing textAlign="center" width={1}>
-                  <Button
-                    className="no-border"
-                    basic
-                    symbol={balance.symbol}
-                    contract={balance.contract}
-                    onClick={this.handleRemoveOpen}
-                  >
-                    <Icon name="close" className="opacue-2" />
-                  </Button>
-                </Table.Cell>
-                <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
-                  {balance.symbol}
-                </Table.Cell>
-                <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
-                  {balance.amount}
-                </Table.Cell>
+        {accounts.balances.length > 0 && (
+          <Table basic="very" compact="very" unstackable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell />
+                <Table.HeaderCell
+                  className="token-header"
+                  style={{ color: 'grey' }}
+                >
+                  Token
+                </Table.HeaderCell>
+                <Table.HeaderCell
+                  className="token-header"
+                  style={{ color: 'grey' }}
+                >
+                  Balance
+                </Table.HeaderCell>
               </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+            </Table.Header>
+            <Table.Body>
+              {_.map(accounts.balances, balance => (
+                <Table.Row key={balance.symbol}>
+                  <Table.Cell collapsing textAlign="center" width={1}>
+                    <Button
+                      className="no-border"
+                      basic
+                      symbol={balance.symbol}
+                      contract={balance.contract}
+                      onClick={this.handleRemoveOpen}
+                    >
+                      <Icon name="close" className="opacue-2" />
+                    </Button>
+                  </Table.Cell>
+                  <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
+                    {balance.symbol}
+                  </Table.Cell>
+                  <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
+                    {balance.amount}
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+        )}
       </div>
     );
   }
