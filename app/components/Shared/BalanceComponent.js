@@ -105,6 +105,9 @@ function stakedBalance(delegated) {
 
 function unstakingBalance(request) {
   if (request && request !== null) {
+    const requestTime = new Date(request.request_time);
+    requestTime.setDate(requestTime.getDate() + 3);
+    if (requestTime - Date.now() < 0) return 0;
     return (
       assetToNumber(request.cpu_amount) + assetToNumber(request.net_amount)
     );

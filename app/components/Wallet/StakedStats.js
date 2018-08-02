@@ -4,6 +4,7 @@ import { Table, TableBody, Header } from 'semantic-ui-react';
 import { numberToPrettyAsset, assetToNumber } from '../../utils/asset';
 
 const pretty = require('prettysize');
+const numeral = require('numeral');
 
 type Props = {
   account: {}
@@ -41,7 +42,7 @@ class StakedStats extends Component<Props> {
               )}
               {usage && (
                 <Table.Cell width={4}>
-                  <h5>Usage</h5>
+                  <h5>Used</h5>
                   <h5>{usage.cpu}</h5>
                 </Table.Cell>
               )}
@@ -73,7 +74,7 @@ class StakedStats extends Component<Props> {
               )}
               {usage && (
                 <Table.Cell width={4}>
-                  <h5>Usage</h5>
+                  <h5>Used</h5>
                   <h5>{usage.net}</h5>
                 </Table.Cell>
               )}
@@ -93,7 +94,7 @@ class StakedStats extends Component<Props> {
             <Table.Row textAlign="center">
               {ram && (
                 <Table.Cell width={16}>
-                  <h5>Usage</h5>
+                  <h5>Used</h5>
                   <h5>{ram}</h5>
                 </Table.Cell>
               )}
@@ -141,9 +142,7 @@ function formatStats(account) {
     // eslint-disable-line camelcase
     const usage = {};
 
-    const cpu = `${(cpu_limit.used / 1000000).toFixed(4)} s / ${(
-      cpu_limit.max / 1000000
-    ).toFixed(4)} s`;
+    const cpu = numeral(cpu_limit.used/cpu_limit.max).format('0.00%');
 
     const net = `${pretty(parseInt(net_limit.used, 10))} / ${pretty(
       parseInt(net_limit.max, 10)
