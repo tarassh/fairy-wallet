@@ -32,6 +32,11 @@ export function startListen() {
                   if (process.env.NODE_ENV === 'development') {
                     transport.setDebugMode(true);
                   }
+
+                  dispatch({
+                    type: types.GET_APP_STATS_REQUEST
+                  });
+
                   const api = new Api(transport);
                   api
                     .getAppConfiguration()
