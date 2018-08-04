@@ -19,14 +19,19 @@ class BalanceComponent extends Component<Props> {
   render() {
     const { account, currency } = this.props;
 
-    const { total, liquid, staked, unstaking, unstakingTime } = balanceStats(
-      account
-    );
+    const {
+      total,
+      totalNum,
+      liquid,
+      staked,
+      unstaking,
+      unstakingTime
+    } = balanceStats(account);
 
     let value = '';
     let totalStr = total;
     if (currency.exchangePairs.length > 0) {
-      value = assetToNumber(total) * currency.exchangePairs[0].value;
+      value = totalNum * currency.exchangePairs[0].value;
       value = numeral(value).format('0,0.00$');
       totalStr += ` (${value})`;
     }
@@ -81,7 +86,11 @@ function balanceStats(account) {
   const stats = {
     total: numberToPrettyAsset(total),
     liquid: numberToPrettyAsset(liquid),
-    staked: numberToPrettyAsset(staked)
+    staked: numberToPrettyAsset(staked),
+
+    totalNum: total,
+    liquidNum: liquid,
+    stakedNum: staked
   };
 
   if (unstaking > 0) {
@@ -91,7 +100,9 @@ function balanceStats(account) {
 
     Object.assign(stats, {
       unstaking: numberToAsset(unstaking),
-      unstakingTime: time
+      unstakingTime: time,
+
+      unstakingNum: unstaking
     });
   }
 
