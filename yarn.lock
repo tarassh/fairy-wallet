@@ -4123,6 +4123,10 @@ evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
     md5.js "^1.3.4"
     safe-buffer "^5.1.1"
 
+exact-math@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/exact-math/-/exact-math-1.0.0.tgz#a538db43efbd92e072401f9d38490199665ada7e"
+
 exec-sh@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.2.1.tgz#163b98a6e89e6b65b47c2a28d215bc1f63989c38"

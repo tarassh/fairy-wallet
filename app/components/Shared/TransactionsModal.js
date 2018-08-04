@@ -3,11 +3,11 @@ import {
   Modal,
   Transition,
   Button,
-  Message,
-  Accordion,
   Icon,
-  Image
+  Image,
+  Header
 } from 'semantic-ui-react';
+import _ from 'lodash';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
@@ -18,69 +18,72 @@ type Props = {
   handleClose: () => {}
 };
 
-function createAccordionPanel(transaction) {
-  const { context, receipt, err, constructed, signed } = transaction;
-  const actionName = context.action.replace(/\b\w/g, l => l.toUpperCase());
-  const { action } = context;
+const noop = () => {};
 
-  const messageHeader = <Message.Header content={actionName} />;
-  let helperMessage = constructed ? 'Ready to sign' : 'Preparing...';
+const actionDisplayName = {
+  transfer: 'Transfer funds',
+  delegatebw: 'Stake funds',
+  undelegatebw: 'Unstake funds'
+};
+
+function renderTransaction(transaction) {
+  const { context, receipt, err, constructed, signed } = transaction;
+  const { action } = context;
+  const actionName = actionDisplayName[action];
+
+  let icon = 'circle notched';
+  let statusText = constructed ? 'Ready to sign' : 'Preparing...';
+  let loading = true;
   if (signed) {
-    helperMessage = 'Sending...';
+    statusText = 'Sending...';
   }
 
-  let status = (
-    <Message icon>
-      <Icon name="circle notched" loading />
-      <Message.Content>
-        {messageHeader}
-        {helperMessage}
-      </Message.Content>
-    </Message>
-  );
+  if (receipt !== null) {
+    statusText = `Transaction id ${receipt.transaction_id}`;
+    icon = 'check';
+    loading = false;
+  }
+
+  if (err !== null) {
+    let error = err;
+    try {
+      if (typeof error === 'string') {
+        [error] = JSON.parse(err).error.details;
+      }
+      if (error.message) {
+        error = error.message.trim();
+      }
+    } catch (e) {
+      noop();
+    }
+    statusText = error;
+    icon = 'cancel';
+    loading = false;
+  }
 
   let content = <TransferContext context={context} />;
   if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
   }
 
-  if (receipt !== null) {
-    status = (
-      <Message success>
-        {messageHeader}
-        <Message.Content>
-          {`Transaction id ${receipt.transaction_id}`}
-        </Message.Content>
-      </Message>
-    );
-  }
+  const header = (
+    <Header>
+      <Header.Content>
+        {actionName}
+        <Header.Subheader>
+          <Icon name={icon} loading={loading} />
+          {statusText}
+        </Header.Subheader>
+      </Header.Content>
+    </Header>
+  );
 
-  if (err !== null) {
-    let error = err;
-    let message = '';
-    try {
-      if (typeof error === 'string') {
-        [error] = JSON.parse(error).error.details;
-      }
-      if (error.message) {
-        message = error.message.trim();
-      }
-    } catch (e) {
-      message = error;
-    }
-    status = (
-      <Message error>
-        {messageHeader}
-        <Message.Content>{message}</Message.Content>
-      </Message>
-    );
-  }
-
-  return {
-    key: `panel-${action}`,
-    title: { key: `title-${action}`, content: status },
-    content: { key: `content-${action}`, content }
-  };
+  return (
+    <div key={action}>
+      {header}
+      {content}
+    </div>
+  );
 }
 
 class TransactionsModal extends Component<Props> {
@@ -95,21 +98,21 @@ class TransactionsModal extends Component<Props> {
   render() {
     const { open, transactions, handleClose } = this.props;
 
-    const panels = [];
+    const renderedTxs = [];
     let successCounter = 0;
     let failureCounter = 0;
     Object.keys(transactions).forEach(key => {
       const tx = transactions[key];
       if (tx.context !== null) {
-        panels.push(createAccordionPanel(tx));
+        renderedTxs.push(renderTransaction(tx));
       }
       successCounter += tx.receipt !== null ? 1 : 0;
       failureCounter += tx.err !== null ? 1 : 0;
     });
 
-    let header = 'Use your device to validate transaction';
+    let header = 'Use your device to verify transaction';
     let modalAction = '';
-    if (successCounter === panels.length) {
+    if (successCounter === renderedTxs.length) {
       header = 'Success';
       modalAction = <Button onClick={handleClose} content="Close" />;
     } else if (failureCounter > 0) {
@@ -119,20 +122,21 @@ class TransactionsModal extends Component<Props> {
 
     return (
       <Transition visible={open} animation="scale" duration={500}>
-        <Modal open={open} size="small" onClose={this.onClose}>
+        <Modal
+          open={open}
+          size="small"
+          onClose={this.onClose}
+          style={{ textAlign: 'center' }}
+        >
           <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              <Accordion
-                defaultActiveIndex={0}
-                panels={panels}
-                className="remove-my-icons"
-              />
               <Image
                 src={confirmTransaction}
                 centered
                 style={{ marginTop: '1em', marginBottom: '1em' }}
               />
+              {_.map(renderedTxs, tx => tx)}
             </Modal.Description>
           </Modal.Content>
           <Modal.Actions>{modalAction}</Modal.Actions>

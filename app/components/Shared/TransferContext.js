@@ -12,7 +12,7 @@ class TransferContext extends Component<Props> {
     let content = '';
     if (context !== null) {
       content = (
-        <Table basic>
+        <Table basic attached="top">
           <Table.Body>
             <Table.Row>
               <Table.Cell width={3}>Contract</Table.Cell>

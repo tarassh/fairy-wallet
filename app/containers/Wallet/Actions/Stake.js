@@ -22,6 +22,7 @@ import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat } from '../../../components/Shared/EosComponents';
 
 const numeral = require('numeral');
+const exactMath = require('exact-math');
 
 const fraction10000 = 10000;
 
@@ -55,13 +56,12 @@ class StakeContainer extends Component<Props> {
 
   handleChange = (e, { name, value }) => {
     const { account } = this.props;
-    let { cpuDelta, netDelta } = this.state;
     const { staked } = balanceStats(account);
 
-    const delta = Math.trunc(parseFloat(value) * fraction10000) - staked;
-
-    netDelta = Math.floor(delta / 2);
-    cpuDelta = Math.floor(delta / 2);
+    const delta = exactMath.mul(parseFloat(value), fraction10000) - staked;
+    const half = exactMath.div(delta, 2);
+    let netDelta = delta < 0 ? Math.ceil(half) : Math.floor(half);
+    let cpuDelta = delta < 0 ? Math.ceil(half) : Math.floor(half);
 
     if (Math.abs(delta % 2) === 1) {
       if (delta > 0) {
@@ -79,8 +79,8 @@ class StakeContainer extends Component<Props> {
     const { account } = this.props;
     const accountName = account.account_name;
 
-    const cpu = numberToAsset(Math.abs(cpuDelta / fraction10000));
-    const net = numberToAsset(Math.abs(netDelta / fraction10000));
+    const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
+    const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
     // Use of Karnaugh map
     // https://en.wikipedia.org/wiki/Karnaugh_map
@@ -158,28 +158,45 @@ class StakeContainer extends Component<Props> {
       );
     }
     const { staked, total, detailed } = balanceStats(account);
-    const value = ((staked + netDelta + cpuDelta) / fraction10000).toFixed(4);
-    const stakedAssets = numeral(staked / fraction10000).format('0,0.0000');
+    const value = exactMath
+      .div(exactMath.add(staked, netDelta, cpuDelta), fraction10000)
+      .toFixed(4);
+
+    const stakedAssets = numeral(exactMath.div(staked, fraction10000)).format(
+      '0,0.0000'
+    );
+
     const newValue = numeral(
-      (staked + netDelta + cpuDelta) / fraction10000
+      exactMath.div(exactMath.add(staked, netDelta, cpuDelta), fraction10000)
     ).format('0,0.0000');
-    const newValueDelta = numeral((netDelta + cpuDelta) / fraction10000).format(
+
+    const newValueDelta = numeral(
+      exactMath.div(exactMath.add(netDelta, cpuDelta), fraction10000)
+    ).format('0,0.0000');
+
+    const detailedCpu = numeral(
+      exactMath.div(detailed.cpu, fraction10000)
+    ).format('0,0.0000');
+
+    const newCpu = numeral(
+      exactMath.div(exactMath.add(detailed.cpu, cpuDelta), fraction10000)
+    ).format('0,0.0000');
+
+    const deltaCpuSt = numeral(exactMath.div(cpuDelta, fraction10000)).format(
       '0,0.0000'
     );
-    const detailedCpu = numeral(detailed.cpu / fraction10000).format(
+
+    const detailedNet = numeral(
+      exactMath.div(detailed.net, fraction10000)
+    ).format('0,0.0000');
+
+    const newNet = numeral(
+      exactMath.div(exactMath.add(detailed.net, netDelta), fraction10000)
+    ).format('0,0.0000');
+
+    const deltaNetSt = numeral(exactMath.div(netDelta, fraction10000)).format(
       '0,0.0000'
     );
-    const newCpu = numeral((detailed.cpu + cpuDelta) / fraction10000).format(
-      '0,0.0000'
-    );
-    const deltaCpuSt = numeral(cpuDelta / fraction10000).format('0,0.0000');
-    const detailedNet = numeral(detailed.net / fraction10000).format(
-      '0,0.0000'
-    );
-    const newNet = numeral((detailed.net + netDelta) / fraction10000).format(
-      '0,0.0000'
-    );
-    const deltaNetSt = numeral(netDelta / fraction10000).format('0,0.0000');
 
     const detailIcon = showDetails ? 'search minus' : 'search plus';
 

@@ -54,7 +54,7 @@ class SendContainer extends Component<Props> {
       Object.assign(obj, {
         contract,
         [name]: symbol,
-        resetValue: true
+        resetValue: this.state.token !== symbol
       });
     }
     this.setState(obj);
@@ -123,7 +123,6 @@ class SendContainer extends Component<Props> {
               name="amount"
               value={amount}
               onChange={this.handleChange}
-              onError={this.handleTypeError}
             >
               <Form.Dropdown
                 button
