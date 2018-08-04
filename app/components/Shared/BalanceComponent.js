@@ -8,6 +8,7 @@ import {
 
 const moment = require('moment');
 const numeral = require('numeral');
+const exactMath = require('exact-math');
 
 type Props = {
   account: {},
@@ -75,7 +76,7 @@ function balanceStats(account) {
   const staked = stakedBalance(self_delegated_bandwidth);
   const unstaking = unstakingBalance(refund_request);
   const liquid = liquidBalance(core_liquid_balance);
-  const total = staked + unstaking + liquid;
+  const total = exactMath.add(staked, unstaking, liquid);
 
   const stats = {
     total: numberToPrettyAsset(total),
@@ -106,8 +107,9 @@ function liquidBalance(liqidBalance) {
 
 function stakedBalance(delegated) {
   if (delegated && delegated !== null) {
-    return (
-      assetToNumber(delegated.cpu_weight) + assetToNumber(delegated.net_weight)
+    return exactMath.add(
+      assetToNumber(delegated.cpu_weight),
+      assetToNumber(delegated.net_weight)
     );
   }
   return 0;
@@ -118,8 +120,9 @@ function unstakingBalance(request) {
     const requestTime = new Date(request.request_time);
     requestTime.setDate(requestTime.getDate() + 3);
     if (requestTime - Date.now() < 0) return 0;
-    return (
-      assetToNumber(request.cpu_amount) + assetToNumber(request.net_amount)
+    return exactMath.add(
+      assetToNumber(request.cpu_amount),
+      assetToNumber(request.net_amount)
     );
   }
   return 0;
