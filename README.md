@@ -1,3 +1,5 @@
+[![version](https://img.shields.io/badge/version-v0.2.0-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
+
 # Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
 
 `Fairy Wallet` is light and secure companion desktop application for Ledger Nano S for EOS software. Application provides basic wallet functionality which allows to controll funds and initiate transfer for multiple accounts.
