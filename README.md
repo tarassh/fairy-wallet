@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="https://github.com/tarassh/fairy-wallet/blob/master/resources/icons/384x384.png" height="128" width="128" />
+</p>
+
+
 [![version](https://img.shields.io/badge/version-v0.2.0-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
 
 # Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
