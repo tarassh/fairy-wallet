@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Table, TableBody, Header } from 'semantic-ui-react';
+import { Table, TableBody, Header, Segment } from 'semantic-ui-react';
 import { numberToPrettyAsset, assetToNumber } from '../../utils/asset';
 
 const pretty = require('prettysize');
@@ -16,7 +16,7 @@ class StakedStats extends Component<Props> {
     const { totalResources, selfDelegated, usage, ram } = formatStats(account);
 
     return (
-      <div>
+      <Segment>
         <Header
           size="tiny"
           textAlign="center"
@@ -101,7 +101,7 @@ class StakedStats extends Component<Props> {
             </Table.Row>
           </TableBody>
         </Table>
-      </div>
+      </Segment>
     );
   }
 }
