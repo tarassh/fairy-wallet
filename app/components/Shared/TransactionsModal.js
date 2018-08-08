@@ -81,7 +81,7 @@ function renderTransaction(transaction) {
   return (
     <div key={action}>
       {header}
-      {content}
+      {loading && content}
     </div>
   );
 }
