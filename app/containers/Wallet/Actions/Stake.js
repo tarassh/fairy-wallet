@@ -199,6 +199,7 @@ class StakeContainer extends Component<Props> {
     );
 
     const detailIcon = showDetails ? 'search minus' : 'search plus';
+    const deltaColor = { color: 'lightcoral' };
 
     return (
       <Segment className="no-border">
@@ -229,7 +230,13 @@ class StakeContainer extends Component<Props> {
                 </Grid.Column>
                 <Grid.Column width={4} textAlign="right">
                   <h5>Delta, EOS</h5>
-                  <h5>{newValueDelta}</h5>
+                  <h5
+                    style={
+                      exactMath.add(netDelta, cpuDelta) < 0 ? deltaColor : {}
+                    }
+                  >
+                    {newValueDelta}
+                  </h5>
                 </Grid.Column>
               </Grid.Row>
               {showDetails && <Divider />}
@@ -245,7 +252,7 @@ class StakeContainer extends Component<Props> {
                     <h5>{newCpu}</h5>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5>{deltaCpuSt}</h5>
+                    <h5 style={cpuDelta < 0 ? deltaColor : {}}>{deltaCpuSt}</h5>
                   </Grid.Column>
                 </Grid.Row>
               )}
@@ -261,7 +268,7 @@ class StakeContainer extends Component<Props> {
                     <h5>{newNet}</h5>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5>{deltaNetSt}</h5>
+                    <h5 style={netDelta < 0 ? deltaColor : {}}>{deltaNetSt}</h5>
                   </Grid.Column>
                 </Grid.Row>
               )}
