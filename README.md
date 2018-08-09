@@ -3,7 +3,7 @@
 </p>
 
 
-[![version](https://img.shields.io/badge/version-v0.2.0-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
+[![version](https://img.shields.io/badge/version-v0.3.0-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
 
 # Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
 
@@ -19,6 +19,7 @@
 - **Balance Staking** Application allows to stake/unstrake EOS funds.
 - **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that user is interested in.
 - **Transaction History** Apllication provides history transaction track.
+- **Currency price** Added EOS USD exchange pair.
 
 ## Releases
 
