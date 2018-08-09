@@ -15,3 +15,11 @@
 - **Tranansaction Timeout:** Transaction timeout is increased to 90 sec.
 - **Staking:** Changed UX for Staking funds.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
+
+# 0.3.0 (2018.8.9)
+
+#### Features
+
+- **Currency Price:** Added EOS USD pair.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
+
