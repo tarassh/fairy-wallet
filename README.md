@@ -22,13 +22,13 @@
 
 ## Releases
 
-The latest release version is 0.2.0. To download application use one the following links:
+The latest release version is 0.3.0. To download application use one the following links:
 
-- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/FairyWallet-0.2.0.dmg)
-- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/FairyWallet.Setup.0.2.0.exe)
-- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/fairy-wallet_0.2.0_amd64.deb)
+- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.3.0/FairyWallet-0.3.0.dmg)
+- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.3.0/FairyWallet.Setup.0.3.0.exe)
+- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.3.0/fairy-wallet_0.3.0_amd64.deb)
 
-Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.2.0
+Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.3.0
 
 
 **NOTE**: Wallet on Linux may require additional permitions for the device. To add permitions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 
