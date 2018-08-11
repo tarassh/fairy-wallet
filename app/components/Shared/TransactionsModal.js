@@ -10,6 +10,7 @@ import {
 import _ from 'lodash';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
+import VoteContext from './VoteContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 
 type Props = {
@@ -40,7 +41,7 @@ function renderTransaction(transaction) {
 
   if (receipt !== null) {
     statusText = `Transaction id ${receipt.transaction_id}`;
-    icon = 'check';
+    icon = 'check circle';
     loading = false;
   }
 
@@ -57,20 +58,22 @@ function renderTransaction(transaction) {
       noop();
     }
     statusText = error;
-    icon = 'cancel';
+    icon = 'remove circle';
     loading = false;
   }
 
   let content = <TransferContext context={context} />;
   if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
+  } else if (action === 'voteproducer') {
+    content = <VoteContext context={context} />
   }
 
   const header = (
     <Header>
       <Header.Content>
         {actionName}
-        <Header.Subheader>
+        <Header.Subheader style={err !== null ? { color: 'lightcoral' } : {}}>
           <Icon name={icon} loading={loading} />
           {statusText}
         </Header.Subheader>
@@ -81,7 +84,7 @@ function renderTransaction(transaction) {
   return (
     <div key={action}>
       {header}
-      {content}
+      {loading && content}
     </div>
   );
 }

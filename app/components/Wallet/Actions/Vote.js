@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { List, Segment, Icon, Checkbox, Button, Divider } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash'; 
+import TransactionsModal from '../../Shared/TransactionsModal';
 
 const numeral = require('numeral');
 
@@ -10,20 +11,28 @@ const MAX_VOTES = 30;
 const HAPPY_PRODUCERS = 21;
 
 type Props = {
+  accounts: {},
   producers: {},
   loading: {},
-  voteProducer: () => {}
+  transactions: {},
+  voteProducer: () => {},
+  resetState: () => {},
+  getAccount: string => {},
+  getActions: string => {}
 };
 
 export default class Vote extends Component<Props> {
   props: Props;
 
-  state = {};
+  state = {
+    openModal: false
+  };
 
   vote = () => {
     const { voteProducer } = this.props;
     const producers = this.currentVotes();
     voteProducer(producers);
+    this.setState({openModal: true});
   };
 
   isValidUrl = url => url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
@@ -41,8 +50,17 @@ export default class Vote extends Component<Props> {
     this.forceUpdate();
   };
 
+  handleClose = () => {
+    const { accounts } = this.props;
+    this.props.resetState();
+    this.setState({ openModal: false });
+    this.props.getAccount(accounts.account.account_name);
+    this.props.getActions(accounts.account.account_name);
+  };
+
   render() {
-    const { producers, loading } = this.props;
+    const { producers, loading, transactions } = this.props;
+    const { openModal } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
 
@@ -70,8 +88,13 @@ export default class Vote extends Component<Props> {
 
     return (
       <Segment loading={isLoading} className="no-border producers-list">
+        <TransactionsModal
+          open={openModal}
+          transactions={transactions}
+          handleClose={this.handleClose}
+        />
+                <Label>{this.currentVotes().length}\{MAX_VOTES}</Label>
         <Button fluid floated='right' basic onClick={this.vote}>Vote</Button>
-        <br />
         <Divider horizontal>{this.currentVotes().length} \ {MAX_VOTES}</Divider>
         <List divided relaxed className="scrollable">
           {!isLoading ? producersRender : ""}

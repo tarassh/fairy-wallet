@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import {
-  Modal,
-  Transition,
-  Button,
-  Message,
-  Label,
-  Image
-} from 'semantic-ui-react';
+import { Modal, Transition, Button, Label, Image } from 'semantic-ui-react';
 import publicKeySvg from '../../../resources/images/verify-public-key.svg';
 
 import { getPublicKey } from '../../actions/ledger';
@@ -40,7 +33,9 @@ class PublicKeyComponent extends Component<Props> {
       ? `${publicKey.wif.slice(0, chars)}...${publicKey.wif.slice(-chars)}`
       : publicKey.wif;
 
-    let action = '';
+    let header = 'Copy public key';
+    let action;
+    let tryAgainAction;
     let helperContent = (
       <div>
         <Image
@@ -61,7 +56,11 @@ class PublicKeyComponent extends Component<Props> {
         );
       } else {
         action = <Button content="Close" onClick={this.handleClose} />;
-        helperContent = <Message content="You clicked cancel." />;
+        tryAgainAction = (
+          <Button content="Try again" onClick={this.verifyPublicKey} />
+        );
+        helperContent = 'Please try again or contact support wallet support';
+        header = 'Receive public key rejected';
       }
     }
 
@@ -73,11 +72,14 @@ class PublicKeyComponent extends Component<Props> {
         </Label>
         <Transition animation="scale" duration={200}>
           <Modal open={opened} size="tiny" style={{ textAlign: 'center' }}>
-            <Modal.Header>Copy Public Key</Modal.Header>
+            <Modal.Header>{header}</Modal.Header>
             <Modal.Content>
               <Modal.Description>{helperContent}</Modal.Description>
             </Modal.Content>
-            <Modal.Actions>{action}</Modal.Actions>
+            <Modal.Actions>
+              {action}
+              {tryAgainAction && tryAgainAction}
+            </Modal.Actions>
           </Modal>
         </Transition>
       </Button>

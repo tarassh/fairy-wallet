@@ -399,7 +399,7 @@ export function voteProducer(producers = []) {
     producers.sort();
     return eos(modified)
       .transaction(eosioContract, contract => {
-        contract.voteproducer(account, proxy, producers);
+        contract.voteproducer(account.account_name, proxy, producers);
       })
       .then(receipt =>
         dispatch({
