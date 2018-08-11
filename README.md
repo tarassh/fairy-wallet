@@ -1,4 +1,9 @@
-[![version](https://img.shields.io/badge/version-v0.2.0-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
+<p align="center">
+  <img src="https://github.com/tarassh/fairy-wallet/blob/master/resources/icons/384x384.png" height="128" width="128" />
+</p>
+
+
+[![version](https://img.shields.io/badge/version-v0.3.0-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
 
 # Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
 
@@ -14,16 +19,17 @@
 - **Balance Staking** Application allows to stake/unstrake EOS funds.
 - **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that user is interested in.
 - **Transaction History** Apllication provides history transaction track.
+- **Currency price** Added EOS USD exchange pair.
 
 ## Releases
 
-The latest release version is 0.2.0. To download application use one the following links:
+The latest release version is 0.3.0. To download application use one the following links:
 
-- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/FairyWallet-0.2.0.dmg)
-- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/FairyWallet.Setup.0.2.0.exe)
-- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.2.0/fairy-wallet_0.2.0_amd64.deb)
+- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.3.0/FairyWallet-0.3.0.dmg)
+- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.3.0/FairyWallet.Setup.0.3.0.exe)
+- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.3.0/fairy-wallet_0.3.0_amd64.deb)
 
-Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.2.0
+Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.3.0
 
 
 **NOTE**: Wallet on Linux may require additional permitions for the device. To add permitions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 

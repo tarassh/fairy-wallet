@@ -41,7 +41,7 @@ function renderTransaction(transaction) {
 
   if (receipt !== null) {
     statusText = `Transaction id ${receipt.transaction_id}`;
-    icon = 'check';
+    icon = 'check circle';
     loading = false;
   }
 
@@ -58,7 +58,7 @@ function renderTransaction(transaction) {
       noop();
     }
     statusText = error;
-    icon = 'cancel';
+    icon = 'remove circle';
     loading = false;
   }
 
@@ -73,7 +73,7 @@ function renderTransaction(transaction) {
     <Header>
       <Header.Content>
         {actionName}
-        <Header.Subheader>
+        <Header.Subheader style={err !== null ? { color: 'lightcoral' } : {}}>
           <Icon name={icon} loading={loading} />
           {statusText}
         </Header.Subheader>
@@ -84,7 +84,7 @@ function renderTransaction(transaction) {
   return (
     <div key={action}>
       {header}
-      {content}
+      {loading && content}
     </div>
   );
 }

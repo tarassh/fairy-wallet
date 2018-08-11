@@ -1,10 +1,10 @@
-import * as types from "../actions/types";
+import * as types from '../actions/types';
 
 const initialState = {
   accounts: [],
   tokens: {},
   nodes: []
-}
+};
 
 export default function settings(state = initialState, action) {
   switch (action.type) {
@@ -19,8 +19,12 @@ export default function settings(state = initialState, action) {
       const { tokens } = state;
       if (!tokens[account]) {
         tokens[account] = [{ symbol, contract }];
-      } else if (tokens[account].findIndex(el => el.symbol === symbol && el.contract === contract) === -1) {
-        tokens[account].push({symbol, contract});
+      } else if (
+        tokens[account].findIndex(
+          el => el.symbol === symbol && el.contract === contract
+        ) === -1
+      ) {
+        tokens[account].push({ symbol, contract });
       }
       return Object.assign({}, state, {
         tokens
@@ -30,7 +34,9 @@ export default function settings(state = initialState, action) {
       const { account, symbol, contract } = action;
       const { tokens } = state;
       if (tokens[account]) {
-        const index = tokens[account].findIndex(el => el.symbol === symbol && el.contract === contract);
+        const index = tokens[account].findIndex(
+          el => el.symbol === symbol && el.contract === contract
+        );
         if (index !== -1) {
           tokens[account].splice(index, 1);
         }
@@ -43,10 +49,15 @@ export default function settings(state = initialState, action) {
       const { nodes } = state;
       const { httpEndpoint } = action;
       const { host } = new URL(httpEndpoint);
-      const index = nodes.findIndex((element) => element.text === httpEndpoint);
+      const index = nodes.findIndex(element => element.text === httpEndpoint);
       const key = host.slice(0, 5);
       if (index === -1) {
-        nodes.push({ key, value: key, text: httpEndpoint, accessdate: Date.now() });
+        nodes.splice(0, 0, {
+          key,
+          value: key,
+          text: httpEndpoint,
+          accessdate: Date.now()
+        });
       } else {
         nodes[index].accessdate = Date.now();
       }
@@ -59,5 +70,3 @@ export default function settings(state = initialState, action) {
     }
   }
 }
-
-
