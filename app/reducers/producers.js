@@ -9,7 +9,8 @@ const initialState = {
   percent: null,
   producer_key: null,
   url: null,
-  votes: {}
+  votes: {},
+  list: []
 };
 
 export default function producers(state = initialState, action) {

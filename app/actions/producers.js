@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import * as types from './types';
 import eos from './helpers/eos';
-import serialize from './helpers/ledgerserialize';
 
 export function getProducers(previous = false) {
   return (dispatch: () => void, getState) => {
@@ -33,13 +32,13 @@ export function getProducers(previous = false) {
         // recurse
         return dispatch(getProducers(rows));
       }
-      const { globals } = getState();
-      const { current } = globals;
+      const { global, currency } = getState();
+      const { current } = global;
       let backupMinimumPercent = false;
       let tokensToProducersForVotes = false;
-      const { contract } = globals;
-      if (contract && contract['eosio.token']) {
-        const supply = parseFloat(contract['eosio.token'].EOS.supply);
+      const { stats } = _.first(_.filter(currency.tokens, (token) => (token.contract === 'eosio.token')));
+      if (stats) {
+        const supply = parseFloat(stats.EOS.supply);
         // yearly inflation
         const inflation = 0.04879;
         // Tokens per year

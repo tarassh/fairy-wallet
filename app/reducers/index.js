@@ -11,6 +11,7 @@ import loading from './loading';
 import failure from './failure';
 import currency from './currency';
 import producers from './producers';
+import global from './global';
 
 const rootReducer = combineReducers({
   ledger,
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
   loading,
   failure,
   currency,
-  producers
+  producers,
+  global
 });
 
 export default rootReducer;
