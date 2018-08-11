@@ -10,8 +10,15 @@ const eosioContract = 'eosio';
 const transferAction = 'transfer';
 const delegateAction = 'delegatebw';
 const undelegateAction = 'undelegatebw';
+const voteProducerAction = 'voteproducer';
 
-export function transfer(from, to, asset, memo = '', tokenContract = 'eosio.token') {
+export function transfer(
+  from,
+  to,
+  asset,
+  memo = '',
+  tokenContract = 'eosio.token'
+) {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.TRANSFER_TOKEN_REQUEST,
@@ -40,7 +47,7 @@ export function transfer(from, to, asset, memo = '', tokenContract = 'eosio.toke
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
-      
+
       dispatch({
         type: types.TRANSFER_TOKEN_SIGNED,
         signed: true
@@ -231,11 +238,12 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
-        
+
       dispatch({
-        type: action.name === delegateAction
-        ? types.DELEGATE_SIGNED
-        : types.UNDELEGATE_SIGNED,
+        type:
+          action.name === delegateAction
+            ? types.DELEGATE_SIGNED
+            : types.UNDELEGATE_SIGNED,
         signed: true
       });
       return rawSig;
@@ -344,8 +352,73 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
   };
 }
 
+export function voteProducer(producers = []) {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+    const proxy = '';
+
+    dispatch({
+      type: types.VOTEPRODUCER_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: voteProducerAction,
+        account: account.account_name,
+        producers
+      }
+    });
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.VOTEPRODUCER_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.VOTEPRODUCER_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    producers.sort();
+    return eos(modified)
+      .transaction(eosioContract, contract => {
+        contract.voteproducer(account, proxy, producers);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.VOTEPRODUCER_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.VOTEPRODUCER_FAILURE,
+          err
+        });
+      });
+  };
+}
+
 export default {
   transfer,
   delegate,
-  undelegate
+  undelegate,
+  voteProducer
 };

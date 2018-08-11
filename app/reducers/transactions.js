@@ -2,9 +2,34 @@
 import * as types from '../actions/types';
 
 const initialState = {
-  transfer: { context: null, receipt: null, err: null, contructed: false, signed: false },
-  delegate: { context: null, receipt: null, err: null, contructed: false, signed: false },
-  undelegate: { context: null, receipt: null, err: null, contructed: false, signed: false }
+  transfer: {
+    context: null,
+    receipt: null,
+    err: null,
+    contructed: false,
+    signed: false
+  },
+  delegate: {
+    context: null,
+    receipt: null,
+    err: null,
+    contructed: false,
+    signed: false
+  },
+  undelegate: {
+    context: null,
+    receipt: null,
+    err: null,
+    contructed: false,
+    signed: false
+  },
+  voteproducer: {
+    context: null,
+    receipt: null,
+    err: null,
+    constructed: false,
+    signed: false
+  }
 };
 
 export default function transactions(state = initialState, action) {
@@ -26,6 +51,13 @@ export default function transactions(state = initialState, action) {
           signed: false
         },
         undelegate: {
+          context: null,
+          receipt: null,
+          err: null,
+          contructed: false,
+          signed: false
+        },
+        voteproducer: {
           context: null,
           receipt: null,
           err: null,
@@ -171,6 +203,32 @@ export default function transactions(state = initialState, action) {
       undelegate.signed = action.signed;
       return Object.assign({}, state, {
         undelegate
+      });
+    }
+
+    case types.VOTEPRODUCER_REQUEST: {
+      const { voteproducer } = state;
+      voteproducer.context = action.context;
+      voteproducer.constructed = false;
+      voteproducer.signed = false;
+      return Object.assign({}, state, {
+        voteproducer
+      });
+    }
+
+    case types.VOTEPRODUCER_FAILURE: {
+      const { voteproducer } = state;
+      voteproducer.err = action.err;
+      return Object.assign({}, state, {
+        voteproducer
+      });
+    }
+
+    case types.VOTEPRODUCER_SUCCESS: {
+      const { voteproducer } = state;
+      voteproducer.receipt = action.receipt;
+      return Object.assign({}, state, {
+        voteproducer
       });
     }
 
