@@ -1,35 +1,46 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Segment } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import _ from 'lodash';
+import { getProducers } from '../../../actions/producers';
+import { voteProducer } from '../../../actions/transactions';
+import Vote from '../../../components/Wallet/Actions/Vote'
 
 type Props = {
-  account: {}
+  producers: {},
+  loading: {},
+  getProducers: () => {},
+  voteProducer: () => {}
 };
-
 
 class VoteContainer extends Component<Props> {
   props: Props;
+
+  componentDidMount(){
+    this.props.getProducers();
+  }
+
   render() {
+    const { producers, loading } = this.props;
 
     return (
-      <Segment />
+      <Vote producers={producers} loading={loading} voteProducer={this.props.voteProducer} />
     );
   }
 }
 
 function mapStateToProps(state) {
   return {
-    account: state.accounts.account,
+    producers: state.producers,
+    loading: state.loading
   };
 } 
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
+    { getProducers, voteProducer },
     dispatch
   );
 }
 
-export default connect(mapStateToProps, null)(VoteContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(VoteContainer);

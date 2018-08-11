@@ -40,6 +40,10 @@
 
 .ui.basic.button.no-border,
 .ui.basic.button.no-border:hover,
+.ui.basic.button.no-border:visited,
+.ui.basic.button.no-border:link,
+.ui.basic.button.no-border:active,
+.ui.basic.button.no-border:focus,
 .ui.segment.no-border,
 .ui.segments.wallet .segments.no-border,
 .ui.segments.wallet .segments.no-border >.segment,
@@ -62,6 +66,32 @@
 
 .history {
     height: 670px;
+}
+
+.producers-list {
+    height: 400px;
+}
+
+.producers-list .checkbox {
+    float: left;
+    margin-right: 10px;
+}
+
+.scrollable {
+    overflow: hidden;
+    height: 100%;
+}
+
+.scrollable:hover {
+    overflow-y: overlay;
+}
+
+.history::-webkit-scrollbar {
+    width: 5px;
+}
+
+.history::-webkit-scrollbar-track {
+    border-radius: 5px;
 }
 
 #scrollable-history {
