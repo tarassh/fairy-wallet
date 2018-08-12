@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import {
   Form,
   Segment,
@@ -10,16 +8,9 @@ import {
   Icon,
   Divider
 } from 'semantic-ui-react';
-import {
-  delegate,
-  undelegate,
-  delegateUndelegate,
-  resetState
-} from '../../../actions/transactions';
-import { getAccount, getActions } from '../../../actions/accounts';
-import TransactionsModal from '../../../components/Shared/TransactionsModal';
-import { numberToAsset, assetToNumber } from '../../../utils/asset';
-import { InputFloat } from '../../../components/Shared/EosComponents';
+import TransactionsModal from '../../../Shared/TransactionsModal';
+import { numberToAsset, assetToNumber } from '../../../../utils/asset';
+import { InputFloat } from '../../../Shared/EosComponents';
 
 const numeral = require('numeral');
 const exactMath = require('exact-math');
@@ -37,7 +28,7 @@ type Props = {
   getActions: string => {}
 };
 
-class StakeContainer extends Component<Props> {
+export default class Stake extends Component<Props> {
   state = {
     openModal: false,
     cpuDelta: 0,
@@ -348,26 +339,3 @@ function balanceStats(account) {
     detailed
   };
 }
-
-function mapStateToProps(state) {
-  return {
-    account: state.accounts.account,
-    transactions: state.transactions
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      delegate,
-      undelegate,
-      delegateUndelegate,
-      resetState,
-      getAccount,
-      getActions
-    },
-    dispatch
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StakeContainer);

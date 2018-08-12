@@ -37,7 +37,7 @@ class Balance extends Component<Props> {
     }
 
     let details = <Tokens accounts={accounts} />
-    if (panel === 'stake') {
+    if (panel === 'system' || panel === 'stake' || panel === 'ram') {
       details = <StakedStats account={accounts.account} />
     } else if (panel === 'vote') {
       details = <VoteStats account={accounts.account} />

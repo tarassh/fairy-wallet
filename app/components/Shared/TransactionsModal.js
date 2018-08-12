@@ -11,6 +11,7 @@ import _ from 'lodash';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
 import VoteContext from './VoteContext';
+import BuyRamContext from './BuyRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 
 type Props = {
@@ -24,7 +25,9 @@ const noop = () => {};
 const actionDisplayName = {
   transfer: 'Transfer funds',
   delegatebw: 'Stake funds',
-  undelegatebw: 'Unstake funds'
+  undelegatebw: 'Unstake funds',
+  voteproducer: 'Vote producer',
+  buyram: 'Buy RAM'
 };
 
 function renderTransaction(transaction) {
@@ -66,7 +69,9 @@ function renderTransaction(transaction) {
   if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
   } else if (action === 'voteproducer') {
-    content = <VoteContext context={context} />
+    content = <VoteContext context={context} />;
+  } else if (action === 'buyram') {
+    content = <BuyRamContext context={context} />;
   }
 
   const header = (

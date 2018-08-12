@@ -11,6 +11,7 @@ const transferAction = 'transfer';
 const delegateAction = 'delegatebw';
 const undelegateAction = 'undelegatebw';
 const voteProducerAction = 'voteproducer';
+const buyramAction = 'buyram';
 
 export function transfer(
   from,
@@ -417,9 +418,74 @@ export function voteProducer(producers = []) {
   };
 }
 
+export function buyram(tokens) {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+
+    dispatch({
+      type: types.BUYRAM_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: buyramAction,
+        buyer: account.account_name,
+        receiver: account.account_name,
+        tokens
+      }
+    });
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.BUYRAM_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.BUYRAM_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    return eos(modified)
+      .transaction(eosioContract, contract => {
+        contract.buyram(account.account_name, account.account_name, tokens);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.BUYRAM_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.BUYRAM_FAILURE,
+          err
+        });
+      });
+  };
+}
+
 export default {
   transfer,
   delegate,
   undelegate,
-  voteProducer
+  voteProducer,
+  buyram
 };

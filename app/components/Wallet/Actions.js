@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
-import ActionsStake from '../../containers/Wallet/Actions/Stake';
+import ActionsSystem from '../../containers/Wallet/Actions/System';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 
 type Props = {
@@ -17,7 +17,7 @@ export default class Actions extends Component<Props> {
     const panes = [
       { key: 'history', menuItem: 'History', render: () => <ActionsHistory /> },
       { key: 'send', menuItem: 'Send', render: () => <ActionsSend /> },
-      { key: 'stake', menuItem: 'Stake', render: () => <ActionsStake /> },
+      { key: 'system', menuItem: 'System', render: () => <ActionsSystem onTabChange={this.props.onTabChange} /> },
       { key: 'vote', menuItem: 'Vote', render: () => <ActionVote /> }
     ];
     const { onTabChange } = this.props;

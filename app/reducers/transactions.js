@@ -29,6 +29,13 @@ const initialState = {
     err: null,
     constructed: false,
     signed: false
+  },
+  buyram: {
+    context: null,
+    receipt: null,
+    err: null,
+    constructed: false,
+    signed: false
   }
 };
 
@@ -62,6 +69,13 @@ export default function transactions(state = initialState, action) {
           receipt: null,
           err: null,
           contructed: false,
+          signed: false
+        },
+        buyram: {
+          context: null,
+          receipt: null,
+          err: null,
+          constructed: false,
           signed: false
         }
       });
@@ -158,6 +172,58 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.VOTEPRODUCER_REQUEST: {
+      const { voteproducer } = state;
+      voteproducer.context = action.context;
+      voteproducer.constructed = false;
+      voteproducer.signed = false;
+      return Object.assign({}, state, {
+        voteproducer
+      });
+    }
+
+    case types.VOTEPRODUCER_FAILURE: {
+      const { voteproducer } = state;
+      voteproducer.err = action.err;
+      return Object.assign({}, state, {
+        voteproducer
+      });
+    }
+
+    case types.VOTEPRODUCER_SUCCESS: {
+      const { voteproducer } = state;
+      voteproducer.receipt = action.receipt;
+      return Object.assign({}, state, {
+        voteproducer
+      });
+    }
+
+    case types.BUYRAM_REQUEST: {
+      const { buyram } = state;
+      buyram.context = action.context;
+      buyram.constructed = false;
+      buyram.signed = false;
+      return Object.assign({}, state, {
+        buyram
+      });
+    }
+
+    case types.BUYRAM_FAILURE: {
+      const { buyram } = state;
+      buyram.err = action.err;
+      return Object.assign({}, state, {
+        buyram
+      });
+    }
+
+    case types.BUYRAM_SUCCESS: {
+      const { buyram } = state;
+      buyram.receipt = action.receipt;
+      return Object.assign({}, state, {
+        buyram
+      });
+    }
+
     case types.TRANSFER_TOKEN_CONSTRUCTED: {
       const { transfer } = state;
       transfer.constructed = action.constructed;
@@ -187,6 +253,14 @@ export default function transactions(state = initialState, action) {
       voteproducer.constructed = action.constructed;
       return Object.assign({}, state, {
         voteproducer
+      });
+    }
+
+    case types.BUYRAM_CONSTRUCTED: {
+      const { buyram } = state;
+      buyram.constructed = action.constructed;
+      return Object.assign({}, state, {
+        buyram
       });
     }
 
@@ -222,29 +296,11 @@ export default function transactions(state = initialState, action) {
       });
     }
 
-    case types.VOTEPRODUCER_REQUEST: {
-      const { voteproducer } = state;
-      voteproducer.context = action.context;
-      voteproducer.constructed = false;
-      voteproducer.signed = false;
+    case types.BUYRAM_SIGNED: {
+      const { buyram } = state;
+      buyram.signed = action.signed;
       return Object.assign({}, state, {
-        voteproducer
-      });
-    }
-
-    case types.VOTEPRODUCER_FAILURE: {
-      const { voteproducer } = state;
-      voteproducer.err = action.err;
-      return Object.assign({}, state, {
-        voteproducer
-      });
-    }
-
-    case types.VOTEPRODUCER_SUCCESS: {
-      const { voteproducer } = state;
-      voteproducer.receipt = action.receipt;
-      return Object.assign({}, state, {
-        voteproducer
+        buyram
       });
     }
 
