@@ -418,7 +418,7 @@ export function voteProducer(producers = []) {
   };
 }
 
-export function buyram(amount) {
+export function buyram(tokens) {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -430,7 +430,7 @@ export function buyram(amount) {
         action: buyramAction,
         buyer: account.account_name,
         receiver: account.account_name,
-        tokens: amount
+        tokens
       }
     });
 
@@ -465,7 +465,7 @@ export function buyram(amount) {
 
     return eos(modified)
       .transaction(eosioContract, contract => {
-        contract.buyram(account.account_name, account.account_name, amount);
+        contract.buyram(account.account_name, account.account_name, tokens);
       })
       .then(receipt =>
         dispatch({

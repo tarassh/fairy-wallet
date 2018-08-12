@@ -27,7 +27,7 @@ class BuyRamContext extends Component<Props> {
                 <Table.Cell>Action</Table.Cell>
                 <Table.Cell>Buyer</Table.Cell>
                 <Table.Cell>Receiver</Table.Cell>
-                <Table.Cell>Token</Table.Cell>
+                <Table.Cell>Tokens</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>{context.contract}</Table.Cell>

@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Form,
-  Segment,
-  // Label,
-  // Input,
-  // Grid,
-  // Icon,
-  // Divider
-} from 'semantic-ui-react';
+import { Form, Segment } from 'semantic-ui-react';
 import TransactionsModal from '../../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../../utils/asset';
 import { InputFloat } from '../../../Shared/EosComponents';
@@ -51,16 +43,17 @@ export default class Ram extends Component<Props> {
   };
 
   render() {
-    const { transactions }= this.props;
+    const { transactions, account } = this.props;
     const { tokens, openModal } = this.state;
-    
+    const available = assetToNumber(account.core_liquid_balance);
+
     return (
       <Segment className="no-border">
         <TransactionsModal
           open={openModal}
           transactions={transactions}
           handleClose={this.handleClose}
-        /> 
+        />
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <InputFloat
@@ -68,7 +61,7 @@ export default class Ram extends Component<Props> {
               name="tokens"
               step="0.0001"
               min={0}
-              max={10000000}
+              max={available}
               value={tokens}
               type="number"
               onChange={this.handleChange}
