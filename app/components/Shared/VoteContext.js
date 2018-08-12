@@ -8,15 +8,21 @@ type Props = {
 class VoteContext extends Component<Props> {
   render() {
     const { context } = this.props;
-    const text = context.producers.length > 0? (
-      <p>
-        You are about to vote for <strong>{context.producers.length}</strong> block producers. Transaction details are listed below.
-      </p>
-    ) : (
-      <p>
-        You are about to discard your vote. Transaction details are listed below.
-      </p>
-    );
+    const text =
+      context.producers.length > 0 ? (
+        <p>
+          You are about to vote for <strong>{context.producers.length}</strong>{' '}
+          block producers. Transaction details are listed below.
+        </p>
+      ) : (
+        <p>
+          You are about to discard your vote. Transaction details are listed
+          below.
+        </p>
+      );
+
+    const producersList =
+      context.producers.length > 0 ? context.producers.join(' ') : '';
 
     let content = '';
     if (context !== null) {
@@ -35,7 +41,7 @@ class VoteContext extends Component<Props> {
                 <Table.Cell>{context.contract}</Table.Cell>
                 <Table.Cell>{context.action}</Table.Cell>
                 <Table.Cell>{context.account}</Table.Cell>
-                <Table.Cell>{context.producers}</Table.Cell>
+                <Table.Cell>{producersList}</Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>

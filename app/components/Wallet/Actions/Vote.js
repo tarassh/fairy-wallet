@@ -7,7 +7,8 @@ import {
   Checkbox,
   Button,
   Divider,
-  Grid
+  Grid,
+  Form
 } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
@@ -25,22 +26,35 @@ type Props = {
   transactions: {},
   voteProducer: () => {},
   resetState: () => {},
-  getAccount: string => {},
-  getActions: string => {}
+  getAccount: string => {}
 };
 
 export default class Vote extends Component<Props> {
   props: Props;
 
-  state = {
-    openModal: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      openModal: false
+    };
+
+    const { account } = props.accounts;
+    let { producers } = account.voter_info;
+    if (!producers || producers === null) {
+      producers = [];
+    }
+
+    _.map(producers, producer =>
+      Object.assign(this.state, { [producer]: true })
+    );
+  }
 
   vote = () => {
     const { voteProducer } = this.props;
     const producers = this.currentVotes();
-    voteProducer(producers);
     this.setState({ openModal: true });
+    voteProducer(producers);
   };
 
   isValidUrl = url =>
@@ -67,7 +81,6 @@ export default class Vote extends Component<Props> {
     this.props.resetState();
     this.setState({ openModal: false });
     this.props.getAccount(accounts.account.account_name);
-    this.props.getActions(accounts.account.account_name);
   };
 
   renderProducer = (producer, producing) => (
@@ -119,22 +132,27 @@ export default class Vote extends Component<Props> {
     ));
 
     return (
-      <Segment loading={isLoading} className="no-border producers-list">
-        <TransactionsModal
-          open={openModal}
-          transactions={transactions}
-          handleClose={this.handleClose}
-        />
-        <Button fluid floated="right" onClick={this.vote}>
-          Vote
-        </Button>
-        <Divider horizontal>
-          {this.currentVotes().length} \ {MAX_VOTES}
-        </Divider>
-        <List divided relaxed className="scrollable">
-          {!isLoading ? producersList : undefined}
-        </List>
-      </Segment>
+      <Form>
+        <Segment loading={isLoading} className="no-border producers-list">
+          <TransactionsModal
+            open={openModal}
+            transactions={transactions}
+            handleClose={this.handleClose}
+          />
+
+          <Button fluid floated="right" onClick={this.vote}>
+            Vote
+          </Button>
+          <Divider horizontal style={{ padding: '1em' }}>
+            <h5>
+              {this.currentVotes().length} / {MAX_VOTES}
+            </h5>
+          </Divider>
+          <List divided relaxed className="scrollable">
+            {!isLoading ? producersList : undefined}
+          </List>
+        </Segment>
+      </Form>
     );
   }
 }
