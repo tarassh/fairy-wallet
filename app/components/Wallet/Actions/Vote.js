@@ -76,6 +76,27 @@ export default class Vote extends Component<Props> {
         </List.Content>
       </List.Item>
     ));
+
+    const { account } = nextProps.accounts;
+    let { producers } = account.voter_info;
+    if (!producers || producers === null) {
+      producers = [];
+    }
+
+    const votes = {};
+
+    _.map(producers, producer => (
+      Object.assign(votes, { [producer]: true })
+    ));
+
+    if (!_.isEqual(votes, this.state.initialVotes)) {
+      Object.assign(this.state, {
+        initialVotes: _.clone(votes),
+        actualVotes: _.clone(votes),
+        disabled: true,
+      });
+    }
+
     Object.assign(this.state, {
       producersList
     });
