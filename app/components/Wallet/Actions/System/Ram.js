@@ -46,6 +46,7 @@ export default class Ram extends Component<Props> {
     const { transactions, account } = this.props;
     const { tokens, openModal } = this.state;
     const available = assetToNumber(account.core_liquid_balance);
+    const disabled = tokens === 0;
 
     return (
       <Segment className="no-border">
@@ -72,7 +73,7 @@ export default class Ram extends Component<Props> {
           <Form.Button
             id="form-button-control-public"
             content="Confirm"
-            disabled={false}
+            disabled={disabled}
           />
         </Form>
       </Segment>
