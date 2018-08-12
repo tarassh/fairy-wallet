@@ -132,7 +132,8 @@ export default class Vote extends Component<Props> {
     this.props.getAccount(accounts.account.account_name);
   };
 
-  handleChange = (e, { name, value }) => {
+  handleChange = (e, { value }) => {
+    this.setState({filter: value });
   };
 
   renderProducer = (producer, producing) => (
@@ -171,9 +172,13 @@ export default class Vote extends Component<Props> {
 
   render() {
     const { loading, transactions } = this.props;
-    const { openModal, disabled, producersList } = this.state;
+    const { openModal, disabled, producersList, filter } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
+    let filteredList = producersList;
+    if (filter && filter.length > 0) {
+      filteredList = _.filter(producersList, (el) => el.props.value.indexOf(filter) !== -1 );
+    }
 
     return (
       <Form>
@@ -199,7 +204,7 @@ export default class Vote extends Component<Props> {
             </h5>
           </Divider>
           <List divided relaxed className="scrollable">
-            {!isLoading ? producersList : undefined}
+            {!isLoading ? filteredList : undefined}
           </List>
         </Segment>
       </Form>
