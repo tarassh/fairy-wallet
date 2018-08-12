@@ -12,10 +12,11 @@ import BalanceComponent from '../Shared/BalanceComponent';
 import PublicKeyComponent from '../Shared/PublicKeyComponent';
 import StakedStats from './StakedStats';
 import Tokens from './Tokens';
+import VoteStats from './VoteStats';
 
 type Props = {
   actions: {},
-  showStakedData: boolean,
+  panel: string,
   accounts: {},
   loading: {},
   currency: {}
@@ -29,17 +30,18 @@ class Balance extends Component<Props> {
   };
 
   render() {
-    const { accounts, showStakedData, loading, currency } = this.props;
+    const { accounts, panel, loading, currency } = this.props;
 
     if (accounts.balances !== null) {
       delete accounts.balances.EOS;
     }
 
-    const details = showStakedData ? (
-      <StakedStats account={accounts.account} />
-    ) : (
-      <Tokens accounts={accounts} />
-    );
+    let details = <Tokens accounts={accounts} />
+    if (panel === 'stake') {
+      details = <StakedStats account={accounts.account} />
+    } else if (panel === 'vote') {
+      details = <VoteStats account={accounts.account} />
+    }
 
     return (
       <Segment.Group className="no-border no-padding">

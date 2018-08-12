@@ -10,6 +10,7 @@ import {
 import _ from 'lodash';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
+import VoteContext from './VoteContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 
 type Props = {
@@ -64,6 +65,8 @@ function renderTransaction(transaction) {
   let content = <TransferContext context={context} />;
   if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
+  } else if (action === 'voteproducer') {
+    content = <VoteContext context={context} />
   }
 
   const header = (
