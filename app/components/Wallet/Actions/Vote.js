@@ -13,6 +13,7 @@ import {
 import { shell } from 'electron';
 import _ from 'lodash';
 import TransactionsModal from '../../Shared/TransactionsModal';
+import { InputAccount } from '../../Shared/EosComponents';
 
 const numeral = require('numeral');
 
@@ -45,9 +46,17 @@ export default class Vote extends Component<Props> {
       producers = [];
     }
 
-    _.map(producers, producer =>
-      Object.assign(this.state, { [producer]: true })
-    );
+    const votes = {};
+
+    _.map(producers, producer => (
+      Object.assign(votes, { [producer]: true })
+    ));
+
+    Object.assign(this.state, {
+      initialVotes: _.clone(votes),
+      actualVotes: _.clone(votes),
+      disabled: true
+    });
   }
 
   vote = () => {
@@ -66,12 +75,18 @@ export default class Vote extends Component<Props> {
     shell.openExternal(url);
   };
 
-  currentVotes = () =>
-    _.filter(_.keys(this.state), producer => this.state[producer]);
+  currentVotes = () => _.keys(this.state.actualVotes);
 
   toggle = (e, { id, checked }) => {
-    if (this.currentVotes().length < MAX_VOTES || this.state[id] === true) {
-      return this.setState({ [id]: checked });
+    if (this.currentVotes().length < MAX_VOTES || this.state.actualVotes[id] === true) {
+      const { actualVotes } = this.state;
+      if (checked === true) {
+        actualVotes[id] = checked
+      } else {
+        delete actualVotes[id];
+      }
+      const disabled = _.isEqual(this.state.initialVotes, actualVotes);
+      return this.setState({ actualVotes, disabled });
     }
     this.forceUpdate();
   };
@@ -83,6 +98,9 @@ export default class Vote extends Component<Props> {
     this.props.getAccount(accounts.account.account_name);
   };
 
+  handleChange = (e, { name, value }) => {
+  };
+
   renderProducer = (producer, producing) => (
     <Grid>
       <Grid.Row>
@@ -90,7 +108,7 @@ export default class Vote extends Component<Props> {
           <Checkbox
             id={producer.owner}
             onChange={this.toggle}
-            checked={this.state[producer.owner] === true}
+            checked={this.state.actualVotes[producer.owner] === true}
           />
         </Grid.Column>
         <Grid.Column widht={1}>
@@ -119,9 +137,10 @@ export default class Vote extends Component<Props> {
 
   render() {
     const { producers, loading, transactions } = this.props;
-    const { openModal } = this.state;
+    const { openModal, disabled } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
+
 
     const producersList = _.map(producers.list, (producer, index) => (
       <List.Item key={producer.key} value={producer.owner}>
@@ -139,8 +158,14 @@ export default class Vote extends Component<Props> {
             transactions={transactions}
             handleClose={this.handleClose}
           />
-
-          <Button fluid floated="right" onClick={this.vote}>
+          <InputAccount 
+            placeholder="Search block producer..." 
+            fluid 
+            size='tiny' 
+            onChange={this.handleChange} 
+            icon='search' 
+          />
+          <Button fluid floated="right" onClick={this.vote} size='tiny' disabled={disabled}>
             Vote
           </Button>
           <Divider horizontal style={{ padding: '1em' }}>

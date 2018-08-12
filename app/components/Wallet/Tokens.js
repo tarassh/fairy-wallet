@@ -30,7 +30,7 @@ class Tokens extends Component<Props> {
 
     return (
       <div>
-        <Button fluid onClick={this.handleAddOpen}>
+        <Button fluid onClick={this.handleAddOpen} size='tiny'>
           Add Token
         </Button>
         <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
