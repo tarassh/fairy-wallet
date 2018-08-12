@@ -1,15 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {
-  Form,
-  Segment,
-  Label,
-  Input,
-  Grid,
-  Icon,
-  Divider
-} from 'semantic-ui-react';
+import { Form, Segment, Label, Grid, Icon, Divider } from 'semantic-ui-react';
 import {
   delegate,
   undelegate,
@@ -288,16 +280,6 @@ class StakeContainer extends Component<Props> {
               <input />
               {deltaIcon}
             </InputFloat>
-            <Input
-              name="stake"
-              step="0.0001"
-              min={1.0}
-              max={total / fraction10000}
-              value={value}
-              type="range"
-              onChange={this.handleChange}
-              style={{ padding: '2em' }}
-            />
           </Form.Field>
           <Form.Button
             id="form-button-control-public"
