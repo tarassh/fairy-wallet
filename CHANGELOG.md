@@ -36,3 +36,9 @@
 
 - **Timeout:** Increased timeout for voting transaction.
 
+# 0.4.1 (2018.8.13)
+
+#### Features
+
+- **Buy RAM:** Buy RAM transactions are now supported.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
