@@ -49,7 +49,6 @@ class VoteContext extends Component<Props> {
                 <Table.Cell>{context.contract}</Table.Cell>
                 <Table.Cell>{context.action}</Table.Cell>
                 <Table.Cell>{context.account}</Table.Cell>
-                {/* <Table.Cell>{producersList}</Table.Cell> */}
                 <Table.Cell>
                   {_.map(groups, (group, i) => (
                     <div key={`group-${i}`}>
