@@ -14,7 +14,7 @@ type Props = {
 export default class Wallet extends Component<Props> {
   props: Props;
   state = {
-    showStakedData: false
+    panel: ''
   };
 
   componentDidUpdate() {
@@ -31,15 +31,15 @@ export default class Wallet extends Component<Props> {
   // }
 
   onTabChange = (e, { activeIndex, panes }) => {
-    this.setState({ showStakedData: panes[activeIndex].key === 'stake' });
+    this.setState({ panel: panes[activeIndex].key });
   };
 
   render() {
     const { accounts } = this.props;
-    const { showStakedData } = this.state;
+    const { panel } = this.state;
 
     const leftSegment = (
-      <WalletBalance accounts={accounts} showStakedData={showStakedData} />
+      <WalletBalance accounts={accounts} panel={panel} />
     );
     const rightSegment = <WalletActions onTabChange={this.onTabChange} />;
 
