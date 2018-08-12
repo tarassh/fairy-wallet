@@ -103,10 +103,12 @@
     overflow-y: overlay;
 }
 
+.scrollable::-webkit-scrollbar,
 #scrollable-history::-webkit-scrollbar {
     width: 5px;
 }
 
+.scrollable::-webkit-scrollbar,
 #scrollable-history::-webkit-scrollbar-track {
     border-radius: 5px;
 }
