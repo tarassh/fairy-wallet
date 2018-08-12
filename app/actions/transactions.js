@@ -424,7 +424,14 @@ export function buyram(amount) {
     const { account } = accounts;
 
     dispatch({
-      type: types.BUYRAM_REQUEST
+      type: types.BUYRAM_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: buyramAction,
+        buyer: account.account_name,
+        receiver: account.account_name,
+        tokens: amount
+      }
     });
 
     const signProvider = async ({ transaction }) => {
@@ -472,22 +479,6 @@ export function buyram(amount) {
           err
         });
       });
-
-    // return eos(modified).buyram({
-    //   payer: account,
-    //   receiver: account,
-    //   quant: `${amount.toFixed(4)} EOS`
-    // }).then((tx) => {
-    //   setTimeout(dispatch(getAccount(account)), 500);
-
-    //   return dispatch({
-    //     payload: { tx },
-    //     type: types.BUYRAM_SUCCESS
-    //   });
-    // }).catch((err) => dispatch({
-    //   payload: { err },
-    //   type: types.BUYRAM_FAILURE
-    // }));
   };
 }
 

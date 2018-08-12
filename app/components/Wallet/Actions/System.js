@@ -14,7 +14,8 @@ type Props = {
   delegateUndelegate: (boolean, string, string, string, string) => {},
   resetState: () => {},
   getAccount: string => {},
-  getActions: string => {}
+  getActions: string => {},
+  buyram: () => {}
 };
 
 export default class System extends Component<Props> {
@@ -41,7 +42,14 @@ export default class System extends Component<Props> {
         key: 'ram', 
         menuItem: 'Ram', 
         render: () => 
-          (<SystemRam />) 
+          (<SystemRam 
+            transactions={this.props.transactions} 
+            account={account}
+            buyram={this.props.buyram}
+            resetState={this.props.resetState}
+            getAccount={this.props.getAccount}
+            getActions={this.props.getActions}
+          />) 
       }
     ];
 
