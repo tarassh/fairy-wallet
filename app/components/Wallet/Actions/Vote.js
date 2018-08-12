@@ -52,10 +52,32 @@ export default class Vote extends Component<Props> {
       Object.assign(votes, { [producer]: true })
     ));
 
+    const producersList = _.map(props.producers.list, (producer, index) => (
+      <List.Item key={producer.key} value={producer.owner}>
+        <List.Content>
+          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
+        </List.Content>
+      </List.Item>
+    ));
+
     Object.assign(this.state, {
       initialVotes: _.clone(votes),
       actualVotes: _.clone(votes),
-      disabled: true
+      disabled: true,
+      producersList
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const producersList = _.map(nextProps.producers.list, (producer, index) => (
+      <List.Item key={producer.key} value={producer.owner}>
+        <List.Content>
+          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
+        </List.Content>
+      </List.Item>
+    ));
+    Object.assign(this.state, {
+      producersList
     });
   }
 
@@ -86,7 +108,19 @@ export default class Vote extends Component<Props> {
         delete actualVotes[id];
       }
       const disabled = _.isEqual(this.state.initialVotes, actualVotes);
-      return this.setState({ actualVotes, disabled });
+      const { producersList } = this.state;
+
+      const index = producersList.findIndex(el => el.props.value === id);
+      const producer = this.props.producers.list[index];
+      producersList[index] = (
+        <List.Item key={producer.key} value={producer.owner}>
+          <List.Content>
+            {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
+          </List.Content>
+        </List.Item>
+      );
+
+      return this.setState({ actualVotes, disabled, producersList });
     }
     this.forceUpdate();
   };
@@ -136,19 +170,10 @@ export default class Vote extends Component<Props> {
   );
 
   render() {
-    const { producers, loading, transactions } = this.props;
-    const { openModal, disabled } = this.state;
+    const { loading, transactions } = this.props;
+    const { openModal, disabled, producersList } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
-
-
-    const producersList = _.map(producers.list, (producer, index) => (
-      <List.Item key={producer.key} value={producer.owner}>
-        <List.Content>
-          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
-        </List.Content>
-      </List.Item>
-    ));
 
     return (
       <Form>
