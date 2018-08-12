@@ -182,6 +182,14 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.VOTEPRODUCER_CONSTRUCTED: {
+      const { voteproducer } = state;
+      voteproducer.constructed = action.constructed;
+      return Object.assign({}, state, {
+        voteproducer
+      });
+    }
+
     case types.TRANSFER_TOKEN_SIGNED: {
       const { transfer } = state;
       transfer.signed = action.signed;
@@ -203,6 +211,14 @@ export default function transactions(state = initialState, action) {
       undelegate.signed = action.signed;
       return Object.assign({}, state, {
         undelegate
+      });
+    }
+
+    case types.VOTEPRODUCER_SIGNED: {
+      const { voteproducer } = state;
+      voteproducer.signed = action.signed;
+      return Object.assign({}, state, {
+        voteproducer
       });
     }
 
