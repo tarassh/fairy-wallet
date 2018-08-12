@@ -30,3 +30,9 @@
 - **Voting:** Ledger can sign vote transaction with up to 30 block producers.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
 
+# 0.4.1 (2018.8.12)
+
+#### Fixes
+
+- **Timeout:** Increased timeout for voting transaction.
+

@@ -393,7 +393,8 @@ export function voteProducer(producers = []) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      expireInSeconds: 300
     };
 
     producers.sort();
