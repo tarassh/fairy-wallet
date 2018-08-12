@@ -1,8 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Segment, Icon, Checkbox, Button, Divider } from 'semantic-ui-react';
+import {
+  List,
+  Segment,
+  Icon,
+  Checkbox,
+  Button,
+  Divider,
+  Grid
+} from 'semantic-ui-react';
 import { shell } from 'electron';
-import _ from 'lodash'; 
+import _ from 'lodash';
 import TransactionsModal from '../../Shared/TransactionsModal';
 
 const numeral = require('numeral');
@@ -32,21 +40,25 @@ export default class Vote extends Component<Props> {
     const { voteProducer } = this.props;
     const producers = this.currentVotes();
     voteProducer(producers);
-    this.setState({openModal: true});
+    this.setState({ openModal: true });
   };
 
-  isValidUrl = url => url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+  isValidUrl = url =>
+    url.match(
+      /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
+    );
 
-  handleGoto = (e, { url }) => {
+  handleGoto = url => {
     shell.openExternal(url);
-  }
+  };
 
-  currentVotes = () => (_.filter(_.keys(this.state), (producer) => ( this.state[producer] )));
+  currentVotes = () =>
+    _.filter(_.keys(this.state), producer => this.state[producer]);
 
-  toggle = (e, { id, checked } ) => {
-    if (this.currentVotes().length < MAX_VOTES || this.state[id] === true){
-      return this.setState({ [id]: checked })
-    };
+  toggle = (e, { id, checked }) => {
+    if (this.currentVotes().length < MAX_VOTES || this.state[id] === true) {
+      return this.setState({ [id]: checked });
+    }
     this.forceUpdate();
   };
 
@@ -58,33 +70,53 @@ export default class Vote extends Component<Props> {
     this.props.getActions(accounts.account.account_name);
   };
 
+  renderProducer = (producer, producing) => (
+    <Grid>
+      <Grid.Row>
+        <Grid.Column widht={1}>
+          <Checkbox
+            id={producer.owner}
+            onChange={this.toggle}
+            checked={this.state[producer.owner] === true}
+          />
+        </Grid.Column>
+        <Grid.Column widht={1}>
+          {producing ? (
+            <Icon name="smile outline" />
+          ) : (
+            <Icon name="frown outline" />
+          )}
+        </Grid.Column>
+        <Grid.Column width={4}>{producer.owner}</Grid.Column>
+        <Grid.Column
+          width={7}
+          onClick={() => this.handleGoto(producer.url)}
+          style={{ cursor: 'pointer' }}
+        >
+          {producer.url && this.isValidUrl(producer.url)
+            ? producer.url
+            : undefined}
+        </Grid.Column>
+        <Grid.Column width={3} textAlign="center">
+          {numeral(producer.percent).format('0.00%')}
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  );
+
   render() {
     const { producers, loading, transactions } = this.props;
     const { openModal } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
 
-    const producersRender = 
-        _.map(producers.list, (producer, index) => (
-          <List.Item as="a" key={producer.key} value={producer.owner}>
-            <List.Content floated='left'>
-              <Checkbox id={producer.owner} onChange={this.toggle} checked={this.state[producer.owner] === true} />
-              {index + 1 <= HAPPY_PRODUCERS ? <Icon name='smile outline' /> : <Icon name='frown outline' />}
-            </List.Content>
-            <List.Content floated='left'>
-              {producer.owner}
-            </List.Content>
-            <List.Content floated='right'>
-              <List.Description>{numeral(producer.percent).format('0.000%')}</List.Description>
-            </List.Content>
-            <List.Content floated='left'>
-              {producer.url && this.isValidUrl(producer.url) ?
-                <Button className='no-border' basic compact size='tiny' icon url={producer.url} onClick={this.handleGoto}>
-                  {producer.url}
-                  <Icon name='right arrow' />
-                </Button> : ""}
-            </List.Content>
-          </List.Item>));
+    const producersList = _.map(producers.list, (producer, index) => (
+      <List.Item key={producer.key} value={producer.owner}>
+        <List.Content>
+          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
+        </List.Content>
+      </List.Item>
+    ));
 
     return (
       <Segment loading={isLoading} className="no-border producers-list">
@@ -93,12 +125,16 @@ export default class Vote extends Component<Props> {
           transactions={transactions}
           handleClose={this.handleClose}
         />
-                <Label>{this.currentVotes().length}\{MAX_VOTES}</Label>
-        <Button fluid floated='right' basic onClick={this.vote}>Vote</Button>
-        <Divider horizontal>{this.currentVotes().length} \ {MAX_VOTES}</Divider>
+        <Button fluid floated="right" onClick={this.vote}>
+          Vote
+        </Button>
+        <Divider horizontal>
+          {this.currentVotes().length} \ {MAX_VOTES}
+        </Divider>
         <List divided relaxed className="scrollable">
-          {!isLoading ? producersRender : ""}
+          {!isLoading ? producersList : undefined}
         </List>
-      </Segment>);
+      </Segment>
+    );
   }
 }
