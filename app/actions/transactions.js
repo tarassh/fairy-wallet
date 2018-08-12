@@ -11,6 +11,7 @@ const transferAction = 'transfer';
 const delegateAction = 'delegatebw';
 const undelegateAction = 'undelegatebw';
 const voteProducerAction = 'voteproducer';
+const buyramAction = 'buyram';
 
 export function transfer(
   from,
@@ -417,9 +418,83 @@ export function voteProducer(producers = []) {
   };
 }
 
+export function buyram(amount) {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+
+    dispatch({
+      type: types.BUYRAM_REQUEST
+    });
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.BUYRAM_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.BUYRAM_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    return eos(modified)
+      .transaction(eosioContract, contract => {
+        contract.buyram(account.account_name, account.account_name, amount);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.BUYRAM_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.BUYRAM_FAILURE,
+          err
+        });
+      });
+
+    // return eos(modified).buyram({
+    //   payer: account,
+    //   receiver: account,
+    //   quant: `${amount.toFixed(4)} EOS`
+    // }).then((tx) => {
+    //   setTimeout(dispatch(getAccount(account)), 500);
+
+    //   return dispatch({
+    //     payload: { tx },
+    //     type: types.BUYRAM_SUCCESS
+    //   });
+    // }).catch((err) => dispatch({
+    //   payload: { err },
+    //   type: types.BUYRAM_FAILURE
+    // }));
+  };
+}
+
 export default {
   transfer,
   delegate,
   undelegate,
-  voteProducer
+  voteProducer,
+  buyram
 };
