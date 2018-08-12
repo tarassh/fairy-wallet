@@ -109,6 +109,10 @@ export default class Vote extends Component<Props> {
     voteProducer(producers);
   };
 
+  isExponential = number => (!!number.toString().match(/[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)/g));
+
+  parsePercent = percent => (numeral(this.isExponential(percent) ? 0 : percent).format('0.00%'));
+
   isValidUrl = url =>
     url.match(
       /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_+.~#?&//=]*)/g
@@ -186,7 +190,7 @@ export default class Vote extends Component<Props> {
             : undefined}
           </Grid.Column>
           <Grid.Column width={3} textAlign="center">
-            {numeral(producer.percent).format('0.00%')}
+            {this.parsePercent(producer.percent)}
           </Grid.Column>
         </Grid.Row>
       </Grid>
