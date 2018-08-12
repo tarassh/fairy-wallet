@@ -143,7 +143,7 @@ export default class Vote extends Component<Props> {
           <Checkbox
             id={producer.owner}
             onChange={this.toggle}
-            checked={this.state.actualVotes[producer.owner] === true}
+            checked={this.state.actualVotes && this.state.actualVotes[producer.owner] === true}
           />
         </Grid.Column>
         <Grid.Column widht={1}>
