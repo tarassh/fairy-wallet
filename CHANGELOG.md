@@ -23,3 +23,10 @@
 - **Currency Price:** Added EOS USD pair.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
 
+# 0.4.0 (2018.8.12)
+
+#### Features
+
+- **Voting:** Ledger can sign vote transaction with up to 30 block producers.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
+

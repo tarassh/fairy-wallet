@@ -28,7 +28,7 @@ class TransferContext extends Component<Props> {
                 <Table.Cell>Action</Table.Cell>
                 <Table.Cell>From</Table.Cell>
                 <Table.Cell>To</Table.Cell>
-                <Table.Cell>Amount</Table.Cell>
+                <Table.Cell>Quantity</Table.Cell>
                 <Table.Cell>Memo</Table.Cell>
               </Table.Row>
               <Table.Row>

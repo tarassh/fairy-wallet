@@ -21,6 +21,10 @@ const buyram = new RegExp(
   `^payer ${account} receiver ${account} quant ${asset}$`
 );
 
+const voteproducer = new RegExp(
+  `^voter ${account} proxy (${account}){0,1} producers\\s{0,1}((${account}),{0,1}){0,30}$`
+);
+
 const re = {
   symbol: new RegExp(`^${symbol}$`),
   float: new RegExp(`^${float}$`),
@@ -30,7 +34,8 @@ const re = {
   transfer,
   undelegatebw,
   delegatebw,
-  buyram
+  buyram,
+  voteproducer
 };
 
 const fn = {
@@ -77,6 +82,13 @@ const fn = {
     return {
       desc: 'Buy RAM',
       quantity: `-${quant}`
+    };
+  },
+
+  voteproducer: action => {
+    const { producers } = action.data;
+    return {
+      desc: `for ${producers.length} producers`
     };
   }
 };
