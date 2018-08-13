@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Table, TableBody, Header, Segment } from 'semantic-ui-react';
 import { numberToPrettyAsset, assetToNumber } from '../../utils/asset';
+import UtilityChart from '../Shared/UtilityChart';
 
 const pretty = require('prettysize');
 const numeral = require('numeral');
@@ -20,10 +21,10 @@ class StakedStats extends Component<Props> {
         <Header
           size="tiny"
           textAlign="center"
-          dividing
-          style={{ marginBottom: '0em', marginTop: '1em' }}
+          style={{ marginBottom: '0em', marginTop: '0em' }}
         >
           <h5>CPU</h5>
+          <UtilityChart stats={{used: account.cpu_limit.used, max: account.cpu_limit.max }} />
         </Header>
         <Table basic="very" style={{ marginTop: '0em' }}>
           <TableBody>
@@ -52,10 +53,10 @@ class StakedStats extends Component<Props> {
         <Header
           size="tiny"
           textAlign="center"
-          dividing
-          style={{ marginBottom: '0em', marginTop: '2em' }}
+          style={{ marginBottom: '0em', marginTop: '0.5em' }}
         >
           <h5>Network</h5>
+          <UtilityChart stats={{used: account.net_limit.used, max: account.net_limit.max }} />
         </Header>
         <Table basic="very" style={{ marginTop: '0em' }}>
           <TableBody>
@@ -84,12 +85,12 @@ class StakedStats extends Component<Props> {
         <Header
           size="tiny"
           textAlign="center"
-          dividing
-          style={{ marginBottom: '0em', marginTop: '2em' }}
+          style={{ marginBottom: '0em', marginTop: '0.5em' }}
         >
           <h5>RAM</h5>
+          <UtilityChart stats={{used: account.ram_usage, max: account.ram_quota }} />
         </Header>
-        <Table basic="very" style={{ marginTop: '0em' }}>
+        <Table basic="very" style={{ marginTop: '0em', marginBottom: '0em' }}>
           <TableBody>
             <Table.Row textAlign="center">
               {ram && (
