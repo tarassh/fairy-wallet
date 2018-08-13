@@ -12,6 +12,7 @@ import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
 import VoteContext from './VoteContext';
 import BuyRamContext from './BuyRamContext';
+import BuyRamBytesContext from './BuyRamBytesContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 
 type Props = {
@@ -27,7 +28,8 @@ const actionDisplayName = {
   delegatebw: 'Stake funds',
   undelegatebw: 'Unstake funds',
   voteproducer: 'Vote producer',
-  buyram: 'Buy RAM'
+  buyram: 'Buy RAM',
+  buyrambytes: 'Buy RAM bytes'
 };
 
 function renderTransaction(transaction) {
@@ -72,6 +74,8 @@ function renderTransaction(transaction) {
     content = <VoteContext context={context} />;
   } else if (action === 'buyram') {
     content = <BuyRamContext context={context} />;
+  } else if (action === 'buyrambytes') {
+    content = <BuyRamBytesContext context={context} />;
   }
 
   const header = (

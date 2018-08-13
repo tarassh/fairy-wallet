@@ -13,7 +13,8 @@ type Props = {
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {},
-  buyram: () => {}
+  buyram: () => {},
+  buyrambytes: () => {}
 };
 
 export default class System extends Component<Props> {
@@ -45,6 +46,7 @@ export default class System extends Component<Props> {
             transactions={this.props.transactions}
             account={account}
             buyram={this.props.buyram}
+            buyrambytes={this.props.buyrambytes}
             resetState={this.props.resetState}
             getAccount={this.props.getAccount}
             getActions={this.props.getActions}

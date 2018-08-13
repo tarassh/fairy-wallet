@@ -12,6 +12,7 @@ const delegateAction = 'delegatebw';
 const undelegateAction = 'undelegatebw';
 const voteProducerAction = 'voteproducer';
 const buyramAction = 'buyram';
+const buyrambytesAction = 'buyrambytes';
 
 export function transfer(
   from,
@@ -482,10 +483,75 @@ export function buyram(tokens) {
   };
 }
 
+export function buyrambytes(bytes) {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+
+    dispatch({
+      type: types.BUYRAMBYTES_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: buyrambytesAction,
+        buyer: account.account_name,
+        receiver: account.account_name,
+        bytes
+      }
+    });
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.BUYRAMBYTES_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.BUYRAMBYTES_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    return eos(modified)
+      .transaction(eosioContract, contract => {
+        contract.buyrambytes(account.account_name, account.account_name, bytes);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.BUYRAMBYTES_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.BUYRAMBYTES_FAILURE,
+          err
+        });
+      });
+  };
+}
+
 export default {
   transfer,
   delegate,
   undelegate,
   voteProducer,
-  buyram
+  buyram,
+  buyrambytes
 };

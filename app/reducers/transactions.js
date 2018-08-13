@@ -36,6 +36,13 @@ const initialState = {
     err: null,
     constructed: false,
     signed: false
+  },
+  buyrambytes: {
+    context: null,
+    receipt: null,
+    err: null,
+    constructed: false,
+    signed: false
   }
 };
 
@@ -72,6 +79,13 @@ export default function transactions(state = initialState, action) {
           signed: false
         },
         buyram: {
+          context: null,
+          receipt: null,
+          err: null,
+          constructed: false,
+          signed: false
+        },
+        buyrambytes: {
           context: null,
           receipt: null,
           err: null,
@@ -224,6 +238,32 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.BUYRAMBYTES_REQUEST: {
+      const { buyrambytes } = state;
+      buyrambytes.context = action.context;
+      buyrambytes.constructed = false;
+      buyrambytes.signed = false;
+      return Object.assign({}, state, {
+        buyrambytes
+      });
+    }
+
+    case types.BUYRAMBYTES_FAILURE: {
+      const { buyrambytes } = state;
+      buyrambytes.err = action.err;
+      return Object.assign({}, state, {
+        buyrambytes
+      });
+    }
+
+    case types.BUYRAMBYTES_SUCCESS: {
+      const { buyrambytes } = state;
+      buyrambytes.receipt = action.receipt;
+      return Object.assign({}, state, {
+        buyrambytes
+      });
+    }
+
     case types.TRANSFER_TOKEN_CONSTRUCTED: {
       const { transfer } = state;
       transfer.constructed = action.constructed;
@@ -264,6 +304,14 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.BUYRAMBYTES_CONSTRUCTED: {
+      const { buyrambytes } = state;
+      buyrambytes.constructed = action.constructed;
+      return Object.assign({}, state, {
+        buyrambytes
+      });
+    }
+
     case types.TRANSFER_TOKEN_SIGNED: {
       const { transfer } = state;
       transfer.signed = action.signed;
@@ -301,6 +349,14 @@ export default function transactions(state = initialState, action) {
       buyram.signed = action.signed;
       return Object.assign({}, state, {
         buyram
+      });
+    }
+
+    case types.BUYRAMBYTES_SIGNED: {
+      const { buyrambytes } = state;
+      buyrambytes.signed = action.signed;
+      return Object.assign({}, state, {
+        buyrambytes
       });
     }
 

@@ -6,10 +6,11 @@ import {
   undelegate,
   delegateUndelegate,
   resetState,
-  buyram
+  buyram,
+  buyrambytes
 } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
-import System from '../../../components/Wallet/Actions/System'
+import System from '../../../components/Wallet/Actions/System';
 
 type Props = {
   account: {},
@@ -21,30 +22,29 @@ type Props = {
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {},
-  buyram: string => {}
+  buyram: string => {},
+  buyrambytes: number => {}
 };
 
 class SystemContainer extends Component<Props> {
-  render(){
-    const { 
-      account, 
-      transactions
-    } = this.props;
+  render() {
+    const { account, transactions } = this.props;
 
-    return(
-      <System 
+    return (
+      <System
         account={account}
         transactions={transactions}
         getAccount={this.props.getAccount}
         getActions={this.props.getActions}
-        delegate={this.props.delegate} 
-        undelegate={this.props.undelegate} 
-        delegateUndelegate={this.props.delegateUndelegate} 
+        delegate={this.props.delegate}
+        undelegate={this.props.undelegate}
+        delegateUndelegate={this.props.delegateUndelegate}
         buyram={this.props.buyram}
+        buyrambytes={this.props.buyrambytes}
         resetState={this.props.resetState}
         onTabChange={this.props.onTabChange}
       />
-    )
+    );
   }
 }
 
@@ -64,7 +64,8 @@ function mapDispatchToProps(dispatch) {
       resetState,
       getAccount,
       getActions,
-      buyram
+      buyram,
+      buyrambytes
     },
     dispatch
   );

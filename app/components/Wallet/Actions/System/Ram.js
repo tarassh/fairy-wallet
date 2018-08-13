@@ -8,14 +8,21 @@ type Props = {
   account: {},
   transactions: {},
   buyram: string => {},
+  buyrambytes: number => {},
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {}
 };
 
+const options = [
+  { key: 'EOS', value: 'EOS', text: 'EOS' },
+  { key: 'bytes', value: 'Bytes', text: 'Bytes' }
+];
+
 export default class Ram extends Component<Props> {
   state = {
-    tokens: 0,
+    quantity: 0,
+    option: 'EOS',
     openModal: false
   };
 
@@ -24,10 +31,15 @@ export default class Ram extends Component<Props> {
   };
 
   handleSubmit = () => {
-    const { tokens } = this.state;
+    const { quantity, option } = this.state;
 
     this.setState({ openModal: true });
-    this.props.buyram(numberToAsset(tokens));
+
+    if (option.toLowerCase() === 'eos') {
+      this.props.buyram(numberToAsset(quantity));
+    } else if (option.toLowerCase() === 'bytes') {
+      this.props.buyrambytes(parseInt(quantity, 10));
+    }
   };
 
   handleClose = () => {
@@ -38,15 +50,23 @@ export default class Ram extends Component<Props> {
     this.props.getActions(account.account_name);
     this.setState({
       openModal: false,
-      tokens: 0
+      quantity: 0
     });
   };
 
   render() {
     const { transactions, account } = this.props;
-    const { tokens, openModal } = this.state;
-    const available = assetToNumber(account.core_liquid_balance);
-    const disabled = tokens === 0;
+    const { quantity, openModal, option } = this.state;
+    let available = assetToNumber(account.core_liquid_balance);
+    let step = '0.0001';
+    let label = 'Value (EOS)';
+    const disabled = quantity === 0;
+
+    if (option === 'bytes') {
+      available = 0xffffffff;
+      step = '1';
+      label = 'Value (Bytes)';
+    }
 
     return (
       <Segment className="no-border">
@@ -56,20 +76,32 @@ export default class Ram extends Component<Props> {
           handleClose={this.handleClose}
         />
         <Form onSubmit={this.handleSubmit}>
-          <Form.Field>
+          <Form.Group widths="equal">
             <InputFloat
-              label="Value (EOS)"
-              name="tokens"
-              step="0.0001"
+              label={label}
+              name="quantity"
+              step={step}
               min={0}
               max={available}
-              value={tokens}
+              value={quantity}
               type="number"
               onChange={this.handleChange}
             >
+              <Form.Dropdown
+                button
+                basic
+                floating
+                options={options}
+                defaultValue="EOS"
+                name="option"
+                text={option}
+                onChange={this.handleChange}
+                className="tokendropdown"
+                style={{ paddingTop: '1em', paddingBottom: '1em' }}
+              />
               <input />
             </InputFloat>
-          </Form.Field>
+          </Form.Group>
           <Form.Button
             id="form-button-control-public"
             content="Confirm"
