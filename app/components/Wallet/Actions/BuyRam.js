@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Segment } from 'semantic-ui-react';
-import TransactionsModal from '../../../Shared/TransactionsModal';
-import { numberToAsset, assetToNumber } from '../../../../utils/asset';
-import { InputFloat } from '../../../Shared/EosComponents';
+import TransactionsModal from '../../Shared/TransactionsModal';
+import { numberToAsset, assetToNumber } from '../../../utils/asset';
+import { InputFloat } from '../../Shared/EosComponents';
 
 type Props = {
   account: {},

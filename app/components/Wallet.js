@@ -38,15 +38,13 @@ export default class Wallet extends Component<Props> {
     const { accounts } = this.props;
     const { panel } = this.state;
 
-    const leftSegment = (
-      <WalletBalance accounts={accounts} panel={panel} />
-    );
+    const leftSegment = <WalletBalance accounts={accounts} panel={panel} />;
     const rightSegment = <WalletActions onTabChange={this.onTabChange} />;
 
     return (
       <Segment.Group horizontal className="wallet">
-        <Segment className="balance">{leftSegment}</Segment>
         <Segment className="actions">{rightSegment}</Segment>
+        <Segment className="balance">{leftSegment}</Segment>
       </Segment.Group>
     );
   }

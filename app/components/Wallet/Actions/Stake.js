@@ -8,9 +8,9 @@ import {
   Icon,
   Divider
 } from 'semantic-ui-react';
-import TransactionsModal from '../../../Shared/TransactionsModal';
-import { numberToAsset, assetToNumber } from '../../../../utils/asset';
-import { InputFloat } from '../../../Shared/EosComponents';
+import TransactionsModal from '../../Shared/TransactionsModal';
+import { numberToAsset, assetToNumber } from '../../../utils/asset';
+import { InputFloat } from '../../Shared/EosComponents';
 
 const numeral = require('numeral');
 const exactMath = require('exact-math');

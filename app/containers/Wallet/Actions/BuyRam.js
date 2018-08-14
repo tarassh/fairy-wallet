@@ -1,51 +1,33 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {
-  delegate,
-  undelegate,
-  delegateUndelegate,
-  resetState,
-  buyram,
-  buyrambytes,
-  sellram
-} from '../../../actions/transactions';
+import { resetState, buyram, buyrambytes } from '../../../actions/transactions';
 import { getAccount, getActions } from '../../../actions/accounts';
-import System from '../../../components/Wallet/Actions/System';
+import BuyRam from '../../../components/Wallet/Actions/BuyRam';
 
 type Props = {
   account: {},
   transactions: {},
-  onTabChange: (SyntheticEvent, object) => {},
-  delegate: (string, string, string, string) => {},
-  undelegate: (string, string, string, string) => {},
-  delegateUndelegate: (boolean, string, string, string, string) => {},
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {},
   buyram: string => {},
-  buyrambytes: number => {},
-  sellram: number => {}
+  buyrambytes: number => {}
 };
 
-class SystemContainer extends Component<Props> {
+class BuyRamContainer extends Component<Props> {
   render() {
     const { account, transactions } = this.props;
 
     return (
-      <System
+      <BuyRam
         account={account}
         transactions={transactions}
         getAccount={this.props.getAccount}
         getActions={this.props.getActions}
-        delegate={this.props.delegate}
-        undelegate={this.props.undelegate}
-        delegateUndelegate={this.props.delegateUndelegate}
         buyram={this.props.buyram}
         buyrambytes={this.props.buyrambytes}
-        sellram={this.props.sellram}
         resetState={this.props.resetState}
-        onTabChange={this.props.onTabChange}
       />
     );
   }
@@ -61,18 +43,14 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
-      delegate,
-      undelegate,
-      delegateUndelegate,
       resetState,
       getAccount,
       getActions,
       buyram,
-      buyrambytes,
-      sellram
+      buyrambytes
     },
     dispatch
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SystemContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(BuyRamContainer);
