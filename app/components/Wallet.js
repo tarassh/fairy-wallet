@@ -49,7 +49,7 @@ export default class Wallet extends Component<Props> {
     return (
       <Segment.Group className="wallet">
         <Segment>{balance}</Segment>
-        <Segment.Group horizontal className="wallet">
+        <Segment.Group horizontal className="wallet no-border">
           <Segment className="actions">{rightSegment}</Segment>
           <Segment className="balance">{leftSegment}</Segment>
         </Segment.Group>

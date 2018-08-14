@@ -21,36 +21,28 @@ export default class Actions extends Component<Props> {
         key: 'history',
         menuItem: 'History',
         render: () => (
-          <Tab.Pane>
-            <ActionsHistory />
-          </Tab.Pane>
+          <ActionsHistory />
         )
       },
       {
         key: 'send',
         menuItem: 'Send',
         render: () => (
-          <Tab.Pane>
-            <ActionsSend />
-          </Tab.Pane>
+          <ActionsSend />
         )
       },
       {
         key: 'stake',
         menuItem: 'Stake',
         render: () => (
-          <Tab.Pane>
-            <ActionStake />
-          </Tab.Pane>
+          <ActionStake />
         )
       },
       {
         key: 'buyram',
         menuItem: 'Buy RAM',
         render: () => (
-          <Tab.Pane>
-            <ActionBuyRam />
-          </Tab.Pane>
+          <ActionBuyRam />
         )
       },
       {

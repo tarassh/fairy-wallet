@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Grid, Pagination, Icon, Button } from 'semantic-ui-react';
+import { List, Grid, Icon, Button } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
@@ -14,10 +14,10 @@ type Props = {
 
 export default class History extends Component<Props> {
   props: Props;
-  state = { activePage: 1, activeAction: -1 };
+  state = { activeAction: -1 };
 
   handleClick = (sequence) => {
-    const activeAction = this.state.activeAction === sequence ? -1: sequence;
+    const activeAction = sequence;
     this.setState({ activeAction });
   }
 
@@ -25,28 +25,18 @@ export default class History extends Component<Props> {
     shell.openExternal(`https://eosflare.io/tx/${txid}`)
   }
 
-  handlePaginationChange = (e, { activePage }) => {
+  handleLoadNextActions = () => {
     const { getActions, account, actions } = this.props;
     const lastActionSeq =
-      actions.length === 0 ? 0 : actions[actions.length - 1].account_action_seq;
-    let position = lastActionSeq - (activePage - 1) * 20;
-    const end = position - 19 < 0 ? 0 : position - 19;
-    if (position < 0) position = 20;
+      actions.length === 0 ? 0 : actions[0].account_action_seq;
 
-    if (
-      actions.findIndex(element => element.account_action_seq === position) ===
-        -1 ||
-      actions.findIndex(element => element.account_action_seq === end) === -1
-    ) {
-      getActions(account.account_name, position);
-    }
-
-    this.setState({ activePage });
-  };
+      getActions(account.account_name, lastActionSeq);
+      this.forceUpdate();
+  }
 
   render() {
     const { actions, account, lastIrreversibleBlock } = this.props;
-    const { activePage, activeAction } = this.state;
+    const { activeAction } = this.state;
     const options = {
       weekday: 'long',
       year: 'numeric',
@@ -58,15 +48,8 @@ export default class History extends Component<Props> {
     const lastActionSeq =
       actions.length === 0 ? 0 : actions[actions.length - 1].account_action_seq;
     const totalPages = Math.ceil(lastActionSeq / 20);
-    const endSequene = lastActionSeq - (activePage - 1) * 20;
-    const startSequence = endSequene - 19 < 0 ? 0 : endSequene - 19;
-    const end = actions.findIndex(e => e.account_action_seq === endSequene);
-    const start = actions.findIndex(
-      e => e.account_action_seq === startSequence
-    );
-    const pageHistory = _.slice(actions, start, end + 1);
 
-    pageHistory.forEach(value => {
+    actions.forEach(value => {
       const { block_time, account_action_seq, block_num } = value; // eslint-disable-line camelcase
       const date = new Date(block_time);
       const day = date.toLocaleDateString('en-US', options);
@@ -123,12 +106,7 @@ export default class History extends Component<Props> {
         {days.length > 0 && totalPages > 1 && (
           <Grid>
             <Grid.Row centered>
-              <Pagination
-                activePage={activePage}
-                totalPages={totalPages}
-                size="mini"
-                onPageChange={this.handlePaginationChange}
-              />
+              <Button basic onClick={this.handleLoadNextActions}>Load next actions</Button>
             </Grid.Row>
           </Grid>
         )}
