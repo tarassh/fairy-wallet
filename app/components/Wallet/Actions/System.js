@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Tab } from 'semantic-ui-react';
 import SystemStake from './System/Stake';
-import SystemRam from './System/Ram';
+import SystemBuyRam from './System/BuyRam';
+import SystemSellRam from './System/SellRam';
 
 type Props = {
   account: {},
@@ -14,7 +15,8 @@ type Props = {
   getAccount: string => {},
   getActions: string => {},
   buyram: () => {},
-  buyrambytes: () => {}
+  buyrambytes: () => {},
+  sellram: () => {}
 };
 
 export default class System extends Component<Props> {
@@ -39,14 +41,28 @@ export default class System extends Component<Props> {
         )
       },
       {
-        key: 'ram',
+        key: 'buyram',
         menuItem: 'Buy Ram',
         render: () => (
-          <SystemRam
+          <SystemBuyRam
             transactions={this.props.transactions}
             account={account}
             buyram={this.props.buyram}
             buyrambytes={this.props.buyrambytes}
+            resetState={this.props.resetState}
+            getAccount={this.props.getAccount}
+            getActions={this.props.getActions}
+          />
+        )
+      },
+      {
+        key: 'sellram',
+        menuItem: 'Sell Ram',
+        render: () => (
+          <SystemSellRam
+            transactions={this.props.transactions}
+            account={account}
+            sellram={this.props.sellram}
             resetState={this.props.resetState}
             getAccount={this.props.getAccount}
             getActions={this.props.getActions}

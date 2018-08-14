@@ -36,11 +36,16 @@ class Balance extends Component<Props> {
       delete accounts.balances.EOS;
     }
 
-    let details = <Tokens accounts={accounts} />
-    if (panel === 'system' || panel === 'stake' || panel === 'ram') {
-      details = <StakedStats account={accounts.account} />
+    let details = <Tokens accounts={accounts} />;
+    if (
+      panel === 'system' ||
+      panel === 'stake' ||
+      panel === 'sellram' ||
+      panel === 'buyram'
+    ) {
+      details = <StakedStats account={accounts.account} />;
     } else if (panel === 'vote') {
-      details = <VoteStats account={accounts.account} />
+      details = <VoteStats account={accounts.account} />;
     }
 
     return (

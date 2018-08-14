@@ -5,12 +5,12 @@ type Props = {
   context: {}
 };
 
-class BuyRamContext extends Component<Props> {
+class SellRamContext extends Component<Props> {
   render() {
     const { context } = this.props;
     const text = (
       <p>
-        You are about to buy RAM for <strong>{context.tokens}</strong>.
+        You are about to sell <strong>{context.bytes}</strong> bytes of RAM.
         Transaction details are listed below.
       </p>
     );
@@ -25,16 +25,14 @@ class BuyRamContext extends Component<Props> {
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>
                 <Table.Cell>Action</Table.Cell>
-                <Table.Cell>Buyer</Table.Cell>
                 <Table.Cell>Receiver</Table.Cell>
-                <Table.Cell>Tokens</Table.Cell>
+                <Table.Cell>Bytes</Table.Cell>
               </Table.Row>
               <Table.Row>
                 <Table.Cell>{context.contract}</Table.Cell>
                 <Table.Cell>{context.action}</Table.Cell>
-                <Table.Cell>{context.buyer}</Table.Cell>
                 <Table.Cell>{context.receiver}</Table.Cell>
-                <Table.Cell>{context.tokens}</Table.Cell>
+                <Table.Cell>{context.bytes}</Table.Cell>
               </Table.Row>
             </Table.Body>
           </Table>
@@ -46,4 +44,4 @@ class BuyRamContext extends Component<Props> {
   }
 }
 
-export default BuyRamContext;
+export default SellRamContext;

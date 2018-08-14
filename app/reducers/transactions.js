@@ -43,6 +43,13 @@ const initialState = {
     err: null,
     constructed: false,
     signed: false
+  },
+  sellram: {
+    context: null,
+    receipt: null,
+    err: null,
+    constructed: false,
+    signed: false
   }
 };
 
@@ -86,6 +93,13 @@ export default function transactions(state = initialState, action) {
           signed: false
         },
         buyrambytes: {
+          context: null,
+          receipt: null,
+          err: null,
+          constructed: false,
+          signed: false
+        },
+        sellram: {
           context: null,
           receipt: null,
           err: null,
@@ -238,6 +252,32 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.SELLRAM_REQUEST: {
+      const { sellram } = state;
+      sellram.context = action.context;
+      sellram.constructed = false;
+      sellram.signed = false;
+      return Object.assign({}, state, {
+        sellram
+      });
+    }
+
+    case types.SELLRAM_FAILURE: {
+      const { sellram } = state;
+      sellram.err = action.err;
+      return Object.assign({}, state, {
+        sellram
+      });
+    }
+
+    case types.SELLRAM_SUCCESS: {
+      const { sellram } = state;
+      sellram.receipt = action.receipt;
+      return Object.assign({}, state, {
+        sellram
+      });
+    }
+
     case types.BUYRAMBYTES_REQUEST: {
       const { buyrambytes } = state;
       buyrambytes.context = action.context;
@@ -312,6 +352,14 @@ export default function transactions(state = initialState, action) {
       });
     }
 
+    case types.SELLRAM_CONSTRUCTED: {
+      const { sellram } = state;
+      sellram.constructed = action.constructed;
+      return Object.assign({}, state, {
+        sellram
+      });
+    }
+
     case types.TRANSFER_TOKEN_SIGNED: {
       const { transfer } = state;
       transfer.signed = action.signed;
@@ -357,6 +405,14 @@ export default function transactions(state = initialState, action) {
       buyrambytes.signed = action.signed;
       return Object.assign({}, state, {
         buyrambytes
+      });
+    }
+
+    case types.SELLRAM_SIGNED: {
+      const { sellram } = state;
+      sellram.signed = action.signed;
+      return Object.assign({}, state, {
+        sellram
       });
     }
 

@@ -13,6 +13,7 @@ import DelegateContext from './DelegateContext';
 import VoteContext from './VoteContext';
 import BuyRamContext from './BuyRamContext';
 import BuyRamBytesContext from './BuyRamBytesContext';
+import SellRamContext from './SellRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 
 type Props = {
@@ -76,6 +77,8 @@ function renderTransaction(transaction) {
     content = <BuyRamContext context={context} />;
   } else if (action === 'buyrambytes') {
     content = <BuyRamBytesContext context={context} />;
+  } else if (action === 'sellram') {
+    content = <SellRamContext context={context} />;
   }
 
   const header = (
@@ -143,11 +146,13 @@ class TransactionsModal extends Component<Props> {
           <Modal.Header>{header}</Modal.Header>
           <Modal.Content>
             <Modal.Description>
-              <Image
-                src={confirmTransaction}
-                centered
-                style={{ marginTop: '1em', marginBottom: '1em' }}
-              />
+              {modalAction.length === 0 && (
+                <Image
+                  src={confirmTransaction}
+                  centered
+                  style={{ marginTop: '1em', marginBottom: '1em' }}
+                />
+              )}
               {_.map(renderedTxs, tx => tx)}
             </Modal.Description>
           </Modal.Content>

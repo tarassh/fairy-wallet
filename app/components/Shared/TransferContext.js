@@ -21,7 +21,7 @@ class TransferContext extends Component<Props> {
       content = (
         <div>
           {text}
-          <Table basic attached="top">
+          <Table basic="very" attached="top">
             <Table.Body>
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>

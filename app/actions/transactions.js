@@ -13,6 +13,7 @@ const undelegateAction = 'undelegatebw';
 const voteProducerAction = 'voteproducer';
 const buyramAction = 'buyram';
 const buyrambytesAction = 'buyrambytes';
+const sellramAction = 'sellram';
 
 export function transfer(
   from,
@@ -477,6 +478,69 @@ export function buyram(tokens) {
       .catch(err => {
         dispatch({
           type: types.BUYRAM_FAILURE,
+          err
+        });
+      });
+  };
+}
+
+export function sellram(bytes) {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+
+    dispatch({
+      type: types.SELLRAM_REQUEST,
+      context: {
+        contract: eosioContract,
+        action: sellramAction,
+        receiver: account.account_name,
+        bytes
+      }
+    });
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.SELLRAM_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.SELLRAM_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner
+    };
+
+    return eos(modified)
+      .transaction(eosioContract, contract => {
+        contract.sellram(account.account_name, bytes);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.SELLRAM_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.SELLRAM_FAILURE,
           err
         });
       });
