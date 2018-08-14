@@ -1,15 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import {
-  List,
-  Segment,
-  Icon,
-  Checkbox,
-  Button,
-  Divider,
-  Grid,
-  Form
-} from 'semantic-ui-react';
+import { List, Icon, Checkbox, Button, Grid, Form } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import TransactionsModal from '../../Shared/TransactionsModal';
@@ -22,7 +13,7 @@ const HAPPY_PRODUCERS = 21;
 
 type Props = {
   accounts: {},
-  producers: {},
+  producers: { list: {} },
   loading: {},
   transactions: {},
   voteProducer: () => {},
@@ -48,9 +39,7 @@ export default class Vote extends Component<Props> {
 
     const votes = {};
 
-    _.map(producers, producer => (
-      Object.assign(votes, { [producer]: true })
-    ));
+    _.map(producers, producer => Object.assign(votes, { [producer]: true }));
 
     const producersList = _.map(props.producers.list, (producer, index) => (
       <List.Item key={producer.key} value={producer.owner}>
@@ -85,15 +74,13 @@ export default class Vote extends Component<Props> {
 
     const votes = {};
 
-    _.map(producers, producer => (
-      Object.assign(votes, { [producer]: true })
-    ));
+    _.map(producers, producer => Object.assign(votes, { [producer]: true }));
 
     if (!_.isEqual(votes, this.state.initialVotes)) {
       Object.assign(this.state, {
         initialVotes: _.clone(votes),
         actualVotes: _.clone(votes),
-        disabled: true,
+        disabled: true
       });
     }
 
@@ -109,9 +96,11 @@ export default class Vote extends Component<Props> {
     voteProducer(producers);
   };
 
-  isExponential = number => (!!number.toString().match(/[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)/g));
+  isExponential = number =>
+    !!number.toString().match(/[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)/g);
 
-  parsePercent = percent => (numeral(this.isExponential(percent) ? 0 : percent).format('0.00%'));
+  parsePercent = percent =>
+    numeral(this.isExponential(percent) ? 0 : percent).format('0.00%');
 
   isValidUrl = url =>
     url.match(
@@ -125,10 +114,13 @@ export default class Vote extends Component<Props> {
   currentVotes = () => _.keys(this.state.actualVotes);
 
   toggle = (e, { id, checked }) => {
-    if (this.currentVotes().length < MAX_VOTES || this.state.actualVotes[id] === true) {
+    if (
+      this.currentVotes().length < MAX_VOTES ||
+      this.state.actualVotes[id] === true
+    ) {
       const { actualVotes } = this.state;
       if (checked === true) {
-        actualVotes[id] = checked
+        actualVotes[id] = checked;
       } else {
         delete actualVotes[id];
       }
@@ -158,7 +150,7 @@ export default class Vote extends Component<Props> {
   };
 
   handleChange = (e, { value }) => {
-    this.setState({filter: value });
+    this.setState({ filter: value });
   };
 
   renderProducer = (producer, producing) => (
@@ -169,15 +161,18 @@ export default class Vote extends Component<Props> {
             <Checkbox
               id={producer.owner}
               onChange={this.toggle}
-              checked={this.state.actualVotes && this.state.actualVotes[producer.owner] === true}
+              checked={
+                this.state.actualVotes &&
+                this.state.actualVotes[producer.owner] === true
+              }
             />
           </Grid.Column>
           <Grid.Column widht={1}>
             {producing ? (
               <Icon name="smile outline" />
-          ) : (
-            <Icon name="frown outline" />
-          )}
+            ) : (
+              <Icon name="frown outline" />
+            )}
           </Grid.Column>
           <Grid.Column width={4}>{producer.owner}</Grid.Column>
           <Grid.Column
@@ -186,8 +181,8 @@ export default class Vote extends Component<Props> {
             style={{ cursor: 'pointer' }}
           >
             {producer.url && this.isValidUrl(producer.url)
-            ? producer.url
-            : undefined}
+              ? producer.url
+              : undefined}
           </Grid.Column>
           <Grid.Column width={3} textAlign="center">
             {this.parsePercent(producer.percent)}
@@ -204,36 +199,45 @@ export default class Vote extends Component<Props> {
     const isLoading = loading.GET_PRODUCERS === true;
     let filteredList = producersList;
     if (filter && filter.length > 0) {
-      filteredList = _.filter(producersList, (el) => el.props.value.indexOf(filter) !== -1 );
+      filteredList = _.filter(
+        producersList,
+        el => el.props.value.indexOf(filter) !== -1
+      );
     }
 
     return (
-      <Form>
-        <Segment loading={isLoading} className="no-border producers-list">
-          <TransactionsModal
-            open={openModal}
-            transactions={transactions}
-            handleClose={this.handleClose}
-          />
-          <InputAccount 
-            placeholder="Search block producer..." 
-            fluid 
-            size='tiny' 
-            onChange={this.handleChange} 
-            icon='search' 
-          />
-          <Button fluid floated="right" onClick={this.vote} size='tiny' disabled={disabled}>
-            Vote
-          </Button>
-          <Divider horizontal style={{ padding: '1em' }}>
-            <h5>
-              {this.currentVotes().length} / {MAX_VOTES}
-            </h5>
-          </Divider>
-          <List divided relaxed className="scrollable">
-            {!isLoading ? filteredList : undefined}
-          </List>
-        </Segment>
+      <Form loading={isLoading} className="producers-list">
+        <TransactionsModal
+          open={openModal}
+          transactions={transactions}
+          handleClose={this.handleClose}
+        />
+        <Grid>
+          <Grid.Row columns={3} textAlign="center">
+            <Grid.Column>
+              <h5>
+                {this.currentVotes().length} / {MAX_VOTES}
+              </h5>
+            </Grid.Column>
+            <Grid.Column>
+              <InputAccount
+                placeholder="Search block producer..."
+                fluid
+                size="tiny"
+                onChange={this.handleChange}
+                icon="search"
+              />
+            </Grid.Column>
+            <Grid.Column>
+              <Button fluid onClick={this.vote} disabled={disabled}>
+                Vote
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+        <List divided relaxed className="scrollable">
+          {!isLoading ? filteredList : undefined}
+        </List>
       </Form>
     );
   }

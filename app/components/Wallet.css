@@ -26,6 +26,7 @@
 
 .ui.segments.wallet {
     margin: 0;
+    height: 100%;
 }
 
 .ui.segments.wallet > .balance {
@@ -65,11 +66,11 @@
 }
 
 .history {
-    height: 670px;
+    height: 600px;
 }
 
 .producers-list {
-    height: 530px;
+    height: 500px;
 }
 
 .producers-list .checkbox {

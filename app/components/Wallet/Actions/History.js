@@ -16,23 +16,24 @@ export default class History extends Component<Props> {
   props: Props;
   state = { activeAction: -1 };
 
-  handleClick = (sequence) => {
-    const activeAction = sequence;
-    this.setState({ activeAction });
-  }
+  handleClick = sequence => {
+    this.setState({
+      activeAction: this.state.activeAction === sequence ? -1 : sequence
+    });
+  };
 
   handleGoto = (e, { txid }) => {
-    shell.openExternal(`https://eosflare.io/tx/${txid}`)
-  }
+    shell.openExternal(`https://eosflare.io/tx/${txid}`);
+  };
 
   handleLoadNextActions = () => {
     const { getActions, account, actions } = this.props;
     const lastActionSeq =
       actions.length === 0 ? 0 : actions[0].account_action_seq;
 
-      getActions(account.account_name, lastActionSeq);
-      this.forceUpdate();
-  }
+    getActions(account.account_name, lastActionSeq);
+    this.forceUpdate();
+  };
 
   render() {
     const { actions, account, lastIrreversibleBlock } = this.props;
@@ -62,7 +63,7 @@ export default class History extends Component<Props> {
       }
 
       const { trx_id } = value.action_trace; // eslint-disable-line camelcase
-      const { account, name, data } = value.action_trace.act;
+      const { account, name, data } = value.action_trace.act; // eslint-disable-line no-shadow
       const { act_digest } = value.action_trace.receipt; // eslint-disable-line camelcase
       const action = {
         sequence: account_action_seq,
@@ -73,7 +74,7 @@ export default class History extends Component<Props> {
         data,
         digest: act_digest,
         irreversible: block_num <= lastIrreversibleBlock, // eslint-disable-line camelcase
-        active: activeAction === account_action_seq       // eslint-disable-line camelcase
+        active: activeAction === account_action_seq // eslint-disable-line camelcase
       };
 
       if (!dayActions.actions.find(el => el.digest === action.digest)) {
@@ -88,10 +89,15 @@ export default class History extends Component<Props> {
         <List.Content>
           <List selection divided>
             {_.map(_.reverse(dayGroup.actions), action => (
-              <List.Item 
-                key={`${action.time}-${action.txId}-${action.digest}`} 
-              >
-                <List.Content>{renderAction(action, accountName, this.handleClick, this.handleGoto)}</List.Content>
+              <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
+                <List.Content>
+                  {renderAction(
+                    action,
+                    accountName,
+                    this.handleClick,
+                    this.handleGoto
+                  )}
+                </List.Content>
               </List.Item>
             ))}
           </List>
@@ -103,13 +109,20 @@ export default class History extends Component<Props> {
       <div id="scrollable-history">
         <List style={{ marginBottom: '2em' }}>{items}</List>
         <div />
-        {days.length > 0 && totalPages > 1 && (
-          <Grid>
-            <Grid.Row centered>
-              <Button basic onClick={this.handleLoadNextActions}>Load next actions</Button>
-            </Grid.Row>
-          </Grid>
-        )}
+        {days.length > 0 &&
+          totalPages > 1 && (
+            <Grid>
+              <Grid.Row centered>
+                <a
+                  href="#"
+                  onClick={this.handleLoadNextActions}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Load next actions
+                </a>
+              </Grid.Row>
+            </Grid>
+          )}
       </div>
     );
   }
@@ -128,35 +141,45 @@ function renderAction(action, account, handler, goto) {
   }
   let quant = <Grid.Column width={4} />;
   if (quantity) {
-    quant = <Grid.Column width={4} textAlign='right'>{quantity}</Grid.Column>
+    quant = (
+      <Grid.Column width={4} textAlign="right">
+        {quantity}
+      </Grid.Column>
+    );
   }
-  let status = <Icon name='circle notched' loading />
+  let status = <Icon name="circle notched" loading />;
   if (action.irreversible) {
-    status = <Icon name='check' />
+    status = <Icon name="check" />;
   }
 
-  // 
+  //
   return (
     <Grid>
-      <Grid.Row onClick={() => handler(action.sequence)} color={action.active ? 'grey' : undefined}>
-        <Grid.Column widht={1}>
-          { status } 
-        </Grid.Column>
+      <Grid.Row
+        onClick={() => handler(action.sequence)}
+        color={action.active ? 'grey' : undefined}
+      >
+        <Grid.Column widht={1}>{status}</Grid.Column>
         <Grid.Column width={3}>{action.time}</Grid.Column>
         <Grid.Column width={3}>{action.name}</Grid.Column>
         {description}
         {quant}
       </Grid.Row>
-      {action.active &&
-        <Grid.Row style={{fontSize: 'small'}}> 
-          <Grid.Column style={{padding: '1em' }}>
+      {action.active && (
+        <Grid.Row style={{ fontSize: 'small' }}>
+          <Grid.Column style={{ padding: '1em' }}>
             <p>Transaction ID: </p>
-            <Button icon="info circle" basic txid={action.txId} onClick={goto} />
+            <Button
+              icon="info circle"
+              basic
+              txid={action.txId}
+              onClick={goto}
+            />
             &nbsp;
             {action.txId}
           </Grid.Column>
         </Grid.Row>
-      }
+      )}
     </Grid>
   );
 }

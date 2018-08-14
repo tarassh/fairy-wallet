@@ -10,7 +10,8 @@ type Props = {
   states: {},
   accounts: {},
   history: {},
-  currency: {}
+  currency: {},
+  loading: {}
 };
 
 export default class Wallet extends Component<Props> {
@@ -37,13 +38,18 @@ export default class Wallet extends Component<Props> {
   };
 
   render() {
-    const { accounts, currency } = this.props;
+    const { accounts, currency, loading } = this.props;
     const { panel } = this.state;
 
     const leftSegment = <WalletBalance accounts={accounts} panel={panel} />;
     const rightSegment = <WalletActions onTabChange={this.onTabChange} />;
     const balance = (
-      <BalanceComponent account={accounts.account} currency={currency} />
+      <BalanceComponent
+        account={accounts.account}
+        currency={currency}
+        names={accounts.names}
+        loading={loading}
+      />
     );
 
     return (
