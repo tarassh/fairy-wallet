@@ -38,20 +38,14 @@ class BalanceComponent extends Component<Props> {
 
     return (
       <div>
-        <Segment>
+        <Segment className="no-border">
           <Grid>
-            <Grid.Row>
-              <Grid.Column textAlign="center">
+            <Grid.Row textAlign="center">
+              <Grid.Column width={3}>
                 <h5>Total Balance</h5>
                 <h4>{totalStr}</h4>
               </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-        <Segment>
-          <Grid>
-            <Grid.Row textAlign="center">
-              <Grid.Column width={8}>
+              <Grid.Column width={3}>
                 <h5>Available</h5>
                 <h4>{liquid}</h4>
                 {unstaking && (
@@ -60,7 +54,7 @@ class BalanceComponent extends Component<Props> {
                   </h5>
                 )}
               </Grid.Column>
-              <Grid.Column width={8}>
+              <Grid.Column width={3}>
                 <h5>Staked</h5>
                 <h4>{staked}</h4>
               </Grid.Column>

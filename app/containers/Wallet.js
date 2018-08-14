@@ -11,7 +11,8 @@ type Props = {
   states: {},
   loading: {},
   accounts: {},
-  history: {}
+  history: {},
+  currency: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -32,7 +33,7 @@ class WalletContainer extends Component<Props> {
   }
 
   render() {
-    const { states, accounts, loading, history } = this.props;
+    const { states, accounts, loading, history, currency } = this.props;
 
     return (
       <Wallet
@@ -40,6 +41,7 @@ class WalletContainer extends Component<Props> {
         states={states}
         loading={loading}
         history={history}
+        currency={currency}
       />
     );
   }
@@ -50,7 +52,8 @@ function mapStateToProps(state) {
     states: state.states,
     accounts: state.accounts,
     loading: state.loading,
-    transactions: state.transactions
+    transactions: state.transactions,
+    currency: state.currency
   };
 }
 

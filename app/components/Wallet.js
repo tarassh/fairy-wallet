@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
 import WalletBalance from './Wallet/Balance';
 import WalletActions from './Wallet/Actions';
+import BalanceComponent from '../components/Shared/BalanceComponent';
 import styles from './Wallet.css'; // eslint-disable-line no-unused-vars
 
 type Props = {
   states: {},
   accounts: {},
-  history: {}
+  history: {},
+  currency: {}
 };
 
 export default class Wallet extends Component<Props> {
@@ -35,16 +37,22 @@ export default class Wallet extends Component<Props> {
   };
 
   render() {
-    const { accounts } = this.props;
+    const { accounts, currency } = this.props;
     const { panel } = this.state;
 
     const leftSegment = <WalletBalance accounts={accounts} panel={panel} />;
     const rightSegment = <WalletActions onTabChange={this.onTabChange} />;
+    const balance = (
+      <BalanceComponent account={accounts.account} currency={currency} />
+    );
 
     return (
-      <Segment.Group horizontal className="wallet">
-        <Segment className="actions">{rightSegment}</Segment>
-        <Segment className="balance">{leftSegment}</Segment>
+      <Segment.Group className="wallet">
+        <Segment>{balance}</Segment>
+        <Segment.Group horizontal className="wallet">
+          <Segment className="actions">{rightSegment}</Segment>
+          <Segment className="balance">{leftSegment}</Segment>
+        </Segment.Group>
       </Segment.Group>
     );
   }

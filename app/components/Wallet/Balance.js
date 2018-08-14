@@ -8,8 +8,7 @@ import { getCurrencyStats } from '../../actions/currency';
 import { setActiveAccount } from '../../actions/accounts';
 
 import AccountSwitcher from '../Shared/AccountSwitcher';
-import BalanceComponent from '../Shared/BalanceComponent';
-import PublicKeyComponent from '../Shared/PublicKeyComponent';
+import PublicKeyIcon from '../Shared/PublicKeyIcon';
 import StakedStats from './StakedStats';
 import Tokens from './Tokens';
 import VoteStats from './VoteStats';
@@ -18,8 +17,7 @@ type Props = {
   actions: {},
   panel: string,
   accounts: {},
-  loading: {},
-  currency: {}
+  loading: {}
 };
 
 class Balance extends Component<Props> {
@@ -30,7 +28,7 @@ class Balance extends Component<Props> {
   };
 
   render() {
-    const { accounts, panel, loading, currency } = this.props;
+    const { accounts, panel, loading } = this.props;
 
     if (accounts.balances !== null) {
       delete accounts.balances.EOS;
@@ -54,7 +52,7 @@ class Balance extends Component<Props> {
           <Grid>
             <Grid.Row>
               <Grid.Column floated="left" width={4}>
-                <PublicKeyComponent short />
+                <PublicKeyIcon />
               </Grid.Column>
               <Grid.Column floated="left">
                 <AccountSwitcher
@@ -65,9 +63,6 @@ class Balance extends Component<Props> {
               </Grid.Column>
             </Grid.Row>
           </Grid>
-        </Segment>
-        <Segment>
-          <BalanceComponent account={accounts.account} currency={currency} />
         </Segment>
         <Segment>{details}</Segment>
       </Segment.Group>
