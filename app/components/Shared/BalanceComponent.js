@@ -5,6 +5,7 @@ import {
   assetToNumber,
   numberToPrettyAsset
 } from '../../utils/asset';
+import UtilityStats from './UtilityStats';
 
 const moment = require('moment');
 const numeral = require('numeral');
@@ -57,6 +58,9 @@ class BalanceComponent extends Component<Props> {
               <Grid.Column width={3}>
                 <h5>Staked</h5>
                 <h4>{staked}</h4>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <UtilityStats account={account} />
               </Grid.Column>
             </Grid.Row>
           </Grid>
