@@ -22,7 +22,7 @@ class UtilityStats extends Component<Props> {
     );
 
     const labelWidth = 3;
-    const barWidrh = 8;
+    const barWidrh = 5;
     const valueWidth = 1;
     const rowPadding = { paddingTop: '0.5em', paddingBottom: '0.5em' };
 
@@ -30,7 +30,7 @@ class UtilityStats extends Component<Props> {
       <Grid padded={false}>
         <Grid.Row textAlign="right" style={rowPadding}>
           <Grid.Column width={labelWidth}>
-            <h5>CPU</h5>
+            <p className="subtitle">CPU</p>
           </Grid.Column>
           <Grid.Column width={barWidrh}>
             <UtilityChart
@@ -41,12 +41,12 @@ class UtilityStats extends Component<Props> {
             />
           </Grid.Column>
           <Grid.Column width={valueWidth}>
-            <h5>{cpuUsage}</h5>
+            <p className="subtitle">{cpuUsage}</p>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row textAlign="right" style={rowPadding}>
           <Grid.Column width={labelWidth}>
-            <h5>NET</h5>
+            <p>NET</p>
           </Grid.Column>
           <Grid.Column width={barWidrh}>
             <UtilityChart
@@ -57,12 +57,12 @@ class UtilityStats extends Component<Props> {
             />
           </Grid.Column>
           <Grid.Column width={valueWidth}>
-            <h5>{netUsage}</h5>
+            <p className="subtitle">{netUsage}</p>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row textAlign="right" style={rowPadding}>
           <Grid.Column width={labelWidth}>
-            <h5>RAM</h5>
+            <p className="subtitle">RAM</p>
           </Grid.Column>
           <Grid.Column width={barWidrh}>
             <UtilityChart
@@ -70,7 +70,7 @@ class UtilityStats extends Component<Props> {
             />
           </Grid.Column>
           <Grid.Column width={valueWidth}>
-            <h5>{ramUsage}</h5>
+            <p className="subtitle">{ramUsage}</p>
           </Grid.Column>
         </Grid.Row>
       </Grid>

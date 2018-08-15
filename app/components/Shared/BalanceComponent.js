@@ -5,7 +5,6 @@ import {
   assetToNumber,
   numberToPrettyAsset
 } from '../../utils/asset';
-import UtilityStats from './UtilityStats';
 
 const moment = require('moment');
 const numeral = require('numeral');
@@ -38,34 +37,29 @@ class BalanceComponent extends Component<Props> {
     }
 
     return (
-      <div>
-        <Segment className="no-border">
-          <Grid>
-            <Grid.Row textAlign="center">
-              <Grid.Column width={3}>
-                <h5>Total Balance</h5>
-                <h4>{totalStr}</h4>
-              </Grid.Column>
-              <Grid.Column width={3}>
-                <h5>Available</h5>
-                <h4>{liquid}</h4>
-                {unstaking && (
-                  <h5>
-                    {unstaking} will be available {unstakingTime}
-                  </h5>
+      <Segment className="no-border">
+        <Grid>
+          <Grid.Row textAlign="left">
+            <Grid.Column width={4}>
+              <p className="title">{totalStr}</p>
+              <p className="subtitle">Total Balance</p>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <p className="title">{liquid}</p>
+              <p className="subtitle">Available</p>
+              {unstaking && (
+              <h5>
+                {unstaking} will be available {unstakingTime}
+              </h5>
                 )}
-              </Grid.Column>
-              <Grid.Column width={3}>
-                <h5>Staked</h5>
-                <h4>{staked}</h4>
-              </Grid.Column>
-              <Grid.Column width={3}>
-                <UtilityStats account={account} />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-      </div>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <p className="title">{staked}</p>
+              <p className="subtitle">Staked</p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Segment>
     );
   }
 }

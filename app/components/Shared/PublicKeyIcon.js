@@ -63,6 +63,7 @@ class PublicKeyComponent extends Component<Props> {
       <Button
         icon
         basic
+        circular
         onClick={this.verifyPublicKey}
         className="publickeycontainer"
       >

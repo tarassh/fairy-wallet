@@ -11,7 +11,7 @@ html, body {
    margin: 0;
    padding: 0;
    overflow: hidden;
-   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-family: 'Helvetica Neue', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body::after {
@@ -50,19 +50,39 @@ textarea{
 	-webkit-app-region: no-drag;
 }
 
+.ui.segments {
+    border-radius: 0%;
+    border-color: rgb(245, 245, 245);
+    box-shadow: none;   
+}
+
+.ui.button {
+    background: rgb(62, 141, 247);
+    color: white;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+.ui.button:hover {
+    background: rgb(23, 124, 255);
+    color: white;
+}
+
 h5,
 .ui.form .field>label {
-    color: gray;
+    color: rgb(51, 51, 51);
 }
 
-h5, h4 {
-    font-weight: normal;
-    margin-top: 0.3em;
+p.title {
+    font-size: 1.6em;
+    color: rgb(30, 30, 30);
+    margin-bottom: 0pc;
+    font-weight: lighter;
 }
 
-h4 {
-    font-size: 1.5em;
-    color: rgba(0,0,0,.6);
+p.subtitle {
+    margin-top: 0.5em;
+    color: rgb(51, 51, 51);
 }
 
 .ui.basic.label {

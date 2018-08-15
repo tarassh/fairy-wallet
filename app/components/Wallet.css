@@ -27,29 +27,49 @@
 .ui.segments.wallet {
     margin: 0;
     height: 100%;
+    width: 100%;
 }
 
-.ui.segments.wallet > .balance {
-    width: 35%;
-    padding-top: 15px;
+.ui.segments {
+    border-radius: 0%;
 }
 
-.ui.segments.wallet > .actions {
-    width: 64%;
-    padding-top: 28px;
+.ui.segments.wallet > .ui.segments.menu > .ui.segment.no-border.account {
+    margin: 1em;
 }
 
-.ui.basic.button.no-border,
-.ui.basic.button.no-border:hover,
-.ui.basic.button.no-border:visited,
-.ui.basic.button.no-border:link,
-.ui.basic.button.no-border:active,
-.ui.basic.button.no-border:focus,
-.ui.segment.no-border,
-.ui.segments.wallet .segments.no-border,
-.ui.segments.wallet .segments.no-border >.segment,
-.ui.segments.wallet .segments.no-border >.segment+.segments,
-.ui.segments.wallet .segments.no-border >.segment+.segments>.segment{
+.ui.segments.wallet > .ui.segments.menu > .ui.segment.no-border.action-menu {
+    margin: 1em;
+}
+
+.ui.menu .active.item, .ui.vertical.menu .active.item {
+    color: rgb(62, 141, 247) !important;
+}
+
+.ui.vertical.text.menu .item {
+    margin: 1em !important;
+    color: rgb(51, 51, 51);
+}
+
+.ui.segments.wallet > .ui.segments.menu {
+    margin: 0;
+    width: 21.5%;
+    height: 100%;
+}
+
+.ui.segments.wallet > .ui.segments.context {
+    width: 78%;
+    margin: 0;
+}
+
+.ui.segments.context > .balance {
+    height: 10%;
+    border-bottom: 1px;
+    margin: 0;
+}
+
+.ui.segments.no-border,
+.ui.segment.no-border {
     border: none;
     box-shadow: none;
 }

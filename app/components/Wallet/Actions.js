@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import { Tab } from 'semantic-ui-react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
 import ActionStake from '../../containers/Wallet/Actions/Stake';
@@ -9,69 +8,25 @@ import ActionSellRam from '../../containers/Wallet/Actions/SellRam';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 
 type Props = {
-  onTabChange: (SyntheticEvent, object) => {}
+  activeItem: string
 };
 
 export default class Actions extends Component<Props> {
   props: Props;
 
   render() {
-    const panes = [
-      {
-        key: 'history',
-        menuItem: 'History',
-        render: () => (
-          <ActionsHistory />
-        )
-      },
-      {
-        key: 'send',
-        menuItem: 'Send',
-        render: () => (
-          <ActionsSend />
-        )
-      },
-      {
-        key: 'stake',
-        menuItem: 'Stake',
-        render: () => (
-          <ActionStake />
-        )
-      },
-      {
-        key: 'buyram',
-        menuItem: 'Buy RAM',
-        render: () => (
-          <ActionBuyRam />
-        )
-      },
-      {
-        key: 'sellram',
-        menuItem: 'Sell RAM',
-        render: () => (
-          <Tab.Pane>
-            <ActionSellRam />
-          </Tab.Pane>
-        )
-      },
-      {
-        key: 'vote',
-        menuItem: 'Vote',
-        render: () => (
-          <Tab.Pane>
-            <ActionVote />
-          </Tab.Pane>
-        )
-      }
-    ];
-    const { onTabChange } = this.props;
+    const { activeItem } = this.props;
+
+    const panes = {
+      history: <ActionsHistory />,
+      transferFunds: <ActionsSend />,
+      stake: <ActionStake />,
+      ram: <ActionBuyRam />,
+      voting: <ActionVote />,
+    };
 
     return (
-      <Tab
-        menu={{ vertical: true, tabular: true, fluid: true }}
-        panes={panes}
-        onTabChange={onTabChange}
-      />
+      panes[activeItem]
     );
   }
 }
