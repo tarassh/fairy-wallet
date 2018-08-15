@@ -30,6 +30,9 @@ class Tokens extends Component<Props> {
 
     return (
       <div>
+        <p className="title">AirDrops</p>
+        <p className="subtitle">Watch your Airdrops here</p>
+        <br />
         <Button fluid onClick={this.handleAddOpen} size='tiny'>
           Add Token
         </Button>

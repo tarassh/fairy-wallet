@@ -141,9 +141,9 @@ function renderAction(action, account, handler, goto) {
   });
 
   const { desc, quantity } = parseAction(action, account);
-  let description = <Grid.Column width={5} />;
+  let description = <Grid.Column width={4} />;
   if (desc) {
-    description = <Grid.Column width={5}>{desc}</Grid.Column>;
+    description = <Grid.Column width={4}>{desc}</Grid.Column>;
   }
   let quant = <Grid.Column width={4} />;
   if (quantity) {
@@ -158,12 +158,16 @@ function renderAction(action, account, handler, goto) {
     status = <Icon name="check circle" />;
   }
 
+  const color = action.active ? { background: 'rgba(23, 124, 255 ,0.5)'} : {};
+  const activeColor = { fontSize: 'small' };
+  Object.assign(activeColor, color);
+  
   //
   return (
     <Grid>
       <Grid.Row
         onClick={() => handler(action.sequence)}
-        color={action.active ? 'grey' : undefined}
+        style={color}
       >
         <Grid.Column widht={1}>{status}</Grid.Column>
         <Grid.Column width={3}>{action.time}</Grid.Column>
@@ -172,7 +176,7 @@ function renderAction(action, account, handler, goto) {
         {quant}
       </Grid.Row>
       {action.active && (
-        <Grid.Row style={{ fontSize: 'small' }}>
+        <Grid.Row style={activeColor}>
           <Grid.Column style={{ padding: '1em' }}>
             <p>Transaction ID: </p>
             <Button
@@ -195,7 +199,7 @@ function renderHeader() {
     <Grid className="tableheader">
       <Grid.Row>
         <Grid.Column widht={1}>
-          <p className="tableheadertitle">status</p>
+          <p className="tableheadertitle" />
         </Grid.Column>
         <Grid.Column width={3}>
           <p className="tableheadertitle">time</p>
@@ -203,7 +207,7 @@ function renderHeader() {
         <Grid.Column width={3}>
           <p className="tableheadertitle">action</p>
         </Grid.Column>
-        <Grid.Column width={5}>
+        <Grid.Column width={4}>
           <p className="tableheadertitle">description</p>
         </Grid.Column>
       </Grid.Row>

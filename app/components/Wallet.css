@@ -68,13 +68,14 @@
     margin: 0;
 }
 
+.ui.horizontal.segments.no-border,
 .ui.segments.no-border,
 .ui.segment.no-border {
     border: none;
     box-shadow: none;
 }
 
-/*.ui.segments.wallet .segments.no-padding,*/
+.ui.segments.wallet .segments.no-padding,
 .ui.segments.wallet .segments.no-padding,
 .ui.segments.wallet .segments.no-padding >.segment+.segments {
     padding: 0;

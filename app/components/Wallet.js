@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 import { Segment, Menu, Icon } from 'semantic-ui-react';
-import WalletBalance from './Wallet/Balance';
 import WalletActions from './Wallet/Actions';
 import BalanceComponent from '../components/Shared/BalanceComponent';
 import AccountComponent from '../components/Shared/AccountComponent';
@@ -33,36 +32,6 @@ export default class Wallet extends Component<Props> {
   // }
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
-
-  onTabChange = (e, { activeIndex, panes }) => {
-    this.setState({ panel: panes[activeIndex].key });
-  };
-
-  // render() {
-  //   const { accounts, currency, loading } = this.props;
-  //   const { panel } = this.state;
-
-  //   const leftSegment = <WalletBalance accounts={accounts} panel={panel} />;
-  //   const rightSegment = <WalletActions onTabChange={this.onTabChange} />;
-  //   const balance = (
-  //     <BalanceComponent
-  //       account={accounts.account}
-  //       currency={currency}
-  //       names={accounts.names}
-  //       loading={loading}
-  //     />
-  //   );
-
-  //   return (
-  //     <Segment.Group className="wallet">
-  //       <Segment>{balance}</Segment>
-  //       <Segment.Group horizontal className="wallet no-border">
-  //         <Segment className="actions">{rightSegment}</Segment>
-  //         <Segment className="balance">{leftSegment}</Segment>
-  //       </Segment.Group>
-  //     </Segment.Group>
-  //   );
-  // }
 
   render() {
     const { accounts, currency, loading } = this.props;
@@ -130,7 +99,7 @@ export default class Wallet extends Component<Props> {
               names={accounts.names}
               loading={loading}
             />
-            <WalletActions activeItem={activeItem} />
+            <WalletActions activeItem={activeItem} accounts={accounts} />
           </Segment>
         </Segment.Group>
       </Segment.Group>
