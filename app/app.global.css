@@ -56,6 +56,16 @@ textarea{
     box-shadow: none;   
 }
 
+div {
+    color: rgb(51, 51, 51);
+    font-size: 1em;  
+    font-weight: normal;
+}
+
+input[type=text]:focus {
+    border-color: rgb(23, 124, 255) !important;
+}
+
 .ui.button {
     background: rgb(62, 141, 247);
     color: white;
@@ -78,11 +88,23 @@ p.title {
     color: rgb(30, 30, 30);
     margin-bottom: 0pc;
     font-weight: lighter;
+    text-transform: uppercase;
 }
 
 p.subtitle {
     margin-top: 0.5em;
     color: rgb(51, 51, 51);
+}
+
+.ui.grid.tableheader .row {
+    margin-bottom: 0em; 
+    padding-bottom: 0px;
+}
+
+p.tableheadertitle {
+    margin-top: 0.3em;
+    color: rgb(51, 51, 51);
+    text-transform: uppercase;
 }
 
 .ui.basic.label {

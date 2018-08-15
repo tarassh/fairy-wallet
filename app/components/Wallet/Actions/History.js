@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Grid, Icon, Button } from 'semantic-ui-react';
+import { List, Grid, Icon, Button, Divider } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
@@ -85,7 +85,7 @@ export default class History extends Component<Props> {
 
     const items = _.map(_.reverse(days), dayGroup => (
       <List.Item key={dayGroup.day} style={{ marginBottom: '1em' }}>
-        <h5>{dayGroup.day}</h5>
+        <p className="subtitle">{dayGroup.day}</p>
         <List.Content>
           <List selection divided>
             {_.map(_.reverse(dayGroup.actions), action => (
@@ -106,23 +106,29 @@ export default class History extends Component<Props> {
     ));
 
     return (
-      <div id="scrollable-history">
-        <List style={{ marginBottom: '2em' }}>{items}</List>
-        <div />
-        {days.length > 0 &&
-          totalPages > 1 && (
-            <Grid>
-              <Grid.Row centered>
-                <a
-                  href="#"
-                  onClick={this.handleLoadNextActions}
-                  style={{ cursor: 'pointer' }}
-                >
-                  Load next actions
-                </a>
-              </Grid.Row>
-            </Grid>
-          )}
+      <div>
+        <p className="title">History</p>
+        <p className="subtitle">View account activity</p>
+        <br />
+        {renderHeader()}
+        <div id="scrollable-history">
+          <List style={{ marginBottom: '2em' }}>{items}</List>
+          <div />
+          {days.length > 0 &&
+            totalPages > 1 && (
+              <Grid>
+                <Grid.Row centered>
+                  <a
+                    href="#"
+                    onClick={this.handleLoadNextActions}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    Load next actions
+                  </a>
+                </Grid.Row>
+              </Grid>
+            )}
+        </div>
       </div>
     );
   }
@@ -149,7 +155,7 @@ function renderAction(action, account, handler, goto) {
   }
   let status = <Icon name="circle notched" loading />;
   if (action.irreversible) {
-    status = <Icon name="check" />;
+    status = <Icon name="check circle" />;
   }
 
   //
@@ -180,6 +186,28 @@ function renderAction(action, account, handler, goto) {
           </Grid.Column>
         </Grid.Row>
       )}
+    </Grid>
+  );
+}
+
+function renderHeader() {
+  return (
+    <Grid className="tableheader">
+      <Grid.Row>
+        <Grid.Column widht={1}>
+          <p className="tableheadertitle">status</p>
+        </Grid.Column>
+        <Grid.Column width={3}>
+          <p className="tableheadertitle">time</p>
+        </Grid.Column>
+        <Grid.Column width={3}>
+          <p className="tableheadertitle">action</p>
+        </Grid.Column>
+        <Grid.Column width={5}>
+          <p className="tableheadertitle">description</p>
+        </Grid.Column>
+      </Grid.Row>
+      <Divider />
     </Grid>
   );
 }

@@ -64,7 +64,7 @@
 
 .ui.segments.context > .balance {
     height: 10%;
-    border-bottom: 1px;
+    border-bottom: 1px; 
     margin: 0;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .history {
-    height: 600px;
+    height: 400px;
 }
 
 .producers-list {
