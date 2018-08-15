@@ -79,7 +79,7 @@ input[type=text]:focus {
 }
 
 h5,
-.ui.form .field>label {
+.ui.form {
     color: rgb(51, 51, 51);
 }
 
@@ -91,9 +91,14 @@ p.title {
     text-transform: uppercase;
 }
 
+.ui.form .field > label,
 p.subtitle {
     margin-top: 0.5em;
     color: rgb(51, 51, 51);
+}
+
+.ui.form .field > label {
+    font-weight: normal;
 }
 
 .ui.grid.tableheader .row {
@@ -113,8 +118,7 @@ p.tableheadertitle {
 
 .ui.basic.label,
 .publickeycontainer .label,
-.ui.table thead th.token-header,
-.ui.form .field>label {
+.ui.table thead th.token-header {
     font-weight: lighter;
 }
 

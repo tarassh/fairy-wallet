@@ -90,6 +90,10 @@
     height: 400px;
 }
 
+.history-container {
+    height: 500px;
+}
+
 .producers-list {
     height: 500px;
 }

@@ -206,39 +206,44 @@ export default class Vote extends Component<Props> {
     }
 
     return (
-      <Form loading={isLoading} className="producers-list">
-        <TransactionsModal
-          open={openModal}
-          transactions={transactions}
-          handleClose={this.handleClose}
-        />
-        <Grid>
-          <Grid.Row columns={3} textAlign="center">
-            <Grid.Column>
-              <h5>
-                {this.currentVotes().length} / {MAX_VOTES}
-              </h5>
-            </Grid.Column>
-            <Grid.Column>
-              <InputAccount
-                placeholder="Search block producer..."
-                fluid
-                size="tiny"
-                onChange={this.handleChange}
-                icon="search"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <Button fluid onClick={this.vote} disabled={disabled}>
+      <div>
+        <p className="title">Vote for block producers</p>
+        <p className="subtitle">You can vote up to 30</p>
+        <br />
+        <Form loading={isLoading} className="producers-list">
+          <TransactionsModal
+            open={openModal}
+            transactions={transactions}
+            handleClose={this.handleClose}
+          />
+          <Grid>
+            <Grid.Row columns={3} textAlign="center">
+              <Grid.Column>
+                <h5>
+                  {this.currentVotes().length} / {MAX_VOTES}
+                </h5>
+              </Grid.Column>
+              <Grid.Column>
+                <InputAccount
+                  placeholder="Search block producer..."
+                  fluid
+                  size="tiny"
+                  onChange={this.handleChange}
+                  icon="search"
+                />
+              </Grid.Column>
+              <Grid.Column>
+                <Button fluid onClick={this.vote} disabled={disabled}>
                 Vote
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <List divided relaxed className="scrollable">
-          {!isLoading ? filteredList : undefined}
-        </List>
-      </Form>
+                </Button>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+          <List divided relaxed className="scrollable">
+            {!isLoading ? filteredList : undefined}
+          </List>
+        </Form>
+      </div>
     );
   }
 }

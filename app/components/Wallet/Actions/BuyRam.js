@@ -73,7 +73,10 @@ export default class BuyRam extends Component<Props> {
     }
 
     return (
-      <Segment className="no-border">
+      <div>
+        <p className="title">RAM management</p>
+        <p className="subtitle">Manage your RAM</p>
+        <br />
         <TransactionsModal
           open={openModal}
           transactions={transactions}
@@ -112,7 +115,7 @@ export default class BuyRam extends Component<Props> {
             disabled={disabled}
           />
         </Form>
-      </Segment>
+      </div>
     );
   }
 }

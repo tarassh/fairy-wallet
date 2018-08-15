@@ -52,7 +52,10 @@ export default class BuyRam extends Component<Props> {
     const disabled = quantity === 0;
 
     return (
-      <Segment className="no-border">
+      <div>
+        <p className="title">History</p>
+        <p className="subtitle">View account activity</p>
+        <br />
         <TransactionsModal
           open={openModal}
           transactions={transactions}
@@ -79,7 +82,7 @@ export default class BuyRam extends Component<Props> {
             disabled={disabled}
           />
         </Form>
-      </Segment>
+      </div>
     );
   }
 }

@@ -106,7 +106,7 @@ export default class History extends Component<Props> {
     ));
 
     return (
-      <div>
+      <div className='history-container'>
         <p className="title">History</p>
         <p className="subtitle">View account activity</p>
         <br />

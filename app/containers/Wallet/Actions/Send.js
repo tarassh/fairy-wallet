@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Segment } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -99,7 +99,10 @@ class SendContainer extends Component<Props> {
     const enableRequest = token !== '' && recipient !== '' && amount !== '';
 
     return (
-      <Segment className="no-border">
+      <div className="no-border">
+        <p className="title">Transfer funds</p>
+        <p className="subtitle">Send your EOS and Airdrop tokens here</p>
+        <br />
         <TransactionsModal
           open={openModal}
           transactions={transactions}
@@ -155,7 +158,7 @@ class SendContainer extends Component<Props> {
             disabled={!enableRequest}
           />
         </Form>
-      </Segment>
+      </div>
     );
   }
 }

@@ -193,7 +193,10 @@ export default class Stake extends Component<Props> {
     const deltaColor = { color: 'lightcoral' };
 
     return (
-      <Segment className="no-border">
+      <div>
+        <p className="title">Stake</p>
+        <p className="subtitle">Update your staking value</p>
+        <br />
         <TransactionsModal
           open={openModal}
           transactions={transactions}
@@ -296,7 +299,7 @@ export default class Stake extends Component<Props> {
             disabled={!enableRequest}
           />
         </Form>
-      </Segment>
+      </div>
     );
   }
 }
