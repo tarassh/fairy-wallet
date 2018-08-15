@@ -90,9 +90,11 @@ p.title {
     color: rgba(30, 30, 30, 1);
 }
 
+.ui.checkbox input:checked~.box:after, .ui.checkbox input:checked~label:after,
 .ui.form .field > label {
     color: rgb(51, 51, 51);
 }
+
 p.subtitle {
     margin-top: 0.5em;
     color: rgba(51, 51, 51, 0.6);

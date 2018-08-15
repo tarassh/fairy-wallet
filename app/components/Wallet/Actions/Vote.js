@@ -154,42 +154,40 @@ export default class Vote extends Component<Props> {
   };
 
   renderProducer = (producer, producing) => (
-    <h5>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column widht={1}>
-            <Checkbox
-              id={producer.owner}
-              onChange={this.toggle}
-              checked={
-                this.state.actualVotes &&
-                this.state.actualVotes[producer.owner] === true
-              }
-            />
-          </Grid.Column>
-          <Grid.Column widht={1}>
-            {producing ? (
-              <Icon name="smile outline" />
-            ) : (
-              <Icon name="frown outline" />
-            )}
-          </Grid.Column>
-          <Grid.Column width={4}>{producer.owner}</Grid.Column>
-          <Grid.Column
-            width={7}
-            onClick={() => this.handleGoto(producer.url)}
-            style={{ cursor: 'pointer' }}
-          >
-            {producer.url && this.isValidUrl(producer.url)
-              ? producer.url
-              : undefined}
-          </Grid.Column>
-          <Grid.Column width={3} textAlign="center">
-            {this.parsePercent(producer.percent)}
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </h5>
+    <Grid>
+      <Grid.Row>
+        <Grid.Column widht={1}>
+          <Checkbox
+            id={producer.owner}
+            onChange={this.toggle}
+            checked={
+              this.state.actualVotes &&
+              this.state.actualVotes[producer.owner] === true
+            }
+          />
+        </Grid.Column>
+        <Grid.Column widht={1}>
+          {producing ? (
+            <Icon name="smile outline" />
+          ) : (
+            <Icon name="frown outline" />
+          )}
+        </Grid.Column>
+        <Grid.Column width={4}>{producer.owner}</Grid.Column>
+        <Grid.Column
+          width={7}
+          onClick={() => this.handleGoto(producer.url)}
+          style={{ cursor: 'pointer' }}
+        >
+          {producer.url && this.isValidUrl(producer.url)
+            ? producer.url
+            : undefined}
+        </Grid.Column>
+        <Grid.Column width={3} textAlign="center">
+          {this.parsePercent(producer.percent)}
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   );
 
   render() {
@@ -234,7 +232,7 @@ export default class Vote extends Component<Props> {
               </Grid.Column>
               <Grid.Column>
                 <Button fluid onClick={this.vote} disabled={disabled}>
-                Vote
+                  Vote
                 </Button>
               </Grid.Column>
             </Grid.Row>

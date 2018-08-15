@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Grid } from 'semantic-ui-react';
+import { Segment, Grid, Dimmer } from 'semantic-ui-react';
 import {
   numberToAsset,
   assetToNumber,
@@ -12,12 +12,21 @@ const exactMath = require('exact-math');
 
 type Props = {
   account: {},
-  currency: {}
+  currency: {},
+  showTotal: boolean,
+  showAvailable: boolean,
+  showStaked: boolean
 };
 
 class BalanceComponent extends Component<Props> {
   render() {
-    const { account, currency } = this.props;
+    const {
+      account,
+      currency,
+      showTotal,
+      showAvailable,
+      showStaked
+    } = this.props;
 
     const {
       total,
@@ -41,21 +50,30 @@ class BalanceComponent extends Component<Props> {
         <Grid>
           <Grid.Row textAlign="left">
             <Grid.Column width={4}>
-              <p className="title">{totalStr}</p>
-              <p className="subtitle">Total Balance</p>
+              <Dimmer.Dimmable blurring dimmed={!showTotal}>
+                <p className="title">{totalStr}</p>
+                <p className="subtitle">Total Balance</p>
+              </Dimmer.Dimmable>
             </Grid.Column>
+
             <Grid.Column width={4}>
-              <p className="title">{liquid}</p>
-              <p className="subtitle">Available</p>
-              {unstaking && (
-              <h5>
-                {unstaking} will be available {unstakingTime}
-              </h5>
+              <Dimmer.Dimmable blurring dimmed={!showAvailable}>
+                <p className="title">{liquid}</p>
+                <p className="subtitle">Available</p>
+
+                {unstaking && (
+                  <p className="subtitle">
+                    {unstaking} will be available {unstakingTime}
+                  </p>
                 )}
+              </Dimmer.Dimmable>
             </Grid.Column>
+
             <Grid.Column width={4}>
-              <p className="title">{staked}</p>
-              <p className="subtitle">Staked</p>
+              <Dimmer.Dimmable blurring dimmed={!showStaked}>
+                <p className="title">{staked}</p>
+                <p className="subtitle">Staked</p>
+              </Dimmer.Dimmable>
             </Grid.Column>
           </Grid.Row>
         </Grid>

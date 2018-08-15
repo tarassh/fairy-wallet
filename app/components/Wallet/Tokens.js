@@ -33,7 +33,7 @@ class Tokens extends Component<Props> {
         <p className="title">Airdrops</p>
         <p className="subtitle">Watch your Airdrops here</p>
         <br />
-        <Button fluid onClick={this.handleAddOpen} size="tiny">
+        <Button fluid onClick={this.handleAddOpen}>
           Add Token
         </Button>
         <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
