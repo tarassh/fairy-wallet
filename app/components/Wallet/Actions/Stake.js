@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Form,
-  Segment,
-  Label,
-  Input,
-  Grid,
-  Icon,
-  Divider
-} from 'semantic-ui-react';
+import { Form, Segment, Input, Grid, Icon, Divider } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat } from '../../Shared/EosComponents';
@@ -138,16 +130,6 @@ export default class Stake extends Component<Props> {
     const { cpuDelta, netDelta, openModal, showDetails } = this.state;
 
     const enableRequest = cpuDelta !== 0 || netDelta !== 0;
-    let deltaIcon = '';
-    if (netDelta > 0 || cpuDelta > 0) {
-      deltaIcon = (
-        <Label basic floating circular icon="arrow alternate circle up" />
-      );
-    } else if (netDelta < 0 || cpuDelta < 0) {
-      deltaIcon = (
-        <Label basic floating circular icon="arrow alternate circle down" />
-      );
-    }
     const { staked, total, detailed } = balanceStats(account);
     const value = exactMath
       .div(exactMath.add(staked, netDelta, cpuDelta), fraction10000)
@@ -190,7 +172,7 @@ export default class Stake extends Component<Props> {
     );
 
     const detailIcon = showDetails ? 'search minus' : 'search plus';
-    const deltaColor = { color: 'lightcoral' };
+    const deltaColor = { color: 'rgb(200, 71, 80)' };
 
     return (
       <div>
@@ -272,10 +254,7 @@ export default class Stake extends Component<Props> {
               value={value}
               type="number"
               onChange={this.handleChange}
-            >
-              <input />
-              {deltaIcon}
-            </InputFloat>
+            />
             <Input
               name="stake"
               step="0.0001"

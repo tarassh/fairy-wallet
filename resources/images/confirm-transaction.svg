@@ -18,7 +18,8 @@
       }
 
       .cls-2, .cls-6 {
-        fill: aqua;
+        fill: #177cff;
+        opacity: 0.5;
       }
 
       .cls-4 {
