@@ -11,7 +11,7 @@ html, body {
    margin: 0;
    padding: 0;
    overflow: hidden;
-   font-family: 'Helvetica Neue', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   font-family: '', 'Segoe UI', Helvetica;
 }
 
 body::after {
@@ -78,23 +78,37 @@ input[type=text]:focus {
     color: white;
 }
 
+/* a, 
+a:hover {
+    color: rgb(23, 124, 255) !important;
+} */
+
 h5,
 .ui.form {
     color: rgb(51, 51, 51);
 }
 
 p.title {
-    font-size: 1.6em;
-    color: rgb(30, 30, 30);
+    font-size: 22px;
     margin-bottom: 0pc;
-    font-weight: lighter;
-    text-transform: uppercase;
+    font-weight: 100;
+    text-transform: capitalize;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: rgba(30, 30, 30, 1);
 }
 
 .ui.form .field > label,
 p.subtitle {
     margin-top: 0.5em;
-    color: rgb(51, 51, 51);
+    color: rgba(51, 51, 51, 0.6);
+    font-weight: normal;
+    font-size: 14px;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
 }
 
 .ui.form .field > label {

@@ -106,7 +106,7 @@ export default class History extends Component<Props> {
     ));
 
     return (
-      <div className='history-container'>
+      <div className="history-container">
         <p className="title">History</p>
         <p className="subtitle">View account activity</p>
         <br />
@@ -121,9 +121,9 @@ export default class History extends Component<Props> {
                   <a
                     href="#"
                     onClick={this.handleLoadNextActions}
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: 'pointer', color: 'rgb(62, 141, 247)' }}
                   >
-                    Load next actions
+                    Show more
                   </a>
                 </Grid.Row>
               </Grid>
@@ -158,17 +158,14 @@ function renderAction(action, account, handler, goto) {
     status = <Icon name="check circle" />;
   }
 
-  const color = action.active ? { background: 'rgba(23, 124, 255 ,0.5)'} : {};
+  const color = action.active ? { background: 'rgba(23, 124, 255 ,0.5)' } : {};
   const activeColor = { fontSize: 'small' };
   Object.assign(activeColor, color);
-  
+
   //
   return (
     <Grid>
-      <Grid.Row
-        onClick={() => handler(action.sequence)}
-        style={color}
-      >
+      <Grid.Row onClick={() => handler(action.sequence)} style={color}>
         <Grid.Column widht={1}>{status}</Grid.Column>
         <Grid.Column width={3}>{action.time}</Grid.Column>
         <Grid.Column width={3}>{action.name}</Grid.Column>
