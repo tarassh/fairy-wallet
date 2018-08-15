@@ -73,6 +73,7 @@ input[type=text]:focus {
     font-weight: lighter;
 }
 
+.ui.button:focus,
 .ui.button:hover {
     background: rgb(23, 124, 255);
     color: white;

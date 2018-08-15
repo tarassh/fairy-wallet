@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Grid, Divider, List } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import TokenRemoveModal from './TokenRemoveModal';
@@ -30,12 +30,16 @@ class Tokens extends Component<Props> {
 
     return (
       <div>
-        <p className="title">Airdrops</p>
+        <p className="title">
+          Airdrops<Button
+            onClick={this.handleAddOpen}
+            circular
+            icon="plus"
+            size="mini"
+          />
+        </p>
         <p className="subtitle">Watch your Airdrops here</p>
         <br />
-        <Button fluid onClick={this.handleAddOpen}>
-          Add Token
-        </Button>
         <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
         <TokenRemoveModal
           open={openRemove}
@@ -43,53 +47,56 @@ class Tokens extends Component<Props> {
           symbol={symbol}
           contract={contract}
         />
-        {accounts.balances.length > 0 && (
-          <Table basic="very" compact="very" unstackable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell />
-                <Table.HeaderCell
-                  className="token-header"
-                  style={{ color: 'grey' }}
-                >
-                  Token
-                </Table.HeaderCell>
-                <Table.HeaderCell
-                  className="token-header"
-                  style={{ color: 'grey' }}
-                >
-                  Balance
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {_.map(accounts.balances, balance => (
-                <Table.Row key={balance.symbol}>
-                  <Table.Cell collapsing textAlign="center" width={1}>
-                    <Button
-                      className="no-border"
-                      basic
-                      symbol={balance.symbol}
-                      contract={balance.contract}
-                      onClick={this.handleRemoveOpen}
-                    >
-                      <Icon name="close" className="opacue-2" />
-                    </Button>
-                  </Table.Cell>
-                  <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
-                    {balance.symbol}
-                  </Table.Cell>
-                  <Table.Cell collapsing style={{ color: 'rgba(0,0,0,.6)' }}>
-                    {balance.amount}
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table>
-        )}
+        {renderHeader()}
+        <List divided style={{ marginBottom: '2em' }}>
+          {_.map(accounts.balances, balance => (
+            <List.Item key={`${balance.symbol}-${balance.contract}`}>
+              <List.Content>
+                {renderTokenBalance(balance, this.handleRemoveOpen)}
+              </List.Content>
+            </List.Item>
+          ))}
+        </List>
       </div>
     );
   }
+}
+
+function renderHeader() {
+  return (
+    <Grid className="tableheader">
+      <Grid.Row>
+        <Grid.Column widht={3} />
+        <Grid.Column width={5}>
+          <p className="tableheadertitle">token</p>
+        </Grid.Column>
+        <Grid.Column width={8} textAlign="right">
+          <p className="tableheadertitle">balance</p>
+        </Grid.Column>
+      </Grid.Row>
+      <Divider />
+    </Grid>
+  );
+}
+
+function renderTokenBalance(balance, handler) {
+  return (
+    <Grid>
+      <Grid.Row>
+        <Grid.Column
+          widht={3}
+          onClick={() => handler(this, balance)}
+          style={{ cursor: 'pointer' }}
+        >
+          <Icon name="close" />
+        </Grid.Column>
+        <Grid.Column width={5}>{balance.symbol}</Grid.Column>
+        <Grid.Column width={8} textAlign="right">
+          {balance.amount}
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  );
 }
 
 export default Tokens;
