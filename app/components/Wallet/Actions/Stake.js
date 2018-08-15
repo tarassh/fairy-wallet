@@ -210,37 +210,33 @@ export default class Stake extends Component<Props> {
                 onClick={() => this.handleClick()}
               >
                 <Grid.Column width={3} verticalAlign="bottom">
-                  <h5>
-                    <Icon name={detailIcon} />Total
-                  </h5>
+                  <Icon name={detailIcon} />Total
                 </Grid.Column>
                 <Grid.Column width={4} textAlign="right">
-                  <h5>Staked, EOS</h5>
-                  <h5>{stakedAssets}</h5>
+                  Staked, EOS
+                  <p>{stakedAssets}</p>
                 </Grid.Column>
                 <Grid.Column width={4} textAlign="right">
-                  <h5>New, EOS</h5>
-                  <h5>{newValue}</h5>
+                  New Staked, EOS
+                  <p>{newValue}</p>
                 </Grid.Column>
                 <Grid.Column width={4} textAlign="right">
-                  <h5>Delta, EOS</h5>
-                  <h5
+                  Delta, EOS
+                  <p
                     style={
                       exactMath.add(netDelta, cpuDelta) < 0 ? deltaColor : {}
                     }
                   >
                     {newValueDelta}
-                  </h5>
+                  </p>
                 </Grid.Column>
               </Grid.Row>
               {showDetails && <Divider />}
               {showDetails && (
                 <Grid.Row>
-                  <Grid.Column width={3}>
-                    <h5>CPU</h5>
-                  </Grid.Column>
+                  <Grid.Column width={3}>CPU</Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5>{detailedCpu}</h5>
+                    <p>{detailedCpu}</p>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
                     <h5>{newCpu}</h5>
