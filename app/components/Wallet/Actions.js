@@ -4,8 +4,7 @@ import { Segment, Grid } from 'semantic-ui-react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
 import ActionStake from '../../containers/Wallet/Actions/Stake';
-import ActionBuyRam from '../../containers/Wallet/Actions/BuyRam';
-import ActionSellRam from '../../containers/Wallet/Actions/SellRam';
+import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 import Tokens from './Tokens';
 
@@ -24,16 +23,16 @@ export default class Actions extends Component<Props> {
       history: <ActionsHistory />,
       transferFunds: <ActionsSend />,
       stake: <ActionStake />,
-      ram: <ActionBuyRam />,
-      voting: <ActionVote />,
+      ram: <ActionRam />,
+      voting: <ActionVote />
     };
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transferFunds: <Tokens accounts={accounts} />
-    }
+    };
 
     return (
-      <Segment.Group horizontal className='no-border'>
+      <Segment.Group horizontal className="no-border">
         <Segment>
           <Grid>
             <Grid.Row columns={2}>
@@ -43,7 +42,6 @@ export default class Actions extends Component<Props> {
           </Grid>
         </Segment>
       </Segment.Group>
-      
     );
   }
 }

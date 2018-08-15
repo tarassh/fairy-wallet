@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Segment } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { InputFloat } from '../../Shared/EosComponents';
 
@@ -53,9 +53,6 @@ export default class BuyRam extends Component<Props> {
 
     return (
       <div>
-        <p className="title">History</p>
-        <p className="subtitle">View account activity</p>
-        <br />
         <TransactionsModal
           open={openModal}
           transactions={transactions}
@@ -72,13 +69,11 @@ export default class BuyRam extends Component<Props> {
               value={quantity}
               type="number"
               onChange={this.handleChange}
-            >
-              <input />
-            </InputFloat>
+            />
           </Form.Group>
           <Form.Button
             id="form-button-control-public"
-            content="Confirm"
+            content="Sell RAM"
             disabled={disabled}
           />
         </Form>

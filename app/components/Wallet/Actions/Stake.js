@@ -239,26 +239,24 @@ export default class Stake extends Component<Props> {
                     <p>{detailedCpu}</p>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5>{newCpu}</h5>
+                    <p>{newCpu}</p>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5 style={cpuDelta < 0 ? deltaColor : {}}>{deltaCpuSt}</h5>
+                    <p style={cpuDelta < 0 ? deltaColor : {}}>{deltaCpuSt}</p>
                   </Grid.Column>
                 </Grid.Row>
               )}
               {showDetails && (
                 <Grid.Row>
-                  <Grid.Column width={3}>
-                    <h5>Network</h5>
+                  <Grid.Column width={3}>Network</Grid.Column>
+                  <Grid.Column width={4} textAlign="right">
+                    <p>{detailedNet}</p>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5>{detailedNet}</h5>
+                    <p>{newNet}</p>
                   </Grid.Column>
                   <Grid.Column width={4} textAlign="right">
-                    <h5>{newNet}</h5>
-                  </Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <h5 style={netDelta < 0 ? deltaColor : {}}>{deltaNetSt}</h5>
+                    <p style={netDelta < 0 ? deltaColor : {}}>{deltaNetSt}</p>
                   </Grid.Column>
                 </Grid.Row>
               )}
@@ -291,7 +289,7 @@ export default class Stake extends Component<Props> {
           </Form.Field>
           <Form.Button
             id="form-button-control-public"
-            content="Confirm"
+            content="Update Stake"
             disabled={!enableRequest}
           />
         </Form>
