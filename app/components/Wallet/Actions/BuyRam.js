@@ -101,7 +101,7 @@ export default class BuyRam extends Component<Props> {
                 text={option}
                 onChange={this.handleChange}
                 className="tokendropdown"
-                style={{ paddingTop: '1em', paddingBottom: '1em' }}
+                style={{ paddingTop: '0.9em', paddingBottom: '0.9em' }}
               />
               <input />
             </InputFloat>
