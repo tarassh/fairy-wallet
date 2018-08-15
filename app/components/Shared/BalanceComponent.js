@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Grid, Dimmer } from 'semantic-ui-react';
+import { Segment, Grid, Dimmer, Icon } from 'semantic-ui-react';
 import {
   numberToAsset,
   assetToNumber,
@@ -37,12 +37,11 @@ class BalanceComponent extends Component<Props> {
       unstakingTime
     } = balanceStats(account);
 
-    let value = '';
-    let totalStr = total;
+    let totalUDS = '';
     if (currency.exchangePairs.length > 0) {
-      value = totalNum * currency.exchangePairs[0].value;
+      let value = totalNum * currency.exchangePairs[0].value;
       value = numeral(value).format('0,0.00$');
-      totalStr += ` (${value})`;
+      totalUDS = `Total Balance • ${value}`;
     }
 
     return (
@@ -51,8 +50,8 @@ class BalanceComponent extends Component<Props> {
           <Grid.Row textAlign="left">
             <Grid.Column width={4}>
               <Dimmer.Dimmable blurring dimmed={!showTotal}>
-                <p className="title">{totalStr}</p>
-                <p className="subtitle">Total Balance</p>
+                <p className="title">{total}</p>
+                <p className="subtitle">{totalUDS}</p>
               </Dimmer.Dimmable>
             </Grid.Column>
 
@@ -60,12 +59,6 @@ class BalanceComponent extends Component<Props> {
               <Dimmer.Dimmable blurring dimmed={!showAvailable}>
                 <p className="title">{liquid}</p>
                 <p className="subtitle">Available</p>
-
-                {unstaking && (
-                  <p className="subtitle">
-                    {unstaking} will be available {unstakingTime}
-                  </p>
-                )}
               </Dimmer.Dimmable>
             </Grid.Column>
 
@@ -76,6 +69,20 @@ class BalanceComponent extends Component<Props> {
               </Dimmer.Dimmable>
             </Grid.Column>
           </Grid.Row>
+          {unstaking && (
+            <Grid.Row>
+              <Grid.Column>
+                <p className="subtitle">
+                  <Icon
+                    name="info circle"
+                    size="small"
+                    style={{ color: 'rgb(62, 141, 247)' }}
+                  />
+                  {unstaking} will be available {unstakingTime}
+                </p>
+              </Grid.Column>
+            </Grid.Row>
+          )}
         </Grid>
       </Segment>
     );

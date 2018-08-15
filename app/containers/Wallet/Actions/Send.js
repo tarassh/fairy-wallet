@@ -154,7 +154,7 @@ class SendContainer extends Component<Props> {
           />
           <Form.Button
             id="form-button-control-public"
-            content="Confirm"
+            content="Transfer"
             disabled={!enableRequest}
           />
         </Form>

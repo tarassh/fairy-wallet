@@ -52,7 +52,7 @@ textarea{
 
 .ui.segments {
     border-radius: 0%;
-    border-color: rgb(245, 245, 245);
+    border-color: #d2d2db;
     box-shadow: none;   
 }
 
@@ -63,11 +63,11 @@ div {
 }
 
 input[type=text]:focus {
-    border-color: rgb(23, 124, 255) !important;
+    border-color: #1a8cff !important;
 }
 
 .ui.button {
-    background: rgb(62, 141, 247);
+    background: #1a8cff;
     color: white;
     text-transform: uppercase;
     font-weight: lighter;
@@ -116,14 +116,18 @@ p.subtitle {
 }
 
 p.tableheadertitle {
-    margin-top: 0.3em;
-    color: rgb(51, 51, 51);
+    margin-top: 12px;
+    color: #333333;
     text-transform: uppercase;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: normal;
 }
 
-.ui.basic.label {
+/* .ui.basic.label {
     color: rgba(0,0,0,.6);
-}
+} */
 
 .ui.basic.label,
 .publickeycontainer .label,

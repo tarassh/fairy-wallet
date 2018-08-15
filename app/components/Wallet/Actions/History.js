@@ -121,7 +121,7 @@ export default class History extends Component<Props> {
                   <a
                     href="#"
                     onClick={this.handleLoadNextActions}
-                    style={{ cursor: 'pointer', color: 'rgb(62, 141, 247)' }}
+                    style={{ cursor: 'pointer', color: '#1a8cff' }}
                   >
                     Show more
                   </a>

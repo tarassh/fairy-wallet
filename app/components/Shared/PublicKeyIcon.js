@@ -54,7 +54,7 @@ class PublicKeyComponent extends Component<Props> {
         tryAgainAction = (
           <Button content="Try again" onClick={this.verifyPublicKey} />
         );
-        helperContent = 'Please try again or contact support wallet support';
+        helperContent = 'Please try again or contact wallet support';
         header = 'Receive public key rejected';
       }
     }

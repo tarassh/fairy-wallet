@@ -30,14 +30,7 @@ class Tokens extends Component<Props> {
 
     return (
       <div>
-        <p className="title">
-          Airdrops<Button
-            onClick={this.handleAddOpen}
-            circular
-            icon="plus"
-            size="mini"
-          />
-        </p>
+        <p className="title">Airdrops</p>
         <p className="subtitle">Watch your Airdrops here</p>
         <br />
         <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
@@ -57,6 +50,7 @@ class Tokens extends Component<Props> {
             </List.Item>
           ))}
         </List>
+        <Button onClick={this.handleAddOpen} circular icon="plus" />
       </div>
     );
   }

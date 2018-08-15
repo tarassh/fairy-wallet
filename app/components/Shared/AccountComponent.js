@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Dropdown, Segment, Button, Grid } from 'semantic-ui-react';
 import _ from 'lodash';
 import PublicKeyIcon from './PublicKeyIcon';
+import { setActiveAccount } from '../../actions/accounts';
 
 type Props = {
   accounts: {},
   loading: {},
-  onAccountSwitch: string => {}
+  actions: { setActiveAccount: {} }
 };
 
 class AccountComponent extends Component<Props> {
@@ -19,9 +22,10 @@ class AccountComponent extends Component<Props> {
   }
 
   handleChange = (e, { text }) => {
+    const { accounts } = this.props;
     if (this.state.text !== text) {
-      const { onAccountSwitch } = this.props;
-      onAccountSwitch(text);
+      const index = accounts.names.indexOf(text);
+      this.props.actions.setActiveAccount(index);
       this.setState({ text });
     }
   };
@@ -37,38 +41,20 @@ class AccountComponent extends Component<Props> {
       }
     });
 
-    /*
+    const options = _.map(accounts.names, option => (
+      <Dropdown.Item text={option} onClick={this.handleChange} />
+    ));
+
+    const trigger = <Button circular basic icon="user" loading={isLoading} />;
+
     return (
-      <Dropdown
-        icon="user"
-        floating
-        labeled
-        button
-        basic
-        loading={isLoading}
-        className="icon"
-        text={text}
-      >
-        <Dropdown.Menu>
-          {accounts.names.map(option => (
-            <Dropdown.Item
-              key={option}
-              value={option}
-              text={option}
-              onClick={this.handleChange}
-            />
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
-    );
-    */
-    
-    return (
-      <Segment className='no-border account'>
+      <Segment className="no-border account">
         <Grid>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Button circular basic icon='user' loading={isLoading} />
+              <Dropdown icon={null} trigger={trigger}>
+                <Dropdown.Menu>{options}</Dropdown.Menu>
+              </Dropdown>
               <p className="subtitle">{text}</p>
             </Grid.Column>
             <Grid.Column>
@@ -82,4 +68,10 @@ class AccountComponent extends Component<Props> {
   }
 }
 
-export default AccountComponent;
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators({ setActiveAccount }, dispatch)
+  };
+}
+
+export default connect(null, mapDispatchToProps)(AccountComponent);
