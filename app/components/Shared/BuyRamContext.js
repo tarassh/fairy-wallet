@@ -10,7 +10,7 @@ class BuyRamContext extends Component<Props> {
     const { context } = this.props;
     const text = (
       <p>
-        You are about to buy RAM for <strong>{context.tokens}</strong>.
+        You are about to buy RAM for <strong>{context.tokens}</strong> to <strong>{context.recipient}</strong>.
         Transaction details are listed below.
       </p>
     );
@@ -33,7 +33,7 @@ class BuyRamContext extends Component<Props> {
                 <Table.Cell>{context.contract}</Table.Cell>
                 <Table.Cell>{context.action}</Table.Cell>
                 <Table.Cell>{context.buyer}</Table.Cell>
-                <Table.Cell>{context.receiver}</Table.Cell>
+                <Table.Cell>{context.recipient}</Table.Cell>
                 <Table.Cell>{context.tokens}</Table.Cell>
               </Table.Row>
             </Table.Body>

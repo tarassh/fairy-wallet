@@ -431,7 +431,7 @@ export function buyram(recipient, tokens) {
         contract: eosioContract,
         action: buyramAction,
         buyer: account.account_name,
-        receiver: recipient,
+        recipient,
         tokens
       }
     });
@@ -558,7 +558,7 @@ export function buyrambytes(recipient, bytes) {
         contract: eosioContract,
         action: buyrambytesAction,
         buyer: account.account_name,
-        receiver: recipient,
+        recipient,
         bytes
       }
     });

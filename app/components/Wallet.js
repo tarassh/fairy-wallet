@@ -84,17 +84,6 @@ export default class Wallet extends Component<Props> {
       </Segment>
     );
 
-    const showTotal = activeItem === 'history' || activeItem === 'voting';
-    const showAvailable =
-      activeItem === 'history' ||
-      activeItem === 'transferFunds' ||
-      activeItem === 'voting' ||
-      activeItem === 'ram';
-    const showStaked =
-      activeItem === 'stake' ||
-      activeItem === 'history' ||
-      activeItem === 'voting';
-
     return (
       <Segment.Group horizontal className="wallet">
         <Segment.Group className="menu">
@@ -108,9 +97,6 @@ export default class Wallet extends Component<Props> {
               currency={currency}
               names={accounts.names}
               loading={loading}
-              showTotal={showTotal}
-              showAvailable={showAvailable}
-              showStaked={showStaked}
             />
             <WalletActions activeItem={activeItem} accounts={accounts} />
           </Segment>

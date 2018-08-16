@@ -283,7 +283,7 @@ export default class Stake extends Component<Props> {
   render() {
     return (
       <div>
-        <p className="title">Manage Your Stake</p>
+        <p className="title">Stake Management</p>
         <p className="subtitle">Here you can delegate your resources to another accounts</p>
         <br />
         <Grid>

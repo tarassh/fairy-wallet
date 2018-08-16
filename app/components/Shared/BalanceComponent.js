@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Grid, Dimmer, Icon } from 'semantic-ui-react';
+import { Segment, Grid, Icon } from 'semantic-ui-react';
 import {
   numberToAsset,
   assetToNumber,
@@ -12,10 +12,7 @@ const exactMath = require('exact-math');
 
 type Props = {
   account: {},
-  currency: {},
-  showTotal: boolean,
-  showAvailable: boolean,
-  showStaked: boolean
+  currency: {}
 };
 
 class BalanceComponent extends Component<Props> {
@@ -23,9 +20,6 @@ class BalanceComponent extends Component<Props> {
     const {
       account,
       currency,
-      showTotal,
-      showAvailable,
-      showStaked
     } = this.props;
 
     const {
@@ -49,24 +43,18 @@ class BalanceComponent extends Component<Props> {
         <Grid>
           <Grid.Row textAlign="left">
             <Grid.Column width={4}>
-              <Dimmer.Dimmable blurring dimmed={!showTotal}>
-                <p className="title">{total}</p>
-                <p className="subtitle">{totalUDS}</p>
-              </Dimmer.Dimmable>
+              <p className="title">{total}</p>
+              <p className="subtitle">{totalUDS}</p>
             </Grid.Column>
 
             <Grid.Column width={4}>
-              <Dimmer.Dimmable blurring dimmed={!showAvailable}>
-                <p className="title">{liquid}</p>
-                <p className="subtitle">Available</p>
-              </Dimmer.Dimmable>
+              <p className="title">{liquid}</p>
+              <p className="subtitle">Available</p>
             </Grid.Column>
 
             <Grid.Column width={4}>
-              <Dimmer.Dimmable blurring dimmed={!showStaked}>
-                <p className="title">{staked}</p>
-                <p className="subtitle">Staked</p>
-              </Dimmer.Dimmable>
+              <p className="title">{staked}</p>
+              <p className="subtitle">Staked</p>
             </Grid.Column>
           </Grid.Row>
           {unstaking && (
