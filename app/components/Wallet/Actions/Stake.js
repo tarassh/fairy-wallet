@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Grid, Divider, List, Icon } from 'semantic-ui-react';
+import { Form, Grid, Divider, List } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';

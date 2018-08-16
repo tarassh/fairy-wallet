@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
+import { Form, Radio } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat } from '../../Shared/EosComponents';
@@ -13,11 +13,6 @@ type Props = {
   getAccount: string => {},
   getActions: string => {}
 };
-
-const options = [
-  { key: 'EOS', value: 'EOS', text: 'EOS' },
-  { key: 'bytes', value: 'Bytes', text: 'Bytes' }
-];
 
 export default class BuyRam extends Component<Props> {
   state = {
@@ -90,21 +85,26 @@ export default class BuyRam extends Component<Props> {
               value={quantity}
               type="number"
               onChange={this.handleChange}
-            >
-              <Form.Dropdown
-                button
-                basic
-                floating
-                options={options}
-                defaultValue="EOS"
-                name="option"
-                text={option}
-                onChange={this.handleChange}
-                className="tokendropdown"
-                style={{ paddingTop: '0.9em', paddingBottom: '0.9em' }}
-              />
-              <input />
-            </InputFloat>
+            />
+          </Form.Group>
+          <Form.Group inline>
+            <label>Units</label>
+            <Form.Field
+              control={Radio}
+              label='EOS'
+              name='option'
+              value='eos'
+              checked={this.state.option === 'eos'}
+              onChange={this.handleChange}
+            />
+            <Form.Field
+              control={Radio}
+              label='Bytes'
+              value='bytes'
+              name='option'
+              checked={this.state.option === 'bytes'}
+              onChange={this.handleChange}
+            />
           </Form.Group>
           <Form.Button
             id="form-button-control-public"

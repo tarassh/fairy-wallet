@@ -115,8 +115,9 @@ p.subtitle {
     letter-spacing: normal;
 }
 
+.ui.form .fields > label,
 .ui.form .field > label {
-    font-weight: normal;
+    font-weight: normal !important;
 }
 
 .ui.grid.tableheader .row {
