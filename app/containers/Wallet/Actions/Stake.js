@@ -13,6 +13,7 @@ import Stake from '../../../components/Wallet/Actions/Stake';
 type Props = {
   account: {},
   transactions: {},
+  delegates: {},
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (string, string, string, string) => {},
@@ -23,12 +24,13 @@ type Props = {
 
 class StakeContainer extends Component<Props> {
   render() {
-    const { account, transactions } = this.props;
+    const { account, transactions, delegates } = this.props;
 
     return (
       <Stake
         account={account}
         transactions={transactions}
+        delegates={delegates}
         getAccount={this.props.getAccount}
         getActions={this.props.getActions}
         delegate={this.props.delegate}
@@ -43,7 +45,8 @@ class StakeContainer extends Component<Props> {
 function mapStateToProps(state) {
   return {
     account: state.accounts.account,
-    transactions: state.transactions
+    transactions: state.transactions,
+    delegates: state.accounts.delegates
   };
 }
 

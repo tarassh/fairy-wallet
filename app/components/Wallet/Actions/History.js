@@ -158,14 +158,10 @@ function renderAction(action, account, handler, goto) {
     status = <Icon name="check circle" />;
   }
 
-  const color = action.active ? { background: 'rgba(23, 124, 255 ,0.5)' } : {};
-  const activeColor = { fontSize: 'small' };
-  Object.assign(activeColor, color);
-
   //
   return (
     <Grid>
-      <Grid.Row onClick={() => handler(action.sequence)} style={color}>
+      <Grid.Row onClick={() => handler(action.sequence)}>
         <Grid.Column widht={1}>{status}</Grid.Column>
         <Grid.Column width={3}>{action.time}</Grid.Column>
         <Grid.Column width={3}>{action.name}</Grid.Column>
@@ -173,7 +169,7 @@ function renderAction(action, account, handler, goto) {
         {quant}
       </Grid.Row>
       {action.active && (
-        <Grid.Row style={activeColor}>
+        <Grid.Row style={{ fontSize: 'small' }}>
           <Grid.Column style={{ padding: '1em' }}>
             <p>Transaction ID: </p>
             <Button

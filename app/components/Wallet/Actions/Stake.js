@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Segment, Input, Grid, Icon, Divider } from 'semantic-ui-react';
+import { Form, Grid, Divider, List } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
@@ -11,6 +12,7 @@ const fraction10000 = 10000;
 
 type Props = {
   account: {},
+  delegates: {},
   transactions: {},
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
@@ -39,8 +41,8 @@ export default class Stake extends Component<Props> {
   };
 
   handleRecipientChange = (e, { name, value }) => {
-    this.setState({ [name]: value })
-  }
+    this.setState({ [name]: value });
+  };
 
   handleChange = (e, { name, value }) => {
     const { account } = this.props;
@@ -101,13 +103,7 @@ export default class Stake extends Component<Props> {
         break;
 
       case 9:
-        this.props.delegateUndelegate(
-          false,
-          accountName,
-          recipient,
-          net,
-          cpu
-        );
+        this.props.delegateUndelegate(false, accountName, recipient, net, cpu);
         break;
 
       default:
@@ -130,160 +126,126 @@ export default class Stake extends Component<Props> {
     });
   };
 
-  render() {
+  renderForm = () => {
     const { transactions, account } = this.props;
-    const { cpuDelta, netDelta, openModal, showDetails, recipient } = this.state;
+    const { cpuDelta, netDelta, openModal, recipient } = this.state;
 
     const enableRequest = cpuDelta !== 0 || netDelta !== 0;
-    const { staked, total, detailed } = balanceStats(account);
+    const { staked, total } = balanceStats(account);
     const value = exactMath
       .div(exactMath.add(staked, netDelta, cpuDelta), fraction10000)
       .toFixed(4);
 
-    const stakedAssets = numeral(exactMath.div(staked, fraction10000)).format(
-      '0,0.0000'
-    );
-
-    const newValue = numeral(
-      exactMath.div(exactMath.add(staked, netDelta, cpuDelta), fraction10000)
-    ).format('0,0.0000');
-
-    const newValueDelta = numeral(
-      exactMath.div(exactMath.add(netDelta, cpuDelta), fraction10000)
-    ).format('0,0.0000');
-
-    const detailedCpu = numeral(
-      exactMath.div(detailed.cpu, fraction10000)
-    ).format('0,0.0000');
-
-    const newCpu = numeral(
-      exactMath.div(exactMath.add(detailed.cpu, cpuDelta), fraction10000)
-    ).format('0,0.0000');
-
-    const deltaCpuSt = numeral(exactMath.div(cpuDelta, fraction10000)).format(
-      '0,0.0000'
-    );
-
-    const detailedNet = numeral(
-      exactMath.div(detailed.net, fraction10000)
-    ).format('0,0.0000');
-
-    const newNet = numeral(
-      exactMath.div(exactMath.add(detailed.net, netDelta), fraction10000)
-    ).format('0,0.0000');
-
-    const deltaNetSt = numeral(exactMath.div(netDelta, fraction10000)).format(
-      '0,0.0000'
-    );
-
-    const detailIcon = showDetails ? 'search minus' : 'search plus';
-    const deltaColor = { color: 'rgb(200, 71, 80)' };
-
     return (
-      <div>
-        <p className="title">Stake</p>
-        <p className="subtitle">Update your staking value</p>
-        <br />
+      <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
           open={openModal}
           transactions={transactions}
           handleClose={this.handleClose}
         />
-        <Form onSubmit={this.handleSubmit}>
-          <Segment>
-            <Grid columns="equal" divided inverted>
-              <Grid.Row
-                style={{ cursor: 'pointer' }}
-                onClick={() => this.handleClick()}
-              >
-                <Grid.Column width={3} verticalAlign="bottom">
-                  <Icon name={detailIcon} />Total
-                </Grid.Column>
-                <Grid.Column width={4} textAlign="right">
-                  Staked, EOS
-                  <p>{stakedAssets}</p>
-                </Grid.Column>
-                <Grid.Column width={4} textAlign="right">
-                  New Staked, EOS
-                  <p>{newValue}</p>
-                </Grid.Column>
-                <Grid.Column width={4} textAlign="right">
-                  Delta, EOS
-                  <p
-                    style={
-                      exactMath.add(netDelta, cpuDelta) < 0 ? deltaColor : {}
-                    }
-                  >
-                    {newValueDelta}
-                  </p>
-                </Grid.Column>
-              </Grid.Row>
-              {showDetails && <Divider />}
-              {showDetails && (
-                <Grid.Row>
-                  <Grid.Column width={3}>CPU</Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <p>{detailedCpu}</p>
-                  </Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <p>{newCpu}</p>
-                  </Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <p style={cpuDelta < 0 ? deltaColor : {}}>{deltaCpuSt}</p>
-                  </Grid.Column>
-                </Grid.Row>
-              )}
-              {showDetails && (
-                <Grid.Row>
-                  <Grid.Column width={3}>Network</Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <p>{detailedNet}</p>
-                  </Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <p>{newNet}</p>
-                  </Grid.Column>
-                  <Grid.Column width={4} textAlign="right">
-                    <p style={netDelta < 0 ? deltaColor : {}}>{deltaNetSt}</p>
-                  </Grid.Column>
-                </Grid.Row>
-              )}
-            </Grid>
-          </Segment>
-          <Form.Field>
-            <InputAccount
-              id="form-input-control-recipient"
-              label="Recipient"
-              name="recipient"
-              value={recipient}
-              onChange={this.handleRecipientChange}
-            />
-            <InputFloat
-              label="Value (EOS)"
-              name="stake"
-              step="0.0001"
-              min={1.0}
-              max={total / fraction10000}
-              value={value}
-              type="number"
-              onChange={this.handleChange}
-            />
-            <Input
-              name="stake"
-              step="0.0001"
-              min={1.0}
-              max={total / fraction10000}
-              value={value}
-              type="range"
-              onChange={this.handleChange}
-              style={{ padding: '2em' }}
-            />
-          </Form.Field>
-          <Form.Button
-            id="form-button-control-public"
-            content="Update Stake"
-            disabled={!enableRequest}
+        <Form.Field>
+          <InputAccount
+            id="form-input-control-recipient"
+            label="Recipient"
+            name="recipient"
+            value={recipient}
+            onChange={this.handleRecipientChange}
           />
-        </Form>
+          <InputFloat
+            label="CPU (EOS)"
+            name="stake"
+            step="0.0001"
+            min={1.0}
+            max={total / fraction10000}
+            value={value}
+            type="number"
+            onChange={this.handleChange}
+          />
+          <InputFloat
+            label="NET (EOS)"
+            name="stake"
+            step="0.0001"
+            min={1.0}
+            max={total / fraction10000}
+            value={value}
+            type="number"
+            onChange={this.handleChange}
+          />
+        </Form.Field>
+        <Form.Button
+          id="form-button-control-public"
+          content="Update Stake"
+          disabled={!enableRequest}
+        />
+      </Form>
+    );
+  };
+
+  renderDelegate = delegate => {
+    const cpu = numeral(assetToNumber(delegate.cpu_weight)).format('0,0.0000');
+    const net = numeral(assetToNumber(delegate.net_weight)).format('0,0.0000');
+    return (
+      <Grid>
+        <Grid.Row columns={3}>
+          <Grid.Column>
+            <p>{delegate.to}</p>
+          </Grid.Column>
+          <Grid.Column textAlign="right">{cpu}</Grid.Column>
+          <Grid.Column textAlign="right">{net}</Grid.Column>
+        </Grid.Row>
+      </Grid>
+    );
+  };
+
+  renderHeader = () => (
+    <Grid className="tableheader">
+      <Grid.Row columns={3}>
+        <Grid.Column>
+          <p className="tableheadertitle">account</p>
+        </Grid.Column>
+        <Grid.Column textAlign="right">
+          <p className="tableheadertitle">cpu, eos</p>
+        </Grid.Column>
+        <Grid.Column textAlign="right">
+          <p className="tableheadertitle">net, eos</p>
+        </Grid.Column>
+      </Grid.Row>
+      <Divider />
+    </Grid>
+  );
+
+  renderDelegates = () => {
+    let { delegates } = this.props;
+    if (delegates && delegates === null) {
+      delegates = [];
+    }
+
+    return (
+      <div>
+        {this.renderHeader()}
+        <List selection divided>
+          {_.map(delegates, delegate => (
+            <List.Item key={delegate.to}>
+              <List.Content>{this.renderDelegate(delegate)}</List.Content>
+            </List.Item>
+          ))}
+        </List>
+      </div>
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        <p className="title">Stake</p>
+        <p className="subtitle">Update your staking value</p>
+        <br />
+        <Grid>
+          <Grid.Row columns={2}>
+            <Grid.Column>{this.renderForm()}</Grid.Column>
+            <Grid.Column>{this.renderDelegates()}</Grid.Column>
+          </Grid.Row>
+        </Grid>
       </div>
     );
   }

@@ -41,7 +41,7 @@ class Tokens extends Component<Props> {
           contract={contract}
         />
         {renderHeader()}
-        <List divided style={{ marginBottom: '2em' }}>
+        <List divided style={{ marginBottom: '2em' }} selection>
           {_.map(accounts.balances, balance => (
             <List.Item key={`${balance.symbol}-${balance.contract}`}>
               <List.Content>
