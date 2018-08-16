@@ -214,10 +214,6 @@ export default class Stake extends Component<Props> {
             onChange={this.handleChange}
           />
         </Form.Field>
-        { 
-
-          
-        }
         <Form.Button
           id="form-button-control-public"
           content="Update Stake"
@@ -261,6 +257,7 @@ export default class Stake extends Component<Props> {
   );
 
   renderDelegates = () => {
+    const { recipient } = this.state;
     let { delegates } = this.props;
     if (delegates && delegates === null) {
       delegates = [];
@@ -271,7 +268,12 @@ export default class Stake extends Component<Props> {
         {this.renderHeader()}
         <List selection divided>
           {_.map(delegates, delegate => (
-            <List.Item key={delegate.to} name={delegate.to} onClick={this.handleDelegateSelect}>
+            <List.Item 
+              key={delegate.to} 
+              name={delegate.to} 
+              onClick={this.handleDelegateSelect} 
+              active={recipient === delegate.to}
+            >
               <List.Content>{this.renderDelegate(delegate)}</List.Content>
             </List.Item>
           ))}

@@ -89,7 +89,7 @@ export default class History extends Component<Props> {
         <List.Content>
           <List selection divided>
             {_.map(_.reverse(dayGroup.actions), action => (
-              <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
+              <List.Item key={`${action.time}-${action.txId}-${action.digest}`} active={action.active}>
                 <List.Content>
                   {renderAction(
                     action,

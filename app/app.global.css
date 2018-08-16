@@ -84,8 +84,18 @@ input {
 
 .ui.button:focus,
 .ui.button:hover {
-    background: rgb(23, 124, 255);
+    background: #1a8cff;
     color: white;
+}
+
+.ui.selection.list>.item:hover {
+    background: rgba(26, 140, 255, 0.1) !important;
+}
+.ui.selection.list>.item.active {
+    background: rgba(26, 140, 255, 0.5);
+}
+.ui.selection.list>.item.active:hover {
+    background: rgba(26, 140, 255, 0.7) !important;
 }
 
 p.title {
