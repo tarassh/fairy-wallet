@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Radio } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
-import { InputFloat } from '../../Shared/EosComponents';
+import { InputFloat, InputAccount } from '../../Shared/EosComponents';
 
 type Props = {
   account: {},
@@ -17,8 +17,9 @@ type Props = {
 export default class BuyRam extends Component<Props> {
   state = {
     quantity: 0,
-    option: 'EOS',
-    openModal: false
+    option: 'eos',
+    openModal: false,
+    recipient: '',
   };
 
   handleChange = (e, { name, value }) => {
@@ -30,14 +31,14 @@ export default class BuyRam extends Component<Props> {
   };
 
   handleSubmit = () => {
-    const { quantity, option } = this.state;
+    const { quantity, option, recipient } = this.state;
 
     this.setState({ openModal: true });
 
     if (option.toLowerCase() === 'eos') {
-      this.props.buyram(numberToAsset(quantity));
+      this.props.buyram(recipient, numberToAsset(quantity));
     } else if (option.toLowerCase() === 'bytes') {
-      this.props.buyrambytes(parseInt(quantity, 10));
+      this.props.buyrambytes(recipient, parseInt(quantity, 10));
     }
   };
 
@@ -55,7 +56,7 @@ export default class BuyRam extends Component<Props> {
 
   render() {
     const { transactions, account } = this.props;
-    const { quantity, openModal, option } = this.state;
+    const { quantity, openModal, option, recipient } = this.state;
     let available = assetToNumber(account.core_liquid_balance);
     let step = '0.0001';
     let label = 'Value (EOS)';
@@ -75,6 +76,15 @@ export default class BuyRam extends Component<Props> {
           handleClose={this.handleClose}
         />
         <Form onSubmit={this.handleSubmit}>
+          <Form.Group widths="equal">
+            <InputAccount
+              id="form-input-control-recipient"
+              label="Recipient"
+              name="recipient"
+              value={recipient}
+              onChange={this.handleChange}
+            />
+          </Form.Group>
           <Form.Group widths="equal">
             <InputFloat
               label={label}
