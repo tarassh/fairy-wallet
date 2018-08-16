@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Grid, Divider, List } from 'semantic-ui-react';
+import { Form, Grid, Divider, List, Icon } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
@@ -23,14 +23,22 @@ type Props = {
 };
 
 export default class Stake extends Component<Props> {
-  state = {
-    openModal: false,
-    cpuDelta: 0,
-    netDelta: 0,
-    recipient: '', 
-    cpu: 0,
-    net: 0
-  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = Object.assign(
+      {
+        openModal: false,
+        cpuDelta: 0,
+        netDelta: 0,
+        recipient: '', 
+        cpu: 0,
+        net: 0
+      },
+      this.getStakedValues(props.account.account_name)
+    );
+  }
 
   getStakedValues = (name) => {
     const { delegates } = this.props;
@@ -41,7 +49,12 @@ export default class Stake extends Component<Props> {
         net: assetToNumber(delegatee.net_weight, true),
         recipient: name
       };
-    }
+    } 
+    return {
+      cpu: 0,
+      net: 0,
+      recipient: name
+    } 
   }
 
   handleDelegateSelect = (e, { name }) => {
@@ -64,12 +77,14 @@ export default class Stake extends Component<Props> {
   };
 
   handleChange = (e, { name, value }) => {
-    const { account } = this.props;
-    const staked = this.getStakedValues(account.account_name);
+    if (value === '') {
+      this.setState({[name]: value});
+      return;
+    }
+    const staked = this.getStakedValues(this.state.recipient);
     
     const intValue = exactMath.mul(parseFloat(value), fraction10000);
     const delta = intValue - staked[name];
-    console.log(this.state);
     
     this.setState({
       [name]: intValue,
@@ -141,10 +156,25 @@ export default class Stake extends Component<Props> {
 
   renderForm = () => {
     const { transactions, account } = this.props;
-    const { cpuDelta, netDelta, openModal, recipient, cpu, net } = this.state;
+    const { cpuDelta, netDelta, openModal, recipient } = this.state;
+    let { cpu, net } = this.state;
+    if (typeof cpu === 'number') {
+      cpu /= fraction10000;
+    }
+    if (typeof net === 'number') {
+      net /= fraction10000;
+    }
+
+    const { liquid } = balanceStats(account);
+    const staked = this.getStakedValues(recipient);
+
+    const min = staked.recipient === account.account_name ? 0.5 : 0;
+    const cpuInvalid = cpu < min ? "invalid" : undefined;
+    const netInvalid = net < min ? "invalid" : undefined;
 
     const enableRequest = cpuDelta !== 0 || netDelta !== 0;
-    const { staked, total } = balanceStats(account);
+
+    const total = staked.cpu + staked.net + liquid;
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -162,26 +192,32 @@ export default class Stake extends Component<Props> {
             onChange={this.handleRecipientChange}
           />
           <InputFloat
-            label="CPU (EOS)"
+            label={cpuInvalid ? `Its not recomended to have CPU below ${min} EOS` : 'CPU (EOS)'}
             name="cpu"
             step="0.0001"
-            min={1.0}
+            min={0}
             max={total / fraction10000}
-            value={cpu / fraction10000}
+            value={cpu}
             type="number"
+            className={cpuInvalid}
             onChange={this.handleChange}
           />
           <InputFloat
-            label="NET (EOS)"
+            label={netInvalid ? `Its not recomended to have NET below ${min} EOS` : 'NET (EOS)'}
             name="net"
             step="0.0001"
-            min={1.0}
+            min={0}
             max={total / fraction10000}
-            value={net / fraction10000}
+            value={net}
             type="number"
+            className={netInvalid}
             onChange={this.handleChange}
           />
         </Form.Field>
+        { 
+
+          
+        }
         <Form.Button
           id="form-button-control-public"
           content="Update Stake"
@@ -247,8 +283,8 @@ export default class Stake extends Component<Props> {
   render() {
     return (
       <div>
-        <p className="title">Stake</p>
-        <p className="subtitle">Update your staking value</p>
+        <p className="title">Manage Your Stake</p>
+        <p className="subtitle">Here you can delegate your resources to another accounts</p>
         <br />
         <Grid>
           <Grid.Row columns={2}>

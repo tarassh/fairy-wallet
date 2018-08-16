@@ -66,6 +66,15 @@ input[type=text]:focus {
     border-color: #1a8cff !important;
 }
 
+.field.invalid 
+input {
+    border-color: #ec778c !important;
+}
+
+.field.invalid > label {
+    color: #ec778c !important;
+}
+
 .ui.button {
     background: #1a8cff;
     color: white;
