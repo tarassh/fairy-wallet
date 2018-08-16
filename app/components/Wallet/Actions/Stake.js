@@ -27,18 +27,37 @@ export default class Stake extends Component<Props> {
     openModal: false,
     cpuDelta: 0,
     netDelta: 0,
-    showDetails: false,
-    recipient: ''
+    recipient: '', 
+    cpu: 0,
+    net: 0
   };
 
-  handleClick = () => {
-    const { showDetails } = this.state;
-    this.setState({ showDetails: !showDetails });
-  };
+  getStakedValues = (name) => {
+    const { delegates } = this.props;
+    const delegatee = delegates.find((el) => el.to === name);
+    if (delegatee) {
+      return {
+        cpu: assetToNumber(delegatee.cpu_weight, true),
+        net: assetToNumber(delegatee.net_weight, true),
+        recipient: name
+      };
+    }
+  }
 
-  handleValueChange = value => {
-    this.handleChange(null, { name: 'value', value: value.toString() });
-  };
+  handleDelegateSelect = (e, { name }) => {
+    if (this.recipient !== name) {
+      const stakes = this.getStakedValues(name);
+      if (stakes) {
+        this.setState({
+          cpu: stakes.cpu,
+          net: stakes.net,
+          recipient: stakes.recipient,
+          cpuDelta: 0,
+          netDelta: 0
+        });
+      }
+    }
+  }
 
   handleRecipientChange = (e, { name, value }) => {
     this.setState({ [name]: value });
@@ -46,23 +65,17 @@ export default class Stake extends Component<Props> {
 
   handleChange = (e, { name, value }) => {
     const { account } = this.props;
-    const { staked } = balanceStats(account);
-
-    const delta = exactMath.mul(parseFloat(value), fraction10000) - staked;
-    const half = exactMath.div(delta, 2);
-    let netDelta = delta < 0 ? Math.ceil(half) : Math.floor(half);
-    let cpuDelta = delta < 0 ? Math.ceil(half) : Math.floor(half);
-
-    if (Math.abs(delta % 2) === 1) {
-      if (delta > 0) {
-        cpuDelta += 1;
-      } else if (delta < 0) {
-        netDelta -= 1;
-      }
-    }
-
-    this.setState({ [name]: value, cpuDelta, netDelta });
-  };
+    const staked = this.getStakedValues(account.account_name);
+    
+    const intValue = exactMath.mul(parseFloat(value), fraction10000);
+    const delta = intValue - staked[name];
+    console.log(this.state);
+    
+    this.setState({
+      [name]: intValue,
+      [`${name}Delta`]: delta
+    })
+  }
 
   handleSubmit = () => {
     const { cpuDelta, netDelta, recipient } = this.state;
@@ -128,13 +141,10 @@ export default class Stake extends Component<Props> {
 
   renderForm = () => {
     const { transactions, account } = this.props;
-    const { cpuDelta, netDelta, openModal, recipient } = this.state;
+    const { cpuDelta, netDelta, openModal, recipient, cpu, net } = this.state;
 
     const enableRequest = cpuDelta !== 0 || netDelta !== 0;
     const { staked, total } = balanceStats(account);
-    const value = exactMath
-      .div(exactMath.add(staked, netDelta, cpuDelta), fraction10000)
-      .toFixed(4);
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -153,21 +163,21 @@ export default class Stake extends Component<Props> {
           />
           <InputFloat
             label="CPU (EOS)"
-            name="stake"
+            name="cpu"
             step="0.0001"
             min={1.0}
             max={total / fraction10000}
-            value={value}
+            value={cpu / fraction10000}
             type="number"
             onChange={this.handleChange}
           />
           <InputFloat
             label="NET (EOS)"
-            name="stake"
+            name="net"
             step="0.0001"
             min={1.0}
             max={total / fraction10000}
-            value={value}
+            value={net / fraction10000}
             type="number"
             onChange={this.handleChange}
           />
@@ -225,7 +235,7 @@ export default class Stake extends Component<Props> {
         {this.renderHeader()}
         <List selection divided>
           {_.map(delegates, delegate => (
-            <List.Item key={delegate.to}>
+            <List.Item key={delegate.to} name={delegate.to} onClick={this.handleDelegateSelect}>
               <List.Content>{this.renderDelegate(delegate)}</List.Content>
             </List.Item>
           ))}
