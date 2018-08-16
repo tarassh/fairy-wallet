@@ -1,6 +1,14 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Icon, Checkbox, Button, Grid, Form } from 'semantic-ui-react';
+import {
+  List,
+  Icon,
+  Checkbox,
+  Button,
+  Grid,
+  Form,
+  Menu
+} from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import TransactionsModal from '../../Shared/TransactionsModal';
@@ -53,7 +61,8 @@ export default class Vote extends Component<Props> {
       initialVotes: _.clone(votes),
       actualVotes: _.clone(votes),
       disabled: true,
-      producersList
+      producersList,
+      activeItem: 'all'
     });
   }
 
@@ -110,6 +119,8 @@ export default class Vote extends Component<Props> {
   handleGoto = url => {
     shell.openExternal(url);
   };
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
   currentVotes = () => _.keys(this.state.actualVotes);
 
@@ -192,16 +203,47 @@ export default class Vote extends Component<Props> {
 
   render() {
     const { loading, transactions } = this.props;
-    const { openModal, disabled, producersList, filter } = this.state;
+    const {
+      openModal,
+      disabled,
+      producersList,
+      filter,
+      activeItem
+    } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
     let filteredList = producersList;
+    if (activeItem === 'checked') {
+      filteredList = _.filter(
+        filteredList,
+        el => this.state.actualVotes[el.props.value] === true
+      );
+    }
     if (filter && filter.length > 0) {
       filteredList = _.filter(
         producersList,
         el => el.props.value.indexOf(filter) !== -1
       );
     }
+
+    const menuFilter = (
+      <Menu text widths={5}>
+        <Menu.Item
+          name="all"
+          active={activeItem === 'all'}
+          onClick={this.handleItemClick}
+        >
+          All
+        </Menu.Item>
+        <Menu.Item
+          name="checked"
+          active={activeItem === 'checked'}
+          onClick={this.handleItemClick}
+        >
+          Selected
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
       <div>
@@ -214,29 +256,21 @@ export default class Vote extends Component<Props> {
             transactions={transactions}
             handleClose={this.handleClose}
           />
-          <Grid>
-            <Grid.Row columns={3} textAlign="center">
-              <Grid.Column>
-                <h5>
-                  {this.currentVotes().length} / {MAX_VOTES}
-                </h5>
-              </Grid.Column>
-              <Grid.Column>
-                <InputAccount
-                  placeholder="Search block producer..."
-                  fluid
-                  size="tiny"
-                  onChange={this.handleChange}
-                  icon="search"
-                />
-              </Grid.Column>
-              <Grid.Column>
-                <Button fluid onClick={this.vote} disabled={disabled}>
-                  Vote
-                </Button>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          <Form.Group inline widths="equal">
+            <p className="tableheadertitle">
+              {this.currentVotes().length}/{MAX_VOTES}
+            </p>
+            {menuFilter}
+            <InputAccount
+              placeholder="Search block producer..."
+              size="tiny"
+              onChange={this.handleChange}
+              icon="search"
+            />
+            <Button onClick={this.vote} disabled={disabled}>
+              Vote
+            </Button>
+          </Form.Group>
           <List divided relaxed className="scrollable">
             {!isLoading ? filteredList : undefined}
           </List>
