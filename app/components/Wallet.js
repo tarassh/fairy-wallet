@@ -102,7 +102,7 @@ export default class Wallet extends Component<Props> {
           {actionMenu}
         </Segment.Group>
         <Segment.Group className="context no-border">
-          <Segment horizontal className="balance">
+          <Segment className="balance">
             <BalanceComponent
               account={accounts.account}
               currency={currency}

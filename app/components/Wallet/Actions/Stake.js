@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Segment, Input, Grid, Icon, Divider } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
-import { InputFloat } from '../../Shared/EosComponents';
+import { InputFloat, InputAccount } from '../../Shared/EosComponents';
 
 const numeral = require('numeral');
 const exactMath = require('exact-math');
@@ -25,7 +25,8 @@ export default class Stake extends Component<Props> {
     openModal: false,
     cpuDelta: 0,
     netDelta: 0,
-    showDetails: false
+    showDetails: false,
+    recipient: ''
   };
 
   handleClick = () => {
@@ -36,6 +37,10 @@ export default class Stake extends Component<Props> {
   handleValueChange = value => {
     this.handleChange(null, { name: 'value', value: value.toString() });
   };
+
+  handleRecipientChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
+  }
 
   handleChange = (e, { name, value }) => {
     const { account } = this.props;
@@ -58,7 +63,7 @@ export default class Stake extends Component<Props> {
   };
 
   handleSubmit = () => {
-    const { cpuDelta, netDelta } = this.state;
+    const { cpuDelta, netDelta, recipient } = this.state;
     const { account } = this.props;
     const accountName = account.account_name;
 
@@ -80,7 +85,7 @@ export default class Stake extends Component<Props> {
       case 3:
       case 7:
       case 11:
-        this.props.delegate(accountName, accountName, net, cpu);
+        this.props.delegate(accountName, recipient, net, cpu);
         break;
 
       case 4:
@@ -88,18 +93,18 @@ export default class Stake extends Component<Props> {
       case 12:
       case 13:
       case 14:
-        this.props.undelegate(accountName, accountName, net, cpu);
+        this.props.undelegate(accountName, recipient, net, cpu);
         break;
 
       case 6:
-        this.props.delegateUndelegate(true, accountName, accountName, net, cpu);
+        this.props.delegateUndelegate(true, accountName, recipient, net, cpu);
         break;
 
       case 9:
         this.props.delegateUndelegate(
           false,
           accountName,
-          accountName,
+          recipient,
           net,
           cpu
         );
@@ -127,7 +132,7 @@ export default class Stake extends Component<Props> {
 
   render() {
     const { transactions, account } = this.props;
-    const { cpuDelta, netDelta, openModal, showDetails } = this.state;
+    const { cpuDelta, netDelta, openModal, showDetails, recipient } = this.state;
 
     const enableRequest = cpuDelta !== 0 || netDelta !== 0;
     const { staked, total, detailed } = balanceStats(account);
@@ -245,6 +250,13 @@ export default class Stake extends Component<Props> {
             </Grid>
           </Segment>
           <Form.Field>
+            <InputAccount
+              id="form-input-control-recipient"
+              label="Recipient"
+              name="recipient"
+              value={recipient}
+              onChange={this.handleRecipientChange}
+            />
             <InputFloat
               label="Value (EOS)"
               name="stake"

@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import * as types from './types';
 import eos from './helpers/eos';
 import * as constants from './constants/constants';

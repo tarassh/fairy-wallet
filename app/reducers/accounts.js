@@ -7,7 +7,8 @@ const initialState = {
   actions: null,
   balances: [],
   activeAccount: 0,
-  lastIrreversibleBlock: 0
+  lastIrreversibleBlock: 0,
+  delegates: [],
 };
 
 export default function accounts(state = initialState, action) {
@@ -106,6 +107,18 @@ export default function accounts(state = initialState, action) {
       }
       return Object.assign({}, state, {
         balances
+      });
+    }
+
+    case types.GET_DELEGATION_SUCCESS: {
+      return Object.assign({}, state, {
+        delegates: action.delegates
+      });
+    }
+
+    case types.GET_DELEGATION_FAILURE: {
+      return Object.assign({}, state, {
+        delegates: null
       });
     }
 

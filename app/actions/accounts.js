@@ -3,6 +3,7 @@ import _ from 'lodash';
 import * as types from './types';
 import eos from './helpers/eos';
 import { getCurrencyExchangePrice } from './currency';
+import * as constants from './constants/constants';
 
 export function getAccounts(publicKey) {
   return (dispatch: () => void, getState) => {
@@ -51,6 +52,7 @@ export function getAccount(name) {
         dispatch(getCurrencyBalance(name));
         dispatch(getActions(name));
         dispatch(getCurrencyExchangePrice());
+        dispatch(getDelegationsFor(name));
         return dispatch({
           type: types.GET_ACCOUNT_SUCCESS,
           account: result
@@ -146,9 +148,28 @@ export function getCurrencyBalance(account) {
   };
 }
 
+export function getDelegationsFor(account) {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.GET_DELEGATION_REQUEST
+    });
+
+    const { connection } = getState();
+    eos(connection).getTableRows(true, constants.eos.eosio, account, constants.eos.delband).then((results) => dispatch({
+      type: types.GET_DELEGATION_SUCCESS,
+      account,
+      delegates: results.rows
+    })).catch((err) => dispatch({
+      type: types.GET_DELEGATION_FAILURE,
+      err,
+    }));
+  };
+}
+
 export default {
   getAccounts,
   getAccount,
   getActions,
-  getCurrencyBalance
+  getCurrencyBalance,
+  getDelegationsFor
 };

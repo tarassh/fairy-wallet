@@ -9,7 +9,7 @@ import { setActiveAccount } from '../../actions/accounts';
 type Props = {
   accounts: {},
   loading: {},
-  actions: { setActiveAccount: {} }
+  actions: {}
 };
 
 class AccountComponent extends Component<Props> {
@@ -42,7 +42,7 @@ class AccountComponent extends Component<Props> {
     });
 
     const options = _.map(accounts.names, option => (
-      <Dropdown.Item text={option} onClick={this.handleChange} />
+      <Dropdown.Item key={option} text={option} onClick={this.handleChange} />
     ));
 
     const trigger = <Button circular basic icon="user" loading={isLoading} />;
@@ -52,7 +52,7 @@ class AccountComponent extends Component<Props> {
         <Grid>
           <Grid.Row columns={2}>
             <Grid.Column>
-              <Dropdown icon={null} trigger={trigger}>
+              <Dropdown icon={null} trigger={trigger} pointing='top left'>
                 <Dropdown.Menu>{options}</Dropdown.Menu>
               </Dropdown>
               <p className="subtitle">{text}</p>
