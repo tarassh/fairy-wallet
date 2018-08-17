@@ -53,7 +53,6 @@ export function getAccount(name) {
         dispatch(getActions(name));
         dispatch(getCurrencyExchangePrice());
         dispatch(getDelegationsFor(name));
-        dispatch(getRefundsFor(name));
         return dispatch({
           type: types.GET_ACCOUNT_SUCCESS,
           account: result
