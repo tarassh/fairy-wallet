@@ -16,7 +16,7 @@ class StakedStats extends Component<Props> {
     const refunds = unstakingBalance(account);
 
     const active = _.findIndex(delegates, el => el.to === delegatee);
-    
+
     const cpuStakes = _.map(delegates, el => assetToNumber(el.cpu_weight));
     const cpuStake = _.sum(cpuStakes);
 
@@ -29,22 +29,30 @@ class StakedStats extends Component<Props> {
     return (
       <div>
         <p className="title">Staked Information</p>
-        <p className="subtitle">CPU and Netowrk bandwidth delegation</p>
+        <p className="subtitle">CPU and Network bandwidth delegation</p>
         <br />
 
-        <StakeChart stakes={cpuStakes} max={cpuStake + cpuRefund} active={active} />
+        <StakeChart
+          stakes={cpuStakes}
+          max={cpuStake + cpuRefund}
+          active={active}
+        />
         <p>Staked CPU {parseFloat(cpuStake).toFixed(4)}</p>
-        
+
         <StakeChart stakes={[cpuRefund]} max={cpuStake + cpuRefund} />
         <p>Refund CPU {parseFloat(cpuRefund).toFixed(4)}</p>
 
-        <StakeChart stakes={netStakes} max={netStake + netRefund} active={active} />
+        <StakeChart
+          stakes={netStakes}
+          max={netStake + netRefund}
+          active={active}
+        />
         <p>Staked NET {parseFloat(netStake).toFixed(4)}</p>
-        
+
         <StakeChart stakes={[netRefund]} max={netStake + netRefund} />
         <p>Refund NET {parseFloat(netRefund).toFixed(4)}</p>
       </div>
-    )
+    );
   }
 }
 
