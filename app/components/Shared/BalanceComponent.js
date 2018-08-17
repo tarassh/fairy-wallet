@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Segment, Grid, Icon } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 import {
   numberToAsset,
   assetToNumber,
   numberToPrettyAsset
 } from '../../utils/asset';
+import FairyMenu from './UI/FairyMenu';
+import FairyDataBlock from './UI/FairyDataBlock';
 
 const moment = require('moment');
 const numeral = require('numeral');
@@ -39,40 +41,38 @@ class BalanceComponent extends Component<Props> {
     }
 
     return (
-      <Segment className="no-border">
-        <Grid>
-          <Grid.Row textAlign="left">
-            <Grid.Column width={4}>
-              <p className="title">{total}</p>
-              <p className="subtitle">{totalUDS}</p>
-            </Grid.Column>
-
-            <Grid.Column width={4}>
-              <p className="title">{liquid}</p>
-              <p className="subtitle">Available</p>
-            </Grid.Column>
-
-            <Grid.Column width={4}>
-              <p className="title">{staked}</p>
-              <p className="subtitle">Staked</p>
-            </Grid.Column>
-          </Grid.Row>
-          {unstaking && (
-            <Grid.Row>
-              <Grid.Column>
-                <p className="subtitle">
-                  <Icon
-                    name="info circle"
-                    size="small"
-                    style={{ color: 'rgb(62, 141, 247)' }}
-                  />
-                  {unstaking} will be available {unstakingTime}
-                </p>
-              </Grid.Column>
-            </Grid.Row>
-          )}
-        </Grid>
-      </Segment>
+      <FairyMenu>
+        <FairyMenu.MenuItem>
+          <FairyDataBlock 
+            data={<p className="title">{total}</p>}
+            description={<p className="subtitle">{totalUDS}</p>}
+          />
+        </FairyMenu.MenuItem>
+        <FairyMenu.MenuItem>
+          <FairyDataBlock 
+            data={<p className="title">{liquid}</p>}
+            description={<p className="subtitle">Available</p>}
+          />
+        </FairyMenu.MenuItem>
+        <FairyMenu.MenuItem>
+          <FairyDataBlock 
+            data={<p className="title">{staked}</p>}
+            description={<p className="subtitle">Staked</p>}
+          />
+        </FairyMenu.MenuItem>
+        {/* {unstaking && (
+          <FairyMenu.MenuItem>
+            <p className="subtitle">
+              <Icon
+                name="info circle"
+                size="small"
+                style={{ color: 'rgb(62, 141, 247)' }}
+              />
+              {unstaking} will be available {unstakingTime}
+            </p>
+          </FairyMenu.MenuItem>
+          )} */}
+      </FairyMenu>
     );
   }
 }

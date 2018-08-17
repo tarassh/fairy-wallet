@@ -15,7 +15,7 @@ class UtilityChart extends Component<Props> {
         : numeral(stats.used / stats.max).format('0%');
     const height = '5';
 
-    const color = stats.used > stats.max ? 'lightcoral' : '#00d8d8';
+    const color = stats.used >= stats.max * 0.51 ? '#ec778c' : '#1a8cff';
 
     const content = (
       <svg width="100%" height={height}>

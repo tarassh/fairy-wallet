@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
 import UtilityChart from './UtilityChart';
 
 const numeral = require('numeral');
@@ -21,59 +20,42 @@ class UtilityStats extends Component<Props> {
       '0%'
     );
 
-    const labelWidth = 3;
-    const barWidrh = 5;
-    const valueWidth = 1;
-    const rowPadding = { paddingTop: '0.5em', paddingBottom: '0.5em' };
-
     const content = (
-      <Grid padded={false}>
-        <Grid.Row textAlign="right" style={rowPadding}>
-          <Grid.Column width={labelWidth}>
-            <p className="subtitle">CPU</p>
-          </Grid.Column>
-          <Grid.Column width={barWidrh}>
+      <ul className="utility-chart">
+        <li>
+          <div>CPU</div>
+          <div>
             <UtilityChart
               stats={{
                 used: account.cpu_limit.used,
                 max: account.cpu_limit.max
               }}
             />
-          </Grid.Column>
-          <Grid.Column width={valueWidth}>
-            <p className="subtitle">{cpuUsage}</p>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row textAlign="right" style={rowPadding}>
-          <Grid.Column width={labelWidth}>
-            <p>NET</p>
-          </Grid.Column>
-          <Grid.Column width={barWidrh}>
+          </div>
+          <div>{cpuUsage}</div>
+        </li>
+        <li>
+          <div>NET</div>
+          <div>
             <UtilityChart
               stats={{
                 used: account.net_limit.used,
                 max: account.net_limit.max
               }}
             />
-          </Grid.Column>
-          <Grid.Column width={valueWidth}>
-            <p className="subtitle">{netUsage}</p>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row textAlign="right" style={rowPadding}>
-          <Grid.Column width={labelWidth}>
-            <p className="subtitle">RAM</p>
-          </Grid.Column>
-          <Grid.Column width={barWidrh}>
+          </div>
+          <div className="subtitle">{netUsage}</div>
+        </li>
+        <li>
+          <div>RAM</div>
+          <div>
             <UtilityChart
               stats={{ used: account.ram_usage, max: account.ram_quota }}
             />
-          </Grid.Column>
-          <Grid.Column width={valueWidth}>
-            <p className="subtitle">{ramUsage}</p>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+          </div>
+          <div>{ramUsage}</div>
+        </li>
+      </ul>
     );
 
     return content;

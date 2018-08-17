@@ -64,8 +64,11 @@
 
 .ui.segments.context > .balance {
     height: 10%;
-    border-bottom: 1px; 
     margin: 0;
+}
+
+.ui.segments.context > .balance > div:first-child {
+    border-bottom: 1px solid rgb(245, 245, 245); 
 }
 
 .ui.horizontal.segments.no-border,
@@ -87,7 +90,16 @@
 }
 
 .history {
-    height: 400px;
+    height: 100%;
+}
+
+.history .header {
+    height: 15%;
+    padding: 0 1rem;
+}
+
+.history .content {
+    height: 85%;
 }
 
 .history-container {
@@ -137,4 +149,184 @@
 .scrollable::-webkit-scrollbar,
 #scrollable-history::-webkit-scrollbar-track {
     border-radius: 5px;
+}
+
+/* New design */
+
+.fairy-container {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.fairy-container .column {
+    height: 100%;
+    position: relative;
+}
+
+.fairy-container .column.left {
+    width: 20%;
+    float: left;
+}
+
+.fairy-container .column.middle {
+    width: 60%;
+    float: left;
+}
+
+.fairy-container .column.middle .main-window {
+    padding: 0 1rem;
+    height: 100%;
+}
+
+.fairy-container .column.right {
+    width: 20%;
+    float: right;
+}
+
+.fairy-container .column.separator-left {
+    border-left: 1px solid rgb(245,245,245);
+}
+
+.fairy-container .column.separator-left {
+    border-left: 1px solid rgb(245,245,245);
+}
+
+.fairy-container .column.separator-right {
+    border-right: 1px solid rgb(245,245,245);
+}
+
+.fairy-container .column.separator-none {
+    border: none;
+}
+
+.fairy-container .column .header {
+    height: 20%;
+}
+
+.fairy-container .column .body {
+    height: 80%;
+}
+
+.fairy-container .column > div {
+    padding: 1rem 1rem;
+}
+
+.fairy-container .column .header.underlined {
+    border-bottom: 1px solid rgb(245, 245, 245);
+}
+
+.fairy-container .column .fairy-menu {
+    height: 100%;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.fairy-container .column .fairy-menu > div {
+    display: inline-block;
+}
+
+.fairy-container .column .fairy-menu .separator {
+    width: 4rem;
+}
+
+.fairy-container .column .fairy-menu .menu-item {
+    width: auto;
+    height: 100%;
+}
+
+.fairy-container .column .data-block {
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+}
+
+.fairy-container .column .data-block .data {
+    height: 35%;
+}
+
+.fairy-container .column .data-block .description {
+    height: 65%;
+}
+
+.fairy-container .utility-chart {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.fairy-container .utility-chart li {
+    width: 100%;
+    height: auto;
+    padding: 0.1rem 0;
+}
+
+.fairy-container .utility-chart li div {
+    padding: 0 0.1rem;
+    display: inline-block;
+}
+
+.fairy-container .utility-chart li div svg {
+    margin-bottom: 0.2em;
+    width: 100%;
+}
+
+.fairy-container .utility-chart li div:nth-child(1) {
+    text-align: right;
+    min-width: 15%;
+}
+
+.fairy-container .utility-chart li div:nth-child(2) {
+    width: 70%;
+}
+
+.fairy-container .utility-chart li div:nth-child(3) {
+    width: 15%;
+}
+
+.fairy-container .column .header-container {
+    padding: 0 1rem;
+}
+
+.scrolling-table {
+    width: 100%;
+    height: 100%;
+}
+
+.scrolling-table > div {
+    margin: 0 1rem;
+}
+
+.scrolling-table .scrolling-table-header {
+    height: 10%;
+}
+
+.scrolling-table .scrolling-table-header.underline {
+    border-bottom: 1px solid rgb(245, 245, 245);
+}
+
+.scrolling-table .scrolling-table-body {
+    height: 90% !important;
+}
+
+.scrolling-table .scrolling-table-body .scrolling-table-content:hover {
+    overflow-y: overlay;
+}
+
+.scrolling-table .scrolling-table-body .scrolling-table-content {
+    height: 100%;
+    overflow: hidden;
+}
+
+.fairy-container .column .history .header {
+    height: 15%;
+    padding: 0 1rem;
+}
+
+.fairy-container .column .history .content {
+    height: 85%;
 }

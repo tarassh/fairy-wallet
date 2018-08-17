@@ -4,6 +4,7 @@ import { List, Grid, Icon, Button, Divider } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
+import ScrollingTable from './../../Shared/UI/ScrollingTable';
 
 type Props = {
   actions: {},
@@ -106,28 +107,36 @@ export default class History extends Component<Props> {
     ));
 
     return (
-      <div className="history-container">
-        <p className="title">History</p>
-        <p className="subtitle">View account activity</p>
-        <br />
-        {renderHeader()}
-        <div id="scrollable-history">
-          <List style={{ marginBottom: '2em' }}>{items}</List>
-          <div />
-          {days.length > 0 &&
-            totalPages > 1 && (
-              <Grid>
-                <Grid.Row centered>
-                  <a
-                    href="#"
-                    onClick={this.handleLoadNextActions}
-                    style={{ cursor: 'pointer', color: '#1a8cff' }}
-                  >
-                    Show more
-                  </a>
-                </Grid.Row>
-              </Grid>
-            )}
+      <div className="history">
+        <div className="header">
+          <p className="title">History</p>        
+          <p className="subtitle">View account activity</p>        
+        </div>
+        <div className="content">
+          <ScrollingTable 
+            header={
+              renderHeader()
+            }
+            content={
+              <span>
+                <List style={{ marginBottom: '2em' }}>{items}</List>
+                {days.length > 0 &&
+                totalPages > 1 && (
+                  <Grid>
+                    <Grid.Row centered>
+                      <a
+                        href="#"
+                        onClick={this.handleLoadNextActions}
+                        style={{ cursor: 'pointer', color: '#1a8cff' }}
+                      >
+                        Show more
+                      </a>
+                    </Grid.Row>
+                  </Grid>
+                )}
+              </span>
+            }
+          />
         </div>
       </div>
     );
@@ -158,7 +167,6 @@ function renderAction(action, account, handler, goto) {
     status = <Icon name="check circle" />;
   }
 
-  //
   return (
     <Grid>
       <Grid.Row onClick={() => handler(action.sequence)}>
@@ -204,7 +212,6 @@ function renderHeader() {
           <p className="tableheadertitle">description</p>
         </Grid.Column>
       </Grid.Row>
-      <Divider />
     </Grid>
   );
 }
