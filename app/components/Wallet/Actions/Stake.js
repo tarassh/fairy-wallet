@@ -76,6 +76,8 @@ export default class Stake extends Component<Props> {
 
   handleRecipientChange = (e, { name, value }) => {
     this.setState({ [name]: value });
+    const stakes = this.getStakedValues(name);
+    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
   };
 
   handleChange = (e, { name, value }) => {
