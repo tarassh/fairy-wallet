@@ -71,7 +71,7 @@ class StakeChart extends Component<Props> {
 }
 
 function makeColor(c, active = false) {
-  const alpha = active ? 1: 0.5
+  const alpha = active ? 0.5 : 1;
   return `rgba(${c},${alpha})`
 }
 

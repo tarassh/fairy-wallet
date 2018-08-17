@@ -8,6 +8,7 @@ import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 import Tokens from './Tokens';
 import StakedStats from './StakedStats';
+import RamStats from './RamStats';
 
 type Props = {
   activeItem: string,
@@ -30,7 +31,8 @@ export default class Actions extends Component<Props> {
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transferFunds: <Tokens accounts={accounts} />,
-      stake: <StakedStats  account={accounts.account} delegates={accounts.delegates} delegatee={accounts.delegatee} />
+      stake: <StakedStats  account={accounts.account} delegates={accounts.delegates} delegatee={accounts.delegatee} />,
+      ram: <RamStats account={accounts.account} />
     };
 
     return (
