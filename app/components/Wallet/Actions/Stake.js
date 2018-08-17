@@ -17,6 +17,7 @@ type Props = {
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (boolean, string, string, string, string) => {},
+  setDelegateeAccount: (string) => {},
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {}
@@ -58,8 +59,8 @@ export default class Stake extends Component<Props> {
   }
 
   handleDelegateSelect = (e, { name }) => {
+    const stakes = this.getStakedValues(name);
     if (this.recipient !== name) {
-      const stakes = this.getStakedValues(name);
       if (stakes) {
         this.setState({
           cpu: stakes.cpu,
@@ -70,6 +71,7 @@ export default class Stake extends Component<Props> {
         });
       }
     }
+    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
   }
 
   handleRecipientChange = (e, { name, value }) => {

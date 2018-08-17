@@ -38,6 +38,10 @@ export function setActiveAccount(index) {
   };
 }
 
+export function setDelegateeAccount(name) {
+  return (dispatch: () => void) => dispatch({ type: types.SET_ACTIVE_DELEGATE_ACCOUNT, delegatee: name });
+}
+
 export function getAccount(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -203,5 +207,6 @@ export default {
   getAccount,
   getActions,
   getCurrencyBalance,
-  getDelegationsFor
+  getDelegationsFor,
+  setDelegateeAccount
 };
