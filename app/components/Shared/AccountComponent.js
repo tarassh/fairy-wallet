@@ -74,22 +74,6 @@ class AccountComponent extends Component<Props> {
           />
         </FairyMenu.MenuItem>
       </FairyMenu>
-      // <Segment className="no-border account">
-      //   <Grid>
-      //     <Grid.Row columns={2}>
-      //       <Grid.Column>
-      //         <Dropdown icon={null} trigger={trigger} pointing='top left'>
-      //           <Dropdown.Menu>{options}</Dropdown.Menu>
-      //         </Dropdown>
-      //         <p className="subtitle">{text}</p>
-      //       </Grid.Column>
-      //       <Grid.Column>
-      //         <PublicKeyIcon />
-      //         <p className="subtitle">Public Key</p>
-      //       </Grid.Column>
-      //     </Grid.Row>
-      //   </Grid>
-      // </Segment>
     );
   }
 }

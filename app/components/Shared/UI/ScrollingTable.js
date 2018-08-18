@@ -27,12 +27,14 @@ const ScrollingTable = (props) => {
 
 ScrollingTable.propTypes = {
   header: PropTypes.node,
-  content: PropTypes.node
+  content: PropTypes.node,
+  className: PropTypes.string
 }
 
 ScrollingTable.defaultProps = {
   header: [],
-  content: []
+  content: [],
+  className: ""
 };
 
 export default ScrollingTable;

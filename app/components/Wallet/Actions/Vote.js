@@ -169,8 +169,9 @@ export default class Vote extends Component<Props> {
   renderProducer = (producer, producing) => (
     <Grid>
       <Grid.Row>
-        <Grid.Column width={2}>
+        <Grid.Column width={1}>
           <Checkbox
+            className="vote-checkbox"
             id={producer.owner}
             onChange={this.toggle}
             checked={
@@ -188,7 +189,7 @@ export default class Vote extends Component<Props> {
         </Grid.Column>
         <Grid.Column width={4}>{producer.owner}</Grid.Column>
         <Grid.Column
-          width={6}
+          width={7}
           onClick={() => this.handleGoto(producer.url)}
           style={{ cursor: 'pointer' }}
         >
@@ -247,13 +248,31 @@ export default class Vote extends Component<Props> {
       </Menu>
     );
 
+    const renderHeader = () => (
+      <Grid className="tableheader">
+        <Grid.Row>
+          <Grid.Column width={1} />
+          <Grid.Column width={1} />
+          <Grid.Column width={4}>
+            <p className="tableheadertitle">account</p>
+          </Grid.Column>
+          <Grid.Column width={7}>
+            <p className="tableheadertitle">url</p>
+          </Grid.Column>
+          <Grid.Column width={3} style={{ textAlign: "center" }}>
+            <p className="tableheadertitle">votes</p>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    );
+
     return (
       <MainContentContainer 
         title="Vote for block producers" 
         subtitle="You can vote up to 30"
         content={
-          <ScrollingTable 
-            header={
+          <div style={{ height: "100%" }}>
+            <div style={{ height: "10%", padding: "0 1rem"}}>
               <Form loading={isLoading}>
                 <TransactionsModal
                   open={openModal}
@@ -272,52 +291,27 @@ export default class Vote extends Component<Props> {
                     icon="search"
                   />
                   <Button onClick={this.vote} disabled={disabled}>
-                    Vote
+                      Vote
                   </Button>
                 </Form.Group>
               </Form>
-              }
-            content={
-              <List divided relaxed className="scrollable">
-                {!isLoading ? filteredList : undefined}
-              </List>
-              }
-          />
-
-          // </Form>
-      }
+            </div>
+            <div style={{ height: "90%"}}>
+              <ScrollingTable 
+                className="vote"
+                header={
+                  <span />
+                  }
+                content={
+                  <List divided relaxed className="scrollable">
+                    {!isLoading ? filteredList : undefined}
+                  </List>
+                  }
+              />
+            </div>
+          </div>
+        }
       />
-
-      // <div>
-      //   <p className="title">Vote for block producers</p>
-      //   <p className="subtitle">You can vote up to 30</p>
-      //   <br />
-      //   <Form loading={isLoading} className="producers-list">
-      //     <TransactionsModal
-      //       open={openModal}
-      //       transactions={transactions}
-      //       handleClose={this.handleClose}
-      //     />
-      //     <Form.Group inline widths="equal">
-      //       <p className="tableheadertitle">
-      //         {this.currentVotes().length}/{MAX_VOTES}
-      //       </p>
-      //       {menuFilter}
-      //       <InputAccount
-      //         placeholder="Search block producer..."
-      //         size="tiny"
-      //         onChange={this.handleChange}
-      //         icon="search"
-      //       />
-      //       <Button onClick={this.vote} disabled={disabled}>
-      //         Vote
-      //       </Button>
-      //     </Form.Group>
-      //     <List divided relaxed className="scrollable">
-      //       {!isLoading ? filteredList : undefined}
-      //     </List>
-      //   </Form>
-      // </div>
     );
   }
 }

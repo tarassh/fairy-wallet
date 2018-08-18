@@ -41,38 +41,38 @@ class BalanceComponent extends Component<Props> {
     }
 
     return (
-      <FairyMenu>
-        <FairyMenu.MenuItem>
-          <FairyDataBlock 
-            data={<p className="title">{total}</p>}
-            description={<p className="subtitle">{totalUDS}</p>}
-          />
-        </FairyMenu.MenuItem>
-        <FairyMenu.MenuItem>
-          <FairyDataBlock 
-            data={<p className="title">{liquid}</p>}
-            description={<p className="subtitle">Available</p>}
-          />
-        </FairyMenu.MenuItem>
-        <FairyMenu.MenuItem>
-          <FairyDataBlock 
-            data={<p className="title">{staked}</p>}
-            description={<p className="subtitle">Staked</p>}
-          />
-        </FairyMenu.MenuItem>
-        {/* {unstaking && (
+      <span>
+        <FairyMenu>
           <FairyMenu.MenuItem>
-            <p className="subtitle">
-              <Icon
-                name="info circle"
-                size="small"
-                style={{ color: 'rgb(62, 141, 247)' }}
-              />
-              {unstaking} will be available {unstakingTime}
-            </p>
+            <FairyDataBlock 
+              data={<p className="title">{total}</p>}
+              description={<p className="subtitle">{totalUDS}</p>}
+            />
           </FairyMenu.MenuItem>
-          )} */}
-      </FairyMenu>
+          <FairyMenu.MenuItem>
+            <FairyDataBlock 
+              data={<p className="title">{liquid}</p>}
+              description={<p className="subtitle">Available</p>}
+            />
+          </FairyMenu.MenuItem>
+          <FairyMenu.MenuItem>
+            <FairyDataBlock 
+              data={<p className="title">{staked}</p>}
+              description={<p className="subtitle">Staked</p>}
+            />
+          </FairyMenu.MenuItem>
+        </FairyMenu>
+        {unstaking && (
+        <p className="subtitle" style={{ margin: "-2rem 0 0 1rem" }}>
+          <Icon
+            name="info circle"
+            size="small"
+            style={{ color: 'rgb(62, 141, 247)' }}
+          />
+          {unstaking} will be available {unstakingTime}
+        </p>
+          )}
+      </span>
     );
   }
 }
