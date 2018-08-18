@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Grid, Divider, List } from 'semantic-ui-react';
+import { Form, Grid, List } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
@@ -313,7 +313,7 @@ export default class Stake extends Component<Props> {
         title="Stake Management" 
         subtitle="Here you can delegate your resources to another accounts"
         content={
-          <Grid style={{ padding: "0 1rem" }}>
+          <Grid className='side-padding'>
             <Grid.Row stretched columns={2}>
               <Grid.Column>{this.renderForm()}</Grid.Column>
               <Grid.Column>{this.renderDelegates()}</Grid.Column>

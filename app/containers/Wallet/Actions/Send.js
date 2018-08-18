@@ -104,7 +104,7 @@ class SendContainer extends Component<Props> {
         title="Transfer funds" 
         subtitle="Send your EOS and Airdrop tokens here"
         content={
-          <Form onSubmit={this.handleSubmit} style={{ padding: "0 1rem" }}>
+          <Form onSubmit={this.handleSubmit} className='side-padding'>
             <TransactionsModal
               open={openModal}
               transactions={transactions}
