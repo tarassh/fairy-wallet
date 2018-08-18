@@ -9,7 +9,7 @@ import styles from './Wallet.css'; // eslint-disable-line no-unused-vars
 import Tokens from './Wallet/Tokens';
 import StakedStats from './Wallet/StakedStats';
 import UtilityStats from './Shared/UtilityStats';
-import RamStats from './Wallet/RamStats'
+import RamStats from './Wallet/RamStats';
 
 type Props = {
   states: {},
@@ -39,7 +39,13 @@ export default class Wallet extends Component<Props> {
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transferFunds: <Tokens accounts={accounts} />,
-      stake: <StakedStats  account={accounts.account} delegates={accounts.delegates} />,
+      stake: (
+        <StakedStats
+          account={accounts.account}
+          delegates={accounts.delegates}
+          delegatee={accounts.delegatee}
+        />
+      ),
       ram: <RamStats account={accounts.account} />
     };
 
@@ -90,15 +96,13 @@ export default class Wallet extends Component<Props> {
 
     return (
       <FairyContainer>
-        <FairyContainer.Column position='left' separator='right'>
+        <FairyContainer.Column position="left" separator="right">
           <FairyContainer.Column.Header>
             <AccountComponent accounts={accounts} loading={loading} />
           </FairyContainer.Column.Header>
-          <FairyContainer.Column.Body>
-            {actionMenu}
-          </FairyContainer.Column.Body>
+          <FairyContainer.Column.Body>{actionMenu}</FairyContainer.Column.Body>
         </FairyContainer.Column>
-        <FairyContainer.Column position='middle'>
+        <FairyContainer.Column position="middle">
           <FairyContainer.Column.Header underlined>
             <BalanceComponent
               account={accounts.account}
@@ -111,11 +115,11 @@ export default class Wallet extends Component<Props> {
             <WalletActions activeItem={activeItem} accounts={accounts} />
           </FairyContainer.Column.Body>
         </FairyContainer.Column>
-        <FairyContainer.Column position='right'>
+        <FairyContainer.Column position="right">
           <FairyContainer.Column.Header underlined>
             <UtilityStats account={accounts.account} />
           </FairyContainer.Column.Header>
-          <FairyContainer.Column.Body className='no-side-padding'>
+          <FairyContainer.Column.Body className="no-side-padding">
             {subpanes[activeItem]}
           </FairyContainer.Column.Body>
         </FairyContainer.Column>
