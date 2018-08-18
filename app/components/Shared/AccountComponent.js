@@ -50,8 +50,8 @@ class AccountComponent extends Component<Props> {
     const trigger = <Button circular basic icon="user" loading={isLoading} />;
 
     return (
-      <FairyMenu>
-        <FairyMenu.MenuItem>
+      <FairyMenu separator={false}>
+        <FairyMenu.MenuItem className='account'>
           <FairyDataBlock 
             data={
               <Dropdown icon={null} trigger={trigger} pointing='top left'>
@@ -63,7 +63,7 @@ class AccountComponent extends Component<Props> {
             }
           />
         </FairyMenu.MenuItem>
-        <FairyMenu.MenuItem>
+        <FairyMenu.MenuItem className='public-key'>
           <FairyDataBlock 
             data={
               <PublicKeyIcon />
@@ -74,22 +74,6 @@ class AccountComponent extends Component<Props> {
           />
         </FairyMenu.MenuItem>
       </FairyMenu>
-      // <Segment className="no-border account">
-      //   <Grid>
-      //     <Grid.Row columns={2}>
-      //       <Grid.Column>
-      //         <Dropdown icon={null} trigger={trigger} pointing='top left'>
-      //           <Dropdown.Menu>{options}</Dropdown.Menu>
-      //         </Dropdown>
-      //         <p className="subtitle">{text}</p>
-      //       </Grid.Column>
-      //       <Grid.Column>
-      //         <PublicKeyIcon />
-      //         <p className="subtitle">Public Key</p>
-      //       </Grid.Column>
-      //     </Grid.Row>
-      //   </Grid>
-      // </Segment>
     );
   }
 }

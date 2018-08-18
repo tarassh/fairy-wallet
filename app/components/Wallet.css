@@ -234,6 +234,14 @@
     height: 100%;
 }
 
+.fairy-container .column .fairy-menu .menu-item.account {
+    width: 65%;
+}
+
+.fairy-container .column .fairy-menu .menu-item.public-key {
+    width: 35%;
+}
+
 .fairy-container .column .data-block {
     width: 100%;
     height: 100%;
