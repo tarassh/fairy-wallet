@@ -115,7 +115,7 @@ export default class Wallet extends Component<Props> {
           <FairyContainer.Column.Header underlined>
             <UtilityStats account={accounts.account} />
           </FairyContainer.Column.Header>
-          <FairyContainer.Column.Body>
+          <FairyContainer.Column.Body className='no-side-padding'>
             {subpanes[activeItem]}
           </FairyContainer.Column.Body>
         </FairyContainer.Column>

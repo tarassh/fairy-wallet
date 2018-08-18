@@ -8,6 +8,10 @@ const FairyContainerColumnBody = (props) => {
     "body"
   ];
 
+  if (props.className) {
+    classes.push(props.className)
+  }
+
   return (
     <div className={getClasses(classes)}>
       {props.children}

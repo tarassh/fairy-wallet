@@ -330,3 +330,8 @@
 .main-container .main-container-content {
     height: 85%;
 }
+
+.no-side-padding {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
