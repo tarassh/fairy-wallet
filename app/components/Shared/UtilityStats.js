@@ -23,7 +23,6 @@ class UtilityStats extends Component<Props> {
     const content = (
       <ul className="utility-chart">
         <li>
-          <div>CPU</div>
           <div>
             <UtilityChart
               stats={{
@@ -31,11 +30,10 @@ class UtilityStats extends Component<Props> {
                 max: account.cpu_limit.max
               }}
             />
+            <p>CPU {cpuUsage}</p>
           </div>
-          <div>{cpuUsage}</div>
         </li>
         <li>
-          <div>NET</div>
           <div>
             <UtilityChart
               stats={{
@@ -43,17 +41,19 @@ class UtilityStats extends Component<Props> {
                 max: account.net_limit.max
               }}
             />
+            <p>NET {netUsage}</p>
           </div>
-          <div className="subtitle">{netUsage}</div>
         </li>
         <li>
-          <div>RAM</div>
           <div>
             <UtilityChart
-              stats={{ used: account.ram_usage, max: account.ram_quota }}
+              stats={{
+                used: account.ram_usage,
+                max: account.ram_quota
+              }}
             />
+            <p>RAM {ramUsage}</p>
           </div>
-          <div>{ramUsage}</div>
         </li>
       </ul>
     );

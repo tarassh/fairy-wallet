@@ -13,7 +13,7 @@ class UtilityChart extends Component<Props> {
       stats.used > stats.max
         ? '100%'
         : numeral(stats.used / stats.max).format('0%');
-    const height = '5';
+    const height = '8';
 
     const color = stats.used >= stats.max * 0.51 ? '#ec778c' : '#1a8cff';
 
