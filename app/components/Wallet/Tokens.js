@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Grid, Divider, List } from 'semantic-ui-react';
+import { Button, Icon, Grid, List } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import TokenRemoveModal from './TokenRemoveModal';

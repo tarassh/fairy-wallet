@@ -39,7 +39,7 @@ export default class Wallet extends Component<Props> {
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transferFunds: <Tokens accounts={accounts} />,
-      stake: <StakedStats  account={accounts.account} />,
+      stake: <StakedStats  account={accounts.account} delegates={accounts.delegates} />,
       ram: <RamStats account={accounts.account} />
     };
 

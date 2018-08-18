@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Dropdown, Segment, Button, Grid } from 'semantic-ui-react';
+import { Dropdown, Button } from 'semantic-ui-react';
 import _ from 'lodash';
 import PublicKeyIcon from './PublicKeyIcon';
 import { setActiveAccount } from '../../actions/accounts';

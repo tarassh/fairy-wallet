@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { assetToNumber } from '../../utils/asset';
 import StakeChart from '../Shared/StakeChart';
+import MainContentContainer from './../Shared/UI/MainContent';
 
 type Props = {
   account: {},
@@ -27,32 +28,34 @@ class StakedStats extends Component<Props> {
     const netRefund = refunds.net;
 
     return (
-      <div>
-        <p className="title">Staked Information</p>
-        <p className="subtitle">CPU and Network bandwidth delegation</p>
-        <br />
+      <MainContentContainer 
+        title="Staked Information" 
+        subtitle=""
+        content={(
+          <div>
+            <StakeChart
+              stakes={cpuStakes}
+              max={cpuStake + cpuRefund}
+              active={active}
+            />
+            <p>Staked CPU {parseFloat(cpuStake).toFixed(4)}</p>
 
-        <StakeChart
-          stakes={cpuStakes}
-          max={cpuStake + cpuRefund}
-          active={active}
-        />
-        <p>Staked CPU {parseFloat(cpuStake).toFixed(4)}</p>
+            <StakeChart stakes={[cpuRefund]} max={cpuStake + cpuRefund} />
+            <p>Refund CPU {parseFloat(cpuRefund).toFixed(4)}</p>
 
-        <StakeChart stakes={[cpuRefund]} max={cpuStake + cpuRefund} />
-        <p>Refund CPU {parseFloat(cpuRefund).toFixed(4)}</p>
+            <StakeChart
+              stakes={netStakes}
+              max={netStake + netRefund}
+              active={active}
+            />
+            <p>Staked NET {parseFloat(netStake).toFixed(4)}</p>
 
-        <StakeChart
-          stakes={netStakes}
-          max={netStake + netRefund}
-          active={active}
-        />
-        <p>Staked NET {parseFloat(netStake).toFixed(4)}</p>
-
-        <StakeChart stakes={[netRefund]} max={netStake + netRefund} />
-        <p>Refund NET {parseFloat(netRefund).toFixed(4)}</p>
-      </div>
-    );
+            <StakeChart stakes={[netRefund]} max={netStake + netRefund} />
+            <p>Refund NET {parseFloat(netRefund).toFixed(4)}</p>
+          </div>
+        )}
+      />
+    )
   }
 }
 
