@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Grid, Icon, Button, Divider } from 'semantic-ui-react';
+import { List, Grid, Icon, Divider } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
@@ -189,15 +189,11 @@ function renderAction(action, account, handler, goto) {
         <Grid.Row style={{ fontSize: 'small' }}>
           <Grid.Column style={{ padding: '1em' }}>
             <p>Transaction ID: </p>
-            <Button
-              icon="info circle"
-              basic
-              circular
-              txid={action.txId}
-              onClick={goto}
-            />
-            &nbsp;
-            {action.txId}
+            <div txid={action.txId} onClick={() => goto(null, { txid: action.txId })}>
+              <Icon name='info circle' />
+              &nbsp;
+              {action.txId}
+            </div>
           </Grid.Column>
         </Grid.Row>
       )}

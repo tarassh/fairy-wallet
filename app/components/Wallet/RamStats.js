@@ -23,7 +23,7 @@ class RamStats extends Component<Props> {
           stakes={[ram_usage]}
           max={ram_quota}
         />
-        <p>RAM Usage {prettyBytes(ram_usage)}/{prettyBytes(ram_quota)}</p>
+        <p>RAM Used {prettyBytes(ram_usage)}&nbsp;/&nbsp;{prettyBytes(ram_quota)}</p>
       </div>
     );
   }
