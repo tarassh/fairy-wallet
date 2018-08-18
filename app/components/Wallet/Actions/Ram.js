@@ -20,31 +20,54 @@ export default class Ram extends Component<Props> {
         subtitle="Manage your RAM resource"
         className="adjust-content"
         content={
-          <Grid>
-            <Grid.Row columns={2}>
-              <Grid.Column>
-                <BuyRam
-                  transactions={transactions}
-                  account={account}
-                  buyram={actions.buyram}
-                  buyrambytes={actions.buyrambytes}
-                  resetState={actions.resetState}
-                  getAccount={actions.getAccount}
-                  getActions={actions.getActions}
-                />
-              </Grid.Column>
-              <Grid.Column>
-                <SellRam
-                  transactions={transactions}
-                  account={account}
-                  sellram={actions.sellram}
-                  resetState={actions.resetState}
-                  getAccount={actions.getAccount}
-                  getActions={actions.getActions}
-                />
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
+          <div className="ram">
+            <div className="buy-ram" >
+              <BuyRam
+                transactions={transactions}
+                account={account}
+                buyram={actions.buyram}
+                buyrambytes={actions.buyrambytes}
+                resetState={actions.resetState}
+                getAccount={actions.getAccount}
+                getActions={actions.getActions}
+              />
+            </div>
+            <div className="sell-ram" >
+              <SellRam
+                transactions={transactions}
+                account={account}
+                sellram={actions.sellram}
+                resetState={actions.resetState}
+                getAccount={actions.getAccount}
+                getActions={actions.getActions}
+              />
+            </div>
+          </div>
+          // <Grid>
+          //   <Grid.Row columns={2}>
+          //     <Grid.Column>
+          //       <BuyRam
+          //         transactions={transactions}
+          //         account={account}
+          //         buyram={actions.buyram}
+          //         buyrambytes={actions.buyrambytes}
+          //         resetState={actions.resetState}
+          //         getAccount={actions.getAccount}
+          //         getActions={actions.getActions}
+          //       />
+          //     </Grid.Column>
+          //     <Grid.Column>
+          //       <SellRam
+          //         transactions={transactions}
+          //         account={account}
+          //         sellram={actions.sellram}
+          //         resetState={actions.resetState}
+          //         getAccount={actions.getAccount}
+          //         getActions={actions.getActions}
+          //       />
+          //     </Grid.Column>
+          //   </Grid.Row>
+          // </Grid>
         } 
       />
       // <div>
