@@ -211,7 +211,8 @@
 }
 
 .fairy-container .column .header.underlined {
-    border-bottom: 1px solid #d2d2db;
+    -webkit-box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
 }
 
 .fairy-container .column .fairy-menu {
