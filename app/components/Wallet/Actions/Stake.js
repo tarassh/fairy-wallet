@@ -258,7 +258,6 @@ export default class Stake extends Component<Props> {
           <p className="tableheadertitle">net, eos</p>
         </Grid.Column>
       </Grid.Row>
-      <Divider />
     </Grid>
   );
 

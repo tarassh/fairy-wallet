@@ -6,7 +6,7 @@ import FairyMenuItem from './FairyMenuItem';
 const FairyMenu = (props) => (
   <div className="fairy-menu">
     {_.map(props.children, (item, index) => 
-      [item, index < props.children.length - 1 ? <div className="separator">&nbsp;</div> : ""]
+      [item, index < props.children.length - 1 ? <div key={index} className="separator">&nbsp;</div> : ""]
     )}
   </div>);
 
