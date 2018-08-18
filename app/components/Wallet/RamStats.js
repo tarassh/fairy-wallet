@@ -19,7 +19,7 @@ class RamStats extends Component<Props> {
         title="RAM information" 
         subtitle=""
         content={(
-          <div>
+          <div className='side-padding'>
             <StakeChart
               stakes={[ram_usage]}
               max={ram_quota}

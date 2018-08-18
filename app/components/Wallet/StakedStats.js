@@ -32,7 +32,7 @@ class StakedStats extends Component<Props> {
         title="Staked Information" 
         subtitle=""
         content={(
-          <div>
+          <div className='side-padding'>
             <StakeChart
               stakes={cpuStakes}
               max={cpuStake + cpuRefund}
