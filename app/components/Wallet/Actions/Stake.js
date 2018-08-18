@@ -4,6 +4,8 @@ import { Form, Grid, Divider, List } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
+import MainContentContainer from './../../Shared/UI/MainContent';
+import ScrollingTable from './../../Shared/UI/ScrollingTable';
 
 const numeral = require('numeral');
 const exactMath = require('exact-math');
@@ -17,6 +19,7 @@ type Props = {
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (boolean, string, string, string, string) => {},
+  setDelegateeAccount: (string) => {},
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {}
@@ -58,8 +61,8 @@ export default class Stake extends Component<Props> {
   }
 
   handleDelegateSelect = (e, { name }) => {
+    const stakes = this.getStakedValues(name);
     if (this.recipient !== name) {
-      const stakes = this.getStakedValues(name);
       if (stakes) {
         this.setState({
           cpu: stakes.cpu,
@@ -70,10 +73,13 @@ export default class Stake extends Component<Props> {
         });
       }
     }
+    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
   }
 
   handleRecipientChange = (e, { name, value }) => {
     this.setState({ [name]: value });
+    const stakes = this.getStakedValues(name);
+    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
   };
 
   handleChange = (e, { name, value }) => {
@@ -214,10 +220,6 @@ export default class Stake extends Component<Props> {
             onChange={this.handleChange}
           />
         </Form.Field>
-        { 
-
-          
-        }
         <Form.Button
           id="form-button-control-public"
           content="Update Stake"
@@ -261,38 +263,76 @@ export default class Stake extends Component<Props> {
   );
 
   renderDelegates = () => {
+    const { recipient } = this.state;
     let { delegates } = this.props;
     if (delegates && delegates === null) {
       delegates = [];
     }
 
     return (
-      <div>
-        {this.renderHeader()}
-        <List selection divided>
-          {_.map(delegates, delegate => (
-            <List.Item key={delegate.to} name={delegate.to} onClick={this.handleDelegateSelect}>
-              <List.Content>{this.renderDelegate(delegate)}</List.Content>
-            </List.Item>
-          ))}
-        </List>
-      </div>
+      <ScrollingTable 
+        header={
+          this.renderHeader()
+        }
+        content={
+          <List selection divided>
+            {_.map(delegates, delegate => (
+              <List.Item 
+                key={delegate.to} 
+                name={delegate.to} 
+                onClick={this.handleDelegateSelect} 
+                active={recipient === delegate.to}
+              >
+                <List.Content>{this.renderDelegate(delegate)}</List.Content>
+              </List.Item>
+             )
+            )}
+          </List>
+        }
+      />
+      // <div>
+      //   {this.renderHeader()}
+      //   <List selection divided>
+      //     {_.map(delegates, delegate => (
+      //       <List.Item 
+      //         key={delegate.to} 
+      //         name={delegate.to} 
+      //         onClick={this.handleDelegateSelect} 
+      //         active={recipient === delegate.to}
+      //       >
+      //         <List.Content>{this.renderDelegate(delegate)}</List.Content>
+      //       </List.Item>
+      //     ))}
+      //   </List>
+      // </div>
     );
   };
 
   render() {
     return (
-      <div>
-        <p className="title">Stake Management</p>
-        <p className="subtitle">Here you can delegate your resources to another accounts</p>
-        <br />
-        <Grid>
-          <Grid.Row columns={2}>
-            <Grid.Column>{this.renderForm()}</Grid.Column>
-            <Grid.Column>{this.renderDelegates()}</Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
+      <MainContentContainer 
+        title="Stake Management" 
+        subtitle="Here you can delegate your resources to another accounts"
+        content={
+          <Grid style={{ padding: "0 1rem" }}>
+            <Grid.Row stretched columns={2}>
+              <Grid.Column>{this.renderForm()}</Grid.Column>
+              <Grid.Column>{this.renderDelegates()}</Grid.Column>
+            </Grid.Row>
+          </Grid>
+        } 
+      />
+      // <div>
+      //   <p className="title">Stake Management</p>
+      //   <p className="subtitle">Here you can delegate your resources to another accounts</p>
+      //   <br />
+      //   <Grid>
+      //     <Grid.Row columns={2}>
+      //       <Grid.Column>{this.renderForm()}</Grid.Column>
+      //       <Grid.Column>{this.renderDelegates()}</Grid.Column>
+      //     </Grid.Row>
+      //   </Grid>
+      // </div>
     );
   }
 }

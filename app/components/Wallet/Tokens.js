@@ -4,6 +4,8 @@ import _ from 'lodash';
 
 import TokenRemoveModal from './TokenRemoveModal';
 import TokenAddModal from './TokenAddModal';
+import MainContentContainer from './../Shared/UI/MainContent';
+import ScrollingTable from './../Shared/UI/ScrollingTable';
 
 type Props = {
   accounts: {}
@@ -29,29 +31,60 @@ class Tokens extends Component<Props> {
     const { openAdd, openRemove, symbol, contract } = this.state;
 
     return (
-      <div>
-        <p className="title">Airdrops</p>
-        <p className="subtitle">Watch your Airdrops here</p>
-        <br />
-        <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
-        <TokenRemoveModal
-          open={openRemove}
-          handleClose={this.handleRemoveClose}
-          symbol={symbol}
-          contract={contract}
-        />
-        {renderHeader()}
-        <List divided style={{ marginBottom: '2em' }} selection>
-          {_.map(accounts.balances, balance => (
-            <List.Item key={`${balance.symbol}-${balance.contract}`}>
-              <List.Content>
-                {renderTokenBalance(balance, this.handleRemoveOpen)}
-              </List.Content>
-            </List.Item>
-          ))}
-        </List>
-        <Button onClick={this.handleAddOpen} circular icon="plus" />
-      </div>
+      <MainContentContainer 
+        title="Airdrops" 
+        subtitle="Watch your Airdrops here"
+        content={
+          <ScrollingTable 
+            header={
+              renderHeader()
+            }
+            content={
+              <span>
+                <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
+                <TokenRemoveModal
+                  open={openRemove}
+                  handleClose={this.handleRemoveClose}
+                  symbol={symbol}
+                  contract={contract}
+                />
+                <List divided style={{ marginBottom: '2em' }} selection>
+                  {_.map(accounts.balances, balance => (
+                    <List.Item key={`${balance.symbol}-${balance.contract}`}>
+                      <List.Content>
+                        {renderTokenBalance(balance, this.handleRemoveOpen)}
+                      </List.Content>
+                    </List.Item>
+                  ))}
+                </List>
+                <Button onClick={this.handleAddOpen} circular icon="plus" />
+              </span>
+            }
+          />}
+      />
+      // <div>
+      //   <p className="title">Airdrops</p>
+      //   <p className="subtitle">Watch your Airdrops here</p>
+      //   <br />
+      //   <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
+      //   <TokenRemoveModal
+      //     open={openRemove}
+      //     handleClose={this.handleRemoveClose}
+      //     symbol={symbol}
+      //     contract={contract}
+      //   />
+      //   {renderHeader()}
+      //   <List divided style={{ marginBottom: '2em' }} selection>
+      //     {_.map(accounts.balances, balance => (
+      //       <List.Item key={`${balance.symbol}-${balance.contract}`}>
+      //         <List.Content>
+      //           {renderTokenBalance(balance, this.handleRemoveOpen)}
+      //         </List.Content>
+      //       </List.Item>
+      //     ))}
+      //   </List>
+      //   <Button onClick={this.handleAddOpen} circular icon="plus" />
+      // </div>
     );
   }
 }
@@ -68,7 +101,6 @@ function renderHeader() {
           <p className="tableheadertitle">balance</p>
         </Grid.Column>
       </Grid.Row>
-      <Divider />
     </Grid>
   );
 }

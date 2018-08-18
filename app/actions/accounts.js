@@ -38,6 +38,10 @@ export function setActiveAccount(index) {
   };
 }
 
+export function setDelegateeAccount(name) {
+  return (dispatch: () => void) => dispatch({ type: types.SET_ACTIVE_DELEGATE_ACCOUNT, delegatee: name });
+}
+
 export function getAccount(name) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -155,14 +159,46 @@ export function getDelegationsFor(account) {
     });
 
     const { connection } = getState();
-    eos(connection).getTableRows(true, constants.eos.eosio, account, constants.eos.delband).then((results) => dispatch({
-      type: types.GET_DELEGATION_SUCCESS,
-      account,
-      delegates: results.rows
-    })).catch((err) => dispatch({
-      type: types.GET_DELEGATION_FAILURE,
-      err,
-    }));
+    eos(connection)
+      .getTableRows(true, constants.eos.eosio, account, constants.eos.delband)
+      .then(results =>
+        dispatch({
+          type: types.GET_DELEGATION_SUCCESS,
+          account,
+          delegates: results.rows
+        })
+      )
+      .catch(err =>
+        dispatch({
+          type: types.GET_DELEGATION_FAILURE,
+          err
+        })
+      );
+  };
+}
+
+export function getRefundsFor(account) {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.GET_REFUND_REQUEST
+    });
+
+    const { connection } = getState();
+    eos(connection)
+      .getTableRows(true, constants.eos.eosio, account, constants.eos.refunds)
+      .then(results =>
+        dispatch({
+          type: types.GET_REFUND_SUCCESS,
+          account,
+          refunds: results.rows
+        })
+      )
+      .catch(err =>
+        dispatch({
+          type: types.GET_REFUND_FAILURE,
+          err
+        })
+      );
   };
 }
 
@@ -171,5 +207,6 @@ export default {
   getAccount,
   getActions,
   getCurrencyBalance,
-  getDelegationsFor
+  getDelegationsFor,
+  setDelegateeAccount
 };

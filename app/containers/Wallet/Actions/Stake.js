@@ -7,7 +7,7 @@ import {
   resetState,
   delegateUndelegate
 } from '../../../actions/transactions';
-import { getAccount, getActions } from '../../../actions/accounts';
+import { getAccount, getActions, setDelegateeAccount } from '../../../actions/accounts';
 import Stake from '../../../components/Wallet/Actions/Stake';
 
 type Props = {
@@ -17,6 +17,7 @@ type Props = {
   delegate: (string, string, string, string) => {},
   undelegate: (string, string, string, string) => {},
   delegateUndelegate: (string, string, string, string) => {},
+  setDelegateeAccount: (string) => {},
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {}
@@ -37,6 +38,7 @@ class StakeContainer extends Component<Props> {
         undelegate={this.props.undelegate}
         resetState={this.props.resetState}
         delegateUndelegate={this.props.delegateUndelegate}
+        setDelegateeAccount={this.props.setDelegateeAccount}
       />
     );
   }
@@ -58,7 +60,8 @@ function mapDispatchToProps(dispatch) {
       resetState,
       getAccount,
       getActions,
-      delegateUndelegate
+      delegateUndelegate,
+      setDelegateeAccount
     },
     dispatch
   );

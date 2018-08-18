@@ -1,10 +1,20 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Icon, Checkbox, Button, Grid, Form } from 'semantic-ui-react';
+import {
+  List,
+  Icon,
+  Checkbox,
+  Button,
+  Grid,
+  Form,
+  Menu
+} from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { InputAccount } from '../../Shared/EosComponents';
+import MainContentContainer from './../../Shared/UI/MainContent';
+import ScrollingTable from './../../Shared/UI/ScrollingTable';
 
 const numeral = require('numeral');
 
@@ -53,7 +63,8 @@ export default class Vote extends Component<Props> {
       initialVotes: _.clone(votes),
       actualVotes: _.clone(votes),
       disabled: true,
-      producersList
+      producersList,
+      activeItem: 'all'
     });
   }
 
@@ -111,6 +122,8 @@ export default class Vote extends Component<Props> {
     shell.openExternal(url);
   };
 
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+
   currentVotes = () => _.keys(this.state.actualVotes);
 
   toggle = (e, { id, checked }) => {
@@ -156,7 +169,7 @@ export default class Vote extends Component<Props> {
   renderProducer = (producer, producing) => (
     <Grid>
       <Grid.Row>
-        <Grid.Column widht={1}>
+        <Grid.Column width={2}>
           <Checkbox
             id={producer.owner}
             onChange={this.toggle}
@@ -166,7 +179,7 @@ export default class Vote extends Component<Props> {
             }
           />
         </Grid.Column>
-        <Grid.Column widht={1}>
+        <Grid.Column width={1}>
           {producing ? (
             <Icon name="smile outline" />
           ) : (
@@ -175,7 +188,7 @@ export default class Vote extends Component<Props> {
         </Grid.Column>
         <Grid.Column width={4}>{producer.owner}</Grid.Column>
         <Grid.Column
-          width={7}
+          width={6}
           onClick={() => this.handleGoto(producer.url)}
           style={{ cursor: 'pointer' }}
         >
@@ -192,10 +205,22 @@ export default class Vote extends Component<Props> {
 
   render() {
     const { loading, transactions } = this.props;
-    const { openModal, disabled, producersList, filter } = this.state;
+    const {
+      openModal,
+      disabled,
+      producersList,
+      filter,
+      activeItem
+    } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
     let filteredList = producersList;
+    if (activeItem === 'checked') {
+      filteredList = _.filter(
+        filteredList,
+        el => this.state.actualVotes[el.props.value] === true
+      );
+    }
     if (filter && filter.length > 0) {
       filteredList = _.filter(
         producersList,
@@ -203,45 +228,120 @@ export default class Vote extends Component<Props> {
       );
     }
 
+    const menuFilter = (
+      <Menu text widths={5}>
+        <Menu.Item
+          name="all"
+          active={activeItem === 'all'}
+          onClick={this.handleItemClick}
+        >
+          All
+        </Menu.Item>
+        <Menu.Item
+          name="checked"
+          active={activeItem === 'checked'}
+          onClick={this.handleItemClick}
+        >
+          Selected
+        </Menu.Item>
+      </Menu>
+    );
+
+    function renderHeader() {
+      return (
+        <Grid className="tableheader">
+          <Grid.Row>
+            <Grid.Column width={1}>
+              <p className="tableheadertitle" />
+            </Grid.Column>
+            <Grid.Column width={1}>
+              <p className="tableheadertitle" />
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <p className="tableheadertitle">account</p>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <p className="tableheadertitle">url</p>
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <p className="tableheadertitle">total votes</p>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      );
+    }
+
     return (
-      <div>
-        <p className="title">Vote for block producers</p>
-        <p className="subtitle">You can vote up to 30</p>
-        <br />
-        <Form loading={isLoading} className="producers-list">
-          <TransactionsModal
-            open={openModal}
-            transactions={transactions}
-            handleClose={this.handleClose}
-          />
-          <Grid>
-            <Grid.Row columns={3} textAlign="center">
-              <Grid.Column>
-                <h5>
-                  {this.currentVotes().length} / {MAX_VOTES}
-                </h5>
-              </Grid.Column>
-              <Grid.Column>
-                <InputAccount
-                  placeholder="Search block producer..."
-                  fluid
-                  size="tiny"
-                  onChange={this.handleChange}
-                  icon="search"
+      <MainContentContainer 
+        title="Vote for block producers" 
+        subtitle="You can vote up to 30"
+        content={
+          <ScrollingTable 
+            header={
+              <Form loading={isLoading}>
+                <TransactionsModal
+                  open={openModal}
+                  transactions={transactions}
+                  handleClose={this.handleClose}
                 />
-              </Grid.Column>
-              <Grid.Column>
-                <Button fluid onClick={this.vote} disabled={disabled}>
-                  Vote
-                </Button>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-          <List divided relaxed className="scrollable">
-            {!isLoading ? filteredList : undefined}
-          </List>
-        </Form>
-      </div>
+                <Form.Group inline widths="equal">
+                  <p className="tableheadertitle">
+                    {this.currentVotes().length}/{MAX_VOTES}
+                  </p>
+                  {menuFilter}
+                  <InputAccount
+                    placeholder="Search block producer..."
+                    size="tiny"
+                    onChange={this.handleChange}
+                    icon="search"
+                  />
+                  <Button onClick={this.vote} disabled={disabled}>
+                    Vote
+                  </Button>
+                </Form.Group>
+              </Form>
+              }
+            content={
+              <List divided relaxed className="scrollable">
+                {!isLoading ? filteredList : undefined}
+              </List>
+              }
+          />
+
+          // </Form>
+      }
+      />
+
+      // <div>
+      //   <p className="title">Vote for block producers</p>
+      //   <p className="subtitle">You can vote up to 30</p>
+      //   <br />
+      //   <Form loading={isLoading} className="producers-list">
+      //     <TransactionsModal
+      //       open={openModal}
+      //       transactions={transactions}
+      //       handleClose={this.handleClose}
+      //     />
+      //     <Form.Group inline widths="equal">
+      //       <p className="tableheadertitle">
+      //         {this.currentVotes().length}/{MAX_VOTES}
+      //       </p>
+      //       {menuFilter}
+      //       <InputAccount
+      //         placeholder="Search block producer..."
+      //         size="tiny"
+      //         onChange={this.handleChange}
+      //         icon="search"
+      //       />
+      //       <Button onClick={this.vote} disabled={disabled}>
+      //         Vote
+      //       </Button>
+      //     </Form.Group>
+      //     <List divided relaxed className="scrollable">
+      //       {!isLoading ? filteredList : undefined}
+      //     </List>
+      //   </Form>
+      // </div>
     );
   }
 }

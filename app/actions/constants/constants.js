@@ -3,6 +3,7 @@ const eos = {
   transfer: 'transfer',
   global: 'global',
   delband: 'delband',
+  refunds: 'refunds',
   delegate: 'delegatebw',
   undelegate: 'undelegatebw',
   voteproducer: 'voteproducer',
@@ -10,6 +11,5 @@ const eos = {
   buyrambytes: 'buyrambytes',
   sellram: 'sellram'
 };
-
 
 export default { eos };

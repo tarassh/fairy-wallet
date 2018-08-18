@@ -5,6 +5,7 @@ import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
 import ScrollingTable from './../../Shared/UI/ScrollingTable';
+import MainContentContainer from './../../Shared/UI/MainContent';
 
 type Props = {
   actions: {},
@@ -90,7 +91,10 @@ export default class History extends Component<Props> {
         <List.Content>
           <List selection divided>
             {_.map(_.reverse(dayGroup.actions), action => (
-              <List.Item key={`${action.time}-${action.txId}-${action.digest}`}>
+              <List.Item
+                key={`${action.time}-${action.txId}-${action.digest}`}
+                active={action.active}
+              >
                 <List.Content>
                   {renderAction(
                     action,
@@ -107,12 +111,16 @@ export default class History extends Component<Props> {
     ));
 
     return (
-      <div className="history">
-        <div className="header">
-          <p className="title">History</p>        
-          <p className="subtitle">View account activity</p>        
-        </div>
-        <div className="content">
+      // <div className="history">
+      //   <div className="header">
+      //     <p className="title">History</p>        
+      //     <p className="subtitle">View account activity</p>        
+      //   </div>
+      //   <div className="content">
+      <MainContentContainer 
+        title="History" 
+        subtitle="View account activity"
+        content={
           <ScrollingTable 
             header={
               renderHeader()
@@ -136,9 +144,10 @@ export default class History extends Component<Props> {
                 )}
               </span>
             }
-          />
-        </div>
-      </div>
+          />}
+      />
+      //   </div>
+      // </div>
     );
   }
 }
@@ -183,6 +192,7 @@ function renderAction(action, account, handler, goto) {
             <Button
               icon="info circle"
               basic
+              circular
               txid={action.txId}
               onClick={goto}
             />

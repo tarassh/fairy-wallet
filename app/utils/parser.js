@@ -25,6 +25,12 @@ const voteproducer = new RegExp(
   `^voter ${account} proxy (${account}){0,1} producers\\s{0,1}((${account}),{0,1}){0,30}$`
 );
 
+const buyrambytes = new RegExp(
+  `^payer ${account} receiver ${account} bytes [0-9]+$`
+);
+
+const sellram = new RegExp(`^account ${account} bytes [0-9]+$`);
+
 const re = {
   symbol: new RegExp(`^${symbol}$`),
   float: new RegExp(`^${float}$`),
@@ -35,6 +41,8 @@ const re = {
   undelegatebw,
   delegatebw,
   buyram,
+  buyrambytes,
+  sellram,
   voteproducer
 };
 
@@ -57,31 +65,46 @@ const fn = {
   },
 
   delegatebw: action => {
-    const { stake_net_quantity, stake_cpu_quantity } = action.data; // eslint-disable-line camelcase
+    const { stake_net_quantity, stake_cpu_quantity, to } = action.data; // eslint-disable-line camelcase
+    const amount = numberToAsset(
+      assetToNumber(stake_net_quantity) + assetToNumber(stake_cpu_quantity)
+    );
     return {
-      desc: 'Staked',
-      quantity: numberToAsset(
-        assetToNumber(stake_net_quantity) + assetToNumber(stake_cpu_quantity)
-      )
+      desc: `to ${to}`,
+      quantity: `-${amount}`
     };
   },
 
   undelegatebw: action => {
-    const { unstake_net_quantity, unstake_cpu_quantity } = action.data; // eslint-disable-line camelcase
+    const { unstake_net_quantity, unstake_cpu_quantity, from } = action.data; // eslint-disable-line camelcase
+    const amount = numberToAsset(
+      assetToNumber(unstake_net_quantity) + assetToNumber(unstake_cpu_quantity)
+    );
     return {
-      desc: 'Unstaked',
-      quantity: numberToAsset(
-        assetToNumber(unstake_net_quantity) +
-          assetToNumber(unstake_cpu_quantity)
-      )
+      desc: `from ${from}`,
+      quantity: `+${amount}`
     };
   },
 
   buyram: action => {
-    const { quant } = action.data;
+    const { quant, receiver } = action.data;
     return {
-      desc: 'Buy RAM',
+      desc: `for ${receiver}`,
       quantity: `-${quant}`
+    };
+  },
+
+  buyrambytes: action => {
+    const { bytes, receiver } = action.data;
+    return {
+      desc: `${bytes} bytes for ${receiver}`
+    };
+  },
+
+  sellram: action => {
+    const { bytes } = action.data;
+    return {
+      desc: `${bytes} bytes`
     };
   },
 

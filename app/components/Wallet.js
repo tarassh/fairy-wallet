@@ -9,6 +9,7 @@ import styles from './Wallet.css'; // eslint-disable-line no-unused-vars
 import Tokens from './Wallet/Tokens';
 import StakedStats from './Wallet/StakedStats';
 import UtilityStats from './Shared/UtilityStats';
+import RamStats from './Wallet/RamStats'
 
 type Props = {
   states: {},
@@ -38,7 +39,8 @@ export default class Wallet extends Component<Props> {
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transferFunds: <Tokens accounts={accounts} />,
-      stake: <StakedStats  account={accounts.account} />
+      stake: <StakedStats  account={accounts.account} />,
+      ram: <RamStats account={accounts.account} />
     };
 
     const actionMenu = (

@@ -12,6 +12,7 @@ import {
   InputAccount,
   InputFloat
 } from '../../../components/Shared/EosComponents';
+import MainContentContainer from './../../../components/Shared/UI/MainContent';
 
 type Props = {
   settings: {},
@@ -99,66 +100,127 @@ class SendContainer extends Component<Props> {
     const enableRequest = token !== '' && recipient !== '' && amount !== '';
 
     return (
-      <div className="no-border">
-        <p className="title">Transfer funds</p>
-        <p className="subtitle">Send your EOS and Airdrop tokens here</p>
-        <br />
-        <TransactionsModal
-          open={openModal}
-          transactions={transactions}
-          handleClose={this.handleClose}
-        />
-        <Form onSubmit={this.handleSubmit}>
-          <InputAccount
-            id="form-input-control-recipient"
-            label="Recipient"
-            name="recipient"
-            value={recipient}
-            onChange={this.handleChange}
-          />
-          <Form.Group widths="equal">
-            <InputFloat
-              id="form-textarea-control-amount"
-              label="Amount"
-              placeholder="0.0000"
-              min={0}
-              max={maxAmount}
-              name="amount"
-              value={amount}
+      <MainContentContainer 
+        title="Transfer funds" 
+        subtitle="Send your EOS and Airdrop tokens here"
+        content={
+          <Form onSubmit={this.handleSubmit} style={{ padding: "0 1rem" }}>
+            <TransactionsModal
+              open={openModal}
+              transactions={transactions}
+              handleClose={this.handleClose}
+            />
+            <InputAccount
+              id="form-input-control-recipient"
+              label="Recipient"
+              name="recipient"
+              value={recipient}
               onChange={this.handleChange}
-            >
-              <Form.Dropdown
-                button
-                basic
-                floating
-                options={tokens}
-                defaultValue="EOS"
-                name="token"
-                text={token}
+            />
+            <Form.Group widths="equal">
+              <InputFloat
+                id="form-textarea-control-amount"
+                label="Amount"
+                placeholder="0.0000"
+                min={0}
+                max={maxAmount}
+                name="amount"
+                value={amount}
                 onChange={this.handleChange}
-                className="tokendropdown"
-                style={{ paddingTop: '1em', paddingBottom: '1em' }}
-              />
-              <input />
-            </InputFloat>
-          </Form.Group>
-          <Form.Input
-            id="form-button-control-public"
-            content="Memo"
-            label="Memo"
-            name="memo"
-            value={memo}
-            onChange={this.handleChange}
-            maxLength={80}
-            placeholder="80 symbols long..."
-          />
-          <Form.Button
-            id="form-button-control-public"
-            content="Transfer"
-            disabled={!enableRequest}
-          />
-        </Form>
-      </div>
+              >
+                <Form.Dropdown
+                  button
+                  basic
+                  floating
+                  options={tokens}
+                  defaultValue="EOS"
+                  name="token"
+                  text={token}
+                  onChange={this.handleChange}
+                  className="tokendropdown"
+                  style={{ paddingTop: '1em', paddingBottom: '1em' }}
+                />
+                <input />
+              </InputFloat>
+            </Form.Group>
+            <Form.Input
+              id="form-button-control-public"
+              content="Memo"
+              label="Memo"
+              name="memo"
+              value={memo}
+              onChange={this.handleChange}
+              maxLength={80}
+              placeholder="80 symbols long..."
+            />
+            <Form.Button
+              id="form-button-control-public"
+              content="Transfer"
+              disabled={!enableRequest}
+            />
+          </Form>
+        } 
+      />
+      // <div className="no-border">
+      //   <p className="title">Transfer funds</p>
+      //   <p className="subtitle">Send your EOS and Airdrop tokens here</p>
+      //   <br />
+      //   <TransactionsModal
+      //     open={openModal}
+      //     transactions={transactions}
+      //     handleClose={this.handleClose}
+      //   />
+      //   <Form onSubmit={this.handleSubmit}>
+      //     <InputAccount
+      //       id="form-input-control-recipient"
+      //       label="Recipient"
+      //       name="recipient"
+      //       value={recipient}
+      //       onChange={this.handleChange}
+      //     />
+      //     <Form.Group widths="equal">
+      //       <InputFloat
+      //         id="form-textarea-control-amount"
+      //         label="Amount"
+      //         placeholder="0.0000"
+      //         min={0}
+      //         max={maxAmount}
+      //         name="amount"
+      //         value={amount}
+      //         onChange={this.handleChange}
+      //       >
+      //         <Form.Dropdown
+      //           button
+      //           basic
+      //           floating
+      //           options={tokens}
+      //           defaultValue="EOS"
+      //           name="token"
+      //           text={token}
+      //           onChange={this.handleChange}
+      //           className="tokendropdown"
+      //           style={{ paddingTop: '1em', paddingBottom: '1em' }}
+      //         />
+      //         <input />
+      //       </InputFloat>
+      //     </Form.Group>
+      //     <Form.Input
+      //       id="form-button-control-public"
+      //       content="Memo"
+      //       label="Memo"
+      //       name="memo"
+      //       value={memo}
+      //       onChange={this.handleChange}
+      //       maxLength={80}
+      //       placeholder="80 symbols long..."
+      //     />
+      //     <Form.Button
+      //       id="form-button-control-public"
+      //       content="Transfer"
+      //       disabled={!enableRequest}
+      //     />
+      //   </Form>
+      // </div>
     );
   }
 }
