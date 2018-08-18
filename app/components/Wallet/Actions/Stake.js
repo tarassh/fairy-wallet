@@ -323,7 +323,7 @@ export default class Stake extends Component<Props> {
       //     </Grid>
       //   } 
       // />
-      <div>
+      <div className='side-padding'>
         <p className="title">Stake Management</p>
         <p className="subtitle">Here you can delegate your resources to another accounts</p>
         <br />
