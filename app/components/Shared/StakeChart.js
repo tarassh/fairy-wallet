@@ -44,8 +44,6 @@ class StakeChart extends Component<Props> {
             width="100%" 
             height={height} 
             style={{ fill: 'lightgrey' }}                   
-            rx={height/3}
-            ry={height/3}
           />
           <g transform='translate(0,0)'>
             {
@@ -56,8 +54,8 @@ class StakeChart extends Component<Props> {
                   y='0%' 
 
                   width={numeral(p.w).format('0%')} 
-                  height='95%' 
-                  style={{ fill: makeColor(сolors[i % сolors.length], i === active) }} 
+                  height='100%' 
+                  style={{ fill: makeColor(сolors[i % сolors.length]) }} 
                 />
               ))
             }
@@ -70,9 +68,8 @@ class StakeChart extends Component<Props> {
   }
 }
 
-function makeColor(c, active = false) {
-  const alpha = active ? 0.5 : 1;
-  return `rgba(${c},${alpha})`
+function makeColor(c) {
+  return `rgba(${c},${1})`
 }
 
 export default StakeChart;
