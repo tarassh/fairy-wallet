@@ -1,17 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getClasses } from './utils';
 
-const ScrollingTable = (props) => (
-  <div className="scrolling-table">
-    <div className="scrolling-table-header underline">
-      {props.header}
-    </div>
-    <div className="scrolling-table-body">
-      <div className="scrolling-table-content">
-        {props.content}
+const ScrollingTable = (props) => {
+  const classes = [
+    "scrolling-table"
+  ];
+
+  if (props.className) {
+    classes.push(props.className)
+  }
+
+  return (
+    <div className={getClasses(classes)}>
+      <div className="scrolling-table-header underline">
+        {props.header}
+      </div>
+      <div className="scrolling-table-body">
+        <div className="scrolling-table-content">
+          {props.content}
+        </div>
       </div>
     </div>
-  </div>);
+  )
+};
 
 ScrollingTable.propTypes = {
   header: PropTypes.node,

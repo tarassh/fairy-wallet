@@ -234,12 +234,12 @@ export default class Stake extends Component<Props> {
     const net = numeral(assetToNumber(delegate.net_weight)).format('0,0.0000');
     return (
       <Grid>
-        <Grid.Row columns={3}>
-          <Grid.Column>
+        <Grid.Row>
+          <Grid.Column width={4}>
             <p>{delegate.to}</p>
           </Grid.Column>
-          <Grid.Column textAlign="right">{cpu}</Grid.Column>
-          <Grid.Column textAlign="right">{net}</Grid.Column>
+          <Grid.Column textAlign="right" width={6}>{cpu}</Grid.Column>
+          <Grid.Column textAlign="right" width={6}>{net}</Grid.Column>
         </Grid.Row>
       </Grid>
     );
@@ -247,14 +247,14 @@ export default class Stake extends Component<Props> {
 
   renderHeader = () => (
     <Grid className="tableheader">
-      <Grid.Row columns={3}>
-        <Grid.Column>
+      <Grid.Row>
+        <Grid.Column width={4}>
           <p className="tableheadertitle">account</p>
         </Grid.Column>
-        <Grid.Column textAlign="right">
+        <Grid.Column textAlign="right" width={6}>
           <p className="tableheadertitle">cpu, eos</p>
         </Grid.Column>
-        <Grid.Column textAlign="right">
+        <Grid.Column textAlign="right" width={6}>
           <p className="tableheadertitle">net, eos</p>
         </Grid.Column>
       </Grid.Row>
@@ -269,69 +269,71 @@ export default class Stake extends Component<Props> {
     }
 
     return (
-      <ScrollingTable 
-        header={
-          this.renderHeader()
-        }
-        content={
-          <List selection divided>
-            {_.map(delegates, delegate => (
-              <List.Item 
-                key={delegate.to} 
-                name={delegate.to} 
-                onClick={this.handleDelegateSelect} 
-                active={recipient === delegate.to}
-              >
-                <List.Content>{this.renderDelegate(delegate)}</List.Content>
-              </List.Item>
-             )
-            )}
-          </List>
-        }
-      />
-      // <div>
-      //   {this.renderHeader()}
-      //   <List selection divided>
-      //     {_.map(delegates, delegate => (
-      //       <List.Item 
-      //         key={delegate.to} 
-      //         name={delegate.to} 
-      //         onClick={this.handleDelegateSelect} 
-      //         active={recipient === delegate.to}
-      //       >
-      //         <List.Content>{this.renderDelegate(delegate)}</List.Content>
-      //       </List.Item>
-      //     ))}
-      //   </List>
-      // </div>
+      // <ScrollingTable 
+      //   className='no-side-padding'
+      //   header={
+      //     this.renderHeader()
+      //   }
+      //   content={
+      //     <List selection divided>
+      //       {_.map(delegates, delegate => (
+      //         <List.Item 
+      //           key={delegate.to} 
+      //           name={delegate.to} 
+      //           onClick={this.handleDelegateSelect} 
+      //           active={recipient === delegate.to}
+      //         >
+      //           <List.Content>{this.renderDelegate(delegate)}</List.Content>
+      //         </List.Item>
+      //        )
+      //       )}
+      //     </List>
+      //   }
+      // />
+      <div>
+        {this.renderHeader()}
+        <List selection divided>
+          {_.map(delegates, delegate => (
+            <List.Item 
+              key={delegate.to} 
+              name={delegate.to} 
+              onClick={this.handleDelegateSelect} 
+              active={recipient === delegate.to}
+            >
+              <List.Content>{this.renderDelegate(delegate)}</List.Content>
+            </List.Item>
+          ))}
+        </List>
+      </div>
     );
   };
 
   render() {
     return (
-      <MainContentContainer 
-        title="Stake Management" 
-        subtitle="Here you can delegate your resources to another accounts"
-        content={
-          <Grid className='side-padding'>
-            <Grid.Row stretched columns={2}>
-              <Grid.Column>{this.renderForm()}</Grid.Column>
-              <Grid.Column>{this.renderDelegates()}</Grid.Column>
-            </Grid.Row>
-          </Grid>
-        } 
-      />
-      // <div>
-      //   <p className="title">Stake Management</p>
-      //   <p className="subtitle">Here you can delegate your resources to another accounts</p>
-      //   <br />
-      //   <Grid>
-      //     <Grid.Row columns={2}>
-      //       <Grid.Column>{this.renderForm()}</Grid.Column>
-      //       <Grid.Column>{this.renderDelegates()}</Grid.Column>
-      //     </Grid.Row>
-      //   </Grid>
-      // </div>
+      // <MainContentContainer 
+      //   title="Stake Management" 
+      //   subtitle="Here you can delegate your resources to another accounts"
+      //   content={
+      //     <div>
+      //     <Grid className='side-padding'>
+      //       <Grid.Row columns={2}>
+      //         <Grid.Column stretched>{this.renderForm()}</Grid.Column>
+      //         <Grid.Column stretched>{this.renderDelegates()}</Grid.Column>
+      //       </Grid.Row>
+      //     </Grid>
+      //   } 
+      // />
+      <div>
+        <p className="title">Stake Management</p>
+        <p className="subtitle">Here you can delegate your resources to another accounts</p>
+        <br />
+        <Grid>
+          <Grid.Row columns={2}>
+            <Grid.Column>{this.renderForm()}</Grid.Column>
+            <Grid.Column>{this.renderDelegates()}</Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     );
   }
 }

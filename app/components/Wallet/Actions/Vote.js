@@ -247,30 +247,6 @@ export default class Vote extends Component<Props> {
       </Menu>
     );
 
-    function renderHeader() {
-      return (
-        <Grid className="tableheader">
-          <Grid.Row>
-            <Grid.Column width={1}>
-              <p className="tableheadertitle" />
-            </Grid.Column>
-            <Grid.Column width={1}>
-              <p className="tableheadertitle" />
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <p className="tableheadertitle">account</p>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <p className="tableheadertitle">url</p>
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <p className="tableheadertitle">total votes</p>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      );
-    }
-
     return (
       <MainContentContainer 
         title="Vote for block producers" 
