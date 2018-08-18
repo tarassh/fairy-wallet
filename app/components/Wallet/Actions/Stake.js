@@ -269,71 +269,45 @@ export default class Stake extends Component<Props> {
     }
 
     return (
-      // <ScrollingTable 
-      //   className='no-side-padding'
-      //   header={
-      //     this.renderHeader()
-      //   }
-      //   content={
-      //     <List selection divided>
-      //       {_.map(delegates, delegate => (
-      //         <List.Item 
-      //           key={delegate.to} 
-      //           name={delegate.to} 
-      //           onClick={this.handleDelegateSelect} 
-      //           active={recipient === delegate.to}
-      //         >
-      //           <List.Content>{this.renderDelegate(delegate)}</List.Content>
-      //         </List.Item>
-      //        )
-      //       )}
-      //     </List>
-      //   }
-      // />
-      <div>
-        {this.renderHeader()}
-        <List selection divided>
-          {_.map(delegates, delegate => (
-            <List.Item 
-              key={delegate.to} 
-              name={delegate.to} 
-              onClick={this.handleDelegateSelect} 
-              active={recipient === delegate.to}
-            >
-              <List.Content>{this.renderDelegate(delegate)}</List.Content>
-            </List.Item>
+      <ScrollingTable
+        header={
+          this.renderHeader()
+        }
+        content={
+          <List selection divided>
+            {_.map(delegates, delegate => (
+              <List.Item 
+                key={delegate.to} 
+                name={delegate.to} 
+                onClick={this.handleDelegateSelect} 
+                active={recipient === delegate.to}
+              >
+                <List.Content>{this.renderDelegate(delegate)}</List.Content>
+              </List.Item>
           ))}
-        </List>
-      </div>
+          </List>
+        }
+      />
     );
   };
 
   render() {
     return (
-      // <MainContentContainer 
-      //   title="Stake Management" 
-      //   subtitle="Here you can delegate your resources to another accounts"
-      //   content={
-      //     <div>
-      //     <Grid className='side-padding'>
-      //       <Grid.Row columns={2}>
-      //         <Grid.Column stretched>{this.renderForm()}</Grid.Column>
-      //         <Grid.Column stretched>{this.renderDelegates()}</Grid.Column>
-      //       </Grid.Row>
-      //     </Grid>
-      //   } 
-      // />
-      <div className='side-padding'>
-        <p className="title">Stake Management</p>
-        <p className="subtitle">Here you can delegate your resources to another accounts</p>
-        <br />
-        <Grid>
-          <Grid.Row columns={2}>
-            <Grid.Column>{this.renderForm()}</Grid.Column>
-            <Grid.Column>{this.renderDelegates()}</Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
+      <MainContentContainer 
+        title="Stake Management"
+        subtitle="Here you can delegate your resources to another accounts"
+        className="adjust-content"
+        content={
+          <div className="stake">
+            <div className="stake-form" >
+              {this.renderForm()}
+            </div>
+            <div className="stake-delegation-table" >
+              {this.renderDelegates()}
+            </div>
+          </div>
+        }
+      />
     );
   }
 }

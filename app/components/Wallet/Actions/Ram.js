@@ -18,6 +18,7 @@ export default class Ram extends Component<Props> {
       <MainContentContainer 
         title="RAM management" 
         subtitle="Manage your RAM resource"
+        className="adjust-content"
         content={
           <Grid>
             <Grid.Row columns={2}>

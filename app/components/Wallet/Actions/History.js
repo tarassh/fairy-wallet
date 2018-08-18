@@ -111,12 +111,6 @@ export default class History extends Component<Props> {
     ));
 
     return (
-      // <div className="history">
-      //   <div className="header">
-      //     <p className="title">History</p>        
-      //     <p className="subtitle">View account activity</p>        
-      //   </div>
-      //   <div className="content">
       <MainContentContainer 
         title="History" 
         subtitle="View account activity"
@@ -146,8 +140,6 @@ export default class History extends Component<Props> {
             }
           />}
       />
-      //   </div>
-      // </div>
     );
   }
 }

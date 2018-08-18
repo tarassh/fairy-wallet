@@ -19,11 +19,13 @@ const FairyContainerColumnBody = (props) => {
 };
 
 FairyContainerColumnBody.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string
 };
 
 FairyContainerColumnBody.defaultProps = {
-  children: []
+  children: [],
+  className: ""
 };
 
 export default FairyContainerColumnBody;

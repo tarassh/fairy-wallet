@@ -103,6 +103,7 @@ class SendContainer extends Component<Props> {
       <MainContentContainer 
         title="Transfer funds" 
         subtitle="Send your EOS and Airdrop tokens here"
+        className="adjust-content"
         content={
           <Form onSubmit={this.handleSubmit} className='side-padding'>
             <TransactionsModal

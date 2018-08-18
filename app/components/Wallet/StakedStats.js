@@ -31,6 +31,7 @@ class StakedStats extends Component<Props> {
       <MainContentContainer 
         title="Staked Information" 
         subtitle=""
+        className="adjust-top-margin"
         content={(
           <div className='side-padding'>
             <StakeChart

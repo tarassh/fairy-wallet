@@ -18,6 +18,7 @@ class RamStats extends Component<Props> {
       <MainContentContainer 
         title="RAM information" 
         subtitle=""
+        className="adjust-top-margin"
         content={(
           <div className='side-padding'>
             <StakeChart
