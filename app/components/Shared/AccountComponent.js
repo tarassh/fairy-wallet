@@ -50,8 +50,8 @@ class AccountComponent extends Component<Props> {
     const trigger = <Button circular basic icon="user" loading={isLoading} />;
 
     return (
-      <FairyMenu>
-        <FairyMenu.MenuItem>
+      <FairyMenu separator={false}>
+        <FairyMenu.MenuItem className='account'>
           <FairyDataBlock 
             data={
               <Dropdown icon={null} trigger={trigger} pointing='top left'>
@@ -63,7 +63,7 @@ class AccountComponent extends Component<Props> {
             }
           />
         </FairyMenu.MenuItem>
-        <FairyMenu.MenuItem>
+        <FairyMenu.MenuItem className='public-key'>
           <FairyDataBlock 
             data={
               <PublicKeyIcon />

@@ -24,7 +24,7 @@ function numberToAsset(amount, symbol = 'EOS', defaultValue = '0.0000') {
 function numberToPrettyAsset(amount, symbol = 'EOS', defaultValue = '0.0000') {
   if (isNumber(amount)) {
     let formattedAmount = numeral(amount).format('0.0000');
-    if (amount >= 100000) {
+    if (amount >= 1000000) {
       formattedAmount = numeral(amount).format('0a');
     } else if (amount >= 1000) {
       formattedAmount = numeral(amount).format('0,0.0');

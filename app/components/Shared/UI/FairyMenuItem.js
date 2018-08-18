@@ -1,17 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { getClasses } from './utils';
 
-const FairyMenuItem = (props) => (
-  <div className="menu-item">
-    {props.children}
-  </div>);
+const FairyMenuItem = (props) => { 
+  const classes = [
+    "menu-item"
+  ];
+
+  if (props.className) {
+    classes.push(props.className);
+  }
+
+  return (
+    <div className={getClasses(classes)}>
+      {props.children}
+    </div>
+  );
+}
 
 FairyMenuItem.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
+  className: PropTypes.string
 }
 
 FairyMenuItem.defaultProps = {
-  children: []
+  children: [],
+  className: ""
 };
 
 export default FairyMenuItem;
