@@ -315,7 +315,7 @@
 }
 
 .scrolling-table .scrolling-table-body {
-    height: 90% !important;
+    height: 90%;
 }
 
 .scrolling-table .scrolling-table-body .scrolling-table-content:hover {
@@ -433,12 +433,16 @@
 } 
 
 .scrolling-table.vote .scrolling-table-header{
-    height: 5%
+    height: 3%
 } 
 
 .scrolling-table.vote .scrolling-table-body{
     height: 95%
 } 
+
+.scrolling-table.vote .list .item:first-child {
+    padding-top: 0.5rem;
+}
 
 .public-key-confirm-modal {
     width: 100%;
