@@ -445,6 +445,7 @@
     text-align: center;
 }
 
+.ui.form .public-key-confirm-modal button,
 .ui.modal .content .public-key-confirm-modal button {
     display: inline-block;
     width: 25%;

@@ -140,6 +140,14 @@ p.public-key {
     background-color: white;
 }
 
+span.public-key {
+    padding: 0.3rem;
+    border-width: 1px;
+    border-style: dashed;
+    border-color: rgba(51, 51, 51, 0.6);
+    background-color: white;
+}
+
 .verify-content {
     padding: 1rem;
     background-color: rgb(247, 247, 247);

@@ -12,7 +12,8 @@ type Props = {
   getPublicKey: () => {},
   publicKey: {},
   loading: {},
-  states: {}
+  states: {},
+  callback: any
 };
 
 class PublicKeyComponent extends Component<Props> {
@@ -30,7 +31,16 @@ class PublicKeyComponent extends Component<Props> {
     this.props.getPublicKey(true);
   };
 
-  handleClose = () => this.setState({ opened: false, step: 'open' });
+  handleClose = (e, { name }) => {
+    if (this.props.callback) {
+      if (name === 'copied') {
+        this.props.callback(true);
+      } else if (name === 'canceled') {
+        this.props.callback(false);
+      }
+    }
+    this.setState({ opened: false, step: 'open' });
+  };
 
   renderStep0 = () => {
     const header = <p className="title">Get Public Key</p>;
@@ -46,7 +56,7 @@ class PublicKeyComponent extends Component<Props> {
     );
     const action = (
       <div className="public-key-confirm-modal">
-        <Button content="Close" onClick={this.handleClose} />
+        <Button content="Close" name="canceled" onClick={this.handleClose} />
         <Button content="verify" onClick={this.verifyPublicKey} />
       </div>
     );
@@ -84,7 +94,11 @@ class PublicKeyComponent extends Component<Props> {
 
         action = (
           <CopyToClipboard text={publicKey.wif}>
-            <Button content="Copy to clipborad" onClick={this.handleClose} />
+            <Button
+              content="Copy to clipborad"
+              name="copied"
+              onClick={() => this.handleClose(null, { name: 'copied' })}
+            />
           </CopyToClipboard>
         );
       } else {
@@ -101,7 +115,11 @@ class PublicKeyComponent extends Component<Props> {
 
         action = (
           <div className="public-key-confirm-modal">
-            <Button content="Close" onClick={this.handleClose} />
+            <Button
+              content="Close"
+              name="canceled"
+              onClick={this.handleClose}
+            />
             <Button content="Try again" onClick={this.verifyPublicKey} />
           </div>
         );
