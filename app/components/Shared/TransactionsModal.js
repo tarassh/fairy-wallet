@@ -8,6 +8,7 @@ import {
   Header
 } from 'semantic-ui-react';
 import _ from 'lodash';
+import { shell } from 'electron';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
 import VoteContext from './VoteContext';
@@ -34,7 +35,7 @@ const actionDisplayName = {
   buyrambytes: 'Buy RAM bytes'
 };
 
-function renderTransaction(transaction) {
+function renderTransaction(transaction, goto) {
   const { context, receipt, err, constructed, signed } = transaction;
   const { action } = context;
   const actionName = actionDisplayName[action];
@@ -47,7 +48,14 @@ function renderTransaction(transaction) {
   }
 
   if (receipt !== null) {
-    statusText = `Transaction id ${receipt.transaction_id}`;
+    statusText = (
+      <div 
+        onClick={() => goto(null, { txid: receipt.transaction_id })} 
+        style={{cursor: 'pointer'}}
+      >
+      Transaction id <span className='public-key'>{receipt.transaction_id}</span>
+      </div>
+    );
     icon = 'check circle';
     loading = false;
   }
@@ -85,9 +93,8 @@ function renderTransaction(transaction) {
   const header = (
     <Header style={{ marginTop: '1rem' }}>
       <Header.Content>
-        {actionName}
-        <Header.Subheader style={err !== null ? { color: 'lightcoral' } : {}}>
-          <Icon name={icon} loading={loading} />
+        <div><Icon name={icon} loading={loading} />{actionName}</div>
+        <Header.Subheader style={err !== null ? { color: 'lightcoral', marginTop: '1rem' } : { marginTop: '1rem' }}>
           {statusText}
         </Header.Subheader>
       </Header.Content>
@@ -130,6 +137,10 @@ class TransactionsModal extends Component<Props> {
     this.setState({ activeIndex: newIndex });
   };
 
+  handleGoto = (e, { txid }) => {
+    shell.openExternal(`https://eosflare.io/tx/${txid}`);
+  };
+
   render() {
     const { open, transactions, handleClose } = this.props;
 
@@ -140,7 +151,7 @@ class TransactionsModal extends Component<Props> {
     Object.keys(transactions).forEach(key => {
       const tx = transactions[key];
       if (tx.context !== null) {
-        renderedTxs.push(renderTransaction(tx));
+        renderedTxs.push(renderTransaction(tx, this.handleGoto));
       }
       successCounter += tx.receipt !== null ? 1 : 0;
       failureCounter += tx.err !== null ? 1 : 0;
