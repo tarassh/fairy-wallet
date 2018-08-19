@@ -439,3 +439,14 @@
 .scrolling-table.vote .scrolling-table-body{
     height: 95%
 } 
+
+.public-key-confirm-modal {
+    width: 100%;
+    text-align: center;
+}
+
+.ui.modal .content .public-key-confirm-modal button {
+    display: inline-block;
+    width: 20%;
+    margin: 0 1rem;
+}

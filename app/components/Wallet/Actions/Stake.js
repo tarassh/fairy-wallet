@@ -248,13 +248,13 @@ export default class Stake extends Component<Props> {
   renderHeader = () => (
     <Grid className="tableheader">
       <Grid.Row>
-        <Grid.Column width={4}>
-          <p className="tableheadertitle">account</p>
+        <Grid.Column width={6}>
+          <p className="tableheadertitle">delegated to</p>
         </Grid.Column>
-        <Grid.Column textAlign="right" width={6}>
+        <Grid.Column textAlign="center" width={5}>
           <p className="tableheadertitle">cpu, eos</p>
         </Grid.Column>
-        <Grid.Column textAlign="right" width={6}>
+        <Grid.Column textAlign="right" width={5}>
           <p className="tableheadertitle">net, eos</p>
         </Grid.Column>
       </Grid.Row>

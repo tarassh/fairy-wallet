@@ -45,7 +45,7 @@ class PublicKeyComponent extends Component<Props> {
       </div>
     );
     const action = (
-      <div>
+      <div className="public-key-confirm-modal">
         <Button content="Close" onClick={this.handleClose} />
         <Button content="verify" onClick={this.verifyPublicKey} />
       </div>
@@ -100,7 +100,7 @@ class PublicKeyComponent extends Component<Props> {
         );
 
         action = (
-          <div>
+          <div className="public-key-confirm-modal">
             <Button content="Close" onClick={this.handleClose} />
             <Button content="Try again" onClick={this.verifyPublicKey} />
           </div>
