@@ -36,7 +36,7 @@ class ConnectionContainer extends Component<Props> {
     this.setResultList(value);
   };
 
-  setResultList = (filter) => {
+  setResultList = filter => {
     const { nodes } = this.props.settings;
     const source = [];
 
@@ -44,9 +44,8 @@ class ConnectionContainer extends Component<Props> {
       source.push(Object.assign({}, element, { title: element.text }));
     });
 
-    if (filter !== undefined) 
-    {
-      this.setState({ value: filter  });
+    if (filter !== undefined) {
+      this.setState({ value: filter });
     }
 
     setTimeout(() => {
@@ -98,7 +97,7 @@ class ConnectionContainer extends Component<Props> {
           <Button
             loading={disabled}
             content="Connect"
-            disabled={open}
+            disabled={disabled}
             onClick={this.onConnect}
           />
         </Container>
