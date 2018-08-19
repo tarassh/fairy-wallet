@@ -1,3 +1,7 @@
 .ui.grid.locker {
   height: 100%;
 }
+
+.ui.grid .ui.search > .results {
+  width: 100%;
+}

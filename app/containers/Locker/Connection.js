@@ -25,10 +25,18 @@ class ConnectionContainer extends Component<Props> {
   };
 
   onResultSelect = (e, { result }) => {
-    this.setState({ value: result.text, changing: true });
+    this.setState({ value: result.text, changing: true, open: false });
+  };
+
+  onKeyDown = () => {
+    this.setResultList();
   };
 
   onChange = (e, { value }) => {
+    this.setResultList(value);
+  };
+
+  setResultList = filter => {
     const { nodes } = this.props.settings;
     const source = [];
 
@@ -36,19 +44,21 @@ class ConnectionContainer extends Component<Props> {
       source.push(Object.assign({}, element, { title: element.text }));
     });
 
-    this.setState({ value });
+    if (filter !== undefined) {
+      this.setState({ value: filter });
+    }
 
     setTimeout(() => {
       const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
       const isMatch = result => re.test(result.text);
 
-      this.setState({ results: _.filter(source, isMatch) });
+      this.setState({ results: _.filter(source, isMatch), open: true });
     }, 300);
   };
 
   render() {
     const { loading, connection } = this.props;
-    const { results, changing, value } = this.state;
+    const { results, changing, value, open } = this.state;
 
     const disabled = !!loading.CREATE_CONNECTION;
 
@@ -71,6 +81,7 @@ class ConnectionContainer extends Component<Props> {
           label="Node URL"
           onSearchChange={this.onChange}
           onResultSelect={this.onResultSelect}
+          onKeyDown={this.onKeyDown}
           placeholder="https://"
           disabled={disabled}
           loading={disabled}
@@ -79,6 +90,7 @@ class ConnectionContainer extends Component<Props> {
           icon={false}
           value={value}
           showNoResults={false}
+          open={open}
         />
         {errorMessage}
         <Container textAlign="center">
