@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { List, Grid, Icon, Divider } from 'semantic-ui-react';
+import { List, Grid, Icon } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import { parseAction } from '../../../utils/parser';
