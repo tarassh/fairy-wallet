@@ -12,12 +12,10 @@ class Connection extends Component<Props> {
         verticalAlign="middle"
         className="locker"
       >
-        <Grid.Row columns={3} className="container">
-          <Grid.Column width={4} />
-          <Grid.Column width={8}>
+        <Grid.Row columns={1} className="container">
+          <Grid.Column width={7}>
             <ConnectionContainer />
           </Grid.Column>
-          <Grid.Column width={4} />
         </Grid.Row>
       </Grid>
     );
