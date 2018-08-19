@@ -11,7 +11,7 @@ html, body {
    margin: 0;
    padding: 0;
    overflow: hidden;
-   font-family: '', 'Segoe UI', Helvetica;
+   font-family: 'Segoe UI', Helvetica;
 }
 
 body::after {
@@ -132,6 +132,19 @@ p.subtitle {
     letter-spacing: normal;
 }
 
+p.public-key {
+    padding: 1rem;
+    border-width: 1px;
+    border-style: dashed;
+    border-color: rgba(51, 51, 51, 0.6);
+    background-color: white;
+}
+
+.verify-content {
+    padding: 1rem;
+    background-color: rgb(247, 247, 247);
+}
+
 .ui.form .fields > label,
 .ui.form .field > label {
     font-weight: normal !important;
@@ -151,10 +164,6 @@ p.tableheadertitle {
     line-height: normal;
     letter-spacing: normal;
 }
-
-/* .ui.basic.label {
-    color: rgba(0,0,0,.6);
-} */
 
 .ui.basic.label,
 .publickeycontainer .label,
@@ -179,4 +188,14 @@ p.tableheadertitle {
 .ui.segment.no-background {
     background: transparent;
     height: 100%; 
+}
+
+.no-top-bottom-margin {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.public-key-modality {
+    text-align: center !important;
+    width: 560px !important;
 }
