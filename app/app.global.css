@@ -79,14 +79,15 @@ input {
 
 .ui.button {
     background: #1a8cff;
+    opacity: 0.9;
     color: white;
     text-transform: uppercase;
     font-weight: lighter;
 }
 
-.ui.button:focus,
 .ui.button:hover {
     background: #1a8cff;
+    opacity: 1;
     color: white;
 }
 

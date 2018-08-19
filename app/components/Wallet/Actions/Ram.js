@@ -43,63 +43,8 @@ export default class Ram extends Component<Props> {
               />
             </div>
           </div>
-          // <Grid>
-          //   <Grid.Row columns={2}>
-          //     <Grid.Column>
-          //       <BuyRam
-          //         transactions={transactions}
-          //         account={account}
-          //         buyram={actions.buyram}
-          //         buyrambytes={actions.buyrambytes}
-          //         resetState={actions.resetState}
-          //         getAccount={actions.getAccount}
-          //         getActions={actions.getActions}
-          //       />
-          //     </Grid.Column>
-          //     <Grid.Column>
-          //       <SellRam
-          //         transactions={transactions}
-          //         account={account}
-          //         sellram={actions.sellram}
-          //         resetState={actions.resetState}
-          //         getAccount={actions.getAccount}
-          //         getActions={actions.getActions}
-          //       />
-          //     </Grid.Column>
-          //   </Grid.Row>
-          // </Grid>
         } 
       />
-      // <div>
-      //   <p className="title">RAM management</p>
-      //   <p className="subtitle">Manage your RAM resource</p>
-      //   <br />
-      //   <Grid>
-      //     <Grid.Row columns={2}>
-      //       <Grid.Column>
-      //         <BuyRam
-      //           transactions={transactions}
-      //           account={account}
-      //           buyram={actions.buyram}
-      //           buyrambytes={actions.buyrambytes}
-      //           resetState={actions.resetState}
-      //           getAccount={actions.getAccount}
-      //           getActions={actions.getActions}
-      //         />
-      //       </Grid.Column>
-      //       <Grid.Column>
-      //         <SellRam
-      //           transactions={transactions}
-      //           account={account}
-      //           sellram={actions.sellram}
-      //           resetState={actions.resetState}
-      //           getAccount={actions.getAccount}
-      //           getActions={actions.getActions}
-      //         />
-      //       </Grid.Column>
-      //     </Grid.Row>
-      //   </Grid>
-      // </div>
     );
   }
 }

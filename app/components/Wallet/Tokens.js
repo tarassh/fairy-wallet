@@ -62,29 +62,6 @@ class Tokens extends Component<Props> {
             }
           />}
       />
-      // <div>
-      //   <p className="title">Airdrops</p>
-      //   <p className="subtitle">Watch your Airdrops here</p>
-      //   <br />
-      //   <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
-      //   <TokenRemoveModal
-      //     open={openRemove}
-      //     handleClose={this.handleRemoveClose}
-      //     symbol={symbol}
-      //     contract={contract}
-      //   />
-      //   {renderHeader()}
-      //   <List divided style={{ marginBottom: '2em' }} selection>
-      //     {_.map(accounts.balances, balance => (
-      //       <List.Item key={`${balance.symbol}-${balance.contract}`}>
-      //         <List.Content>
-      //           {renderTokenBalance(balance, this.handleRemoveOpen)}
-      //         </List.Content>
-      //       </List.Item>
-      //     ))}
-      //   </List>
-      //   <Button onClick={this.handleAddOpen} circular icon="plus" />
-      // </div>
     );
   }
 }
