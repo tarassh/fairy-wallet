@@ -104,6 +104,25 @@ function renderTransaction(transaction) {
 class TransactionsModal extends Component<Props> {
   state = { activeIndex: 0 };
 
+  renderContent = (header, content, action) => (
+    <div>
+      <p className="title">{header}</p>
+      <br />
+      <div>
+        {_.map(content, (line) => (
+          <p className="subtitle no-top-bottom-margin">
+            {line}
+          </p>
+        ))}
+      </div>
+      <br />
+      <br />
+      <div className="public-key-confirm-modal">
+        {action}
+      </div>
+    </div>
+  );
+
   handleClick = (e, { index }) => {
     const { activeIndex } = this.state;
     const newIndex = activeIndex === index ? -1 : index;
@@ -143,9 +162,9 @@ class TransactionsModal extends Component<Props> {
           onClose={this.onClose}
           style={{ textAlign: 'center' }}
         >
-          <Modal.Header>{header}</Modal.Header>
+          {/* <Modal.Header>{header}</Modal.Header> */}
           <Modal.Content>
-            <Modal.Description>
+            {/* <Modal.Description>
               {modalAction.length === 0 && (
                 <Image
                   src={confirmTransaction}
@@ -154,9 +173,10 @@ class TransactionsModal extends Component<Props> {
                 />
               )}
               {_.map(renderedTxs, tx => tx)}
-            </Modal.Description>
+            </Modal.Description> */}
+            {this.renderContent(header, renderedTxs, modalAction)}
           </Modal.Content>
-          <Modal.Actions>{modalAction}</Modal.Actions>
+          {/* <Modal.Actions>{modalAction}</Modal.Actions> */}
         </Modal>
       </Transition>
     );
