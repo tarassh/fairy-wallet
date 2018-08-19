@@ -80,6 +80,31 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
+  mainWindow.on('restore', () => {
+      if (process.platform === "win32"){
+        mainWindow.setSize(1300, 810)
+      }
+  });
+
+  mainWindow.on('move', () => {
+    if (process.platform === "win32"){
+      mainWindow.setSize(1300, 810)
+    }
+  });
+
+  mainWindow.on('enter-full-screen', () => {
+    if (process.platform === "win32"){
+      mainWindow.setResizable(true);
+    }
+  });
+
+  mainWindow.on('leave-full-screen', () => {
+    if (process.platform === "win32"){
+      mainWindow.setResizable(false);
+      mainWindow.setSize(1300, 810);
+    }
+  });
+
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
 });
