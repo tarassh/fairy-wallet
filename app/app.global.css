@@ -85,6 +85,7 @@ input {
     font-weight: lighter;
 }
 
+.ui.button:focus,
 .ui.button:hover {
     background: #1a8cff;
     opacity: 1;
@@ -133,6 +134,7 @@ p.subtitle {
     letter-spacing: normal;
 }
 
+.dashed-border,
 p.public-key {
     padding: 1rem;
     border-width: 1px;

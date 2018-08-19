@@ -12,7 +12,7 @@ class DelegateContext extends Component<Props> {
     const actionName = context.action === 'delegatebw' ? 'stake' : 'unstake';
     const total = assetToNumber(context.net) + assetToNumber(context.cpu);
     const text = (
-      <p>
+      <p className="dashed-border">
         You are about to {actionName} <strong>{numberToAsset(total)}</strong>{' '}
         totally,&nbsp;
         <strong>{context.cpu}</strong> for CPU and{' '}

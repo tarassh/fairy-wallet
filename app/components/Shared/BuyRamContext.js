@@ -9,9 +9,10 @@ class BuyRamContext extends Component<Props> {
   render() {
     const { context } = this.props;
     const text = (
-      <p>
-        You are about to buy RAM for <strong>{context.tokens}</strong> to <strong>{context.recipient}</strong>.
-        Transaction details are listed below.
+      <p className="dashed-border">
+        You are about to buy RAM for <strong>{context.tokens}</strong> to{' '}
+        <strong>{context.recipient}</strong>. Transaction details are listed
+        below.
       </p>
     );
 

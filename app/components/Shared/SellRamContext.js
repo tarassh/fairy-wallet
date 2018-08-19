@@ -9,7 +9,7 @@ class SellRamContext extends Component<Props> {
   render() {
     const { context } = this.props;
     const text = (
-      <p>
+      <p className="dashed-border">
         You are about to sell <strong>{context.bytes}</strong> bytes of RAM.
         Transaction details are listed below.
       </p>

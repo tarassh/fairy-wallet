@@ -104,22 +104,22 @@ function renderTransaction(transaction) {
 class TransactionsModal extends Component<Props> {
   state = { activeIndex: 0 };
 
-  renderContent = (header, content, action) => (
+  renderContent = (header, content, action, image) => (
     <div>
       <p className="title">{header}</p>
       <br />
+      <Image centered src={image} />
+      <br />
       <div>
-        {_.map(content, (line) => (
-          <p className="subtitle no-top-bottom-margin">
+        {_.map(content, (line, i) => (
+          <div key={i} className="subtitle no-top-bottom-margin">
             {line}
-          </p>
+          </div>
         ))}
       </div>
       <br />
       <br />
-      <div className="public-key-confirm-modal">
-        {action}
-      </div>
+      <div className="public-key-confirm-modal">{action}</div>
     </div>
   );
 
@@ -162,7 +162,6 @@ class TransactionsModal extends Component<Props> {
           onClose={this.onClose}
           style={{ textAlign: 'center' }}
         >
-          {/* <Modal.Header>{header}</Modal.Header> */}
           <Modal.Content>
             {/* <Modal.Description>
               {modalAction.length === 0 && (
@@ -174,7 +173,12 @@ class TransactionsModal extends Component<Props> {
               )}
               {_.map(renderedTxs, tx => tx)}
             </Modal.Description> */}
-            {this.renderContent(header, renderedTxs, modalAction)}
+            {this.renderContent(
+              header,
+              renderedTxs,
+              modalAction,
+              confirmTransaction
+            )}
           </Modal.Content>
           {/* <Modal.Actions>{modalAction}</Modal.Actions> */}
         </Modal>

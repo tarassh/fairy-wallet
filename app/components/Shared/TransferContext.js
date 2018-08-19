@@ -9,7 +9,7 @@ class TransferContext extends Component<Props> {
   render() {
     const { context } = this.props;
     const text = (
-      <p>
+      <p className="dashed-border">
         You are about to transfer <strong>{context.asset}</strong> tokens to{' '}
         <strong>{context.to}</strong> account. Transaction details are listed
         below.
