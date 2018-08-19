@@ -83,7 +83,7 @@ function renderTransaction(transaction) {
   }
 
   const header = (
-    <Header>
+    <Header style={{ marginTop: '1rem' }}>
       <Header.Content>
         {actionName}
         <Header.Subheader style={err !== null ? { color: 'lightcoral' } : {}}>
@@ -109,11 +109,7 @@ class TransactionsModal extends Component<Props> {
     <div>
       <p className="title">{header}</p>
       <br />
-      <Image
-        centered
-        src={image}
-        style={{ marginTop: '1em', marginBottom: '1em' }}
-      />
+      <Image centered src={image} style={{ marginTop: '1em' }} />
       <br />
       <div>
         {_.map(content, (line, i) => (
