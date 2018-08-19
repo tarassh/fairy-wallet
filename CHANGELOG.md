@@ -49,3 +49,8 @@
 
 - **Sell RAM:** Sell RAM transactions are now supported.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
+
+# 0.7.0 (TBD)
+
+- **Resource Delegation:** Now users can delegate EOS Resources to multiple accounts.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
