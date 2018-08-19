@@ -15,6 +15,7 @@ import BuyRamContext from './BuyRamContext';
 import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
+import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
 
 type Props = {
   open: boolean,
@@ -108,7 +109,11 @@ class TransactionsModal extends Component<Props> {
     <div>
       <p className="title">{header}</p>
       <br />
-      <Image centered src={image} />
+      <Image
+        centered
+        src={image}
+        style={{ marginTop: '1em', marginBottom: '1em' }}
+      />
       <br />
       <div>
         {_.map(content, (line, i) => (
@@ -135,6 +140,7 @@ class TransactionsModal extends Component<Props> {
     const renderedTxs = [];
     let successCounter = 0;
     let failureCounter = 0;
+    let image = confirmTransaction;
     Object.keys(transactions).forEach(key => {
       const tx = transactions[key];
       if (tx.context !== null) {
@@ -147,11 +153,12 @@ class TransactionsModal extends Component<Props> {
     let header = 'Use your device to verify transaction';
     let modalAction = '';
     if (successCounter === renderedTxs.length) {
-      header = 'Success';
+      header = 'Transaction Successful';
       modalAction = <Button onClick={handleClose} content="Close" />;
     } else if (failureCounter > 0) {
-      header = 'Error';
+      header = 'Transaction Failed';
       modalAction = <Button onClick={handleClose} content="Close" />;
+      image = confirmTransactionFailed;
     }
 
     return (
@@ -163,24 +170,8 @@ class TransactionsModal extends Component<Props> {
           style={{ textAlign: 'center' }}
         >
           <Modal.Content>
-            {/* <Modal.Description>
-              {modalAction.length === 0 && (
-                <Image
-                  src={confirmTransaction}
-                  centered
-                  style={{ marginTop: '1em', marginBottom: '1em' }}
-                />
-              )}
-              {_.map(renderedTxs, tx => tx)}
-            </Modal.Description> */}
-            {this.renderContent(
-              header,
-              renderedTxs,
-              modalAction,
-              confirmTransaction
-            )}
+            {this.renderContent(header, renderedTxs, modalAction, image)}
           </Modal.Content>
-          {/* <Modal.Actions>{modalAction}</Modal.Actions> */}
         </Modal>
       </Transition>
     );

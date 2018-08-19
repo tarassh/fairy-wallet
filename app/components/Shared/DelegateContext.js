@@ -26,7 +26,7 @@ class DelegateContext extends Component<Props> {
       content = (
         <div>
           {text}
-          <Table basic="very">
+          <Table basic="very" className="verify-content">
             <Table.Body>
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>

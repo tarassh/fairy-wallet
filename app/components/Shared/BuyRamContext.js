@@ -21,7 +21,7 @@ class BuyRamContext extends Component<Props> {
       content = (
         <div>
           {text}
-          <Table basic="very" attached="top">
+          <Table basic="very" className="verify-content">
             <Table.Body>
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>

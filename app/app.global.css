@@ -151,6 +151,7 @@ span.public-key {
     background-color: white;
 }
 
+.ui.very.basic.table.verify-content, 
 .verify-content {
     padding: 1rem;
     background-color: rgb(247, 247, 247);
