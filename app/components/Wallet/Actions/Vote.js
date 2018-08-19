@@ -248,31 +248,13 @@ export default class Vote extends Component<Props> {
       </Menu>
     );
 
-    const renderHeader = () => (
-      <Grid className="tableheader">
-        <Grid.Row>
-          <Grid.Column width={1} />
-          <Grid.Column width={1} />
-          <Grid.Column width={4}>
-            <p className="tableheadertitle">account</p>
-          </Grid.Column>
-          <Grid.Column width={7}>
-            <p className="tableheadertitle">url</p>
-          </Grid.Column>
-          <Grid.Column width={3} style={{ textAlign: "center" }}>
-            <p className="tableheadertitle">votes</p>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    );
-
     return (
-      <MainContentContainer 
-        title="Vote for block producers" 
+      <MainContentContainer
+        title="Vote for block producers"
         subtitle="You can vote up to 30"
         content={
-          <div style={{ height: "100%" }}>
-            <div style={{ height: "10%", padding: "0 1rem"}}>
+          <div style={{ height: '100%' }}>
+            <div style={{ height: '10%', padding: '0 1rem' }}>
               <Form loading={isLoading}>
                 <TransactionsModal
                   open={openModal}
@@ -291,22 +273,20 @@ export default class Vote extends Component<Props> {
                     icon="search"
                   />
                   <Button onClick={this.vote} disabled={disabled}>
-                      Vote
+                    Vote
                   </Button>
                 </Form.Group>
               </Form>
             </div>
-            <div style={{ height: "90%"}}>
-              <ScrollingTable 
+            <div style={{ height: '90%' }}>
+              <ScrollingTable
                 className="vote"
-                header={
-                  <span />
-                  }
+                header={<span />}
                 content={
                   <List divided relaxed className="scrollable">
                     {!isLoading ? filteredList : undefined}
                   </List>
-                  }
+                }
               />
             </div>
           </div>
