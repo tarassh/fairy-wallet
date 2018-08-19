@@ -216,7 +216,7 @@ export function undelegate(from, receiver, net, cpu) {
   };
 }
 
-export function delegateUndelegate(netFist, from, receiver, net, cpu) {
+export function delegateUndelegate(netFirst, from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
     const zero = numberToAsset(0);
 
@@ -258,7 +258,7 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
       signProvider: promiseSigner
     };
 
-    if (netFist) {
+    if (netFirst) {
       dispatch({
         type: types.DELEGATE_UNDELEGATE_REQUEST,
         delegateContext: {
@@ -298,14 +298,29 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
             })
             .catch(err => {
               dispatch({ type: types.UNDELEGATE_FAILURE, err });
-              dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE });
+              dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
             });
         })
         .catch(err => {
           dispatch({ type: types.DELEGATE_FAILURE, err });
-          dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE });
+          return eos(modified)
+            .transaction(eosioContract, contract => {
+              contract.undelegatebw(from, receiver, zero, cpu);
+            })
+            .then(undelegateReceipt => {
+              dispatch({
+                type: types.UNDELEGATE_SUCCESS,
+                receipt: undelegateReceipt
+              });
+              return dispatch({ type: types.DELEGATE_UNDELEGATE_SUCCESS });
+            })
+            .catch(err => {
+              dispatch({ type: types.UNDELEGATE_FAILURE, err });
+              dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
+            });
         });
     }
+
     dispatch({
       type: types.DELEGATE_UNDELEGATE_REQUEST,
       delegateContext: {
@@ -345,15 +360,30 @@ export function delegateUndelegate(netFist, from, receiver, net, cpu) {
           })
           .catch(err => {
             dispatch({ type: types.UNDELEGATE_FAILURE, err });
-            dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE });
+            dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
           });
       })
       .catch(err => {
         dispatch({ type: types.DELEGATE_FAILURE, err });
-        dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE });
+        return eos(modified)
+          .transaction(eosioContract, contract => {
+            contract.undelegatebw(from, receiver, net, zero);
+          })
+          .then(undelegateReceipt => {
+            dispatch({
+              type: types.UNDELEGATE_SUCCESS,
+              receipt: undelegateReceipt
+            });
+            return dispatch({ type: types.DELEGATE_UNDELEGATE_SUCCESS });
+          })
+          .catch(err => {
+            dispatch({ type: types.UNDELEGATE_FAILURE, err });
+            dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
+          });
       });
   };
 }
+
 
 export function voteProducer(producers = []) {
   return (dispatch: () => void, getState) => {
@@ -617,5 +647,6 @@ export default {
   undelegate,
   voteProducer,
   buyram,
-  buyrambytes
+  buyrambytes,
+  delegateUndelegate
 };
