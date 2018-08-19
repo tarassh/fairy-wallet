@@ -15,6 +15,7 @@ import BuyRamContext from './BuyRamContext';
 import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
+import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
 
 type Props = {
   open: boolean,
@@ -104,22 +105,26 @@ function renderTransaction(transaction) {
 class TransactionsModal extends Component<Props> {
   state = { activeIndex: 0 };
 
-  renderContent = (header, content, action) => (
+  renderContent = (header, content, action, image) => (
     <div>
       <p className="title">{header}</p>
       <br />
+      <Image
+        centered
+        src={image}
+        style={{ marginTop: '1em', marginBottom: '1em' }}
+      />
+      <br />
       <div>
-        {_.map(content, (line) => (
-          <p className="subtitle no-top-bottom-margin">
+        {_.map(content, (line, i) => (
+          <div key={i} className="subtitle no-top-bottom-margin">
             {line}
-          </p>
+          </div>
         ))}
       </div>
       <br />
       <br />
-      <div className="public-key-confirm-modal">
-        {action}
-      </div>
+      <div className="public-key-confirm-modal">{action}</div>
     </div>
   );
 
@@ -135,6 +140,7 @@ class TransactionsModal extends Component<Props> {
     const renderedTxs = [];
     let successCounter = 0;
     let failureCounter = 0;
+    let image = confirmTransaction;
     Object.keys(transactions).forEach(key => {
       const tx = transactions[key];
       if (tx.context !== null) {
@@ -147,11 +153,12 @@ class TransactionsModal extends Component<Props> {
     let header = 'Use your device to verify transaction';
     let modalAction = '';
     if (successCounter === renderedTxs.length) {
-      header = 'Success';
+      header = 'Transaction Successful';
       modalAction = <Button onClick={handleClose} content="Close" />;
     } else if (failureCounter > 0) {
-      header = 'Error';
+      header = 'Transaction Failed';
       modalAction = <Button onClick={handleClose} content="Close" />;
+      image = confirmTransactionFailed;
     }
 
     return (
@@ -162,21 +169,9 @@ class TransactionsModal extends Component<Props> {
           onClose={this.onClose}
           style={{ textAlign: 'center' }}
         >
-          {/* <Modal.Header>{header}</Modal.Header> */}
           <Modal.Content>
-            {/* <Modal.Description>
-              {modalAction.length === 0 && (
-                <Image
-                  src={confirmTransaction}
-                  centered
-                  style={{ marginTop: '1em', marginBottom: '1em' }}
-                />
-              )}
-              {_.map(renderedTxs, tx => tx)}
-            </Modal.Description> */}
-            {this.renderContent(header, renderedTxs, modalAction)}
+            {this.renderContent(header, renderedTxs, modalAction, image)}
           </Modal.Content>
-          {/* <Modal.Actions>{modalAction}</Modal.Actions> */}
         </Modal>
       </Transition>
     );

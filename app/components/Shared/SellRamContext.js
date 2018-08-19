@@ -9,7 +9,7 @@ class SellRamContext extends Component<Props> {
   render() {
     const { context } = this.props;
     const text = (
-      <p>
+      <p className="dashed-border">
         You are about to sell <strong>{context.bytes}</strong> bytes of RAM.
         Transaction details are listed below.
       </p>
@@ -20,7 +20,7 @@ class SellRamContext extends Component<Props> {
       content = (
         <div>
           {text}
-          <Table basic="very" attached="top">
+          <Table basic="very" className="verify-content">
             <Table.Body>
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>

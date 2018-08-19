@@ -11,7 +11,7 @@ class VoteContext extends Component<Props> {
     const { context } = this.props;
     const text =
       context.producers.length > 0 ? (
-        <p>
+        <p className="dashed-border">
           You are about to vote for <strong>{context.producers.length}</strong>{' '}
           block producers. Transaction details are listed below.
         </p>
@@ -37,7 +37,7 @@ class VoteContext extends Component<Props> {
       content = (
         <div>
           {text}
-          <Table basic="very" attached="top">
+          <Table basic="very" className="verify-content">
             <Table.Body>
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>

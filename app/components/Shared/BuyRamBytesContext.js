@@ -9,9 +9,10 @@ class BuyRamBytesContext extends Component<Props> {
   render() {
     const { context } = this.props;
     const text = (
-      <p>
-        You are about to buy <strong>{context.bytes}</strong> bytes of RAM to <strong>{context.recipient}</strong>.
-        Transaction details are listed below.
+      <p className="dashed-border">
+        You are about to buy <strong>{context.bytes}</strong> bytes of RAM to{' '}
+        <strong>{context.recipient}</strong>. Transaction details are listed
+        below.
       </p>
     );
 
@@ -20,7 +21,7 @@ class BuyRamBytesContext extends Component<Props> {
       content = (
         <div>
           {text}
-          <Table basic="very" attached="top">
+          <Table basic="very" className="verify-content">
             <Table.Body>
               <Table.Row>
                 <Table.Cell width={3}>Contract</Table.Cell>
