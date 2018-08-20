@@ -65,12 +65,12 @@ const fn = {
   },
 
   delegatebw: action => {
-    const { stake_net_quantity, stake_cpu_quantity, to } = action.data; // eslint-disable-line camelcase
+    const { stake_net_quantity, stake_cpu_quantity, receiver } = action.data; // eslint-disable-line camelcase
     const amount = numberToAsset(
       assetToNumber(stake_net_quantity) + assetToNumber(stake_cpu_quantity)
     );
     return {
-      desc: `to ${to}`,
+      desc: `to ${receiver}`,
       quantity: `-${amount}`
     };
   },

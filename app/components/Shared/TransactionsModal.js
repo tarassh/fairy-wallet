@@ -32,7 +32,8 @@ const actionDisplayName = {
   undelegatebw: 'Unstake funds',
   voteproducer: 'Vote producer',
   buyram: 'Buy RAM',
-  buyrambytes: 'Buy RAM bytes'
+  buyrambytes: 'Buy RAM bytes',
+  sellram: 'Sell RAM'
 };
 
 function renderTransaction(transaction, goto) {
