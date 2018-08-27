@@ -10,7 +10,7 @@ const initialState = {
   lastIrreversibleBlock: 0,
   delegates: [],
   refunds: [],
-  delegatee: undefined,
+  delegatee: undefined
 };
 
 export default function accounts(state = initialState, action) {
@@ -66,7 +66,7 @@ export default function accounts(state = initialState, action) {
 
     case types.SET_ACTIVE_DELEGATE_ACCOUNT: {
       return Object.assign({}, state, {
-        delegatee: action.delegatee,
+        delegatee: action.delegatee
       });
     }
 
@@ -126,7 +126,7 @@ export default function accounts(state = initialState, action) {
 
     case types.GET_DELEGATION_FAILURE: {
       return Object.assign({}, state, {
-        delegates: null
+        delegates: []
       });
     }
 

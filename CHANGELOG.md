@@ -59,3 +59,8 @@
 
 - **eosjs**: updating dependecies.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
+
+# 0.8.1 (2018.8.28)
+
+- **Fixes:** Fix connection issues handling. Minor fixes.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
