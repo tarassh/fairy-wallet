@@ -43,6 +43,11 @@ export default class Stake extends Component<Props> {
     );
   }
 
+  isDelegatedTo = (name) => {
+    const { delegates } = this.props;
+    return delegates.find((el) => el.to === name) !== undefined;
+  }
+
   getStakedValues = (name) => {
     const { delegates } = this.props;
     const delegatee = delegates.find((el) => el.to === name);
@@ -78,8 +83,14 @@ export default class Stake extends Component<Props> {
 
   handleRecipientChange = (e, { name, value }) => {
     this.setState({ [name]: value });
-    const stakes = this.getStakedValues(name);
-    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
+    const stakes = this.getStakedValues(value);
+    if (stakes) {
+      this.props.setDelegateeAccount(stakes.recipient);
+      this.setState({cpu: stakes.cpu, net: stakes.net});
+    } else {
+      this.props.setDelegateeAccount(undefined);
+      this.setState({cpu: 0, net: 0});
+    }
   };
 
   handleChange = (e, { name, value }) => {
@@ -178,7 +189,12 @@ export default class Stake extends Component<Props> {
     const cpuInvalid = cpu < min ? "invalid" : undefined;
     const netInvalid = net < min ? "invalid" : undefined;
 
-    const enableRequest = cpuDelta !== 0 || netDelta !== 0;
+    let enableRequest = false;
+    if (this.isDelegatedTo(recipient)) {
+      enableRequest = cpuDelta !== 0 || netDelta !== 0;
+    } else {
+      enableRequest = cpu !== 0 || net !== 0;
+    }
 
     const total = staked.cpu + staked.net + liquid;
 
