@@ -50,7 +50,12 @@
 - **Sell RAM:** Sell RAM transactions are now supported.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
 
-# 0.7.0 (TBD)
+# 0.7.0 (2018.8.17)
 
 - **Resource Delegation:** Now users can delegate EOS Resources to multiple accounts.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
+
+# 0.8.0 (2018.8.27)
+
+- **eosjs**: updating dependecies.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
