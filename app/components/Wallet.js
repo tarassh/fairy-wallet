@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { Menu, Icon } from 'semantic-ui-react';
+import _ from 'lodash';
+import { Menu, Icon, Modal, Button } from 'semantic-ui-react';
 import WalletActions from './Wallet/Actions';
 import BalanceComponent from '../components/Shared/BalanceComponent';
 import AccountComponent from '../components/Shared/AccountComponent';
@@ -16,7 +17,10 @@ type Props = {
   accounts: {},
   history: {},
   currency: {},
-  loading: {}
+  loading: {},
+  failure: {},
+  getAccount: string => void,
+  clearConnection: () => void
 };
 
 export default class Wallet extends Component<Props> {
@@ -32,8 +36,35 @@ export default class Wallet extends Component<Props> {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
+  handleRetry = () => {
+    const { accounts } = this.props;
+    this.props.getAccount(accounts.names[accounts.activeAccount]);
+  }
+
+  handleChangeNode = () => {
+    const { history } = this.props;
+    this.props.clearConnection();
+    history.goBack();
+  }
+
+  renderContent = (action) => (
+    <div>
+      <p className="title">Connection error!</p>
+      <br />
+      <br />
+      <div>
+        <div className="subtitle no-top-bottom-margin">
+            Please retry or change node...
+        </div>
+      </div>
+      <br />
+      <br />
+      <div className="public-key-confirm-modal">{action}</div>
+    </div>
+  );
+
   render() {
-    const { accounts, currency, loading } = this.props;
+    const { accounts, currency, loading, failure } = this.props;
     const { activeItem } = this.state;
 
     const subpanes = {
@@ -94,36 +125,62 @@ export default class Wallet extends Component<Props> {
       </Menu>
     );
 
+    let isLoading = false;
+    _.forEach(loading, value => {
+      if (value === true) {
+        isLoading = true;
+        return false;
+      }
+    });
+
+    const actions = [
+      <Button onClick={this.handleRetry} loading={isLoading} content="Retry" />,
+      <Button onClick={this.handleChangeNode} content="Change Node" />
+    ];
+
     return (
-      <FairyContainer>
-        <FairyContainer.Column position="left" separator="right">
-          <FairyContainer.Column.Header>
-            <AccountComponent accounts={accounts} loading={loading} />
-          </FairyContainer.Column.Header>
-          <FairyContainer.Column.Body>{actionMenu}</FairyContainer.Column.Body>
-        </FairyContainer.Column>
-        <FairyContainer.Column position="middle">
-          <FairyContainer.Column.Header underlined>
-            <BalanceComponent
-              account={accounts.account}
-              currency={currency}
-              names={accounts.names}
-              loading={loading}
-            />
-          </FairyContainer.Column.Header>
-          <FairyContainer.Column.Body>
-            <WalletActions activeItem={activeItem} accounts={accounts} />
-          </FairyContainer.Column.Body>
-        </FairyContainer.Column>
-        <FairyContainer.Column position="right">
-          <FairyContainer.Column.Header underlined>
-            <UtilityStats account={accounts.account} />
-          </FairyContainer.Column.Header>
-          <FairyContainer.Column.Body className="no-side-padding">
-            {subpanes[activeItem]}
-          </FairyContainer.Column.Body>
-        </FairyContainer.Column>
-      </FairyContainer>
+      <span>
+        { failure.accountRetrievalError ? 
+          <Modal
+            open={failure.accountRetrievalError}
+            size="small"
+            style={{ textAlign: 'center' }}
+          >
+            <Modal.Content>
+              {this.renderContent(actions)}
+            </Modal.Content>
+          </Modal> : 
+          <FairyContainer>
+            <FairyContainer.Column position="left" separator="right">
+              <FairyContainer.Column.Header>
+                <AccountComponent accounts={accounts} loading={loading} />
+              </FairyContainer.Column.Header>
+              <FairyContainer.Column.Body>{actionMenu}</FairyContainer.Column.Body>
+            </FairyContainer.Column>
+            <FairyContainer.Column position="middle">
+              <FairyContainer.Column.Header underlined>
+                <BalanceComponent
+                  account={accounts.account}
+                  currency={currency}
+                  names={accounts.names}
+                  loading={loading}
+                />
+              </FairyContainer.Column.Header>
+              <FairyContainer.Column.Body>
+                <WalletActions activeItem={activeItem} accounts={accounts} />
+              </FairyContainer.Column.Body>
+            </FairyContainer.Column>
+            <FairyContainer.Column position="right">
+              <FairyContainer.Column.Header underlined>
+                <UtilityStats account={accounts.account} />
+              </FairyContainer.Column.Header>
+              <FairyContainer.Column.Body className="no-side-padding">
+                {subpanes[activeItem]}
+              </FairyContainer.Column.Body>
+            </FairyContainer.Column>
+          </FairyContainer>
+        }
+      </span>
     );
   }
 }
