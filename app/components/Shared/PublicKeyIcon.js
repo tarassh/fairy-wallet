@@ -101,6 +101,16 @@ class PublicKeyComponent extends Component<Props> {
             />
           </CopyToClipboard>
         );
+
+        desc = (
+          <div className="verify-content">
+            <p className="subtitle">EOS public key</p>
+            <p className="public-key">{publicKey.wif}</p>
+            <p className="device-hint">
+              EOS public key verified on your device.
+            </p>
+          </div>
+        );
       } else {
         header = <p className="title">Receive Public Key Rejected</p>;
         image = publicKeyErrorSvg;
