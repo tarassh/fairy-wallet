@@ -192,7 +192,7 @@ export default class Stake extends Component<Props> {
     let enableRequest = false;
     if (this.isDelegatedTo(recipient)) {
       enableRequest = cpuDelta !== 0 || netDelta !== 0;
-    } else {
+    } else if (recipient !== "") {
       enableRequest = cpu !== 0 || net !== 0;
     }
 
