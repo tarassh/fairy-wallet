@@ -1,29 +1,30 @@
 // @flow
 import * as types from '../actions/types';
 
-export default function failure(state = {}, action) {
-  const { type } = action;
+const initialState = {
+  accountRetrievalError: false
+}
 
-  if (type === types.RESET_FAILURE) return {};
+export default function failure(state = initialState, action) {
+  switch (action.type) {
 
-  const matches = /(.*)_(FAILURE)/.exec(type);
+    case types.GET_ACCOUNT_FAILURE: {
+      const message = "Connection error!" ;
 
-  if (
-    !matches ||
-    type === types.GET_APP_STATS_FAILURE ||
-    type === types.PUBLIC_KEY_DISPLAY_FAILURE ||
-    type === types.TRANSFER_TOKEN_FAILURE ||
-    type === types.DELEGATE_FAILURE ||
-    type === types.UNDELEGATE_FAILURE
-  )
-    return state;
+      return Object.assign({}, state, {
+        message,
+        accountRetrievalError: true
+      });
+    }
 
-  const message =
-    action.err && action.err.message ? action.err.message : 'Unexpected error';
+    case types.RESET_FAILURE:
+    case types.GET_ACCOUNT_SUCCESS:
+      return Object.assign({}, state, {
+        accountRetrievalError: false
+      });
 
-  const [, requestName] = matches;
-  return {
-    ...state,
-    [requestName]: message
-  };
+    default: {
+      return state;
+    }
+  }
 }

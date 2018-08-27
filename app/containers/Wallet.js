@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { getAccount, getActions } from '../actions/accounts';
 import Wallet from '../components/Wallet';
 import { signTransaction } from '../actions/ledger';
+import { clearConnection } from '../actions/connection';
 
 type Props = {
   actions: {},
@@ -12,7 +13,8 @@ type Props = {
   loading: {},
   accounts: {},
   history: {},
-  currency: {}
+  currency: {},
+  failure: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -32,8 +34,13 @@ class WalletContainer extends Component<Props> {
     actions.getAccount(accounts.names[accounts.activeAccount]);
   }
 
+  changeNode() {
+    const { actions } = this.props;
+    actions.push('/');
+  }
+
   render() {
-    const { states, accounts, loading, history, currency } = this.props;
+    const { states, accounts, loading, history, currency, failure, actions } = this.props;
 
     return (
       <Wallet
@@ -42,6 +49,9 @@ class WalletContainer extends Component<Props> {
         loading={loading}
         history={history}
         currency={currency}
+        failure={failure}
+        getAccount={actions.getAccount}
+        clearConnection={actions.clearConnection}
       />
     );
   }
@@ -53,7 +63,8 @@ function mapStateToProps(state) {
     accounts: state.accounts,
     loading: state.loading,
     transactions: state.transactions,
-    currency: state.currency
+    currency: state.currency,
+    failure: state.failure
   };
 }
 
@@ -63,7 +74,8 @@ function mapDispatchToProps(dispatch) {
       {
         getAccount,
         getActions,
-        signTransaction
+        signTransaction,
+        clearConnection
       },
       dispatch
     )
