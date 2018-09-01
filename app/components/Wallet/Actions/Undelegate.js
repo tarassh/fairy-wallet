@@ -41,6 +41,17 @@ export default class Undelegate extends Component<Props> {
     );
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (!_.eq(this.props.delegates, nextProps.account.account_name)) {
+      const staked = this.getStakedValuesFor(nextProps.account.account_name, nextProps.delegates);
+      Object.assign(this.state, {
+        recipient: nextProps.account.account_name,
+        cpu: staked.cpu,
+        net: staked.net
+      });
+    }
+  }
+
   isDelegatedTo = (name) => {
     const { delegates } = this.props;
     return delegates.find((el) => el.to === name) !== undefined;
@@ -48,6 +59,10 @@ export default class Undelegate extends Component<Props> {
 
   getStakedValues = (name) => {
     const { delegates } = this.props;
+    return this.getStakedValuesFor(name, delegates);
+  }
+
+  getStakedValuesFor = (name, delegates) => {
     const delegatee = delegates.find((el) => el.to === name);
     if (delegatee) {
       return {
@@ -60,7 +75,7 @@ export default class Undelegate extends Component<Props> {
       cpu: 0,
       net: 0,
       recipient: name
-    } 
+    }
   }
 
   handleDelegateSelect = (e, { name }) => {
