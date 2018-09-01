@@ -4,8 +4,8 @@ import { Form, Grid, List } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
-import MainContentContainer from './../../Shared/UI/MainContent';
-import ScrollingTable from './../../Shared/UI/ScrollingTable';
+import MainContentContainer from '../../Shared/UI/MainContent';
+import ScrollingTable from '../../Shared/UI/ScrollingTable';
 
 const numeral = require('numeral');
 const exactMath = require('exact-math');
@@ -17,15 +17,13 @@ type Props = {
   delegates: {},
   transactions: {},
   delegate: (string, string, string, string) => {},
-  undelegate: (string, string, string, string) => {},
-  delegateUndelegate: (boolean, string, string, string, string) => {},
   setDelegateeAccount: (string) => {},
   resetState: () => {},
   getAccount: string => {},
   getActions: string => {}
 };
 
-export default class Stake extends Component<Props> {
+export default class Delegate extends Component<Props> {
 
   constructor(props) {
     super(props);
@@ -117,44 +115,7 @@ export default class Stake extends Component<Props> {
     const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
-    // Use of Karnaugh map
-    // https://en.wikipedia.org/wiki/Karnaugh_map
-    const iC = cpuDelta > 0 ? 1 : 0;
-    const iN = netDelta > 0 ? 1 : 0;
-    const dC = cpuDelta < 0 ? 1 : 0;
-    const dN = netDelta < 0 ? 1 : 0;
-
-    const f = (dN << 3) | (dC << 2) | (iN << 1) | iC; // eslint-disable-line no-bitwise
-
-    switch (f) {
-      case 1:
-      case 2:
-      case 3:
-      case 7:
-      case 11:
-        this.props.delegate(accountName, recipient, net, cpu);
-        break;
-
-      case 4:
-      case 8:
-      case 12:
-      case 13:
-      case 14:
-        this.props.undelegate(accountName, recipient, net, cpu);
-        break;
-
-      case 6:
-        this.props.delegateUndelegate(true, accountName, recipient, net, cpu);
-        break;
-
-      case 9:
-        this.props.delegateUndelegate(false, accountName, recipient, net, cpu);
-        break;
-
-      default:
-        return;
-    }
-
+    this.props.delegate(accountName, recipient, net, cpu);
     this.setState({ openModal: true });
   };
 
@@ -171,9 +132,36 @@ export default class Stake extends Component<Props> {
     });
   };
 
+  validateFields = () => {
+    const { cpuDelta, netDelta, recipient, cpu, net } = this.state;
+
+    if (recipient === '') {
+      return false;
+    }
+
+    if (this.isDelegatedTo(recipient)) {
+     if (cpuDelta === 0 && netDelta === 0) {
+        return false;
+      }
+    } else if (cpu === 0 && net === 0) {
+      return false;
+    }
+
+    if (cpu === '' || net === '') {
+      return false;
+    }
+
+    const staked = this.getStakedValues(recipient);
+    if (net < staked.net || cpu < staked.cpu) {
+      return false;
+    } 
+
+    return true;
+  }
+
   renderForm = () => {
     const { transactions, account } = this.props;
-    const { cpuDelta, netDelta, openModal, recipient } = this.state;
+    const { openModal, recipient } = this.state;
     let { cpu, net } = this.state;
     if (typeof cpu === 'number') {
       cpu /= fraction10000;
@@ -184,16 +172,16 @@ export default class Stake extends Component<Props> {
 
     const { liquid } = balanceStats(account);
     const staked = this.getStakedValues(recipient);
+    const stakedCpu = exactMath.div(staked.cpu, fraction10000);
+    const stakedNet = exactMath.div(staked.net, fraction10000)
 
-    const min = staked.recipient === account.account_name ? 0.5 : 0;
-    const cpuInvalid = cpu < min ? "invalid" : undefined;
-    const netInvalid = net < min ? "invalid" : undefined;
+    let cpuInvalid;
+    let netInvalid;
 
-    let enableRequest = false;
-    if (this.isDelegatedTo(recipient)) {
-      enableRequest = cpuDelta !== 0 || netDelta !== 0;
-    } else if (recipient !== "") {
-      enableRequest = cpu !== 0 || net !== 0;
+    const enableRequest = this.validateFields(); 
+    if (!enableRequest) {
+      cpuInvalid = cpu < stakedCpu ? "invalid" : undefined;
+      netInvalid = net < stakedNet ? "invalid" : undefined;
     }
 
     const total = staked.cpu + staked.net + liquid;
@@ -214,7 +202,7 @@ export default class Stake extends Component<Props> {
             onChange={this.handleRecipientChange}
           />
           <InputFloat
-            label={cpuInvalid ? `Its not recomended to have CPU below ${min} EOS` : 'CPU (EOS)'}
+            label={cpuInvalid ? `Cannot be lower than ${numeral(stakedCpu).format('0.0000')} EOS` : 'CPU (EOS)'}
             name="cpu"
             step="0.0001"
             min={0}
@@ -225,7 +213,7 @@ export default class Stake extends Component<Props> {
             onChange={this.handleChange}
           />
           <InputFloat
-            label={netInvalid ? `Its not recomended to have NET below ${min} EOS` : 'NET (EOS)'}
+            label={netInvalid ? `Cannot be lower than ${numeral(stakedNet).format('0.0000')} EOS` : 'NET (EOS)'}
             name="net"
             step="0.0001"
             min={0}

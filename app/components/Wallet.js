@@ -70,7 +70,14 @@ export default class Wallet extends Component<Props> {
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transferFunds: <Tokens accounts={accounts} />,
-      stake: (
+      delegate: (
+        <StakedStats
+          account={accounts.account}
+          delegates={accounts.delegates}
+          delegatee={accounts.delegatee}
+        />
+      ),
+      undelegate: (
         <StakedStats
           account={accounts.account}
           delegates={accounts.delegates}
@@ -91,20 +98,28 @@ export default class Wallet extends Component<Props> {
           HISTORY
         </Menu.Item>
         <Menu.Item
-          name="transferFunds"
-          active={activeItem === 'transferFunds'}
+          name="transfer"
+          active={activeItem === 'transfer'}
           onClick={this.handleItemClick}
         >
           <Icon name="send" />
-          TRANSFER FUNDS
+          TRANSFER
         </Menu.Item>
         <Menu.Item
-          name="stake"
-          active={activeItem === 'stake'}
+          name="delegate"
+          active={activeItem === 'delegate'}
           onClick={this.handleItemClick}
         >
-          <Icon name="lock" />
-          STAKE
+          <Icon name="chevron circle right" />
+          DELEGATE
+        </Menu.Item>
+        <Menu.Item
+          name="undelegate"
+          active={activeItem === 'undelegate'}
+          onClick={this.handleItemClick}
+        >
+          <Icon name="chevron circle left" />
+          UNDELEGATE
         </Menu.Item>
         <Menu.Item
           name="ram"

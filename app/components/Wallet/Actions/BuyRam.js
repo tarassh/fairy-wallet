@@ -60,7 +60,7 @@ export default class BuyRam extends Component<Props> {
     let available = assetToNumber(account.core_liquid_balance);
     let step = '0.0001';
     let label = 'Value (EOS)';
-    const disabled = quantity === 0;
+    const disabled = quantity === 0 || recipient === '';
 
     if (option.toLowerCase() === 'bytes') {
       available = 0xffffffff;
