@@ -1,4 +1,5 @@
 import * as types from '../actions/types';
+import { parseError } from '../utils/errorParser';
 
 const initialState = {
   httpEndpoint: null,
@@ -17,12 +18,13 @@ export default function connection(state = initialState, action) {
       });
     }
 
+    case types.GET_ACCOUNTS_FAILURE:
     case types.CLEAR_CONNECTION:
     case types.CREATE_CONNECTION_FAILURE: {
       return Object.assign({}, state, {
         httpEndpoint: null,
         chainId: '',
-        err: action.err
+        err: parseError(action.err)
       });
     }
 

@@ -68,7 +68,7 @@ class ConnectionContainer extends Component<Props> {
         <Message
           error
           header="Failed to connect"
-          content={connection.err ? connection.err.message : 'error'}
+          content={connection.err}
         />
       );
     }

@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
+import { Grid, Segment, Dimmer, Loader, Step, Icon } from 'semantic-ui-react';
 import _ from 'lodash';
 import Lock from './Locker/Lock';
 import NoAccounts from './Locker/NoAccounts';
@@ -50,10 +50,20 @@ export default class Locker extends Component<Props> {
     if (
       states.deviceConnected &&
       states.nodeConnected &&
+      accounts.publicKey !== null &&
+      !states.accountsRetrieved
+    ) {
+      mainSegment = <Connection />;
+    }
+
+    const noAccount = 
+      states.deviceConnected &&
+      states.nodeConnected &&
       states.accountsRequested &&
       states.accountsRetrieved &&
-      accounts.names.length === 0
-    ) {
+      accounts.names.length === 0;
+
+    if (noAccount) {
       mainSegment = <NoAccounts accounts={accounts} />;
     }
 
@@ -72,20 +82,25 @@ export default class Locker extends Component<Props> {
           <Loader />
         </Dimmer>
 
-        <Grid
-          stretched
-          textAlign="center"
-          verticalAlign="middle"
-          className="locker"
-        >
-          <Grid.Row />
-          <Grid.Row columns={3} className="container">
-            <Grid.Column width={4} />
-            <Grid.Column width={8}>{mainSegment}</Grid.Column>
-            <Grid.Column width={4} />
-          </Grid.Row>
-          <Grid.Row />
-        </Grid>
+        {noAccount ?
+          <div className="no-account-container">
+            {mainSegment}
+          </div> :
+          <Grid
+            stretched
+            textAlign="center"
+            verticalAlign={noAccount ? "left" : "middle"}
+            className="locker"
+          >
+            <Grid.Row />
+            <Grid.Row columns={3}>
+              <Grid.Column width={4} />
+              <Grid.Column width={8}>{mainSegment}</Grid.Column>
+              <Grid.Column width={4} />
+            </Grid.Row>
+            <Grid.Row />
+          </Grid>
+        }
       </Segment>
     );
   }
