@@ -226,7 +226,7 @@ export default class Delegate extends Component<Props> {
         </Form.Field>
         <Form.Button
           id="form-button-control-public"
-          content="Update Stake"
+          content="Delegate"
           disabled={!enableRequest}
         />
       </Form>
