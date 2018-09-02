@@ -50,7 +50,7 @@ export default function settings(state = initialState, action) {
       const { httpEndpoint } = action;
       const { host } = new URL(httpEndpoint);
       const index = nodes.findIndex(element => element.text === httpEndpoint);
-      const key = host.slice(0, 5);
+      const key = host.slice(0, 10);
       if (index === -1) {
         nodes.splice(0, 0, {
           key,
@@ -62,7 +62,7 @@ export default function settings(state = initialState, action) {
         nodes[index].accessdate = Date.now();
       }
       return Object.assign({}, state, {
-        nodes: nodes.slice(0, 5).sort((a, b) => a.accessdate < b.accessdate)
+        nodes: nodes.slice(0, 10).sort((a, b) => a.accessdate < b.accessdate)
       });
     }
     default: {
