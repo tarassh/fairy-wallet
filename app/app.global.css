@@ -98,7 +98,7 @@ input {
 
 .ui.selection.list>.item.active .button,
 .ui.selection.list>.item.active {
-    background: rgba(26, 140, 255, 0.8);
+    background: rgba(26, 140, 255, 0.6);
 }
 .ui.selection.list>.item.active:hover {
     background: rgba(26, 140, 255, 0.9) !important;

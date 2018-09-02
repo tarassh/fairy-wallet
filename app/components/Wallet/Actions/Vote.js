@@ -2,12 +2,12 @@
 import React, { Component } from 'react';
 import {
   List,
-  Icon,
   Checkbox,
   Button,
   Grid,
   Form,
-  Menu
+  Menu,
+  Image
 } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
@@ -15,6 +15,9 @@ import TransactionsModal from '../../Shared/TransactionsModal';
 import { InputAccount } from '../../Shared/EosComponents';
 import MainContentContainer from './../../Shared/UI/MainContent';
 import ScrollingTable from './../../Shared/UI/ScrollingTable';
+import smileCypherSvg from '../../../../resources/icons/smile-wink-regular.svg';
+import smileSvg from '../../../../resources/icons/smile-regular.svg';
+import mehSvg from '../../../../resources/icons/meh-regular.svg';
 
 const numeral = require('numeral');
 
@@ -181,11 +184,15 @@ export default class Vote extends Component<Props> {
           />
         </Grid.Column>
         <Grid.Column width={1}>
-          {producing ? (
-            <Icon name="smile outline" />
-          ) : (
-            <Icon name="frown outline" />
-          )}
+          {
+            producer.owner === 'cypherglasss' ? 
+              <Image src={smileCypherSvg} /> : 
+            producing ? (
+              <Image src={smileSvg} />
+            ) : (
+              <Image src={mehSvg} />
+            )
+          }
         </Grid.Column>
         <Grid.Column width={4}>{producer.owner}</Grid.Column>
         <Grid.Column
@@ -208,7 +215,6 @@ export default class Vote extends Component<Props> {
     const { loading, transactions } = this.props;
     const {
       openModal,
-      disabled,
       producersList,
       filter,
       activeItem
@@ -272,7 +278,7 @@ export default class Vote extends Component<Props> {
                     onChange={this.handleChange}
                     icon="search"
                   />
-                  <Button onClick={this.vote} disabled={disabled}>
+                  <Button onClick={this.vote}>
                     Vote
                   </Button>
                 </Form.Group>

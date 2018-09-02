@@ -39,22 +39,22 @@ export default class Wallet extends Component<Props> {
   handleRetry = () => {
     const { accounts } = this.props;
     this.props.getAccount(accounts.names[accounts.activeAccount]);
-  }
+  };
 
   handleChangeNode = () => {
     const { history } = this.props;
     this.props.clearConnection();
     history.goBack();
-  }
+  };
 
-  renderContent = (action) => (
+  renderContent = action => (
     <div>
       <p className="title">Connection error!</p>
       <br />
       <br />
       <div>
         <div className="subtitle no-top-bottom-margin">
-            Please retry or change node...
+          Please retry or change node...
         </div>
       </div>
       <br />
@@ -69,8 +69,16 @@ export default class Wallet extends Component<Props> {
 
     const subpanes = {
       history: <Tokens accounts={accounts} />,
-      transferFunds: <Tokens accounts={accounts} />,
-      stake: (
+      transfer: <Tokens accounts={accounts} />,
+      voting: <Tokens accounts={accounts} />,
+      delegate: (
+        <StakedStats
+          account={accounts.account}
+          delegates={accounts.delegates}
+          delegatee={accounts.delegatee}
+        />
+      ),
+      undelegate: (
         <StakedStats
           account={accounts.account}
           delegates={accounts.delegates}
@@ -91,20 +99,28 @@ export default class Wallet extends Component<Props> {
           HISTORY
         </Menu.Item>
         <Menu.Item
-          name="transferFunds"
-          active={activeItem === 'transferFunds'}
+          name="transfer"
+          active={activeItem === 'transfer'}
           onClick={this.handleItemClick}
         >
           <Icon name="send" />
-          TRANSFER FUNDS
+          TRANSFER
         </Menu.Item>
         <Menu.Item
-          name="stake"
-          active={activeItem === 'stake'}
+          name="delegate"
+          active={activeItem === 'delegate'}
           onClick={this.handleItemClick}
         >
-          <Icon name="lock" />
-          STAKE
+          <Icon name="chevron circle right" />
+          DELEGATE
+        </Menu.Item>
+        <Menu.Item
+          name="undelegate"
+          active={activeItem === 'undelegate'}
+          onClick={this.handleItemClick}
+        >
+          <Icon name="chevron circle left" />
+          UNDELEGATE
         </Menu.Item>
         <Menu.Item
           name="ram"
@@ -140,22 +156,23 @@ export default class Wallet extends Component<Props> {
 
     return (
       <span>
-        { failure.accountRetrievalError ? 
+        {failure.accountRetrievalError ? (
           <Modal
             open={failure.accountRetrievalError}
             size="small"
             style={{ textAlign: 'center' }}
           >
-            <Modal.Content>
-              {this.renderContent(actions)}
-            </Modal.Content>
-          </Modal> : 
+            <Modal.Content>{this.renderContent(actions)}</Modal.Content>
+          </Modal>
+        ) : (
           <FairyContainer>
             <FairyContainer.Column position="left" separator="right">
               <FairyContainer.Column.Header>
                 <AccountComponent accounts={accounts} loading={loading} />
               </FairyContainer.Column.Header>
-              <FairyContainer.Column.Body>{actionMenu}</FairyContainer.Column.Body>
+              <FairyContainer.Column.Body>
+                {actionMenu}
+              </FairyContainer.Column.Body>
             </FairyContainer.Column>
             <FairyContainer.Column position="middle">
               <FairyContainer.Column.Header underlined>
@@ -179,7 +196,7 @@ export default class Wallet extends Component<Props> {
               </FairyContainer.Column.Body>
             </FairyContainer.Column>
           </FairyContainer>
-        }
+        )}
       </span>
     );
   }

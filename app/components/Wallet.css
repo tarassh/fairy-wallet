@@ -51,6 +51,36 @@
     color: rgb(51, 51, 51);
 }
 
+.ui.basic.label.history-action {
+    padding: 0.3rem;
+    text-transform: capitalize;
+    color: rgb(51, 51, 51) !important;
+}
+
+.ui.basic.label.history-action.voteproducer {
+    color: rgb(241,158,41) !important;
+    border-color: rgb(241,158,41);
+}
+
+.ui.basic.label.history-action.transfer.send {
+    color: rgb(207,44,64) !important;
+    border-color: rgb(207,44,64);
+}
+
+.ui.basic.label.history-action.transfer.receive {
+    color: rgb(108,182,42) !important;
+    border-color: rgb(108,182,42);
+}
+
+.ui.basic.label.history-action.delegatebw,
+.ui.basic.label.history-action.undelegatebw,
+.ui.basic.label.history-action.sellram,
+.ui.basic.label.history-action.buyram,
+.ui.basic.label.history-action.buyrambytes {
+    color: rgb(68,91,200) !important;
+    border-color: rgb(68,91,200);
+}
+
 .ui.segments.wallet > .ui.segments.menu {
     margin: 0;
     width: 21.5%;
@@ -454,4 +484,23 @@
     display: inline-block;
     width: 25%;
     margin: 0 1rem;
+}
+
+.fairy-container .column > div.row.airdrop-token {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.column.airdrop-token-remove {
+    opacity: 0.2;
+}
+
+.column.airdrop-token-remove:hover {
+    opacity: 0.9;
+}
+
+i.airdrop-token-add {
+    color: #1a8cff;
 }

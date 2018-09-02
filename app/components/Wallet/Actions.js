@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
 import ActionsSend from '../../containers/Wallet/Actions/Send';
-import ActionStake from '../../containers/Wallet/Actions/Stake';
+import ActionDelegate from '../../containers/Wallet/Actions/Delegate';
+import ActionUndelegate from '../../containers/Wallet/Actions/Undelegate';
 import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 
@@ -18,8 +19,9 @@ export default class Actions extends Component<Props> {
 
     const panes = {
       history: <ActionsHistory />,
-      transferFunds: <ActionsSend />,
-      stake: <ActionStake />,
+      transfer: <ActionsSend />,
+      delegate: <ActionDelegate />,
+      undelegate: <ActionUndelegate />,
       ram: <ActionRam />,
       voting: <ActionVote />
     };

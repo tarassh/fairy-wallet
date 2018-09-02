@@ -60,12 +60,17 @@ export default class BuyRam extends Component<Props> {
     let available = assetToNumber(account.core_liquid_balance);
     let step = '0.0001';
     let label = 'Value (EOS)';
-    const disabled = quantity === 0;
+    let invalidAmount;
+    let disabled = quantity === 0 || recipient === '' || quantity === '';
 
     if (option.toLowerCase() === 'bytes') {
       available = 0xffffffff;
       step = '1';
       label = 'Value (Bytes)';
+    } else if (quantity > available) {
+      invalidAmount = 'invalid';
+      label = 'Invalid Amount';
+      disabled = true;
     }
 
     return (
@@ -91,9 +96,10 @@ export default class BuyRam extends Component<Props> {
               name="quantity"
               step={step}
               min={0}
-              max={available}
+              max={Number.MAX_VALUE}
               value={quantity}
               type="number"
+              className={invalidAmount}
               onChange={this.handleChange}
             />
           </Form.Group>

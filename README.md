@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/tarassh/fairy-wallet/blob/master/resources/icons/384x384.png" height="128" width="128" />
+  <img src="https://github.com/tarassh/fairy-wallet/blob/master/resources/logo.png" height="128" width="128" />
 </p>
 
 
@@ -15,9 +15,9 @@
 
 - **Hardware Wallet support** Application works with Ledger Nano S hardware wallet. To sign the transaction, application upploads transaction data onto hardware wallet and signing is done internally, so private key is never revealed to the world.
 - **Multi account support** Application allows user to switch between EOS accounts if he have such. Accouns should be bounded to public key from hardware wallet.
-- **Transfer funds** Application allows to transfer `eosio.token` contract compatible tokens from user account.
+- **Transfer funds** Application allows to transfer EOS tokens and generic tokens.
 - **Balance Staking** Application allows to stake/unstrake EOS funds.
-- **Airdrop** Apllication allows to track `eosio.token` contract compatible tokens that user is interested in.
+- **Airdrop** Apllication allows to track generic tokens that user is interested in.
 - **Transaction History** Apllication provides history transaction track.
 - **Currency price** Added EOS USD exchange pair.
 - **Voting** User can vote up to 30 block producers.
@@ -56,14 +56,14 @@ User manual you can find on [Wiki](https://github.com/tarassh/fairy-wallet/wiki/
 
 To connect to EOS Mainnet you can use one of the following endpoints:
 
-**NOTE**: You may expirience lack of account history as not all listed below endpoints provide it. Enpoints with checked box identifies history availability. 
-
-* [x] http://api.cypherglass.com - operated by [Cypherglass](https://www.cypherglass.com)
-* [x] https://eos.greymass.com - operated by [Greymass](https://greymass.com)
-* [ ] https://bp.cryptolions.io - operated by [CryptoLions](http://CryptoLions.io/)
-* [ ] https://user-api.eoseoul.io - operated by [EOSeoul](https://portal.eoseoul.io/)
-* [x] https://api1.eosdublin.io - operated by [EOS Dublin](https://eosdublin.io)
-* [x] https://api2.eosdublin.io - operated by [EOS Dublin](https://eosdublin.io)
+* https://eos.greymass.com - operated by [Greymass](https://greymass.com)
+* http://api.cypherglass.com - operated by [Cypherglass](https://www.cypherglass.com)
+* https://api.eossweden.se - operated by [Sw/eden](https://eossweden.org)
+* https://nodes.eos42.io - operated by [EOS42](https://www.eos42.io)
+* http://api-mainnet.starteos.io - operated by [Starteos](https://www.starteos.io)
+* https://eosbp.atticlab.net - opeated by [AtticLab](https://atticlab.net)
+* https://eu.eosdac.io - operated by [eosDAC](https://eosdac.io)
+* https://api1.eosdublin.io - operated by [eosDublin](https://www.eosdublin.com)
 
 ## Connect to Testnet
 
@@ -71,6 +71,7 @@ If you want to do testing of this application you can connect to available testn
 
 [Jungle Testnet](http://jungle.cryptolions.io/) - operated by [CryptoLions](http://CryptoLions.io/):
 
+* https://jungle.eosio.cr
 * http://jungle.cryptolions.io:18888
 * http://dev.cryptolions.io:38888
 

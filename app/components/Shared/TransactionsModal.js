@@ -28,8 +28,8 @@ const noop = () => {};
 
 const actionDisplayName = {
   transfer: 'Transfer funds',
-  delegatebw: 'Stake funds',
-  undelegatebw: 'Unstake funds',
+  delegatebw: 'Delegate funds',
+  undelegatebw: 'Undelegate funds',
   voteproducer: 'Vote producer',
   buyram: 'Buy RAM',
   buyrambytes: 'Buy RAM bytes',

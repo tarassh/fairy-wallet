@@ -52,13 +52,15 @@ const fn = {
     if (from === participant) {
       return {
         desc: `to ${to}`,
-        quantity: `-${quantity}`
+        quantity: `-${quantity}`,
+        prettyname: 'send'
       };
     }
     if (to === participant) {
       return {
         desc: `from ${from}`,
-        quantity: `+${quantity}`
+        quantity: `+${quantity}`,
+        prettyname: 'receive'
       };
     }
     return defaultV;
@@ -71,7 +73,8 @@ const fn = {
     );
     return {
       desc: `to ${receiver}`,
-      quantity: `-${amount}`
+      quantity: `-${amount}`,
+      prettyname: 'delegate'
     };
   },
 
@@ -82,7 +85,8 @@ const fn = {
     );
     return {
       desc: `from ${from}`,
-      quantity: `+${amount}`
+      quantity: `+${amount}`,
+      prettyname: 'undelegate'
     };
   },
 
@@ -90,35 +94,40 @@ const fn = {
     const { quant, receiver } = action.data;
     return {
       desc: `for ${receiver}`,
-      quantity: `-${quant}`
+      quantity: `-${quant}`,
+      prettyname: 'buy RAM'
     };
   },
 
   buyrambytes: action => {
     const { bytes, receiver } = action.data;
     return {
-      desc: `${bytes} bytes for ${receiver}`
+      desc: `${bytes} bytes for ${receiver}`,
+      prettyname: 'buy RAM'
     };
   },
 
   sellram: action => {
     const { bytes } = action.data;
     return {
-      desc: `${bytes} bytes`
+      desc: `${bytes} bytes`,
+      prettyname: 'sell RAM'
     };
   },
 
   voteproducer: action => {
     const { producers } = action.data;
     return {
-      desc: `for ${producers.length} producers`
+      desc: `for ${producers.length} producers`,
+      prettyname: 'vote'
     };
   }
 };
 
 const defaultV = {
   desc: undefined,
-  quantity: undefined
+  quantity: undefined,
+  prettyname: undefined
 };
 
 function parseAction(action, participant) {
@@ -133,7 +142,7 @@ function parseAction(action, participant) {
     return fn[name](action, participant);
   }
 
-  return defaultV;
+  return Object.assign(defaultV, { prettyname: name });
 }
 
 export default {

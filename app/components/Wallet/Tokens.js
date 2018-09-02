@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Icon, Grid, List } from 'semantic-ui-react';
+import { Icon, Grid, List, Image } from 'semantic-ui-react';
 import _ from 'lodash';
 
 import TokenRemoveModal from './TokenRemoveModal';
 import TokenAddModal from './TokenAddModal';
 import MainContentContainer from './../Shared/UI/MainContent';
 import ScrollingTable from './../Shared/UI/ScrollingTable';
+import { tokenList } from '../Shared/TokenList';
 
 type Props = {
   accounts: {}
@@ -31,17 +32,18 @@ class Tokens extends Component<Props> {
     const { openAdd, openRemove, symbol, contract } = this.state;
 
     return (
-      <MainContentContainer 
-        title="Airdrops" 
+      <MainContentContainer
+        title="Airdrops"
         subtitle="Watch your Airdrops here"
         content={
-          <ScrollingTable 
-            header={
-              renderHeader()
-            }
+          <ScrollingTable
+            header={renderHeader(this.handleAddOpen)}
             content={
               <span>
-                <TokenAddModal open={openAdd} handleClose={this.handleAddClose} />
+                <TokenAddModal
+                  open={openAdd}
+                  handleClose={this.handleAddClose}
+                />
                 <TokenRemoveModal
                   open={openRemove}
                   handleClose={this.handleRemoveClose}
@@ -57,25 +59,31 @@ class Tokens extends Component<Props> {
                     </List.Item>
                   ))}
                 </List>
-                <Button onClick={this.handleAddOpen} circular icon="plus" />
               </span>
             }
-          />}
+          />
+        }
       />
     );
   }
 }
 
-function renderHeader() {
+function renderHeader(handler) {
   return (
     <Grid className="tableheader">
-      <Grid.Row>
-        <Grid.Column widht={3} />
-        <Grid.Column width={5}>
-          <p className="tableheadertitle">token</p>
-        </Grid.Column>
-        <Grid.Column width={8} textAlign="right">
-          <p className="tableheadertitle">balance</p>
+      <Grid.Row textAlign="center">
+        <Grid.Column width={16}>
+          <p className="tableheadertitle">
+            tokens{' '}
+            {
+              <Icon
+                name="add circle"
+                onClick={() => handler()}
+                style={{ cursor: 'pointer' }}
+                className="airdrop-token-add"
+              />
+            }
+          </p>
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -83,21 +91,28 @@ function renderHeader() {
 }
 
 function renderTokenBalance(balance, handler) {
+  const token = _.find(tokenList, el => balance.symbol === el.symbol);
+  const logo = token
+    ? token.logo
+    : 'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder.png';
   return (
     <Grid>
-      <Grid.Row>
-        <Grid.Column
-          widht={3}
-          onClick={() => handler(this, balance)}
-          style={{ cursor: 'pointer' }}
-        >
-          <Icon name="close" />
-        </Grid.Column>
-        <Grid.Column width={5}>{balance.symbol}</Grid.Column>
-        <Grid.Column width={8} textAlign="right">
-          {balance.amount}
-        </Grid.Column>
-      </Grid.Row>
+      <Grid.Column verticalAlign="middle" width={4}>
+        <Image src={logo} />
+      </Grid.Column>
+      <Grid.Column width={8}>
+        <Grid.Row className="airdrop-token">{balance.symbol}</Grid.Row>
+        <Grid.Row className="airdrop-token">{balance.amount}</Grid.Row>
+      </Grid.Column>
+      <Grid.Column
+        width={2}
+        verticalAlign="middle"
+        onClick={() => handler(this, balance)}
+        style={{ cursor: 'pointer' }}
+        className="airdrop-token-remove"
+      >
+        <Icon name="times circle outline" />
+      </Grid.Column>
     </Grid>
   );
 }
