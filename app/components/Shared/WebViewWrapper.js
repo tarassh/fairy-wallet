@@ -2,12 +2,15 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { styleObjectToStyleString } from './UI/utils';
+import { checkAccountExists } from '../../actions/accounts';
 
 type Props = {
   style: {},
+  accounts: {},
   publicKey: string,
   onLogin: () => void,
-  isSuccess: (boolean) => boolean
+  isSuccess: (boolean) => boolean,
+  checkAccountExists: () => {}
 };
 
 class WebViewWrapper extends Component<Props> {
@@ -29,6 +32,7 @@ class WebViewWrapper extends Component<Props> {
 
     const callbackSetup = () => {
       wv.addEventListener('will-navigate', this.willNavigate);
+      wv.addEventListener('did-navigate', this.didNavigate);
       wv.addEventListener('dom-ready', this.domReady);
       this.domReady();
 
@@ -39,14 +43,18 @@ class WebViewWrapper extends Component<Props> {
     wv.src = this.state.startUrl;
   }
 
+  didNavigate = () => {
+    const { accounts } = this.props;
+    this.props.isSuccess(accounts.accountExists);
+  }
+
   willNavigate = (event) => {
+    const { publicKey } = this.props;
+    this.props.checkAccountExists(publicKey);
+
     if(event.url !== _.last(this.state.history)) {
       this.setState((prevState) => ({ history: _.concat(prevState.history, event.url) }));
     }
-
-    if (event.url.indexOf("/account?account_name=") > 0) this.setState({ success: true })
-
-    this.props.isSuccess(this.state.success);
   }
   
   domReady = () => {
@@ -81,8 +89,8 @@ class WebViewWrapper extends Component<Props> {
   }
 
   render () {
-    const { style } = this.props;
-    const { history, success } = this.state;
+    const { style, accounts } = this.props;
+    const { history } = this.state;
 
     return (
       <div className="web-view">
@@ -91,12 +99,9 @@ class WebViewWrapper extends Component<Props> {
           <input disabled type="url" value={_.last(history)} />
         </div>
         <div style={style} ref={this.webViewContainer} />
-        {success ?
-          <div className="public-key-confirm-modal">
-            <Button content="Login" onClick={this.props.onLogin} />
-          </div>
-          : ""
-        }
+        <div className="public-key-confirm-modal">
+          <Button content={accounts.accountExists ? "Login" : "Back"} onClick={this.props.onLogin} />
+        </div>
       </div>
     );
   }

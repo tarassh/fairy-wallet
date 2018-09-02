@@ -3,6 +3,7 @@ import * as types from '../actions/types';
 const initialState = {
   publicKey: null,
   names: null,
+  accountExists: false,
   account: null,
   actions: null,
   balances: [],
@@ -24,6 +25,18 @@ export default function accounts(state = initialState, action) {
     case types.GET_ACCOUNTS_FAILURE: {
       return Object.assign({}, state, {
         names: null
+      });
+    }
+
+    case types.CHECK_ACCOUNT_EXISTS_SUCCESS: {
+      return Object.assign({}, state, {
+        accountExists: action.accountExists
+      });
+    }
+
+    case types.CHECK_ACCOUNT_EXISTS_FAILURE: {
+      return Object.assign({}, state, {
+        accountExists: false
       });
     }
 
