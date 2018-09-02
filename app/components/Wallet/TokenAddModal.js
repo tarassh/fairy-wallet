@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import {
   Button,
@@ -13,6 +14,7 @@ import { bindActionCreators } from 'redux';
 import { addToken } from '../../actions/settings';
 import { getCurrencyStats } from '../../actions/currency';
 import { InputAccount, InputSymbol } from '../Shared/EosComponents';
+import { tokenList } from '../Shared/TokenList';
 
 const initialState = {
   symbol: '',
@@ -22,24 +24,10 @@ const initialState = {
   selectValue: ''
 };
 
-const predefinedTokens = [
-  { key: 'everipediaiq-iq', value: 'everipediaiq-iq', text: 'Everipedia (IQ)' },
-  {
-    key: 'therealkarma-karma',
-    value: 'therealkarma-karma',
-    text: 'Karma (KARMA)'
-  },
-  {
-    key: 'challengedac-chl',
-    value: 'challengedac-chl',
-    text: 'Challenge (CHL)'
-  },
-  {
-    key: 'horustokenio-horus',
-    value: 'horustokenio-horus',
-    text: 'Horus (HORUS)'
-  }
-];
+const predefinedTokens = _.map(tokenList, el => {
+  const key = `${el.account}-${el.symbol}`;
+  return { key, value: key, text: el.name, image: el.logo, ...el };
+});
 
 class TokenAddModal extends Component<Props> {
   state = initialState;

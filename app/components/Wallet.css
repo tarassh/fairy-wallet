@@ -485,3 +485,22 @@
     width: 25%;
     margin: 0 1rem;
 }
+
+.fairy-container .column > div.row.airdrop-token {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.column.airdrop-token-remove {
+    opacity: 0.2;
+}
+
+.column.airdrop-token-remove:hover {
+    opacity: 0.9;
+}
+
+i.airdrop-token-add {
+    color: #1a8cff;
+}

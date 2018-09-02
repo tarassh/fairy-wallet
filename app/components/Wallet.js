@@ -70,6 +70,7 @@ export default class Wallet extends Component<Props> {
     const subpanes = {
       history: <Tokens accounts={accounts} />,
       transfer: <Tokens accounts={accounts} />,
+      voting: <Tokens accounts={accounts} />,
       delegate: (
         <StakedStats
           account={accounts.account}
