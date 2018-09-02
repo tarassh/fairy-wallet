@@ -53,3 +53,8 @@
   width: 25%;
   float: right;
 }
+
+.center {
+  height: 100%;
+  line-height: 100%;
+}

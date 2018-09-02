@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Form, Button, Icon } from 'semantic-ui-react';
+import { Form, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getAccounts } from '../../actions/accounts';
@@ -28,19 +28,42 @@ class NoAccountsContainer extends Component<Props> {
 
   successHandler = success => {
     this.setState({ success });
-  }
+  };
 
   renderSteps = () => {
     const { copied, success } = this.state;
     return (
       <span>
         <p className="title">Create account steps</p>
-        <ul className="steps">
-          <li><span>{!copied ? <Icon name="arrow right" size="small" /> : ""}</span>Get public key</li>
-          <li><span>{copied && !success ? <Icon name="arrow right" size="small" /> : ""}</span>Choose account name and proceed to payment</li>
-          <li><span>{success ? <Icon name="arrow right" size="small" /> : ""}</span>Your account was succesfully created</li>
-        </ul>
-      </span>);
+        <div>
+          <List celled selection>
+            <List.Item active={!copied && !success}>
+              <Icon name="key" />
+              <List.Content>
+                <List.Header>Get public key</List.Header>
+                <br />
+              </List.Content>
+            </List.Item>
+
+            <List.Item active={copied && !success}>
+              <Icon name="add user" />
+              <List.Content>
+                <List.Header>Choose account name</List.Header>
+                Then proceed to payment
+              </List.Content>
+            </List.Item>
+
+            <List.Item active={success}>
+              <Icon name="check circle outline" />
+              <List.Content>
+                <List.Header>Success</List.Header>
+                Now click Login button
+              </List.Content>
+            </List.Item>
+          </List>
+        </div>
+      </span>
+    );
   };
 
   onLogin = () => {
@@ -62,7 +85,8 @@ class NoAccountsContainer extends Component<Props> {
     const content = (
       <div>
         <p>
-          You need your public key to create an account.<br />Press a key icon to get your public key from Ledger Nano S.{' '}
+          No account found. You need your public key to create one.<br />Press a
+          key icon to get your public key from Ledger Nano S.{' '}
           <PublicKeyIcon callback={this.onCopyKey} />
         </p>
         <br />
@@ -84,18 +108,21 @@ class NoAccountsContainer extends Component<Props> {
       marginBottom: '1rem'
     };
     const content = (
-      <div>
+      <div className="center">
         <div>
-          Public key{' '}
+          Public key&nbsp;
           <span className="public-key">{accounts.publicKey.wif}</span>
         </div>
         <br />
-        <p>Now choose your account name. Then compare the keys, that we have already filled in for you.</p>
-        <WebViewWrapper 
-          style={webViewStyle} 
-          publicKey={accounts.publicKey.wif} 
-          onLogin={this.onLogin} 
-          isSuccess={this.successHandler} 
+        <p>
+          Now choose your account name. Then compare the keys, that we have
+          already filled in for you.
+        </p>
+        <WebViewWrapper
+          style={webViewStyle}
+          publicKey={accounts.publicKey.wif}
+          onLogin={this.onLogin}
+          isSuccess={this.successHandler}
         />
         <br />
       </div>
@@ -109,9 +136,7 @@ class NoAccountsContainer extends Component<Props> {
 
     return (
       <div className="no-account">
-        <div className="create-account-steps">
-          {this.renderSteps()}
-        </div>
+        <div className="create-account-steps">{this.renderSteps()}</div>
         <div className="create-account">
           <Form>
             <p className="title">Create Account</p>
