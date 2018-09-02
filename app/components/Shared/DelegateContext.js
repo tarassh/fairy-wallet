@@ -9,7 +9,7 @@ type Props = {
 class DelegateContext extends Component<Props> {
   render() {
     const { context } = this.props;
-    const actionName = context.action === 'delegatebw' ? 'stake' : 'unstake';
+    const actionName = context.action === 'delegatebw' ? 'delegate' : 'undelegate';
     const total = assetToNumber(context.net) + assetToNumber(context.cpu);
     const text = (
       <p className="dashed-border">

@@ -215,7 +215,6 @@ export default class Vote extends Component<Props> {
     const { loading, transactions } = this.props;
     const {
       openModal,
-      disabled,
       producersList,
       filter,
       activeItem
@@ -279,7 +278,7 @@ export default class Vote extends Component<Props> {
                     onChange={this.handleChange}
                     icon="search"
                   />
-                  <Button onClick={this.vote} disabled={disabled}>
+                  <Button onClick={this.vote}>
                     Vote
                   </Button>
                 </Form.Group>
