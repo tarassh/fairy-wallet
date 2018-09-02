@@ -30,6 +30,31 @@ export function getAccounts(publicKey) {
   };
 }
 
+export function checkAccountExists(publicKey) {
+  return (dispatch: () => void, getState) => {
+    dispatch({
+      type: types.CHECK_ACCOUNT_EXISTS_REQUEST
+    });
+
+    const { connection } = getState();
+
+    eos(connection)
+      .getKeyAccounts(publicKey)
+      .then(result =>
+        dispatch({
+          type: types.CHECK_ACCOUNT_EXISTS_SUCCESS,
+          accountExists: result.account_names && result.account_names.length > 0
+        })
+      )
+      .catch(err =>
+        dispatch({
+          type: types.CHECK_ACCOUNT_EXISTS_FAILURE,
+          err
+        })
+      );
+  };
+}
+
 export function setActiveAccount(index) {
   return (dispatch: () => void, getState) => {
     dispatch({ type: types.SET_ACTIVE_ACCOUNT, index });
@@ -203,6 +228,7 @@ export function getRefundsFor(account) {
 }
 
 export default {
+  checkAccountExists,
   getAccounts,
   getAccount,
   getActions,

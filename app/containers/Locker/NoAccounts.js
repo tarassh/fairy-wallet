@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Form, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getAccounts } from '../../actions/accounts';
+import { getAccounts, checkAccountExists } from '../../actions/accounts';
 import { clearConnection } from '../../actions/connection';
 import PublicKeyIcon from '../../components/Shared/PublicKeyIcon';
 import WebViewWrapper from '../../components/Shared/WebViewWrapper';
@@ -12,6 +12,7 @@ type Props = {
   accounts: {},
   loading: {},
   getAccounts: () => {},
+  checkAccountExists: () => {},
   clearConnection: () => {}
 };
 
@@ -35,9 +36,9 @@ class NoAccountsContainer extends Component<Props> {
     return (
       <span>
         <p className="title">Create account steps</p>
-        <div>
-          <List celled selection>
-            <List.Item active={!copied && !success}>
+        <div className='steps-container'>
+          <List celled>
+            <List.Item active={!copied && !success} className={copied && !success ? 'visited' : undefined}>
               <Icon name="key" />
               <List.Content>
                 <List.Header>Get public key</List.Header>
@@ -45,7 +46,7 @@ class NoAccountsContainer extends Component<Props> {
               </List.Content>
             </List.Item>
 
-            <List.Item active={copied && !success}>
+            <List.Item active={copied && !success} className={success ? 'visited': undefined}>
               <Icon name="add user" />
               <List.Content>
                 <List.Header>Choose account name</List.Header>
@@ -102,7 +103,7 @@ class NoAccountsContainer extends Component<Props> {
 
     const webViewStyle = {
       display: 'inline-flex',
-      width: '660px',
+      width: '100%',
       height: '460px',
       boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.15)',
       marginBottom: '1rem'
@@ -114,15 +115,14 @@ class NoAccountsContainer extends Component<Props> {
           <span className="public-key">{accounts.publicKey.wif}</span>
         </div>
         <br />
-        <p>
-          Now choose your account name. Then compare the keys, that we have
-          already filled in for you.
-        </p>
-        <WebViewWrapper
-          style={webViewStyle}
-          publicKey={accounts.publicKey.wif}
-          onLogin={this.onLogin}
-          isSuccess={this.successHandler}
+        <p>Now choose your account name. Then compare the keys, that we have already filled in for you.</p>
+        <WebViewWrapper 
+          style={webViewStyle} 
+          accounts={accounts}
+          publicKey={accounts.publicKey.wif} 
+          onLogin={this.onLogin} 
+          isSuccess={this.successHandler} 
+          checkAccountExists={this.props.checkAccountExists}
         />
         <br />
       </div>
@@ -160,7 +160,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getAccounts,
-      clearConnection
+      clearConnection,
+      checkAccountExists
     },
     dispatch
   );
