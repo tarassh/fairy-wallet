@@ -1,4 +1,5 @@
 // @flow
+import _ from 'lodash';
 import React, { Component } from 'react';
 import { Form, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -25,6 +26,28 @@ class NoAccountsContainer extends Component<Props> {
     };
 
     this.successHandler = this.successHandler.bind(this);
+  }
+
+  componentDidMount(){
+    this.tick();
+    this.interval = setInterval(this.tick.bind(this), 5000);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const { accounts } = this.props;
+    if (!_.isEqual(this.state, nextState)) {
+      return true;
+    }
+    return nextProps.accounts.accountExists;
+  }
+  
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  tick() {
+    const { accounts } = this.props;
+    this.props.checkAccountExists(accounts.publicKey.wif);
   }
 
   successHandler = success => {

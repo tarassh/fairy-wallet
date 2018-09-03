@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { styleObjectToStyleString } from './UI/utils';
-import { checkAccountExists } from '../../actions/accounts';
 
 type Props = {
   style: {},
@@ -18,14 +17,14 @@ class WebViewWrapper extends Component<Props> {
     super();
     this.state = {
       history: ["https://create-eos-account-for.me"],
-      startUrl: "https://create-eos-account-for.me",
-      success: false
+      startUrl: "https://create-eos-account-for.me"
     }
     this.webViewContainer= React.createRef();
   }
 
   componentDidMount () {
     const { style } = this.props;
+
     this.webViewContainer.current.innerHTML = `<webview style="${styleObjectToStyleString(style)}"/>`;
     const wv = this.webViewContainer.current.querySelector('webview');
     this.webview = wv;
@@ -49,9 +48,6 @@ class WebViewWrapper extends Component<Props> {
   }
 
   willNavigate = (event) => {
-    const { publicKey } = this.props;
-    this.props.checkAccountExists(publicKey);
-
     if(event.url !== _.last(this.state.history)) {
       this.setState((prevState) => ({ history: _.concat(prevState.history, event.url) }));
     }
