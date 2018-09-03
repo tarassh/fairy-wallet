@@ -21,11 +21,8 @@ class NoAccountsContainer extends Component<Props> {
   constructor() {
     super();
     this.state = {
-      copied: false,
-      success: false
+      copied: false
     };
-
-    this.successHandler = this.successHandler.bind(this);
   }
 
   componentDidMount(){
@@ -33,12 +30,11 @@ class NoAccountsContainer extends Component<Props> {
     this.interval = setInterval(this.tick.bind(this), 5000);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const { accounts } = this.props;
-    if (!_.isEqual(this.state, nextState)) {
-      return true;
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.accounts.accountExists) {
+      clearInterval(this.interval);
     }
-    return nextProps.accounts.accountExists;
+    return true;
   }
   
   componentWillUnmount() {
@@ -50,20 +46,17 @@ class NoAccountsContainer extends Component<Props> {
     this.props.checkAccountExists(accounts.publicKey.wif);
   }
 
-  successHandler = success => {
-    this.setState({ success });
-  };
-
   renderSteps = () => {
-    const { copied, success } = this.state;
+    const { accountExists } = this.props.accounts;
+    const { copied } = this.state;
     return (
       <span>
         <p className="title">Create account steps</p>
         <div className="steps-container">
           <List celled>
             <List.Item
-              active={!copied && !success}
-              className={copied && !success ? 'visited' : undefined}
+              active={!copied && !accountExists}
+              className={copied && !accountExists ? 'visited' : undefined}
             >
               <Icon name="key" />
               <List.Content>
@@ -73,8 +66,8 @@ class NoAccountsContainer extends Component<Props> {
             </List.Item>
 
             <List.Item
-              active={copied && !success}
-              className={success ? 'visited' : undefined}
+              active={copied && !accountExists}
+              className={accountExists ? 'visited' : undefined}
             >
               <Icon name="add user" />
               <List.Content>
@@ -83,7 +76,7 @@ class NoAccountsContainer extends Component<Props> {
               </List.Content>
             </List.Item>
 
-            <List.Item active={success}>
+            <List.Item active={accountExists}>
               <Icon name="check circle outline" />
               <List.Content>
                 <List.Header>Success</List.Header>
@@ -153,7 +146,6 @@ class NoAccountsContainer extends Component<Props> {
           accounts={accounts}
           publicKey={accounts.publicKey.wif}
           onLogin={this.onLogin}
-          isSuccess={this.successHandler}
           checkAccountExists={this.props.checkAccountExists}
         />
         <br />

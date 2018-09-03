@@ -32,20 +32,24 @@ export function getAccounts(publicKey) {
 
 export function checkAccountExists(publicKey) {
   return (dispatch: () => void, getState) => {
-    dispatch({
-      type: types.CHECK_ACCOUNT_EXISTS_REQUEST
-    });
+    // dispatch({
+    //   type: types.CHECK_ACCOUNT_EXISTS_REQUEST
+    // });
 
     const { connection } = getState();
 
     eos(connection)
       .getKeyAccounts(publicKey)
-      .then(result =>
-        dispatch({
-          type: types.CHECK_ACCOUNT_EXISTS_SUCCESS,
-          accountExists: result.account_names && result.account_names.length > 0
-        })
-      )
+      .then(result => {
+        if (result.account_names && result.account_names.length > 0) {
+          dispatch({
+            type: types.CHECK_ACCOUNT_EXISTS_SUCCESS,
+            accountExists: result.account_names && result.account_names.length > 0
+          });
+        }
+
+        return result.account_names;
+      })
       .catch(err =>
         dispatch({
           type: types.CHECK_ACCOUNT_EXISTS_FAILURE,

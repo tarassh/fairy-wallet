@@ -7,9 +7,7 @@ type Props = {
   style: {},
   accounts: {},
   publicKey: string,
-  onLogin: () => void,
-  isSuccess: (boolean) => boolean,
-  checkAccountExists: () => {}
+  onLogin: () => void
 };
 
 class WebViewWrapper extends Component<Props> {
@@ -40,11 +38,6 @@ class WebViewWrapper extends Component<Props> {
     wv.addEventListener('dom-ready', callbackSetup);
 
     wv.src = this.state.startUrl;
-  }
-
-  didNavigate = () => {
-    const { accounts } = this.props;
-    this.props.isSuccess(accounts.accountExists);
   }
 
   willNavigate = (event) => {
