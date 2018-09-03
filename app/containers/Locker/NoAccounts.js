@@ -59,21 +59,27 @@ class NoAccountsContainer extends Component<Props> {
     return (
       <span>
         <p className="title">Create account steps</p>
-        <div className='steps-container'>
+        <div className="steps-container">
           <List celled>
-            <List.Item active={!copied && !success} className={copied && !success ? 'visited' : undefined}>
+            <List.Item
+              active={!copied && !success}
+              className={copied && !success ? 'visited' : undefined}
+            >
               <Icon name="key" />
               <List.Content>
                 <List.Header>Get public key</List.Header>
-                <br />
+                <p className="subtitle">Click key icon to start</p>
               </List.Content>
             </List.Item>
 
-            <List.Item active={copied && !success} className={success ? 'visited': undefined}>
+            <List.Item
+              active={copied && !success}
+              className={success ? 'visited' : undefined}
+            >
               <Icon name="add user" />
               <List.Content>
                 <List.Header>Choose account name</List.Header>
-                Then proceed to payment
+                <p className="subtitle">Then proceed to payment</p>
               </List.Content>
             </List.Item>
 
@@ -81,7 +87,7 @@ class NoAccountsContainer extends Component<Props> {
               <Icon name="check circle outline" />
               <List.Content>
                 <List.Header>Success</List.Header>
-                Now click Login button
+                <p className="subtitle">Now click Login button</p>
               </List.Content>
             </List.Item>
           </List>
@@ -138,13 +144,16 @@ class NoAccountsContainer extends Component<Props> {
           <span className="public-key">{accounts.publicKey.wif}</span>
         </div>
         <br />
-        <p>Now choose your account name. Then compare the keys, that we have already filled in for you.</p>
-        <WebViewWrapper 
-          style={webViewStyle} 
+        <p>
+          Now choose your account name. Then compare the keys, that we have
+          already filled in for you.
+        </p>
+        <WebViewWrapper
+          style={webViewStyle}
           accounts={accounts}
-          publicKey={accounts.publicKey.wif} 
-          onLogin={this.onLogin} 
-          isSuccess={this.successHandler} 
+          publicKey={accounts.publicKey.wif}
+          onLogin={this.onLogin}
+          isSuccess={this.successHandler}
           checkAccountExists={this.props.checkAccountExists}
         />
         <br />
