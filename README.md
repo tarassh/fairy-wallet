@@ -25,7 +25,7 @@
 
 ## Releases
 
-The latest release version is 0.8.1. To download application use one the following links:
+The latest release version is 0.9.0. To download application use one the following links:
 
 - [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.0/FairyWallet-0.9.0.dmg)
 - [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.0/FairyWallet.Setup.0.9.0.exe)
