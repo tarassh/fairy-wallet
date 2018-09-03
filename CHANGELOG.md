@@ -64,3 +64,8 @@
 
 - **Fixes:** Fix connection issues handling. Minor fixes.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
+
+# 0.9.0 (2018.8.03)
+
+- **Onbording:** Onboaring proess from DEXEOS.
+- **Package:** darwin (osx), linux, win32 (windows) platform.
