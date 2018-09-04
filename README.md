@@ -58,6 +58,7 @@ To connect to EOS Mainnet you can use one of the following endpoints:
 
 * https://eos.greymass.com - operated by [Greymass](https://greymass.com)
 * http://api.cypherglass.com - operated by [Cypherglass](https://www.cypherglass.com)
+* https://mainnet.eosimpera.com - operated by [EOS IMPERA](https://eosimpera.io)
 * https://api.eossweden.se - operated by [Sw/eden](https://eossweden.org)
 * https://nodes.eos42.io - operated by [EOS42](https://www.eos42.io)
 * http://api-mainnet.starteos.io - operated by [Starteos](https://www.starteos.io)
