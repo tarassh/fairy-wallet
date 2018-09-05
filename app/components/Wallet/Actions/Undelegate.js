@@ -10,7 +10,7 @@ import ScrollingTable from '../../Shared/UI/ScrollingTable';
 const numeral = require('numeral');
 const exactMath = require('exact-math');
 
-const fraction10000 = 10000;
+const fraction10000 = 10000; 
 
 type Props = {
   account: {},
@@ -166,6 +166,23 @@ export default class Undelegate extends Component<Props> {
     return true;
   }
 
+  validateStakes = (min, val, staked, isCpu) => {
+    const stakedVal = staked[isCpu ? 'cpu' : 'net'];
+    const invalid = { isInvalid: true, className: 'invalid' };
+
+    if (val < min) {
+      invalid.message = `Its not recomended to have ${isCpu ? 'CPU' : 'NET'} below ${min} EOS`;
+      return invalid;
+    } else if (val > exactMath.div(stakedVal, fraction10000)) {
+      invalid.message = `Cannot exceed ${exactMath.div(stakedVal, fraction10000)} EOS`;
+      return invalid;
+    }
+
+    return {
+      isInvalid: false
+    }
+  }
+
   renderForm = () => {
     const { transactions, account } = this.props;
     const { openModal, recipient } = this.state;
@@ -180,10 +197,8 @@ export default class Undelegate extends Component<Props> {
     const staked = this.getStakedValues(recipient);
 
     const min = staked.recipient === account.account_name ? 0.5 : 0;
-    const cpuInvalid = cpu < min ? "invalid" : undefined;
-    const netInvalid = net < min ? "invalid" : undefined;
-
-    const enableRequest = this.validateFields();
+    const validCpu = this.validateStakes(min, cpu, staked, true);
+    const validNet = this.validateStakes(min, net, staked, false);
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -202,32 +217,32 @@ export default class Undelegate extends Component<Props> {
             onChange={this.handleRecipientChange}
           />
           <InputFloat
-            label={cpuInvalid ? `Its not recomended to have CPU below ${min} EOS` : 'CPU (EOS)'}
+            label={validCpu.isInvalid ? validCpu.message : 'CPU (EOS)'}
             name="cpu"
             step="0.0001"
             min={0}
-            max={exactMath.div(staked.cpu, fraction10000)}
+            max={Number.MAX_SAFE_INTEGER}
             value={cpu}
             type="number"
-            className={cpuInvalid}
+            className={validCpu.className}
             onChange={this.handleChange}
           />
           <InputFloat
-            label={netInvalid ? `Its not recomended to have NET below ${min} EOS` : 'NET (EOS)'}
+            label={validNet.isInvalid ? validNet.message : 'NET (EOS)'}
             name="net"
             step="0.0001"
             min={0}
-            max={exactMath.div(staked.net, fraction10000)}
+            max={Number.MAX_SAFE_INTEGER}
             value={net}
             type="number"
-            className={netInvalid}
+            className={validNet.className}
             onChange={this.handleChange}
           />
         </Form.Field>
         <Form.Button
           id="form-button-control-public"
           content="Undelegate"
-          disabled={!enableRequest}
+          disabled={validCpu.isInvalid || validNet.isInvalid}
         />
       </Form>
     );

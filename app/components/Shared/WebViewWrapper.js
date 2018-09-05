@@ -87,8 +87,8 @@ class WebViewWrapper extends Component<Props> {
           <Button icon='arrow left' disabled={history.length === 1} onClick={this.goBack} />
           <input disabled type="url" value={_.last(history)} />
         </div>
-        <div style={style} ref={this.webViewContainer} />
-        <div className="public-key-confirm-modal">
+        <div className="web-view-content" style={style} ref={this.webViewContainer} />
+        <div className="web-view-back">
           <Button content={accounts.accountExists ? "Login" : "Back"} onClick={this.props.onLogin} />
         </div>
       </div>

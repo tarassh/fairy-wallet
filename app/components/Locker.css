@@ -41,7 +41,6 @@
   float: left;
   padding: 2rem;
   border-right: 1px solid #d2d2db;
-  height: 100%;
 }
 
 .no-account .create-account-steps ul {
@@ -55,6 +54,46 @@
   text-align: center;
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.no-account .create-account,
+.no-account .create-account form,
+.no-account .create-account-steps {
+  height: 100%;
+}
+
+.no-account .create-account form>p {
+  height: 8%;
+  margin: 0;
+  padding: 2rem 0 1rem 0;
+}
+
+.no-account .create-account form>div {
+  height: 92%;
+}
+
+.no-account .create-account .web-view {
+  height: 90%;
+  padding-bottom: 1rem;
+}
+
+.no-account .create-account .center div.header {
+  height: 10%;
+}
+
+.no-account .create-account .web-view .web-view-back {
+  height: 9%;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.no-account .create-account .web-view .web-view-navigation {
+  height: 5%;
+}
+
+.no-account .create-account .web-view .web-view-content {
+  height: 86%;
+  margin: 0;
 }
 
 .no-account .take-space {
@@ -73,9 +112,14 @@
   padding-bottom: 1rem !important; 
 }
 
+.steps-container .item,
+.steps-container .ui.list>.item .content .header {
+  color: lightgray;
+}
+
 .steps-container .visited,
 .steps-container .ui.list>.item.visited .header {
-  color: #d2d2db;
+  color: rgb(106,180,39);
 }
 
 .steps-container .active,

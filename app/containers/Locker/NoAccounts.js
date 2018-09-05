@@ -56,7 +56,7 @@ class NoAccountsContainer extends Component<Props> {
           <List celled>
             <List.Item
               active={!copied && !accountExists}
-              className={copied && !accountExists ? 'visited' : undefined}
+              className={copied ? 'visited' : undefined}
             >
               <Icon name="key" />
               <List.Content>
@@ -76,7 +76,7 @@ class NoAccountsContainer extends Component<Props> {
               </List.Content>
             </List.Item>
 
-            <List.Item active={accountExists}>
+            <List.Item className={accountExists ? 'visited' : undefined}>
               <Icon name="check circle outline" />
               <List.Content>
                 <List.Header>Success</List.Header>
@@ -126,21 +126,21 @@ class NoAccountsContainer extends Component<Props> {
     const webViewStyle = {
       display: 'inline-flex',
       width: '100%',
-      height: '460px',
-      boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.15)',
-      marginBottom: '1rem'
+      boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.15)'
     };
     const content = (
       <div className="center">
-        <div>
-          Public key&nbsp;
-          <span className="public-key">{accounts.publicKey.wif}</span>
+        <div className="header">
+          <div>
+            Public key&nbsp;
+            <span className="public-key">{accounts.publicKey.wif}</span>
+          </div>
+          <br />
+          <p>
+            Now choose your account name. Then compare the keys, that we have
+            already filled in for you.
+          </p>
         </div>
-        <br />
-        <p>
-          Now choose your account name. Then compare the keys, that we have
-          already filled in for you.
-        </p>
         <WebViewWrapper
           style={webViewStyle}
           accounts={accounts}
@@ -148,7 +148,6 @@ class NoAccountsContainer extends Component<Props> {
           onLogin={this.onLogin}
           checkAccountExists={this.props.checkAccountExists}
         />
-        <br />
       </div>
     );
 
