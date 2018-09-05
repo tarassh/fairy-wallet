@@ -504,3 +504,8 @@
 i.airdrop-token-add {
     color: #1a8cff;
 }
+
+.ui.image.producer {
+    width: 1.5rem;
+    height: 1.5rem;
+}

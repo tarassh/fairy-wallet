@@ -186,11 +186,11 @@ export default class Vote extends Component<Props> {
         <Grid.Column width={1}>
           {
             producer.owner === 'cypherglasss' ? 
-              <Image src={smileCypherSvg} /> : 
+              <Image src={smileCypherSvg} className='producer' /> : 
             producing ? (
-              <Image src={smileSvg} />
+              <Image src={smileSvg} className='producer' />
             ) : (
-              <Image src={mehSvg} />
+              <Image src={mehSvg} className='producer' />
             )
           }
         </Grid.Column>
@@ -289,7 +289,7 @@ export default class Vote extends Component<Props> {
                 className="vote"
                 header={<span />}
                 content={
-                  <List divided relaxed className="scrollable">
+                  <List divided className="scrollable">
                     {!isLoading ? filteredList : undefined}
                   </List>
                 }
