@@ -69,3 +69,8 @@
 
 - **Onbording:** Onboaring proess from DEXEOS.
 - **Package:** darwin (osx), linux, win32 (windows) platform.
+
+# 0.9.1 (2018.9.06)
+
+- **Fixes:** Fix for hang for Windows 10 on minimize action.
+- **UI:** Add memo to history. Colored delegates.
