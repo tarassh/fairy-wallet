@@ -60,10 +60,12 @@ app.on('ready', async () => {
     show: false,
     width: 1300,
     height: 800,
+    minWidth: 1300,
+    minHeight: 800,
     titleBarStyle: 'hidden'
   });
 
-  mainWindow.setResizable(false);
+  // mainWindow.setResizable(false);
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -80,30 +82,30 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
-  mainWindow.on('restore', () => {
-      if (process.platform === "win32"){
-        mainWindow.setSize(1300, 810)
-      }
-  });
+  // mainWindow.on('restore', () => {
+  //     if (process.platform === "win32"){
+  //       mainWindow.setSize(1300, 810)
+  //     }
+  // });
 
-  mainWindow.on('move', () => {
-    if (process.platform === "win32"){
-      mainWindow.setSize(1300, 810)
-    }
-  });
+  // mainWindow.on('move', () => {
+  //   if (process.platform === "win32"){
+  //     mainWindow.setSize(1300, 810)
+  //   }
+  // });
 
-  mainWindow.on('enter-full-screen', () => {
-    if (process.platform === "win32"){
-      mainWindow.setResizable(true);
-    }
-  });
+  // mainWindow.on('enter-full-screen', () => {
+  //   if (process.platform === "win32"){
+  //     mainWindow.setResizable(true);
+  //   }
+  // });
 
-  mainWindow.on('leave-full-screen', () => {
-    if (process.platform === "win32"){
-      mainWindow.setResizable(false);
-      mainWindow.setSize(1300, 810);
-    }
-  });
+  // mainWindow.on('leave-full-screen', () => {
+  //   if (process.platform === "win32"){
+  //     mainWindow.setResizable(false);
+  //     mainWindow.setSize(1300, 810);
+  //   }
+  // });
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
