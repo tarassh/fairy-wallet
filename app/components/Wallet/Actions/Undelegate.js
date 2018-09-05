@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Grid, List } from 'semantic-ui-react';
+import { Form, Grid, List, Label } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
@@ -22,6 +22,16 @@ type Props = {
   getAccount: string => {},
   getActions: string => {}
 };
+
+const colors = [
+  '241,158,41',
+  '192,71,222',
+  '55,188,150',
+  '68,91,200',
+  '253,112,62',
+  '108,182,42',
+  '207,44,64'
+];
 
 export default class Undelegate extends Component<Props> {
 
@@ -233,17 +243,17 @@ export default class Undelegate extends Component<Props> {
     );
   };
 
-  renderDelegate = delegate => {
+  renderDelegate = (delegate, color) => {
     const cpu = numeral(assetToNumber(delegate.cpu_weight)).format('0,0.0000');
     const net = numeral(assetToNumber(delegate.net_weight)).format('0,0.0000');
     return (
       <Grid>
         <Grid.Row>
-          <Grid.Column width={4}>
-            <p>{delegate.to}</p>
+          <Grid.Column width={6}>
+            <span><Label circular empty style={{background: color}} /> {delegate.to}</span>
           </Grid.Column>
-          <Grid.Column textAlign="right" width={6}>{cpu}</Grid.Column>
-          <Grid.Column textAlign="right" width={6}>{net}</Grid.Column>
+          <Grid.Column textAlign="right" width={5}>{cpu}</Grid.Column>
+          <Grid.Column textAlign="right" width={5}>{net}</Grid.Column>
         </Grid.Row>
       </Grid>
     );
@@ -270,6 +280,11 @@ export default class Undelegate extends Component<Props> {
     let { delegates } = this.props;
     if (delegates && delegates === null) {
       delegates = [];
+    } else if (delegates.length > 1) {
+      const index = delegates.findIndex(el => el.to === el.from);
+      if (index > 0) {
+        delegates.splice(0, 0, delegates.splice(index, 1)[0]);
+      }
     }
 
     return (
@@ -279,14 +294,14 @@ export default class Undelegate extends Component<Props> {
         }
         content={
           <List selection divided>
-            {_.map(delegates, delegate => (
+            {_.map(delegates, (delegate, i) => (
               <List.Item 
                 key={delegate.to} 
                 name={delegate.to} 
                 onClick={this.handleDelegateSelect} 
                 active={recipient === delegate.to}
               >
-                <List.Content>{this.renderDelegate(delegate)}</List.Content>
+                <List.Content>{this.renderDelegate(delegate, `rgb(${colors[i % delegates.length]}`)}</List.Content>
               </List.Item>
           ))}
           </List>
