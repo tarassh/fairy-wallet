@@ -181,12 +181,17 @@ function renderAction(action, account, handler, goto) {
       {action.active && (
         <Grid.Row style={{ fontSize: 'small' }}>
           <Grid.Column style={{ padding: '1em' }}>
-            <p>Transaction ID: </p>
             <div txid={action.txId} onClick={() => goto(null, { txid: action.txId })}>
-              <Icon name='info circle' />
+              Transaction ID :
               &nbsp;
+              <Icon name='info circle' />
               {action.txId}
             </div>
+            {
+              typeof action.data.memo === 'string' && (
+                <div>Memo :&nbsp;{_.truncate(action.data.memo, { length: 80})}</div>
+              )
+            }
           </Grid.Column>
         </Grid.Row>
       )}
