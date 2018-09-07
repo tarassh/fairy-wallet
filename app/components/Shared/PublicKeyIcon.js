@@ -93,13 +93,21 @@ class PublicKeyComponent extends Component<Props> {
         image = publicKeySvg;
 
         action = (
-          <CopyToClipboard text={publicKey.wif}>
+          <div className="public-key-confirm-modal">
             <Button
-              content="Copy to clipborad"
-              name="copied"
-              onClick={() => this.handleClose(null, { name: 'copied' })}
+              content="Close"
+              name="canceled"
+              onClick={this.handleClose}
             />
-          </CopyToClipboard>
+            <CopyToClipboard text={publicKey.wif}>
+              <Button
+                icon="copy"
+                content="Copy"
+                name="copied"
+                onClick={() => this.handleClose(null, { name: 'copied' })}
+              />
+            </CopyToClipboard>
+          </div>
         );
 
         desc = (
