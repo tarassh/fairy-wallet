@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Menu, Icon, Modal, Button } from 'semantic-ui-react';
+import { Menu, Icon, Modal, Button, Label } from 'semantic-ui-react';
 import WalletActions from './Wallet/Actions';
 import BalanceComponent from '../components/Shared/BalanceComponent';
 import AccountComponent from '../components/Shared/AccountComponent';
@@ -25,7 +25,25 @@ type Props = {
 
 export default class Wallet extends Component<Props> {
   props: Props;
-  state = { activeItem: 'history' };
+  
+  state = { 
+    activeItem: 'history', 
+    lastActionBlock: 0, 
+    showNotification: false 
+  };
+
+  componentWillReceiveProps(newProps) {
+    const { activeItem, lastActionBlock } = this.state;
+    const { accounts } = newProps;
+    
+    if (lastActionBlock !== accounts.lastActionBlock && activeItem !== 'history') {
+      this.setState({ showNotification: true });
+    }
+
+    if (activeItem === 'history') {
+      this.setState({ lastActionBlock: accounts.lastActionBlock })
+    }
+  }
 
   componentDidUpdate() {
     const { states, history } = this.props;
@@ -34,7 +52,18 @@ export default class Wallet extends Component<Props> {
     }
   }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleItemClick = (e, { name }) => { 
+    if (name === 'history') {
+      const { accounts } = this.props;
+      this.setState({ 
+        activeItem: name, 
+        showNotification: false, 
+        lastActionBlock: accounts.lastActionBlock 
+      });
+    } else {
+      this.setState({ activeItem: name });
+    }
+  };
 
   handleRetry = () => {
     const { accounts } = this.props;
@@ -65,7 +94,8 @@ export default class Wallet extends Component<Props> {
 
   render() {
     const { accounts, currency, loading, failure } = this.props;
-    const { activeItem } = this.state;
+    const { activeItem, showNotification } = this.state;
+    const newAction = showNotification ? <Label basic content='new action' className='notification' /> : undefined;
 
     const subpanes = {
       history: <Tokens accounts={accounts} />,
@@ -96,7 +126,7 @@ export default class Wallet extends Component<Props> {
           onClick={this.handleItemClick}
         >
           <Icon name="history" />
-          HISTORY
+          HISTORY{newAction}
         </Menu.Item>
         <Menu.Item
           name="transfer"

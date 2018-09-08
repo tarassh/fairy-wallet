@@ -9,6 +9,7 @@ const initialState = {
   balances: [],
   activeAccount: 0,
   lastIrreversibleBlock: 0,
+  lastActionBlock: 0,
   delegates: [],
   refunds: [],
   delegatee: undefined
@@ -53,13 +54,18 @@ export default function accounts(state = initialState, action) {
     }
 
     case types.GET_ACTIONS_SUCCESS: {
-      let block = state.lastIrreversibleBlock;
+      let irreversibleBlock = state.lastIrreversibleBlock;
+      let actionBlock = state.lastActionBlock;
       if (action.lastIrreversibleBlock) {
-        block = action.lastIrreversibleBlock;
+        irreversibleBlock = action.lastIrreversibleBlock;
+      }
+      if (action.actions.length > 0) {
+        actionBlock = action.actions[action.actions.length-1].block_num;
       }
       return Object.assign({}, state, {
         actions: action.actions,
-        lastIrreversibleBlock: block
+        lastIrreversibleBlock: irreversibleBlock,
+        lastActionBlock: actionBlock
       });
     }
 

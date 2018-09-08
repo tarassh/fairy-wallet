@@ -79,9 +79,9 @@ export default class History extends Component<Props> {
         active: activeAction === account_action_seq // eslint-disable-line camelcase
       };
 
-      if (!dayActions.actions.find(el => el.digest === action.digest)) {
+      if (!dayActions.actions.find(el => el.digest === action.digest && el.time === action.time)) {
         dayActions.actions.push(action);
-      }
+      } 
     });
     const accountName = account.account_name;
 

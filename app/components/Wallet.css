@@ -509,3 +509,12 @@ i.airdrop-token-add {
     width: 1.5rem;
     height: 1.5rem;
 }
+
+.ui.vertical.menu .item>.label.notification {
+    float: none;
+    background: white;
+    color: rgb(241,158,41) !important;
+    border-color: rgb(241,158,41);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+}
