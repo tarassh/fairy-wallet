@@ -19,8 +19,7 @@ type Props = {
   currency: {},
   loading: {},
   failure: {},
-  getAccount: string => void,
-  clearConnection: () => void
+  actions: {}
 };
 
 export default class Wallet extends Component<Props> {
@@ -66,13 +65,13 @@ export default class Wallet extends Component<Props> {
   };
 
   handleRetry = () => {
-    const { accounts } = this.props;
-    this.props.getAccount(accounts.names[accounts.activeAccount]);
+    const { accounts, actions } = this.props;
+    actions.getAccount(accounts.names[accounts.activeAccount]);
   };
 
   handleChangeNode = () => {
-    const { history } = this.props;
-    this.props.clearConnection();
+    const { history, actions } = this.props;
+    actions.clearConnection();
     history.goBack();
   };
 
@@ -93,14 +92,14 @@ export default class Wallet extends Component<Props> {
   );
 
   render() {
-    const { accounts, currency, loading, failure } = this.props;
+    const { accounts, currency, loading, failure, actions } = this.props;
     const { activeItem, showNotification } = this.state;
     const newAction = showNotification ? <Label basic content='new' className='notification' /> : undefined;
 
     const subpanes = {
-      history: <Tokens accounts={accounts} />,
-      transfer: <Tokens accounts={accounts} />,
-      voting: <Tokens accounts={accounts} />,
+      history: <Tokens accounts={accounts} actions={actions} />,
+      transfer: <Tokens accounts={accounts} actions={actions} />,
+      voting: <Tokens accounts={accounts} actions={actions} />,
       delegate: (
         <StakedStats
           account={accounts.account}
@@ -179,7 +178,7 @@ export default class Wallet extends Component<Props> {
       }
     });
 
-    const actions = [
+    const buttons = [
       <Button onClick={this.handleRetry} loading={isLoading} content="Retry" />,
       <Button onClick={this.handleChangeNode} content="Change Node" />
     ];
@@ -192,7 +191,7 @@ export default class Wallet extends Component<Props> {
             size="small"
             style={{ textAlign: 'center' }}
           >
-            <Modal.Content>{this.renderContent(actions)}</Modal.Content>
+            <Modal.Content>{this.renderContent(buttons)}</Modal.Content>
           </Modal>
         ) : (
           <FairyContainer>
@@ -214,7 +213,11 @@ export default class Wallet extends Component<Props> {
                 />
               </FairyContainer.Column.Header>
               <FairyContainer.Column.Body>
-                <WalletActions activeItem={activeItem} accounts={accounts} />
+                <WalletActions 
+                  activeItem={activeItem} 
+                  accounts={accounts} 
+                  actions={actions}
+                />
               </FairyContainer.Column.Body>
             </FairyContainer.Column>
             <FairyContainer.Column position="right">

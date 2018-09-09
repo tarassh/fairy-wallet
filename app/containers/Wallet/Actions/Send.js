@@ -1,11 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { Form } from 'semantic-ui-react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { transfer, resetState } from '../../../actions/transactions';
-import { getAccount, getActions } from '../../../actions/accounts';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import {
@@ -17,11 +14,8 @@ import MainContentContainer from './../../../components/Shared/UI/MainContent';
 type Props = {
   settings: {},
   accounts: {},
-  transactions: {},
-  transfer: (string, string, string, string) => {},
-  resetState: () => {},
-  getAccount: string => {},
-  getActions: string => {}
+  transaction: {},
+  actions: {}
 };
 
 const eosToken = 'EOS';
@@ -37,11 +31,12 @@ class SendContainer extends Component<Props> {
   };
 
   handleClose = () => {
-    const { accounts } = this.props;
-    this.props.resetState();
+    const { accounts, actions } = this.props;
+    actions.resetState();
+    actions.getAccount(accounts.account.account_name);
+    actions.getActions(accounts.account.account_name);
+
     this.setState({ openModal: false });
-    this.props.getAccount(accounts.account.account_name);
-    this.props.getActions(accounts.account.account_name);
   };
   handleChange = (e, { name, value }) => {
     const obj = {
@@ -64,17 +59,34 @@ class SendContainer extends Component<Props> {
 
   handleExecute = () => {
     const { contract, token, recipient, amount, memo } = this.state;
-    const { accounts } = this.props;
+    const { accounts, actions } = this.props;
     const accountName = accounts.account.account_name;
     const asset = numberToAsset(amount, token.toUpperCase());
 
-    this.props.transfer(accountName, recipient, asset, memo, contract);
+    actions.transfer(accountName, recipient, asset, memo, contract);
   }
 
-  handleSubmit = () => this.setState({ openModal: true })
+  handleSubmit = () => {
+    const { contract, token, recipient, amount, memo } = this.state;
+    const { accounts, actions } = this.props;
+
+    const accountName = accounts.account.account_name;
+    
+    const asset = numberToAsset(amount, token.toUpperCase());
+    actions.setContext({
+      contract,
+      action: 'transfer',
+      from: accountName,
+      to: recipient,
+      asset,
+      memo
+    });
+    
+    this.setState({ openModal: true })
+  }
 
   render() {
-    const { accounts, settings, transactions } = this.props;
+    const { accounts, settings, transaction } = this.props;
     const { token, recipient, memo, resetValue, openModal } = this.state;
 
     const { balances, account } = accounts;
@@ -114,7 +126,7 @@ class SendContainer extends Component<Props> {
           <Form onSubmit={this.handleSubmit} className="side-padding">
             <TransactionsModal
               open={openModal}
-              transactions={transactions}
+              transaction={transaction}
               handleClose={this.handleClose}
               handleExecute={this.handleExecute}
             />
@@ -178,15 +190,8 @@ function mapStateToProps(state) {
   return {
     accounts: state.accounts,
     settings: state.settings,
-    transactions: state.transactions
+    transaction: state.transaction
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    { transfer, resetState, getAccount, getActions },
-    dispatch
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SendContainer);
+export default connect(mapStateToProps, null)(SendContainer);

@@ -1,38 +1,24 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {
-  undelegate,
-  resetState,
-} from '../../../actions/transactions';
-import { getAccount, getActions, setDelegateeAccount } from '../../../actions/accounts';
 import Undelegate from '../../../components/Wallet/Actions/Undelegate';
 
 type Props = {
   account: {},
-  transactions: {},
+  transaction: {},
   delegates: {},
-  undelegate: (string, string, string, string) => {},
-  setDelegateeAccount: (string) => {},
-  resetState: () => {},
-  getAccount: string => {},
-  getActions: string => {}
+  actions: {}
 };
 
 class UndelegateContainer extends Component<Props> {
   render() {
-    const { account, transactions, delegates } = this.props;
+    const { account, transaction, delegates, actions } = this.props;
 
     return (
       <Undelegate
         account={account}
-        transactions={transactions}
+        transaction={transaction}
         delegates={delegates}
-        getAccount={this.props.getAccount}
-        getActions={this.props.getActions}
-        undelegate={this.props.undelegate}
-        resetState={this.props.resetState}
-        setDelegateeAccount={this.props.setDelegateeAccount}
+        actions={actions}
       />
     );
   }
@@ -41,22 +27,9 @@ class UndelegateContainer extends Component<Props> {
 function mapStateToProps(state) {
   return {
     account: state.accounts.account,
-    transactions: state.transactions,
+    transaction: state.transaction,
     delegates: state.accounts.delegates
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      undelegate,
-      resetState,
-      getAccount,
-      getActions,
-      setDelegateeAccount
-    },
-    dispatch
-  );
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UndelegateContainer);
+export default connect(mapStateToProps, null)(UndelegateContainer);

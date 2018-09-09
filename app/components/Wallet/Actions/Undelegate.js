@@ -15,12 +15,8 @@ const fraction10000 = 10000;
 type Props = {
   account: {},
   delegates: {},
-  transactions: {},
-  undelegate: (string, string, string, string) => {},
-  setDelegateeAccount: (string) => {},
-  resetState: () => {},
-  getAccount: string => {},
-  getActions: string => {}
+  transaction: {},
+  actions: {}
 };
 
 const colors = [
@@ -89,6 +85,7 @@ export default class Undelegate extends Component<Props> {
   }
 
   handleDelegateSelect = (e, { name }) => {
+    const { actions } = this.props;
     const stakes = this.getStakedValues(name);
     if (this.recipient !== name) {
       if (stakes) {
@@ -101,17 +98,18 @@ export default class Undelegate extends Component<Props> {
         });
       }
     }
-    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
+    actions.setDelegateeAccount(stakes ? stakes.recipient : undefined);
   }
 
   handleRecipientChange = (e, { name, value }) => {
+    const { actions } = this.props;
     this.setState({ [name]: value });
     const stakes = this.getStakedValues(value);
     if (stakes) {
-      this.props.setDelegateeAccount(stakes.recipient);
+      actions.setDelegateeAccount(stakes.recipient);
       this.setState({cpu: stakes.cpu, net: stakes.net});
     } else {
-      this.props.setDelegateeAccount(undefined);
+      actions.setDelegateeAccount(undefined);
       this.setState({cpu: 0, net: 0});
     }
   };
@@ -138,26 +136,22 @@ export default class Undelegate extends Component<Props> {
 
   handleExecute = () => {
     const { cpuDelta, netDelta, recipient } = this.state;
-    const { account } = this.props;
+    const { account, actions } = this.props;
     const accountName = account.account_name;
 
     const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
-    this.props.undelegate(accountName, recipient, net, cpu);
+    actions.undelegate(accountName, recipient, net, cpu);
   }
 
   handleClose = () => {
-    const { account } = this.props;
+    const { account, actions } = this.props;
 
-    this.props.resetState();
-    this.props.getAccount(account.account_name);
-    this.props.getActions(account.account_name);
-    this.setState({
-      openModal: false,
-      cpuDelta: 0,
-      netDelta: 0
-    });
+    actions.resetState();
+    actions.getAccount(account.account_name);
+    actions.getActions(account.account_name);
+    this.setState({ openModal: false, cpuDelta: 0, netDelta: 0 });
   };
 
   validateFields = () => {
@@ -197,7 +191,7 @@ export default class Undelegate extends Component<Props> {
   }
 
   renderForm = () => {
-    const { transactions, account } = this.props;
+    const { transaction, account } = this.props;
     const { openModal, recipient } = this.state;
     let { cpu, net } = this.state;
     if (typeof cpu === 'number') {
@@ -217,7 +211,7 @@ export default class Undelegate extends Component<Props> {
       <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
           open={openModal}
-          transactions={transactions}
+          transaction={transaction.undelegate}
           handleClose={this.handleClose}
           handleExecute={this.handleExecute}
         />

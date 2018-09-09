@@ -9,7 +9,6 @@ import {
   Image,
   Header
 } from 'semantic-ui-react';
-import _ from 'lodash';
 import { shell } from 'electron';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
@@ -25,9 +24,9 @@ import { getPublicKey } from '../../actions/ledger';
 
 type Props = {
   states: {},
-  loading: {},
   open: boolean,
-  transactions: {},
+  loading: {},
+  transaction: ?{},
   handleClose: () => {},
   handleExecute: () => {},
   getPublicKey: () => {}
@@ -133,21 +132,12 @@ function renderTransaction(transaction, goto) {
 }
 
 class TransactionsModal extends Component<Props> {
-  state = { activeIndex: 0, executed: false };
+  state = { activeIndex: 0 };
 
   componentWillReceiveProps(nextProps) {
-    const { open, loading, states } = this.props;
-    const { executed } = this.state;
+    const { open } = this.props;
     if (!open && nextProps.open) {
       this.props.getPublicKey();
-      this.setState({ executed: false });
-    }
-
-    if (open && loading.GET_PUBLIC_KEY === false && states.publicKey === true) {
-      if (!executed) {
-        this.props.handleExecute();
-        this.setState({ executed: true });
-      }
     }
   }
 
@@ -157,56 +147,49 @@ class TransactionsModal extends Component<Props> {
       <br />
       <Image centered src={image} style={{ marginTop: '1em' }} />
       <br />
-      <div>
-        {_.map(content, (line, i) => (
-          <div key={i} className="subtitle no-top-bottom-margin">
-            {line}
-          </div>
-        ))}
+      <div className="subtitle no-top-bottom-margin">
+        {content}
       </div>
       <br />
       <br />
       <div className="public-key-confirm-modal">{action}</div>
     </div>
-  );
+  )
 
   renderTransaction = () => {
-    const { transactions, handleClose } = this.props;
+    const { transaction, handleClose, handleExecute } = this.props;
+    if (!transaction || transaction.context === null) {
+      return undefined;
+    }
 
-    const renderedTxs = [];
-    let successCounter = 0;
-    let failureCounter = 0;
     let image = confirmTransaction;
-    Object.keys(transactions).forEach(key => {
-      const tx = transactions[key];
-      if (tx.context !== null) {
-        renderedTxs.push(renderTransaction(tx, this.handleGoto));
-      }
-      successCounter += tx.receipt !== null ? 1 : 0;
-      failureCounter += tx.err !== null ? 1 : 0;
-    });
 
     let header = 'Use your device to verify transaction';
-    let modalAction = '';
-    if (successCounter === renderedTxs.length) {
+    let modalAction = (
+      <span>
+        <Button content='Cancel' onClick={handleClose} />
+        <Button content='Proceed' onClick={handleExecute} />
+      </span>
+    )
+    if (transaction.receipt !== null) {
       header = 'Transaction Successful';
       modalAction = <Button onClick={handleClose} content="Close" />;
-    } else if (failureCounter > 0) {
+    } else if (transaction.err !== null) {
       header = 'Transaction Failed';
       modalAction = <Button onClick={handleClose} content="Close" />;
       image = confirmTransactionFailed;
     }
 
-    return this.renderContent(header, renderedTxs, modalAction, image);
+    return this.renderContent(header, renderTransaction(transaction, this.handleGoto), modalAction, image);
   }
 
   renderInactivity = () => {
     const { handleClose } = this.props;
-    const header = 'Device is not responding';
-    const noAccountsText = <p>Cannot read device properties. Make sure your device is unlocked.</p>;
+    const header = 'Unlock Device';
+    const inactivity = <p>Cannot read device properties. Make sure your device is unlocked.</p>;
     const action = <Button onClick={handleClose} content="Close" />;
 
-    return this.renderContent(header, [noAccountsText], action, wakeupDevice);
+    return this.renderContent(header, inactivity, action, wakeupDevice);
   }
 
   handleClick = (e, { index }) => {
@@ -223,7 +206,7 @@ class TransactionsModal extends Component<Props> {
     const { open, states, loading } = this.props;
 
     return (
-      <Transition visible={open} animation="scale" duration={500}>
+      <Transition visible={open} animation="scale" duration={200}>
         <Modal
           open={open}
           size="small"
@@ -231,7 +214,7 @@ class TransactionsModal extends Component<Props> {
           style={{ textAlign: 'center' }}
         >
           <Modal.Content>
-            { states.publicKey || loading.GET_PUBLIC_KEY === true ? this.renderTransaction() : this.renderInactivity() }
+            { open && loading.GET_PUBLIC_KEY === false && (states.publicKey ? this.renderTransaction() : this.renderInactivity()) }
           </Modal.Content>
         </Modal>
       </Transition>

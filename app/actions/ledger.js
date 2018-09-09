@@ -148,5 +148,7 @@ export function getAppStats() {
 
 export default {
   startListen,
-  stopListen
+  stopListen,
+  getAppStats,
+  getPublicKey
 };
