@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   Modal,
   Transition,
@@ -17,11 +19,18 @@ import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
+import wakeupDevice from '../../../resources/images/wakeup-device.svg';
+
+import { getPublicKey } from '../../actions/ledger';
 
 type Props = {
+  states: {},
+  loading: {},
   open: boolean,
   transactions: {},
-  handleClose: () => {}
+  handleClose: () => {},
+  handleExecute: () => {},
+  getPublicKey: () => {}
 };
 
 const noop = () => {};
@@ -51,7 +60,10 @@ function renderTransaction(transaction, goto) {
   if (receipt !== null) {
     statusText = (
       <div 
-        onClick={() => goto(null, { txid: receipt.transaction_id })} 
+        role='link'
+        tabIndex={0}
+        onClick={() => {}} 
+        onKeyUp={() => goto(null, { txid: receipt.transaction_id })}
         style={{cursor: 'pointer'}}
       >
       Transaction id <span className='public-key'>{receipt.transaction_id}</span>
@@ -121,7 +133,23 @@ function renderTransaction(transaction, goto) {
 }
 
 class TransactionsModal extends Component<Props> {
-  state = { activeIndex: 0 };
+  state = { activeIndex: 0, executed: false };
+
+  componentWillReceiveProps(nextProps) {
+    const { open, loading, states } = this.props;
+    const { executed } = this.state;
+    if (!open && nextProps.open) {
+      this.props.getPublicKey();
+      this.setState({ executed: false });
+    }
+
+    if (open && loading.GET_PUBLIC_KEY === false && states.publicKey === true) {
+      if (!executed) {
+        this.props.handleExecute();
+        this.setState({ executed: true });
+      }
+    }
+  }
 
   renderContent = (header, content, action, image) => (
     <div>
@@ -142,18 +170,8 @@ class TransactionsModal extends Component<Props> {
     </div>
   );
 
-  handleClick = (e, { index }) => {
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
-  };
-
-  handleGoto = (e, { txid }) => {
-    shell.openExternal(`https://eosflare.io/tx/${txid}`);
-  };
-
-  render() {
-    const { open, transactions, handleClose } = this.props;
+  renderTransaction = () => {
+    const { transactions, handleClose } = this.props;
 
     const renderedTxs = [];
     let successCounter = 0;
@@ -179,6 +197,31 @@ class TransactionsModal extends Component<Props> {
       image = confirmTransactionFailed;
     }
 
+    return this.renderContent(header, renderedTxs, modalAction, image);
+  }
+
+  renderInactivity = () => {
+    const { handleClose } = this.props;
+    const header = 'Device is not responding';
+    const noAccountsText = <p>Cannot read device properties. Make sure your device is unlocked.</p>;
+    const action = <Button onClick={handleClose} content="Close" />;
+
+    return this.renderContent(header, [noAccountsText], action, wakeupDevice);
+  }
+
+  handleClick = (e, { index }) => {
+    const { activeIndex } = this.state;
+    const newIndex = activeIndex === index ? -1 : index;
+    this.setState({ activeIndex: newIndex });
+  };
+
+  handleGoto = (e, { txid }) => {
+    shell.openExternal(`https://eosflare.io/tx/${txid}`);
+  };
+
+  render() {
+    const { open, states, loading } = this.props;
+
     return (
       <Transition visible={open} animation="scale" duration={500}>
         <Modal
@@ -188,7 +231,7 @@ class TransactionsModal extends Component<Props> {
           style={{ textAlign: 'center' }}
         >
           <Modal.Content>
-            {this.renderContent(header, renderedTxs, modalAction, image)}
+            { states.publicKey || loading.GET_PUBLIC_KEY === true ? this.renderTransaction() : this.renderInactivity() }
           </Modal.Content>
         </Modal>
       </Transition>
@@ -196,4 +239,18 @@ class TransactionsModal extends Component<Props> {
   }
 }
 
-export default TransactionsModal;
+const mapStateToProps = state => ({
+  loading: state.loading,
+  states: state.states,
+  application: state.ledger.application
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getPublicKey
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsModal);

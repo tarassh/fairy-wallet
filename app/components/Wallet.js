@@ -95,7 +95,7 @@ export default class Wallet extends Component<Props> {
   render() {
     const { accounts, currency, loading, failure } = this.props;
     const { activeItem, showNotification } = this.state;
-    const newAction = showNotification ? <Label basic content='new action' className='notification' /> : undefined;
+    const newAction = showNotification ? <Label basic content='new' className='notification' /> : undefined;
 
     const subpanes = {
       history: <Tokens accounts={accounts} />,

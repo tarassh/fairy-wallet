@@ -133,6 +133,10 @@ export default class Undelegate extends Component<Props> {
   }
 
   handleSubmit = () => {
+    this.setState({ openModal: true });
+  };
+
+  handleExecute = () => {
     const { cpuDelta, netDelta, recipient } = this.state;
     const { account } = this.props;
     const accountName = account.account_name;
@@ -141,8 +145,7 @@ export default class Undelegate extends Component<Props> {
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
     this.props.undelegate(accountName, recipient, net, cpu);
-    this.setState({ openModal: true });
-  };
+  }
 
   handleClose = () => {
     const { account } = this.props;
@@ -216,6 +219,7 @@ export default class Undelegate extends Component<Props> {
           open={openModal}
           transactions={transactions}
           handleClose={this.handleClose}
+          handleExecute={this.handleExecute}
         />
         <Form.Field>
           <InputAccount

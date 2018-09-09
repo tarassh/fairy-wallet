@@ -6,7 +6,7 @@ const initialState = {
   accountsRetrieved: false,
   accountsRequested: false,
   accountInfoRetrieved: false,
-  displayPublicKey: false
+  publicKey: false,
 };
 
 export default function states(state = initialState, action) {
@@ -62,15 +62,18 @@ export default function states(state = initialState, action) {
         accountInfoRetrieved: false
       });
     }
+    case types.GET_PUBLIC_KEY_REQUEST:
+    case types.GET_PUBLIC_KEY_FAILURE:
     case types.PUBLIC_KEY_DISPLAY_REQUEST:
     case types.PUBLIC_KEY_DISPLAY_FAILURE: {
       return Object.assign({}, state, {
-        displayPublicKey: false
+        publicKey: false
       });
     }
+    case types.GET_PUBLIC_KEY_SUCCESS:
     case types.PUBLIC_KEY_DISPLAY_SUCCESS: {
       return Object.assign({}, state, {
-        displayPublicKey: true
+        publicKey: true
       });
     }
 

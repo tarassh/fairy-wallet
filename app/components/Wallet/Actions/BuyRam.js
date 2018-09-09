@@ -30,17 +30,17 @@ export default class BuyRam extends Component<Props> {
     this.setState(object);
   };
 
-  handleSubmit = () => {
+  handleExecute = () => {
     const { quantity, option, recipient } = this.state;
-
-    this.setState({ openModal: true });
 
     if (option.toLowerCase() === 'eos') {
       this.props.buyram(recipient, numberToAsset(quantity));
     } else if (option.toLowerCase() === 'bytes') {
       this.props.buyrambytes(recipient, parseInt(quantity, 10));
     }
-  };
+  }
+
+  handleSubmit = () => this.setState({ openModal: true })
 
   handleClose = () => {
     const { account } = this.props;
@@ -79,6 +79,7 @@ export default class BuyRam extends Component<Props> {
           open={openModal}
           transactions={transactions}
           handleClose={this.handleClose}
+          handleExecute={this.handleExecute}
         />
         <Form onSubmit={this.handleSubmit}>
           <Form.Group widths="equal">

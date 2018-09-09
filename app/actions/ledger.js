@@ -105,11 +105,10 @@ export function getPublicKey(display = false) {
     const { ledger } = getState();
 
     const api = new Api(ledger.transport);
-    if (display) {
-      dispatch({
-        type: types.PUBLIC_KEY_DISPLAY_REQUEST
-      });
-    }
+    dispatch({ type: display
+      ? types.PUBLIC_KEY_DISPLAY_REQUEST
+      : types.GET_PUBLIC_KEY_REQUEST
+    });
 
     api
       .getPublicKey(ledger.bip44Path, display)
@@ -125,6 +124,25 @@ export function getPublicKey(display = false) {
           : types.GET_PUBLIC_KEY_FAILURE;
         dispatch({ type, err });
       });
+  };
+}
+
+export function getAppStats() {
+  return (dispatch: () => void, getState) => {
+    const { ledger } = getState();
+
+    const api = new Api(ledger.transport);
+    dispatch({ type: types.GET_APP_STATS_REQUEST });
+
+    return api
+      .getAppConfiguration()
+      .then(result => dispatch({ 
+        type: types.GET_APP_STATS_SUCCESS, 
+        application: result, transport: 
+        ledger.transport 
+        }))
+      .catch(err => dispatch({ type: types.GET_APP_STATS_FAILURE, err })
+      );
   };
 }
 

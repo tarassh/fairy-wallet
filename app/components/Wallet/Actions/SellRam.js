@@ -26,12 +26,12 @@ export default class BuyRam extends Component<Props> {
     this.setState(object);
   };
 
-  handleSubmit = () => {
-    const { quantity } = this.state;
+  handleSubmit = () => this.setState({ openModal: true })
 
-    this.setState({ openModal: true });
+  handleExecute = () => {
+    const { quantity } = this.state;
     this.props.sellram(parseInt(quantity, 10));
-  };
+  }
 
   handleClose = () => {
     const { account } = this.props;
@@ -57,6 +57,7 @@ export default class BuyRam extends Component<Props> {
           open={openModal}
           transactions={transactions}
           handleClose={this.handleClose}
+          handleExecute={this.handleExecute}
         />
         <Form onSubmit={this.handleSubmit}>
           <Form.Group widths="equal">

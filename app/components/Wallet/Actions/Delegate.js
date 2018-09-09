@@ -117,7 +117,9 @@ export default class Delegate extends Component<Props> {
     })
   }
 
-  handleSubmit = () => {
+  handleSubmit = () => this.setState({ openModal: true })
+
+  handleExecute = () => {
     const { cpuDelta, netDelta, recipient } = this.state;
     const { account } = this.props;
     const accountName = account.account_name;
@@ -126,8 +128,7 @@ export default class Delegate extends Component<Props> {
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
     this.props.delegate(accountName, recipient, net, cpu);
-    this.setState({ openModal: true });
-  };
+  }
 
   handleClose = () => {
     const { account } = this.props;
@@ -202,6 +203,7 @@ export default class Delegate extends Component<Props> {
           open={openModal}
           transactions={transactions}
           handleClose={this.handleClose}
+          handleExecute={this.handleExecute}
         />
         <Form.Field>
           <InputAccount
