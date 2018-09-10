@@ -2,10 +2,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getAccount, getActions } from '../actions/accounts';
 import Wallet from '../components/Wallet';
-import { signTransaction } from '../actions/ledger';
-import { clearConnection } from '../actions/connection';
+
+import * as AccountActions from '../actions/accounts';
+import * as ConnectionActions from '../actions/connection';
+import * as TransactionActions from '../actions/transactions';
+import * as CurrencyActions from '../actions/currency';
+import * as ProducersActions from '../actions/producers';
+import * as GlobalActions from '../actions/global';
+import * as SettingsActions from '../actions/settings';
 
 type Props = {
   actions: {},
@@ -35,8 +40,8 @@ class WalletContainer extends Component<Props> {
   }
 
   changeNode() {
-    const { actions } = this.props;
-    actions.push('/');
+    const { history } = this.props;
+    history.push('/');
   }
 
   render() {
@@ -50,8 +55,7 @@ class WalletContainer extends Component<Props> {
         history={history}
         currency={currency}
         failure={failure}
-        getAccount={actions.getAccount}
-        clearConnection={actions.clearConnection}
+        actions={actions}
       />
     );
   }
@@ -62,7 +66,7 @@ function mapStateToProps(state) {
     states: state.states,
     accounts: state.accounts,
     loading: state.loading,
-    transactions: state.transactions,
+    transaction: state.transaction,
     currency: state.currency,
     failure: state.failure
   };
@@ -72,10 +76,13 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators(
       {
-        getAccount,
-        getActions,
-        signTransaction,
-        clearConnection
+        ...AccountActions,
+        ...ConnectionActions,
+        ...TransactionActions,
+        ...CurrencyActions,
+        ...ProducersActions,
+        ...GlobalActions,
+        ...SettingsActions
       },
       dispatch
     )

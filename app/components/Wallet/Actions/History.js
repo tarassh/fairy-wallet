@@ -10,8 +10,8 @@ import MainContentContainer from './../../Shared/UI/MainContent';
 type Props = {
   actions: {},
   account: {},
-  lastIrreversibleBlock: number,
-  getActions: string => {}
+  history: {},
+  lastIrreversibleBlock: number
 };
 
 export default class History extends Component<Props> {
@@ -29,16 +29,16 @@ export default class History extends Component<Props> {
   };
 
   handleLoadNextActions = () => {
-    const { getActions, account, actions } = this.props;
+    const { account, actions, history } = this.props;
     const lastActionSeq =
-      actions.length === 0 ? 0 : actions[0].account_action_seq;
+      history.length === 0 ? 0 : history[0].account_action_seq;
 
-    getActions(account.account_name, lastActionSeq);
+      actions.getActions(account.account_name, lastActionSeq);
     this.forceUpdate();
   };
 
   render() {
-    const { actions, account, lastIrreversibleBlock } = this.props;
+    const { history, account, lastIrreversibleBlock } = this.props;
     const { activeAction } = this.state;
     const options = {
       weekday: 'long',
@@ -49,10 +49,10 @@ export default class History extends Component<Props> {
     const options2 = { hour: '2-digit', minute: '2-digit' };
     const days = [];
     const lastActionSeq =
-      actions.length === 0 ? 0 : actions[actions.length - 1].account_action_seq;
+      history.length === 0 ? 0 : history[history.length - 1].account_action_seq;
     const totalPages = Math.ceil(lastActionSeq / 20);
 
-    actions.forEach(value => {
+    history.forEach(value => {
       const { block_time, account_action_seq, block_num } = value; // eslint-disable-line camelcase
       const date = new Date(block_time);
       const day = date.toLocaleDateString('en-US', options);
@@ -181,7 +181,10 @@ function renderAction(action, account, handler, goto) {
       {action.active && (
         <Grid.Row style={{ fontSize: 'small' }}>
           <Grid.Column style={{ padding: '1em' }}>
-            <div txid={action.txId} onClick={() => goto(null, { txid: action.txId })}>
+            <div 
+              txid={action.txId} 
+              onClick={() => goto(null, { txid: action.txId })}
+            >
               Transaction ID :
               &nbsp;
               <Icon name='info circle' />

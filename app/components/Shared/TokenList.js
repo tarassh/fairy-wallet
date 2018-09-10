@@ -38,7 +38,7 @@ const tokenList = [
   {
     name: 'eosBlack',
     logo:
-      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosblack.jpg',
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosblack.png',
     logo_lg:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
     symbol: 'BLACK',

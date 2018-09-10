@@ -9,7 +9,8 @@ import ScrollingTable from './../Shared/UI/ScrollingTable';
 import { tokenList } from '../Shared/TokenList';
 
 type Props = {
-  accounts: {}
+  accounts: {},
+  actions: {}
 };
 
 class Tokens extends Component<Props> {
@@ -28,7 +29,7 @@ class Tokens extends Component<Props> {
   handleAddClose = () => this.setState({ openAdd: false });
 
   render() {
-    const { accounts } = this.props;
+    const { accounts, actions } = this.props;
     const { openAdd, openRemove, symbol, contract } = this.state;
 
     return (
@@ -43,12 +44,14 @@ class Tokens extends Component<Props> {
                 <TokenAddModal
                   open={openAdd}
                   handleClose={this.handleAddClose}
+                  actions={actions}
                 />
                 <TokenRemoveModal
                   open={openRemove}
                   handleClose={this.handleRemoveClose}
                   symbol={symbol}
                   contract={contract}
+                  actions={actions}
                 />
                 <List divided style={{ marginBottom: '2em' }} selection>
                   {_.map(accounts.balances, balance => (

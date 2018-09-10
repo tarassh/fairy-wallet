@@ -1,9 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import History from '../../../components/Wallet/Actions/History';
-import { getActions } from '../../../actions/accounts';
 
 type Props = {
   accounts: {},
@@ -19,8 +17,8 @@ class HistoryContainer extends Component<Props> {
     return (
       <History
         account={accounts.account}
-        actions={history}
-        getActions={actions.getActions}
+        actions={actions}
+        history={history}
         lastIrreversibleBlock={accounts.lastIrreversibleBlock}
       />
     );
@@ -33,15 +31,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(
-      {
-        getActions
-      },
-      dispatch
-    )
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(HistoryContainer);
+export default connect(mapStateToProps, null)(HistoryContainer);
