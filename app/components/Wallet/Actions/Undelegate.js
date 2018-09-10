@@ -19,21 +19,12 @@ type Props = {
   actions: {}
 };
 
-const colors = [
-  '241,158,41',
-  '192,71,222',
-  '55,188,150',
-  '68,91,200',
-  '253,112,62',
-  '108,182,42',
-  '207,44,64'
-];
-
 export default class Undelegate extends Component<Props> {
 
   constructor(props) {
     super(props);
 
+    const { account } = props;
     this.state = Object.assign(
       {
         openModal: false,
@@ -43,15 +34,16 @@ export default class Undelegate extends Component<Props> {
         cpu: 0,
         net: 0
       },
-      this.getStakedValues(props.account.account_name)
+      this.getStakedValues(account.account_name)
     );
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.eq(this.props.delegates, nextProps.account.account_name)) {
-      const staked = this.getStakedValuesFor(nextProps.account.account_name, nextProps.delegates);
+    const { account, delegates } = nextProps;
+    if (!_.eq(this.props.delegates, account.account_name)) {
+      const staked = this.getStakedValuesFor(account.account_name, delegates);
       Object.assign(this.state, {
-        recipient: nextProps.account.account_name,
+        recipient: account.account_name,
         cpu: staked.cpu,
         net: staked.net
       });
@@ -150,7 +142,6 @@ export default class Undelegate extends Component<Props> {
 
     actions.resetState();
     actions.getAccount(account.account_name);
-    actions.getActions(account.account_name);
     this.setState({ openModal: false, cpuDelta: 0, netDelta: 0 });
   };
 
@@ -256,14 +247,14 @@ export default class Undelegate extends Component<Props> {
     );
   };
 
-  renderDelegate = (delegate, color) => {
+  renderDelegate = (delegate, colorClass) => {
     const cpu = numeral(assetToNumber(delegate.cpu_weight)).format('0,0.0000');
     const net = numeral(assetToNumber(delegate.net_weight)).format('0,0.0000');
     return (
       <Grid>
         <Grid.Row>
           <Grid.Column width={6}>
-            <span><Label circular empty style={{background: color}} /> {delegate.to}</span>
+            <span><Label circular empty className={colorClass} /> {delegate.to}</span>
           </Grid.Column>
           <Grid.Column textAlign="right" width={5}>{cpu}</Grid.Column>
           <Grid.Column textAlign="right" width={5}>{net}</Grid.Column>
@@ -314,7 +305,7 @@ export default class Undelegate extends Component<Props> {
                 onClick={this.handleDelegateSelect} 
                 active={recipient === delegate.to}
               >
-                <List.Content>{this.renderDelegate(delegate, `rgb(${colors[i % delegates.length]}`)}</List.Content>
+                <List.Content>{this.renderDelegate(delegate, `delegate-background-color-${i % delegates.length}`)}</List.Content>
               </List.Item>
           ))}
           </List>

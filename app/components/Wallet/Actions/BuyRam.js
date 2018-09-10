@@ -44,7 +44,6 @@ export default class BuyRam extends Component<Props> {
 
     actions.resetState();
     actions.getAccount(account.account_name);
-    actions.getActions(account.account_name);
     this.setState({
       openModal: false,
       quantity: 0
