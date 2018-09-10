@@ -1,6 +1,7 @@
 // @flow
 import * as types from './types';
 import eos from './helpers/eos';
+import constants from './constants/constants';
 import serialize from './helpers/ledgerserialize';
 
 const Api = require('./helpers/eosledjer').default;
@@ -12,7 +13,7 @@ const sellramAction = 'sellram';
 
 export function setContext(context) {
   return (dispatch: () => void) => {
-    dispatch({ type: types.TRANSACTION_SET_CONTEXT, context})
+    dispatch({ type: types.TRANSACTION_SET_CONTEXT, context });
   };
 }
 
@@ -30,7 +31,17 @@ export function transfer(
   tokenContract = 'eosio.token'
 ) {
   return (dispatch: () => void, getState) => {
-    dispatch({ type: types.TRANSFER_TOKEN_REQUEST });
+    dispatch({
+      type: types.TRANSFER_TOKEN_REQUEST,
+      context: {
+        contract: tokenContract,
+        action: constants.transfer,
+        from,
+        to,
+        asset,
+        memo
+      }
+    });
     const { connection, ledger } = getState();
 
     const signProvider = async ({ transaction }) => {
@@ -83,7 +94,17 @@ export function transfer(
 
 export function delegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    dispatch({ type: types.DELEGATE_REQUEST });
+    dispatch({
+      type: types.DELEGATE_REQUEST,
+      context: {
+        contract: constants.eosio,
+        action: constants.delegate,
+        from,
+        receiver,
+        net,
+        cpu
+      }
+    });
 
     const { connection, ledger } = getState();
 
@@ -136,7 +157,17 @@ export function delegate(from, receiver, net, cpu) {
 
 export function undelegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    dispatch({ type: types.UNDELEGATE_REQUEST });
+    dispatch({
+      type: types.UNDELEGATE_REQUEST,
+      context: {
+        contract: constants.eosio,
+        action: constants.undelegate,
+        from,
+        receiver,
+        net,
+        cpu
+      }
+    });
 
     const { connection, ledger } = getState();
 
@@ -193,7 +224,15 @@ export function voteProducer(producers = []) {
     const { account } = accounts;
     const proxy = '';
 
-    dispatch({ type: types.VOTEPRODUCER_REQUEST });
+    dispatch({
+      type: types.VOTEPRODUCER_REQUEST,
+      context: {
+        contract: constants.eosio,
+        action: constants.voteproducer,
+        account: account.account_name,
+        producers
+      }
+    });
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);

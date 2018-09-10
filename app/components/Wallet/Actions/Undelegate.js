@@ -10,7 +10,7 @@ import ScrollingTable from '../../Shared/UI/ScrollingTable';
 const numeral = require('numeral');
 const exactMath = require('exact-math');
 
-const fraction10000 = 10000; 
+const fraction10000 = 10000;
 
 type Props = {
   account: {},
@@ -20,7 +20,6 @@ type Props = {
 };
 
 export default class Undelegate extends Component<Props> {
-
   constructor(props) {
     super(props);
 
@@ -30,7 +29,7 @@ export default class Undelegate extends Component<Props> {
         openModal: false,
         cpuDelta: 0,
         netDelta: 0,
-        recipient: '', 
+        recipient: '',
         cpu: 0,
         net: 0
       },
@@ -50,31 +49,31 @@ export default class Undelegate extends Component<Props> {
     }
   }
 
-  isDelegatedTo = (name) => {
+  isDelegatedTo = name => {
     const { delegates } = this.props;
-    return delegates.find((el) => el.to === name) !== undefined;
-  }
+    return delegates.find(el => el.to === name) !== undefined;
+  };
 
-  getStakedValues = (name) => {
+  getStakedValues = name => {
     const { delegates } = this.props;
     return this.getStakedValuesFor(name, delegates);
-  }
+  };
 
   getStakedValuesFor = (name, delegates) => {
-    const delegatee = delegates.find((el) => el.to === name);
+    const delegatee = delegates.find(el => el.to === name);
     if (delegatee) {
       return {
         cpu: assetToNumber(delegatee.cpu_weight, true),
         net: assetToNumber(delegatee.net_weight, true),
         recipient: name
       };
-    } 
+    }
     return {
       cpu: 0,
       net: 0,
       recipient: name
-    }
-  }
+    };
+  };
 
   handleDelegateSelect = (e, { name }) => {
     const { actions } = this.props;
@@ -91,7 +90,7 @@ export default class Undelegate extends Component<Props> {
       }
     }
     actions.setDelegateeAccount(stakes ? stakes.recipient : undefined);
-  }
+  };
 
   handleRecipientChange = (e, { name, value }) => {
     const { actions } = this.props;
@@ -99,46 +98,30 @@ export default class Undelegate extends Component<Props> {
     const stakes = this.getStakedValues(value);
     if (stakes) {
       actions.setDelegateeAccount(stakes.recipient);
-      this.setState({cpu: stakes.cpu, net: stakes.net});
+      this.setState({ cpu: stakes.cpu, net: stakes.net });
     } else {
       actions.setDelegateeAccount(undefined);
-      this.setState({cpu: 0, net: 0});
+      this.setState({ cpu: 0, net: 0 });
     }
   };
 
   handleChange = (e, { name, value }) => {
     if (value === '') {
-      this.setState({[name]: value});
+      this.setState({ [name]: value });
       return;
     }
     const staked = this.getStakedValues(this.state.recipient);
-    
+
     const intValue = exactMath.mul(parseFloat(value), fraction10000);
     const delta = intValue - staked[name];
-    
+
     this.setState({
       [name]: intValue,
       [`${name}Delta`]: delta
-    })
-  }
+    });
+  };
 
   handleSubmit = () => {
-    const { cpuDelta, netDelta, recipient } = this.state;
-    const { account, actions } = this.props;
-    const accountName = account.account_name;
-
-    const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
-    const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
-
-    actions.setContext({
-      contract: 'eosio',
-      action: 'undelegatebw',
-      from: accountName,
-      receiver: recipient,
-      net,
-      cpu
-    });
-
     this.setState({ openModal: true });
   };
 
@@ -151,7 +134,7 @@ export default class Undelegate extends Component<Props> {
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
     actions.undelegate(accountName, recipient, net, cpu);
-  }
+  };
 
   handleClose = () => {
     const { account, actions } = this.props;
@@ -171,31 +154,36 @@ export default class Undelegate extends Component<Props> {
 
     if (cpuDelta === 0 && netDelta === 0) {
       return false;
-    } 
+    }
 
     if (cpu === '' || net === '') {
       return false;
     }
 
     return true;
-  }
+  };
 
   validateStakes = (min, val, staked, isCpu) => {
     const stakedVal = staked[isCpu ? 'cpu' : 'net'];
     const invalid = { isInvalid: true, className: 'invalid' };
 
     if (val < min) {
-      invalid.message = `Its not recomended to have ${isCpu ? 'CPU' : 'NET'} below ${min} EOS`;
+      invalid.message = `Its not recomended to have ${
+        isCpu ? 'CPU' : 'NET'
+      } below ${min} EOS`;
       return invalid;
     } else if (val > exactMath.div(stakedVal, fraction10000)) {
-      invalid.message = `Cannot exceed ${exactMath.div(stakedVal, fraction10000)} EOS`;
+      invalid.message = `Cannot exceed ${exactMath.div(
+        stakedVal,
+        fraction10000
+      )} EOS`;
       return invalid;
     }
 
     return {
       isInvalid: false
-    }
-  }
+    };
+  };
 
   renderForm = () => {
     const { transaction, account } = this.props;
@@ -270,10 +258,16 @@ export default class Undelegate extends Component<Props> {
       <Grid>
         <Grid.Row>
           <Grid.Column width={6}>
-            <span><Label circular empty className={colorClass} /> {delegate.to}</span>
+            <span>
+              <Label circular empty className={colorClass} /> {delegate.to}
+            </span>
           </Grid.Column>
-          <Grid.Column textAlign="right" width={5}>{cpu}</Grid.Column>
-          <Grid.Column textAlign="right" width={5}>{net}</Grid.Column>
+          <Grid.Column textAlign="right" width={5}>
+            {cpu}
+          </Grid.Column>
+          <Grid.Column textAlign="right" width={5}>
+            {net}
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     );
@@ -309,21 +303,24 @@ export default class Undelegate extends Component<Props> {
 
     return (
       <ScrollingTable
-        header={
-          this.renderHeader()
-        }
+        header={this.renderHeader()}
         content={
           <List selection divided>
             {_.map(delegates, (delegate, i) => (
-              <List.Item 
-                key={delegate.to} 
-                name={delegate.to} 
-                onClick={this.handleDelegateSelect} 
+              <List.Item
+                key={delegate.to}
+                name={delegate.to}
+                onClick={this.handleDelegateSelect}
                 active={recipient === delegate.to}
               >
-                <List.Content>{this.renderDelegate(delegate, `delegate-background-color-${i % delegates.length}`)}</List.Content>
+                <List.Content>
+                  {this.renderDelegate(
+                    delegate,
+                    `delegate-background-color-${i % delegates.length}`
+                  )}
+                </List.Content>
               </List.Item>
-          ))}
+            ))}
           </List>
         }
       />
@@ -332,16 +329,14 @@ export default class Undelegate extends Component<Props> {
 
   render() {
     return (
-      <MainContentContainer 
+      <MainContentContainer
         title="Stake Management"
         subtitle="Here you can undelegate your resources from accounts"
         className="adjust-content"
         content={
           <div className="stake">
-            <div className="stake-form" >
-              {this.renderForm()}
-            </div>
-            <div className="stake-delegation-table" >
+            <div className="stake-form">{this.renderForm()}</div>
+            <div className="stake-delegation-table">
               {this.renderDelegates()}
             </div>
           </div>

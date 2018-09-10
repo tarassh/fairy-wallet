@@ -63,26 +63,11 @@ class SendContainer extends Component<Props> {
     const asset = numberToAsset(amount, token.toUpperCase());
 
     actions.transfer(accountName, recipient, asset, memo, contract);
-  }
+  };
 
   handleSubmit = () => {
-    const { contract, token, recipient, amount, memo } = this.state;
-    const { accounts, actions } = this.props;
-
-    const accountName = accounts.account.account_name;
-    
-    const asset = numberToAsset(amount, token.toUpperCase());
-    actions.setContext({
-      contract,
-      action: 'transfer',
-      from: accountName,
-      to: recipient,
-      asset,
-      memo
-    });
-    
-    this.setState({ openModal: true })
-  }
+    this.setState({ openModal: true });
+  };
 
   render() {
     const { accounts, settings, transaction } = this.props;

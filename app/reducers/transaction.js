@@ -29,7 +29,7 @@ export default function transaction(state = initialState, action) {
 
     case types.BUYRAMBYTES_SUCCESS:
     case types.SELLRAM_SUCCESS:
-    case types.BUYRAM_SUCCESS: 
+    case types.BUYRAM_SUCCESS:
     case types.VOTEPRODUCER_SUCCESS:
     case types.UNDELEGATE_SUCCESS:
     case types.DELEGATE_SUCCESS:
@@ -47,12 +47,13 @@ export default function transaction(state = initialState, action) {
     case types.DELEGATE_REQUEST:
     case types.TRANSFER_TOKEN_REQUEST: {
       return Object.assign({}, state, {
+        context: action.context,
         constructed: false,
         signed: false
       });
     }
 
-    case types.BUYRAMBYTES_FAILURE: 
+    case types.BUYRAMBYTES_FAILURE:
     case types.SELLRAM_FAILURE:
     case types.BUYRAM_FAILURE:
     case types.VOTEPRODUCER_FAILURE:
@@ -78,7 +79,7 @@ export default function transaction(state = initialState, action) {
 
     case types.SELLRAM_SIGNED:
     case types.BUYRAMBYTES_SIGNED:
-    case types.BUYRAM_SIGNED: 
+    case types.BUYRAM_SIGNED:
     case types.VOTEPRODUCER_SIGNED:
     case types.UNDELEGATE_SIGNED:
     case types.DELEGATE_SIGNED:

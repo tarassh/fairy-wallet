@@ -102,22 +102,14 @@ export default class Vote extends Component<Props> {
   }
 
   handleSubmit = () => {
-    const { actions, accounts } = this.props;
-    actions.setContext({
-      contract: 'eosio',
-      action: 'voteproducer',
-      account: accounts.account.account_name,
-      producers: this.currentVotes()
-    });
-
-    this.setState({ openModal: true })
-  }
+    this.setState({ openModal: true });
+  };
 
   handleExecute = () => {
     const { actions } = this.props;
     const producers = this.currentVotes();
     actions.voteProducer(producers);
-  }
+  };
 
   isExponential = number =>
     !!number.toString().match(/[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)/g);
@@ -181,11 +173,11 @@ export default class Vote extends Component<Props> {
   renderProducer = (producer, producing) => {
     let image;
     if (producer.owner === 'cypherglasss') {
-      image = <Image src={smileCypherSvg} className='producer' />;
+      image = <Image src={smileCypherSvg} className="producer" />;
     } else if (producing) {
-      image = <Image src={smileSvg} className='producer' />;
+      image = <Image src={smileSvg} className="producer" />;
     } else {
-      image = <Image src={mehSvg} className='producer' />;
+      image = <Image src={mehSvg} className="producer" />;
     }
     return (
       <Grid>
@@ -196,14 +188,12 @@ export default class Vote extends Component<Props> {
               id={producer.owner}
               onChange={this.toggle}
               checked={
-              this.state.actualVotes &&
-              this.state.actualVotes[producer.owner] === true
-            }
+                this.state.actualVotes &&
+                this.state.actualVotes[producer.owner] === true
+              }
             />
           </Grid.Column>
-          <Grid.Column width={1}>
-            {image}
-          </Grid.Column>
+          <Grid.Column width={1}>{image}</Grid.Column>
           <Grid.Column width={4}>{producer.owner}</Grid.Column>
           <Grid.Column
             width={7}
@@ -211,25 +201,20 @@ export default class Vote extends Component<Props> {
             style={{ cursor: 'pointer' }}
           >
             {producer.url && this.isValidUrl(producer.url)
-            ? producer.url
-            : undefined}
+              ? producer.url
+              : undefined}
           </Grid.Column>
           <Grid.Column width={3} textAlign="center">
             {this.parsePercent(producer.percent)}
           </Grid.Column>
         </Grid.Row>
       </Grid>
-  );
-  }
+    );
+  };
 
   render() {
     const { loading, transaction } = this.props;
-    const {
-      openModal,
-      producersList,
-      filter,
-      activeItem
-    } = this.state;
+    const { openModal, producersList, filter, activeItem } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
     let filteredList = producersList;
@@ -290,9 +275,7 @@ export default class Vote extends Component<Props> {
                     onChange={this.handleChange}
                     icon="search"
                   />
-                  <Button onClick={this.handleSubmit}>
-                    Vote
-                  </Button>
+                  <Button onClick={this.handleSubmit}>Vote</Button>
                 </Form.Group>
               </Form>
             </div>
