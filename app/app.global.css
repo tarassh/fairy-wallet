@@ -40,8 +40,10 @@ body {
 }
 
 body.dark-mode,
+body.dark-mode .ui.table,
 body.dark-mode .ui.search>.results,
 body.dark-mode .ui.modal,
+body.dark-mode .ui.modal>div,
 body.dark-mode .ui.modal>.content,
 body.dark-mode .ui.modal>.actions {
     background: rgb(39, 49, 54);
@@ -129,6 +131,7 @@ body.dark-mode .fairy-container .column.middle .ui.list .item.active div {
 
 body.dark-mode p,
 body.dark-mode p.subtitle,
+body.dark-mode .ui.header .content div,
 body.dark-mode .ui.item.menu .item,
 body.dark-mode .ui.checkbox label,
 body.dark-mode .ui.form .fields > label, 
