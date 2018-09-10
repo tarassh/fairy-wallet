@@ -88,7 +88,7 @@ class PublicKeyComponent extends Component<Props> {
     );
 
     let action;
-    if (loading.PUBLIC_KEY_DISPLAY === false) {
+    if (loading.GET_PUBLIC_KEY_CONFIRM === false) {
       if (states.publicKey) {
         image = publicKeySvg;
 
