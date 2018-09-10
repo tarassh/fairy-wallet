@@ -11,11 +11,6 @@ const initialState = {
 
 export default function transaction(state = initialState, action) {
   switch (action.type) {
-    case types.TRANSACTION_SET_CONTEXT: {
-      return Object.assign({}, state, {
-        context: action.context
-      });
-    }
 
     case types.TRANSACTION_RESET_STATE: {
       return Object.assign({}, state, {

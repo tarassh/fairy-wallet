@@ -3,8 +3,7 @@ import { Table } from 'semantic-ui-react';
 import { assetToNumber, numberToAsset } from '../../utils/asset';
 
 type Props = {
-  context: {},
-  showDetails: boolean
+  context: {}
 };
 
 class DelegateContext extends Component<Props> {
@@ -50,14 +49,14 @@ class DelegateContext extends Component<Props> {
   }
 
   render() {
-    const { context, showDetails } = this.props;
+    const { context } = this.props;
 
     let content;
     if (context !== null) {
       content = (
         <div>
           {this.renderText()}
-          {showDetails && this.renderDetails()}
+          {this.renderDetails()}
         </div>
       );
     }

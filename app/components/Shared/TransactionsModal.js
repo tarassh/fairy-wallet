@@ -29,9 +29,7 @@ type Props = {
   open: boolean,
   loading: {},
   transaction: ?{},
-  handleClose: () => {},
-  handleExecute: () => {},
-  getPublicKey: () => {}
+  handleClose: () => {}
 };
 
 const noop = () => {};
@@ -46,7 +44,7 @@ const actionDisplayName = {
   sellram: 'Sell RAM'
 };
 
-function renderTransaction(transaction, goto, proceeded) {
+function renderTransaction(transaction, goto) {
   const { context, receipt, err, constructed, signed } = transaction;
   const { action } = context;
   const actionName = actionDisplayName[action];
@@ -103,17 +101,17 @@ function renderTransaction(transaction, goto, proceeded) {
 
   let content;
   if (action === 'transfer') {
-    content = <TransferContext context={context} showDetails={proceeded} />;
+    content = <TransferContext context={context} />;
   } else if (action === 'delegatebw' || action === 'undelegatebw') {
-    content = <DelegateContext context={context} showDetails={proceeded} />;
+    content = <DelegateContext context={context} />;
   } else if (action === 'voteproducer') {
-    content = <VoteContext context={context} showDetails={proceeded} />;
+    content = <VoteContext context={context} />;
   } else if (action === 'buyram') {
-    content = <BuyRamContext context={context} showDetails={proceeded} />;
+    content = <BuyRamContext context={context} />;
   } else if (action === 'buyrambytes') {
-    content = <BuyRamBytesContext context={context} showDetails={proceeded} />;
+    content = <BuyRamBytesContext context={context} />;
   } else if (action === 'sellram') {
-    content = <SellRamContext context={context} showDetails={proceeded} />;
+    content = <SellRamContext context={context} />;
   }
 
   const header = (
@@ -136,14 +134,6 @@ function renderTransaction(transaction, goto, proceeded) {
 }
 
 class TransactionsModal extends Component<Props> {
-  state = { proceeded: false }
-
-  componentWillReceiveProps(nextProps) {
-    const { open } = this.props;
-    if (!open && nextProps.open) {
-      this.props.getPublicKey();
-    }
-  }
 
   renderContent = (header, content, action, image) => (
     <div>
@@ -160,16 +150,8 @@ class TransactionsModal extends Component<Props> {
     </div>
   )
 
-  handleProceed = () => {
-    const { handleExecute } = this.props; 
-    handleExecute();
-
-    this.setState({ proceeded: true });
-  }
-
   renderTransaction = () => {
     const { transaction, handleClose } = this.props;
-    const { proceeded } = this.state;
     if (!transaction || transaction.context === null) {
       return undefined;
     }
@@ -178,14 +160,6 @@ class TransactionsModal extends Component<Props> {
 
     let header = 'Use your device to verify transaction';
     let modalAction;
-    if (!proceeded) {
-      modalAction = (
-        <span>
-          <Button content='Cancel' onClick={handleClose} />
-          <Button content='Proceed' onClick={this.handleProceed} />
-        </span>
-      )
-    }
     if (transaction.receipt !== null) {
       header = 'Transaction Successful';
       modalAction = <Button onClick={handleClose} content="Close" />;
@@ -195,7 +169,7 @@ class TransactionsModal extends Component<Props> {
       image = confirmTransactionFailed;
     }
 
-    return this.renderContent(header, renderTransaction(transaction, this.handleGoto, proceeded), modalAction, image);
+    return this.renderContent(header, renderTransaction(transaction, this.handleGoto), modalAction, image);
   }
 
   renderInactivity = () => {

@@ -102,13 +102,10 @@ export default class Vote extends Component<Props> {
   }
 
   handleSubmit = () => {
-    this.setState({ openModal: true });
-  };
-
-  handleExecute = () => {
     const { actions } = this.props;
     const producers = this.currentVotes();
-    actions.voteProducer(producers);
+    actions.checkAndRun(actions.voteProducer, producers);
+    this.setState({ openModal: true });
   };
 
   isExponential = number =>
@@ -262,7 +259,6 @@ export default class Vote extends Component<Props> {
                   open={openModal}
                   transaction={transaction}
                   handleClose={this.handleClose}
-                  handleExecute={this.handleExecute}
                 />
                 <Form.Group inline widths="equal">
                   <p className="tableheadertitle">

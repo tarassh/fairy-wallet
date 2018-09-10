@@ -101,30 +101,30 @@ export function stopListen() {
 }
 
 export function getPublicKey(display = false) {
-  return (dispatch: () => void, getState) => {
+  return (dispatch: () => void,getState) => new Promise((resolve, reject) => {
     const { ledger } = getState();
+    dispatch({ type: display
+      ? types.GET_PUBLIC_KEY_CONFIRM_REQUEST
+      : types.GET_PUBLIC_KEY_REQUEST });
 
     const api = new Api(ledger.transport);
-    dispatch({ type: display
-      ? types.PUBLIC_KEY_DISPLAY_REQUEST
-      : types.GET_PUBLIC_KEY_REQUEST
-    });
-
     api
       .getPublicKey(ledger.bip44Path, display)
       .then(result => {
         const type = display
-          ? types.PUBLIC_KEY_DISPLAY_SUCCESS
+          ? types.GET_PUBLIC_KEY_CONFIRM_SUCCESS
           : types.GET_PUBLIC_KEY_SUCCESS;
-        return dispatch({ type, publicKey: result });
+         dispatch({ type, publicKey: result });
+        return resolve();
       })
       .catch(err => {
         const type = display
-          ? types.PUBLIC_KEY_DISPLAY_FAILURE
+          ? types.GET_PUBLIC_KEY_CONFIRM_FAILURE
           : types.GET_PUBLIC_KEY_FAILURE;
         dispatch({ type, err });
+        reject();
       });
-  };
+    });
 }
 
 export function getAppStats() {

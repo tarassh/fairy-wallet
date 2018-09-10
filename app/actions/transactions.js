@@ -3,18 +3,17 @@ import * as types from './types';
 import eos from './helpers/eos';
 import constants from './constants/constants';
 import serialize from './helpers/ledgerserialize';
+import { getPublicKey } from './ledger';
 
 const Api = require('./helpers/eosledjer').default;
 
-const eosioContract = 'eosio';
-const buyramAction = 'buyram';
-const buyrambytesAction = 'buyrambytes';
-const sellramAction = 'sellram';
-
-export function setContext(context) {
+export function checkAndRun(action, ...args) {
   return (dispatch: () => void) => {
-    dispatch({ type: types.TRANSACTION_SET_CONTEXT, context });
-  };
+    dispatch(
+      getPublicKey()
+    ).then(() => action(...args)
+    ).catch(() => {})
+  }
 }
 
 export function resetState() {
@@ -137,7 +136,7 @@ export function delegate(from, receiver, net, cpu) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eosio, contract => {
         contract.delegatebw(from, receiver, net, cpu, 0);
       })
       .then(receipt =>
@@ -200,7 +199,7 @@ export function undelegate(from, receiver, net, cpu) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eosio, contract => {
         contract.undelegatebw(from, receiver, net, cpu);
       })
       .then(receipt =>
@@ -265,7 +264,7 @@ export function voteProducer(producers = []) {
 
     producers.sort();
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eosio, contract => {
         contract.voteproducer(account.account_name, proxy, producers);
       })
       .then(receipt =>
@@ -291,8 +290,8 @@ export function buyram(recipient, tokens) {
     dispatch({
       type: types.BUYRAM_REQUEST,
       context: {
-        contract: eosioContract,
-        action: buyramAction,
+        contract: constants.eosio,
+        action: constants.buyram,
         buyer: account.account_name,
         recipient,
         tokens
@@ -329,7 +328,7 @@ export function buyram(recipient, tokens) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eosio, contract => {
         contract.buyram(account.account_name, recipient, tokens);
       })
       .then(receipt =>
@@ -355,8 +354,8 @@ export function sellram(bytes) {
     dispatch({
       type: types.SELLRAM_REQUEST,
       context: {
-        contract: eosioContract,
-        action: sellramAction,
+        contract: constants.eosio,
+        action: constants.sellram,
         receiver: account.account_name,
         bytes
       }
@@ -392,7 +391,7 @@ export function sellram(bytes) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eosio, contract => {
         contract.sellram(account.account_name, bytes);
       })
       .then(receipt =>
@@ -418,8 +417,8 @@ export function buyrambytes(recipient, bytes) {
     dispatch({
       type: types.BUYRAMBYTES_REQUEST,
       context: {
-        contract: eosioContract,
-        action: buyrambytesAction,
+        contract: constants.eosio,
+        action: constants.buyrambytes,
         buyer: account.account_name,
         recipient,
         bytes
@@ -456,7 +455,7 @@ export function buyrambytes(recipient, bytes) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eosio, contract => {
         contract.buyrambytes(account.account_name, recipient, bytes);
       })
       .then(receipt =>
@@ -475,7 +474,6 @@ export function buyrambytes(recipient, bytes) {
 }
 
 export default {
-  setContext,
   resetState,
   transfer,
   delegate,
@@ -483,5 +481,6 @@ export default {
   voteProducer,
   buyram,
   buyrambytes,
-  sellram
+  sellram,
+  checkAndRun
 };

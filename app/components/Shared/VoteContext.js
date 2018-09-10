@@ -3,8 +3,7 @@ import { Table, Header } from 'semantic-ui-react';
 import _ from 'lodash';
 
 type Props = {
-  context: {},
-  showDetails: boolean
+  context: {}
 };
 
 class VoteContext extends Component<Props> {
@@ -70,14 +69,14 @@ class VoteContext extends Component<Props> {
   }
 
   render() {
-    const { context, showDetails } = this.props;
+    const { context } = this.props;
 
     let content;
     if (context !== null) {
       content = (
         <div>
           {this.renderText()}
-          {showDetails && this.renderDetails()}
+          {this.renderDetails()}
         </div>
       );
     }

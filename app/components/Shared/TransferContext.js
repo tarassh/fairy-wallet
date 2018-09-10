@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react';
 
 type Props = {
-  context: {},
-  showDetails: boolean
+  context: {}
 };
 
 class TransferContext extends Component<Props> {
@@ -45,14 +44,14 @@ class TransferContext extends Component<Props> {
   }
 
   render() {
-    const { context, showDetails } = this.props;
+    const { context } = this.props;
 
     let content;
     if (context !== null) {
       content = (
         <div>
           {this.renderText()}
-          {showDetails && this.renderDetails()}
+          {this.renderDetails()}
         </div>
       );
     }

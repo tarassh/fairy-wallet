@@ -54,18 +54,13 @@ class SendContainer extends Component<Props> {
     }
     this.setState(obj);
   };
-  handleTypeError = () => {};
-
-  handleExecute = () => {
-    const { contract, token, recipient, amount, memo } = this.state;
-    const { accounts, actions } = this.props;
-    const accountName = accounts.account.account_name;
-    const asset = numberToAsset(amount, token.toUpperCase());
-
-    actions.transfer(accountName, recipient, asset, memo, contract);
-  };
 
   handleSubmit = () => {
+    const { actions, accounts } = this.props;
+    const { contract, token, recipient, amount, memo } = this.state;
+    const asset = numberToAsset(amount, token.toUpperCase());
+    const from = accounts.account.account_name;
+    actions.checkAndRun(actions.transfer, from, recipient, asset, memo, contract);
     this.setState({ openModal: true });
   };
 
@@ -112,7 +107,6 @@ class SendContainer extends Component<Props> {
               open={openModal}
               transaction={transaction}
               handleClose={this.handleClose}
-              handleExecute={this.handleExecute}
             />
             <InputAccount
               id="form-input-control-recipient"
