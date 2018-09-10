@@ -113,6 +113,7 @@ export default class MenuBuilder {
           label: 'Light mode',
           accelerator: 'Command+L',
           checked: !this.darkMode,
+          type: 'radio',
           click: () => {
             this.darkMode = false;
             this.mainWindow.send('set-dark-mode', this.darkMode);
@@ -122,6 +123,7 @@ export default class MenuBuilder {
           label: 'Dark mode',
           accelerator: 'Command+D',
           checked: this.darkMode,
+          type: 'radio',
           click: () => {
             this.darkMode = true;
             this.mainWindow.send('set-dark-mode', this.darkMode);
@@ -150,6 +152,7 @@ export default class MenuBuilder {
           label: 'Light mode',
           accelerator: 'Command+L',
           checked: !this.darkMode,
+          type: 'radio',
           click: () => {
             this.darkMode = false;
             this.mainWindow.send('set-dark-mode', this.darkMode);
@@ -159,6 +162,7 @@ export default class MenuBuilder {
           label: 'Dark mode',
           accelerator: 'Command+D',
           checked: this.darkMode,
+          type: 'radio',
           click: () => {
             this.darkMode = true;
             this.mainWindow.send('set-dark-mode', this.darkMode);
