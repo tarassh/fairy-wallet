@@ -164,7 +164,7 @@ function renderAction(action, account, handler, goto) {
       </Grid.Column>
     );
   }
-  let status = <Icon name="circle notched" loading />;
+  let status = <Icon name="spinner" loading />;
   if (action.irreversible) {
     status = <Icon name="check circle outline" />;
   }
