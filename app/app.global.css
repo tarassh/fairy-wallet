@@ -39,6 +39,107 @@ body {
     -webkit-app-region:drag;
 }
 
+body.dark-mode,
+body.dark-mode div,
+body.dark-mode .ui.form .field > label {
+    background: rgb(39, 49, 54);
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .fairy-container .column.left .fairy-menu .data-block .data .ui.basic.button {
+    background: rgb(39, 49, 54)!important;
+    color: rgb(195,195,195)!important;
+    border: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .fairy-container .column.middle .ui.list .item,
+body.dark-mode .fairy-container .column.middle .ui.list .item div {
+    background: rgb(39, 49, 54);
+} 
+
+body.dark-mode .fairy-container .column.middle .ui.list div.item.active {
+    background-color: rgb(58,68,73);
+    border-top: 1px solid black;
+}
+
+body.dark-mode .fairy-container .column.middle .ui.list .item.active div {
+    background: transparent;
+    color: rgb(255,237,113);
+}
+
+body.dark-mode p.subtitle {
+    color: rgb(195,195,195);
+}
+
+body.dark-mode p.title,
+body.dark-mode p.tableheadertitle {
+    color: rgb(148,160,161);
+}
+
+body.dark-mode .ui.basic.button:hover, 
+body.dark-mode .ui.basic.buttons .button:hover {
+    background: rgb(39, 49, 54);
+    color: white;
+}
+
+body.dark-mode .ui.top.left.pointing.dropdown>.menu {
+    background: rgb(58,68,73);
+}
+
+body.dark-mode .ui.basic.button, 
+body.dark-mode .ui.basic.buttons .button,
+body.dark-mode .ui.basic.button:focus, 
+body.dark-mode .ui.basic.buttons .button:focus  {
+    color: rgb(39, 49, 54);
+}
+
+body.dark-mode .ui.divided.list>.item {
+    border-top: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .fairy-container .column.separator-right {
+    border-right: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .scrolling-table .scrolling-table-header.underline {
+    border-bottom: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .fairy-container .column .header.underlined {
+    border-bottom: 1px solid rgb(79,90,94);
+    box-shadow: 0 1px 0 rgba(79,90,94,0.65), 0 2px 0 rgba(79,90,94, 0.05), 0 3px 0 rgba(79,90,94, 0.075);
+}
+
+body.dark-mode .scrolling-table .scrolling-table-body .scrolling-table-content,
+body.dark-mode .scrolling-table .scrolling-table-body .scrolling-table-content .ui.list {
+    /* background: white; */
+}
+
+body.dark-mode .ui.divided.list>.item:first-child {
+    border-top: none;
+}
+
+body.dark-mode .ui.list,
+body.dark-mode .ui.list div,
+body.dark-mode .ui.segment,
+body.dark-mode .ui.list > a.item i.icon,
+body.dark-mode .ui.list > a .description {
+    background: rgb(58,68,73);
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.list>a.item:hover .icon, 
+body.dark-mode .ui.list>a.item:hover .description {
+    color: white;
+}
+
+body.dark-mode .fairy-container .column.left,
+body.dark-mode .fairy-container .column.left div,
+body.dark-mode .fairy-container .column.left .ui.vertical.text.menu .item {
+    background: rgb(29,37,40);
+    color: rgb(195,195,195);
+}
+
 input[type="submit"],
 input[type="reset"],
 input[type="button"],

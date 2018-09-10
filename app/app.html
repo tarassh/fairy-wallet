@@ -19,6 +19,13 @@
     <div id="root"></div>
     <script>
       {
+        require('electron').ipcRenderer.on('set-dark-mode', (event, darkMode) => {
+          if (darkMode) 
+            document.getElementsByTagName('body')[0].classList.add('dark-mode');
+          else
+            document.getElementsByTagName('body')[0].classList.remove('dark-mode');
+        })
+
         const scripts = [];
 
         // Dynamically insert the DLL script in development env in the

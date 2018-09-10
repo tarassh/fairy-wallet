@@ -6,6 +6,7 @@ export default class MenuBuilder {
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
+    this.darkMode = false;
   }
 
   buildMenu() {
@@ -109,6 +110,14 @@ export default class MenuBuilder {
           }
         },
         {
+          label: this.darkMode ? 'Light mode' : 'Dark mode',
+          accelerator: 'Command+D',
+          click: () => {
+            this.darkMode = !this.darkMode;
+            this.mainWindow.send('set-dark-mode', this.darkMode);
+          }
+        },
+        {
           label: 'Toggle Developer Tools',
           accelerator: 'Alt+Command+I',
           click: () => {
@@ -125,6 +134,14 @@ export default class MenuBuilder {
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
+          }
+        },
+        {
+          label: this.darkMode ? 'Light mode' : 'Dark mode',
+          accelerator: 'Command+D',
+          click: () => {
+            this.darkMode = !this.darkMode;
+            this.mainWindow.send('set-dark-mode', this.darkMode);
           }
         }
       ]
