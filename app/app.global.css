@@ -75,6 +75,7 @@ body.dark-mode .ui.basic.button.dropdown>.text {
 body.dark-mode .ui.basic.button.dropdown,
 body.dark-mode .ui.selection.dropdown,
 body.dark-mode .ui.selection.active.dropdown,
+body.dark-mode .ui.floating.dropdown .menu,
 body.dark-mode .ui.search>.results,
 body.dark-mode .ui.form input[type="text"],
 body.dark-mode .ui.form input[type="number"],
@@ -99,6 +100,7 @@ body.dark-mode .ui.form input[type="radio"]:focus {
     border: 1px solid rgba(255,237,113,0.9) !important;
 }
 
+body.dark-mode .ui.dropdown .menu,
 body.dark-mode .no-background,
 body.dark-mode .ui.segment.no-background {
     background: transparent;
