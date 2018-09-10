@@ -40,10 +40,66 @@ body {
 }
 
 body.dark-mode,
-body.dark-mode div,
-body.dark-mode .ui.form .field > label {
+body.dark-mode .ui.search>.results,
+body.dark-mode .ui.modal,
+body.dark-mode .ui.modal>.content,
+body.dark-mode .ui.modal>.actions {
     background: rgb(39, 49, 54);
     color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.selection.dropdown,
+body.dark-mode .ui.segment,
+body.dark-mode .ui.search>.results,
+body.dark-mode .ui.search>.results .result:hover,
+body.dark-mode .ui.dropdown .menu > .item,
+body.dark-mode .ui.basic.button.dropdown,
+body.dark-mode .ui.selection.active.dropdown .menu,
+body.dark-mode .ui.form input[type="text"],
+body.dark-mode .ui.form input[type="number"],
+body.dark-mode .ui.form input[type="radio"] {
+    background-color: rgb(58,68,73);
+}
+
+body.dark-mode .ui.basic.button.dropdown,
+body.dark-mode .ui.selection.dropdown,
+body.dark-mode .ui.selection.active.dropdown .menu,
+body.dark-mode .ui.selection.visible.dropdown>.text:not(.default),
+body.dark-mode .ui.basic.button.dropdown>.text {
+    background-color: rgb(58,68,73) !important;
+    color: rgb(195,195,195) !important;
+}
+
+body.dark-mode .ui.basic.button.dropdown,
+body.dark-mode .ui.selection.dropdown,
+body.dark-mode .ui.selection.active.dropdown,
+body.dark-mode .ui.search>.results,
+body.dark-mode .ui.form input[type="text"],
+body.dark-mode .ui.form input[type="number"],
+body.dark-mode .ui.form input[type="radio"] {
+    color: rgb(195,195,195);
+    border: 1px solid rgba(255,237,113,0.5);
+}
+
+body.dark-mode .ui.search>.results .result,
+body.dark-mode .ui.selection.dropdown .menu>.item {
+    border: none;
+}
+
+body.dark-mode .ui.basic.button.dropdown:focus,
+body.dark-mode .ui.selection.dropdown:focus,
+body.dark-mode .ui.selection.active.dropdown .menu,
+body.dark-mode .ui.selection.active.dropdown:hover,
+body.dark-mode .ui.selection.active.dropdown:hover .menu,
+body.dark-mode .ui.form input[type="text"]:focus,
+body.dark-mode .ui.form input[type="number"]:focus,
+body.dark-mode .ui.form input[type="radio"]:focus {
+    border: 1px solid rgba(255,237,113,0.9) !important;
+}
+
+body.dark-mode .no-background,
+body.dark-mode .ui.segment.no-background {
+    background: transparent;
 }
 
 body.dark-mode .fairy-container .column.left .fairy-menu .data-block .data .ui.basic.button {
@@ -52,31 +108,43 @@ body.dark-mode .fairy-container .column.left .fairy-menu .data-block .data .ui.b
     border: 1px solid rgb(79,90,94);
 }
 
-body.dark-mode .fairy-container .column.middle .ui.list .item,
-body.dark-mode .fairy-container .column.middle .ui.list .item div {
-    background: rgb(39, 49, 54);
-} 
-
-body.dark-mode .fairy-container .column.middle .ui.list div.item.active {
-    background-color: rgb(58,68,73);
-    border-top: 1px solid black;
+body.dark-mode .column.middle {
+    background-color: rgb(39, 49, 54);
 }
 
+body.dark-mode .fairy-container .column.middle .ui.list div.item.active:hover {
+    background: transparent !important;
+}
+
+body.dark-mode .fairy-container .column.middle .ui.list .item.active {
+    background-color: rgba(58,68,73,0.5);
+}
+
+body.dark-mode .ui.menu .active.item, 
+body.dark-mode .ui.dropdown .menu .selected.item,
+body.dark-mode .ui.vertical.menu .active.item,
 body.dark-mode .fairy-container .column.middle .ui.list .item.active div {
-    background: transparent;
-    color: rgb(255,237,113);
+    color: rgb(255,237,113) !important;
 }
 
-body.dark-mode p.subtitle {
+body.dark-mode p,
+body.dark-mode p.subtitle,
+body.dark-mode .ui.item.menu .item,
+body.dark-mode .ui.checkbox label,
+body.dark-mode .ui.form .fields > label, 
+body.dark-mode .ui.form .field > label,
+body.dark-mode .ui.form .field div {
     color: rgb(195,195,195);
 }
 
 body.dark-mode p.title,
-body.dark-mode p.tableheadertitle {
+body.dark-mode p.tableheadertitle,
+body.dark-mode .ui.form .ui.divider h5 {
     color: rgb(148,160,161);
 }
 
 body.dark-mode .ui.basic.button:hover, 
+body.dark-mode .ui.dropdown .menu>.item:hover:hover,
 body.dark-mode .ui.basic.buttons .button:hover {
     background: rgb(39, 49, 54);
     color: white;
@@ -110,21 +178,15 @@ body.dark-mode .fairy-container .column .header.underlined {
     box-shadow: 0 1px 0 rgba(79,90,94,0.65), 0 2px 0 rgba(79,90,94, 0.05), 0 3px 0 rgba(79,90,94, 0.075);
 }
 
-body.dark-mode .scrolling-table .scrolling-table-body .scrolling-table-content,
-body.dark-mode .scrolling-table .scrolling-table-body .scrolling-table-content .ui.list {
-    /* background: white; */
-}
-
 body.dark-mode .ui.divided.list>.item:first-child {
     border-top: none;
 }
 
 body.dark-mode .ui.list,
 body.dark-mode .ui.list div,
-body.dark-mode .ui.segment,
 body.dark-mode .ui.list > a.item i.icon,
 body.dark-mode .ui.list > a .description {
-    background: rgb(58,68,73);
+    /* background: rgb(58,68,73); */
     color: rgb(195,195,195);
 }
 
@@ -138,6 +200,63 @@ body.dark-mode .fairy-container .column.left div,
 body.dark-mode .fairy-container .column.left .ui.vertical.text.menu .item {
     background: rgb(29,37,40);
     color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.basic.label.history-action.voteproducer {
+    color: rgb(195,195,195) !important;
+    border-color: rgb(195,195,195);
+    background-color: rgba(241,158,41,0.5);
+}
+
+body.dark-mode .ui.basic.label.history-action.transfer.send {
+    color: rgb(195,195,195) !important;
+    border-color: rgb(195,195,195);
+    background-color: rgba(207,44,64,0.5);
+}
+
+body.dark-mode .ui.basic.label.history-action.dice {
+    color: rgb(195,195,195) !important;
+    border-color: rgb(195,195,195);
+    background-color: rgba(42, 149, 182, 0.5);
+}
+
+body.dark-mode .ui.basic.label.history-action.transfer.receive {
+    color: rgb(195,195,195) !important;
+    border-color: rgb(195,195,195);
+    background-color: rgba(108,182,42,0.5);
+}
+
+body.dark-mode .ui.basic.label.history-action.delegatebw,
+body.dark-mode .ui.basic.label.history-action.undelegatebw,
+body.dark-mode .ui.basic.label.history-action.sellram,
+body.dark-mode .ui.basic.label.history-action.buyram,
+body.dark-mode .ui.basic.label.history-action.buyrambytes {
+    color: rgb(195,195,195) !important;
+    border-color: rgb(195,195,195);
+    background-color: rgba(68,91,200,0.5);
+}
+
+body.dark-mode i.airdrop-token-add {
+    color: rgba(255,237,113,0.5);
+}
+
+body.dark-mode .ui.button {
+    background-color: rgba(255,237,113,0.5);
+    opacity: 0.9;
+    color: rgb(195,195,195);
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+body.dark-mode .ui.button:focus,
+body.dark-mode .ui.button:hover {
+    background-color: rgba(255,237,113,0.5);;
+    opacity: 1;
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.selection.list>.item:hover {
+    background: rgba(58,68,73,0.5) !important;
 }
 
 input[type="submit"],
