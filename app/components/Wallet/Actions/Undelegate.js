@@ -129,7 +129,7 @@ export default class Undelegate extends Component<Props> {
     const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
-    actions.checkAndRun(actions.undelegate, accountName, recipient, net, cpu)
+    actions.checkAndRun(actions.undelegate, accountName, recipient, net, cpu);
 
     this.setState({ openModal: true });
   };
@@ -162,20 +162,21 @@ export default class Undelegate extends Component<Props> {
   };
 
   validateStakes = (min, val, staked, isCpu) => {
-    const stakedVal = staked[isCpu ? 'cpu' : 'net'];
-    const invalid = { isInvalid: true, className: 'invalid' };
+    const stakedVal = exactMath.div(
+      staked[isCpu ? 'cpu' : 'net'],
+      fraction10000
+    );
+    const state = { isInvalid: true, className: 'invalid' };
 
     if (val < min) {
-      invalid.message = `Its not recomended to have ${
+      state.message = `Its not recomended to have ${
         isCpu ? 'CPU' : 'NET'
-      } below ${min} EOS`;
-      return invalid;
-    } else if (val > exactMath.div(stakedVal, fraction10000)) {
-      invalid.message = `Cannot exceed ${exactMath.div(
-        stakedVal,
-        fraction10000
-      )} EOS`;
-      return invalid;
+      } below ${numberToAsset(min)}`;
+      state.isInvalid = false;
+      return state;
+    } else if (val > stakedVal) {
+      state.message = `Cannot exceed ${numberToAsset(stakedVal)}`;
+      return state;
     }
 
     return {
@@ -199,6 +200,8 @@ export default class Undelegate extends Component<Props> {
     const min = staked.recipient === account.account_name ? 0.5 : 0;
     const validCpu = this.validateStakes(min, cpu, staked, true);
     const validNet = this.validateStakes(min, net, staked, false);
+    const enableRequest =
+      this.validateFields() && !validCpu.isInvalid && !validNet.isInvalid;
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -217,7 +220,7 @@ export default class Undelegate extends Component<Props> {
             onChange={this.handleRecipientChange}
           />
           <InputFloat
-            label={validCpu.isInvalid ? validCpu.message : 'CPU (EOS)'}
+            label={validCpu.message ? validCpu.message : 'CPU (EOS)'}
             name="cpu"
             step="0.0001"
             min={0}
@@ -228,7 +231,7 @@ export default class Undelegate extends Component<Props> {
             onChange={this.handleChange}
           />
           <InputFloat
-            label={validNet.isInvalid ? validNet.message : 'NET (EOS)'}
+            label={validNet.message ? validNet.message : 'NET (EOS)'}
             name="net"
             step="0.0001"
             min={0}
@@ -242,7 +245,7 @@ export default class Undelegate extends Component<Props> {
         <Form.Button
           id="form-button-control-public"
           content="Undelegate"
-          disabled={validCpu.isInvalid || validNet.isInvalid}
+          disabled={!enableRequest}
         />
       </Form>
     );
