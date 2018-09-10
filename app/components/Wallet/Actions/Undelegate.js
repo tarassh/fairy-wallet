@@ -207,7 +207,7 @@ export default class Undelegate extends Component<Props> {
       <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
           open={openModal}
-          transaction={transaction.undelegate}
+          transaction={transaction}
           handleClose={this.handleClose}
         />
         <Form.Field>

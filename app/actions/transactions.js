@@ -1,7 +1,7 @@
 // @flow
 import * as types from './types';
 import eos from './helpers/eos';
-import constants from './constants/constants';
+import * as constants from './constants/constants';
 import serialize from './helpers/ledgerserialize';
 import { getPublicKey } from './ledger';
 
@@ -9,11 +9,10 @@ const Api = require('./helpers/eosledjer').default;
 
 export function checkAndRun(action, ...args) {
   return (dispatch: () => void) => {
-    dispatch(
-      getPublicKey()
-    ).then(() => action(...args)
-    ).catch(() => {})
-  }
+    dispatch(getPublicKey())
+      .then(() => action(...args))
+      .catch(() => {});
+  };
 }
 
 export function resetState() {
@@ -34,7 +33,7 @@ export function transfer(
       type: types.TRANSFER_TOKEN_REQUEST,
       context: {
         contract: tokenContract,
-        action: constants.transfer,
+        action: constants.eos.transfer,
         from,
         to,
         asset,
@@ -96,8 +95,8 @@ export function delegate(from, receiver, net, cpu) {
     dispatch({
       type: types.DELEGATE_REQUEST,
       context: {
-        contract: constants.eosio,
-        action: constants.delegate,
+        contract: constants.eos.eosio,
+        action: constants.eos.delegate,
         from,
         receiver,
         net,
@@ -136,7 +135,7 @@ export function delegate(from, receiver, net, cpu) {
     };
 
     return eos(modified)
-      .transaction(constants.eosio, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.delegatebw(from, receiver, net, cpu, 0);
       })
       .then(receipt =>
@@ -159,8 +158,8 @@ export function undelegate(from, receiver, net, cpu) {
     dispatch({
       type: types.UNDELEGATE_REQUEST,
       context: {
-        contract: constants.eosio,
-        action: constants.undelegate,
+        contract: constants.eos.eosio,
+        action: constants.eos.undelegate,
         from,
         receiver,
         net,
@@ -199,7 +198,7 @@ export function undelegate(from, receiver, net, cpu) {
     };
 
     return eos(modified)
-      .transaction(constants.eosio, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.undelegatebw(from, receiver, net, cpu);
       })
       .then(receipt =>
@@ -226,8 +225,8 @@ export function voteProducer(producers = []) {
     dispatch({
       type: types.VOTEPRODUCER_REQUEST,
       context: {
-        contract: constants.eosio,
-        action: constants.voteproducer,
+        contract: constants.eos.eosio,
+        action: constants.eos.voteproducer,
         account: account.account_name,
         producers
       }
@@ -264,7 +263,7 @@ export function voteProducer(producers = []) {
 
     producers.sort();
     return eos(modified)
-      .transaction(constants.eosio, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.voteproducer(account.account_name, proxy, producers);
       })
       .then(receipt =>
@@ -290,8 +289,8 @@ export function buyram(recipient, tokens) {
     dispatch({
       type: types.BUYRAM_REQUEST,
       context: {
-        contract: constants.eosio,
-        action: constants.buyram,
+        contract: constants.eos.eosio,
+        action: constants.eos.buyram,
         buyer: account.account_name,
         recipient,
         tokens
@@ -328,7 +327,7 @@ export function buyram(recipient, tokens) {
     };
 
     return eos(modified)
-      .transaction(constants.eosio, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.buyram(account.account_name, recipient, tokens);
       })
       .then(receipt =>
@@ -354,8 +353,8 @@ export function sellram(bytes) {
     dispatch({
       type: types.SELLRAM_REQUEST,
       context: {
-        contract: constants.eosio,
-        action: constants.sellram,
+        contract: constants.eos.eosio,
+        action: constants.eos.sellram,
         receiver: account.account_name,
         bytes
       }
@@ -391,7 +390,7 @@ export function sellram(bytes) {
     };
 
     return eos(modified)
-      .transaction(constants.eosio, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.sellram(account.account_name, bytes);
       })
       .then(receipt =>
@@ -417,8 +416,8 @@ export function buyrambytes(recipient, bytes) {
     dispatch({
       type: types.BUYRAMBYTES_REQUEST,
       context: {
-        contract: constants.eosio,
-        action: constants.buyrambytes,
+        contract: constants.eos.eosio,
+        action: constants.eos.buyrambytes,
         buyer: account.account_name,
         recipient,
         bytes
@@ -455,7 +454,7 @@ export function buyrambytes(recipient, bytes) {
     };
 
     return eos(modified)
-      .transaction(constants.eosio, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.buyrambytes(account.account_name, recipient, bytes);
       })
       .then(receipt =>
