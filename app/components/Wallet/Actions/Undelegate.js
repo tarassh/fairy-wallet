@@ -123,6 +123,22 @@ export default class Undelegate extends Component<Props> {
   }
 
   handleSubmit = () => {
+    const { cpuDelta, netDelta, recipient } = this.state;
+    const { account, actions } = this.props;
+    const accountName = account.account_name;
+
+    const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
+    const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
+
+    actions.setContext({
+      contract: 'eosio',
+      action: 'undelegatebw',
+      from: accountName,
+      receiver: recipient,
+      net,
+      cpu
+    });
+
     this.setState({ openModal: true });
   };
 

@@ -37,7 +37,9 @@ export default class BuyRam extends Component<Props> {
     }
   }
 
-  handleSubmit = () => this.setState({ openModal: true })
+  handleSubmit = () => {
+    this.setState({ openModal: true })
+  }
 
   handleClose = () => {
     const { account, actions } = this.props;

@@ -34,7 +34,6 @@ class SendContainer extends Component<Props> {
     const { accounts, actions } = this.props;
     actions.resetState();
     actions.getAccount(accounts.account.account_name);
-    actions.getActions(accounts.account.account_name);
 
     this.setState({ openModal: false });
   };

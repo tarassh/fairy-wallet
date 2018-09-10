@@ -47,7 +47,6 @@ export default function transaction(state = initialState, action) {
     case types.DELEGATE_REQUEST:
     case types.TRANSFER_TOKEN_REQUEST: {
       return Object.assign({}, state, {
-        context: action.context,
         constructed: false,
         signed: false
       });

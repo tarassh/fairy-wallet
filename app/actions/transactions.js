@@ -6,9 +6,6 @@ import serialize from './helpers/ledgerserialize';
 const Api = require('./helpers/eosledjer').default;
 
 const eosioContract = 'eosio';
-const delegateAction = 'delegatebw';
-const undelegateAction = 'undelegatebw';
-const voteProducerAction = 'voteproducer';
 const buyramAction = 'buyram';
 const buyrambytesAction = 'buyrambytes';
 const sellramAction = 'sellram';
@@ -86,17 +83,7 @@ export function transfer(
 
 export function delegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    dispatch({
-      type: types.DELEGATE_REQUEST,
-      context: {
-        contract: eosioContract,
-        action: delegateAction,
-        from,
-        receiver,
-        net,
-        cpu
-      }
-    });
+    dispatch({ type: types.DELEGATE_REQUEST });
 
     const { connection, ledger } = getState();
 
@@ -149,17 +136,7 @@ export function delegate(from, receiver, net, cpu) {
 
 export function undelegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
-    dispatch({
-      type: types.UNDELEGATE_REQUEST,
-      context: {
-        contract: eosioContract,
-        action: undelegateAction,
-        from,
-        receiver,
-        net,
-        cpu
-      }
-    });
+    dispatch({ type: types.UNDELEGATE_REQUEST });
 
     const { connection, ledger } = getState();
 
@@ -216,15 +193,7 @@ export function voteProducer(producers = []) {
     const { account } = accounts;
     const proxy = '';
 
-    dispatch({
-      type: types.VOTEPRODUCER_REQUEST,
-      context: {
-        contract: eosioContract,
-        action: voteProducerAction,
-        account: account.account_name,
-        producers
-      }
-    });
+    dispatch({ type: types.VOTEPRODUCER_REQUEST });
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);

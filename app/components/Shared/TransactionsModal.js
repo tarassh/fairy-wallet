@@ -7,7 +7,9 @@ import {
   Button,
   Icon,
   Image,
-  Header
+  Header,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react';
 import { shell } from 'electron';
 import TransferContext from './TransferContext';
@@ -44,12 +46,12 @@ const actionDisplayName = {
   sellram: 'Sell RAM'
 };
 
-function renderTransaction(transaction, goto) {
+function renderTransaction(transaction, goto, proceeded) {
   const { context, receipt, err, constructed, signed } = transaction;
   const { action } = context;
   const actionName = actionDisplayName[action];
 
-  let icon = 'circle notched';
+  let icon = 'spinner';
   let statusText = constructed ? 'Ready to sign' : 'Preparing...';
   let loading = true;
   if (signed) {
@@ -99,17 +101,19 @@ function renderTransaction(transaction, goto) {
     loading = false;
   }
 
-  let content = <TransferContext context={context} />;
-  if (action === 'delegatebw' || action === 'undelegatebw') {
-    content = <DelegateContext context={context} />;
+  let content;
+  if (action === 'transfer') {
+    content = <TransferContext context={context} showDetails={proceeded} />;
+  } else if (action === 'delegatebw' || action === 'undelegatebw') {
+    content = <DelegateContext context={context} showDetails={proceeded} />;
   } else if (action === 'voteproducer') {
-    content = <VoteContext context={context} />;
+    content = <VoteContext context={context} showDetails={proceeded} />;
   } else if (action === 'buyram') {
-    content = <BuyRamContext context={context} />;
+    content = <BuyRamContext context={context} showDetails={proceeded} />;
   } else if (action === 'buyrambytes') {
-    content = <BuyRamBytesContext context={context} />;
+    content = <BuyRamBytesContext context={context} showDetails={proceeded} />;
   } else if (action === 'sellram') {
-    content = <SellRamContext context={context} />;
+    content = <SellRamContext context={context} showDetails={proceeded} />;
   }
 
   const header = (
@@ -132,7 +136,7 @@ function renderTransaction(transaction, goto) {
 }
 
 class TransactionsModal extends Component<Props> {
-  state = { activeIndex: 0 };
+  state = { proceeded: false }
 
   componentWillReceiveProps(nextProps) {
     const { open } = this.props;
@@ -156,8 +160,16 @@ class TransactionsModal extends Component<Props> {
     </div>
   )
 
+  handleProceed = () => {
+    const { handleExecute } = this.props; 
+    handleExecute();
+
+    this.setState({ proceeded: true });
+  }
+
   renderTransaction = () => {
-    const { transaction, handleClose, handleExecute } = this.props;
+    const { transaction, handleClose } = this.props;
+    const { proceeded } = this.state;
     if (!transaction || transaction.context === null) {
       return undefined;
     }
@@ -165,12 +177,15 @@ class TransactionsModal extends Component<Props> {
     let image = confirmTransaction;
 
     let header = 'Use your device to verify transaction';
-    let modalAction = (
-      <span>
-        <Button content='Cancel' onClick={handleClose} />
-        <Button content='Proceed' onClick={handleExecute} />
-      </span>
-    )
+    let modalAction;
+    if (!proceeded) {
+      modalAction = (
+        <span>
+          <Button content='Cancel' onClick={handleClose} />
+          <Button content='Proceed' onClick={this.handleProceed} />
+        </span>
+      )
+    }
     if (transaction.receipt !== null) {
       header = 'Transaction Successful';
       modalAction = <Button onClick={handleClose} content="Close" />;
@@ -180,7 +195,7 @@ class TransactionsModal extends Component<Props> {
       image = confirmTransactionFailed;
     }
 
-    return this.renderContent(header, renderTransaction(transaction, this.handleGoto), modalAction, image);
+    return this.renderContent(header, renderTransaction(transaction, this.handleGoto, proceeded), modalAction, image);
   }
 
   renderInactivity = () => {
@@ -192,11 +207,11 @@ class TransactionsModal extends Component<Props> {
     return this.renderContent(header, inactivity, action, wakeupDevice);
   }
 
-  handleClick = (e, { index }) => {
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
-  };
+  renderLoader = () => (
+    <Dimmer active inverted>
+      <Loader inverted />  
+    </Dimmer>
+  )
 
   handleGoto = (e, { txid }) => {
     shell.openExternal(`https://eosflare.io/tx/${txid}`);
@@ -204,6 +219,16 @@ class TransactionsModal extends Component<Props> {
 
   render() {
     const { open, states, loading } = this.props;
+    let content;
+    if (open) {
+      if (loading.GET_PUBLIC_KEY === true) {
+        content = this.renderLoader();
+      } else if (states.publicKey) {
+        content = this.renderTransaction();
+      } else {
+        content = this.renderInactivity()
+      }
+    }
 
     return (
       <Transition visible={open} animation="scale" duration={200}>
@@ -214,7 +239,7 @@ class TransactionsModal extends Component<Props> {
           style={{ textAlign: 'center' }}
         >
           <Modal.Content>
-            { open && loading.GET_PUBLIC_KEY === false && (states.publicKey ? this.renderTransaction() : this.renderInactivity()) }
+            { content }
           </Modal.Content>
         </Modal>
       </Transition>

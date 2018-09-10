@@ -101,7 +101,17 @@ export default class Vote extends Component<Props> {
     });
   }
 
-  handleSubmit = () => this.setState({ openModal: true })
+  handleSubmit = () => {
+    const { actions, accounts } = this.props;
+    actions.setContext({
+      contract: 'eosio',
+      action: 'voteproducer',
+      account: accounts.account.account_name,
+      producers: this.currentVotes()
+    });
+
+    this.setState({ openModal: true })
+  }
 
   handleExecute = () => {
     const { actions } = this.props;
