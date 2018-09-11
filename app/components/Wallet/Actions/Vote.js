@@ -47,6 +47,10 @@ export default class Vote extends Component<Props> {
     if (!producers || producers === null) {
       producers = [];
     }
+    producers = _.filter(
+      producers,
+      el => _.find(props.producers.list, pr => pr.owner === el) !== undefined
+    );
 
     const votes = {};
 
@@ -83,6 +87,11 @@ export default class Vote extends Component<Props> {
     if (!producers || producers === null) {
       producers = [];
     }
+    producers = _.filter(
+      producers,
+      el =>
+        _.find(nextProps.producers.list, pr => pr.owner === el) !== undefined
+    );
 
     const votes = {};
 
