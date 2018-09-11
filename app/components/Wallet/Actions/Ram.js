@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { Grid } from 'semantic-ui-react';
 import BuyRam from './BuyRam';
 import SellRam from './SellRam';
 import MainContentContainer from './../../Shared/UI/MainContent';
 
 type Props = {
   account: {},
-  transactions: {},
+  transaction: {},
   actions: {}
 };
 
 export default class Ram extends Component<Props> {
   render() {
-    const { transactions, account, actions } = this.props;
+    const { transaction, account, actions } = this.props;
 
     return (
       <MainContentContainer 
@@ -23,23 +22,16 @@ export default class Ram extends Component<Props> {
           <div className="ram">
             <div className="buy-ram" >
               <BuyRam
-                transactions={transactions}
+                transaction={transaction}
                 account={account}
-                buyram={actions.buyram}
-                buyrambytes={actions.buyrambytes}
-                resetState={actions.resetState}
-                getAccount={actions.getAccount}
-                getActions={actions.getActions}
+                actions={actions}
               />
             </div>
             <div className="sell-ram" >
               <SellRam
-                transactions={transactions}
+                transaction={transaction}
                 account={account}
-                sellram={actions.sellram}
-                resetState={actions.resetState}
-                getAccount={actions.getAccount}
-                getActions={actions.getActions}
+                actions={actions}
               />
             </div>
           </div>

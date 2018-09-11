@@ -199,6 +199,14 @@ export default class MenuBuilder {
               'https://github.com/tarassh/fairy-wallet/issues'
             );
           }
+        },
+        {
+          label: 'Telegram group',
+          click() {
+            shell.openExternal(
+              'https://t.me/fairywallet'
+            );
+          }
         }
       ]
     };

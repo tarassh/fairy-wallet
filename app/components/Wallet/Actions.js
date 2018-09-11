@@ -8,22 +8,23 @@ import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 
 type Props = {
-  activeItem: string
+  activeItem: string,
+  actions: {}
 };
 
 export default class Actions extends Component<Props> {
   props: Props;
 
   render() {
-    const { activeItem } = this.props;
+    const { activeItem, actions } = this.props;
 
     const panes = {
-      history: <ActionsHistory />,
-      transfer: <ActionsSend />,
-      delegate: <ActionDelegate />,
-      undelegate: <ActionUndelegate />,
-      ram: <ActionRam />,
-      voting: <ActionVote />
+      history: <ActionsHistory actions={actions} />,
+      transfer: <ActionsSend actions={actions} />,
+      delegate: <ActionDelegate actions={actions} />,
+      undelegate: <ActionUndelegate actions={actions} />,
+      ram: <ActionRam actions={actions} />,
+      voting: <ActionVote actions={actions} />
     };
 
     return (

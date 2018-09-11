@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   Modal,
   Transition,
   Button,
   Icon,
   Image,
-  Header
+  Header,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react';
-import _ from 'lodash';
 import { shell } from 'electron';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
@@ -17,10 +20,15 @@ import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
+import wakeupDevice from '../../../resources/images/wakeup-device.svg';
+
+import { getPublicKey } from '../../actions/ledger';
 
 type Props = {
+  states: {},
   open: boolean,
-  transactions: {},
+  loading: {},
+  transaction: ?{},
   handleClose: () => {}
 };
 
@@ -41,7 +49,7 @@ function renderTransaction(transaction, goto) {
   const { action } = context;
   const actionName = actionDisplayName[action];
 
-  let icon = 'circle notched';
+  let icon = 'spinner';
   let statusText = constructed ? 'Ready to sign' : 'Preparing...';
   let loading = true;
   if (signed) {
@@ -51,7 +59,10 @@ function renderTransaction(transaction, goto) {
   if (receipt !== null) {
     statusText = (
       <div 
-        onClick={() => goto(null, { txid: receipt.transaction_id })} 
+        role='link'
+        tabIndex={0}
+        onClick={() => {}} 
+        onKeyUp={() => goto(null, { txid: receipt.transaction_id })}
         style={{cursor: 'pointer'}}
       >
       Transaction id <span className='public-key'>{receipt.transaction_id}</span>
@@ -88,8 +99,10 @@ function renderTransaction(transaction, goto) {
     loading = false;
   }
 
-  let content = <TransferContext context={context} />;
-  if (action === 'delegatebw' || action === 'undelegatebw') {
+  let content;
+  if (action === 'transfer') {
+    content = <TransferContext context={context} />;
+  } else if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
   } else if (action === 'voteproducer') {
     content = <VoteContext context={context} />;
@@ -121,7 +134,6 @@ function renderTransaction(transaction, goto) {
 }
 
 class TransactionsModal extends Component<Props> {
-  state = { activeIndex: 0 };
 
   renderContent = (header, content, action, image) => (
     <div>
@@ -129,58 +141,71 @@ class TransactionsModal extends Component<Props> {
       <br />
       <Image centered src={image} style={{ marginTop: '1em' }} />
       <br />
-      <div>
-        {_.map(content, (line, i) => (
-          <div key={i} className="subtitle no-top-bottom-margin">
-            {line}
-          </div>
-        ))}
+      <div className="subtitle no-top-bottom-margin">
+        {content}
       </div>
       <br />
       <br />
       <div className="public-key-confirm-modal">{action}</div>
     </div>
-  );
+  )
 
-  handleClick = (e, { index }) => {
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
-  };
+  renderTransaction = () => {
+    const { transaction, handleClose } = this.props;
+    if (!transaction || transaction.context === null) {
+      return undefined;
+    }
+
+    let image = confirmTransaction;
+
+    let header = 'Use your device to verify transaction';
+    let modalAction;
+    if (transaction.receipt !== null) {
+      header = 'Transaction Successful';
+      modalAction = <Button onClick={handleClose} content="Close" />;
+    } else if (transaction.err !== null) {
+      header = 'Transaction Failed';
+      modalAction = <Button onClick={handleClose} content="Close" />;
+      image = confirmTransactionFailed;
+    }
+
+    return this.renderContent(header, renderTransaction(transaction, this.handleGoto), modalAction, image);
+  }
+
+  renderInactivity = () => {
+    const { handleClose } = this.props;
+    const header = 'Unlock Device';
+    const inactivity = <p>Cannot read device properties. Make sure your device is unlocked.</p>;
+    const action = <Button onClick={handleClose} content="Close" />;
+
+    return this.renderContent(header, inactivity, action, wakeupDevice);
+  }
+
+  renderLoader = () => (
+    <Dimmer active inverted>
+      <Loader inverted />  
+    </Dimmer>
+  )
 
   handleGoto = (e, { txid }) => {
     shell.openExternal(`https://eosflare.io/tx/${txid}`);
   };
 
   render() {
-    const { open, transactions, handleClose } = this.props;
-
-    const renderedTxs = [];
-    let successCounter = 0;
-    let failureCounter = 0;
-    let image = confirmTransaction;
-    Object.keys(transactions).forEach(key => {
-      const tx = transactions[key];
-      if (tx.context !== null) {
-        renderedTxs.push(renderTransaction(tx, this.handleGoto));
+    const { open, states, loading } = this.props;
+    let content;
+    if (open) {
+      if (loading.GET_PUBLIC_KEY === true) {
+        content = this.renderLoader();
+      } else if (states.publicKey) {
+        content = this.renderTransaction();
+      } else {
+        content = this.renderInactivity()
       }
-      successCounter += tx.receipt !== null ? 1 : 0;
-      failureCounter += tx.err !== null ? 1 : 0;
-    });
-
-    let header = 'Use your device to verify transaction';
-    let modalAction = '';
-    if (successCounter === renderedTxs.length) {
-      header = 'Transaction Successful';
-      modalAction = <Button onClick={handleClose} content="Close" />;
-    } else if (failureCounter > 0) {
-      header = 'Transaction Failed';
-      modalAction = <Button onClick={handleClose} content="Close" />;
-      image = confirmTransactionFailed;
     }
 
     return (
-      <Transition visible={open} animation="scale" duration={500}>
+      <Transition visible={open} animation="scale" duration={200}>
         <Modal
           open={open}
           size="small"
@@ -188,7 +213,7 @@ class TransactionsModal extends Component<Props> {
           style={{ textAlign: 'center' }}
         >
           <Modal.Content>
-            {this.renderContent(header, renderedTxs, modalAction, image)}
+            { content }
           </Modal.Content>
         </Modal>
       </Transition>
@@ -196,4 +221,18 @@ class TransactionsModal extends Component<Props> {
   }
 }
 
-export default TransactionsModal;
+const mapStateToProps = state => ({
+  loading: state.loading,
+  states: state.states,
+  application: state.ledger.application
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getPublicKey
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsModal);

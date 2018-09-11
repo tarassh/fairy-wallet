@@ -32,10 +32,6 @@ export function getAccounts(publicKey) {
 
 export function checkAccountExists(publicKey) {
   return (dispatch: () => void, getState) => {
-    // dispatch({
-    //   type: types.CHECK_ACCOUNT_EXISTS_REQUEST
-    // });
-
     const { connection } = getState();
 
     eos(connection)
@@ -238,5 +234,7 @@ export default {
   getActions,
   getCurrencyBalance,
   getDelegationsFor,
-  setDelegateeAccount
+  getRefundsFor,
+  setDelegateeAccount,
+  setActiveAccount
 };

@@ -1,5 +1,6 @@
 const eos = {
   eosio: 'eosio',
+  eosioToken: 'eosio.token',
   transfer: 'transfer',
   global: 'global',
   delband: 'delband',

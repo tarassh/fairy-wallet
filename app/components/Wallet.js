@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import _ from 'lodash';
-import { Menu, Icon, Modal, Button } from 'semantic-ui-react';
+import { Menu, Icon, Modal, Button, Label } from 'semantic-ui-react';
 import WalletActions from './Wallet/Actions';
 import BalanceComponent from '../components/Shared/BalanceComponent';
 import AccountComponent from '../components/Shared/AccountComponent';
@@ -19,13 +19,30 @@ type Props = {
   currency: {},
   loading: {},
   failure: {},
-  getAccount: string => void,
-  clearConnection: () => void
+  actions: {}
 };
 
 export default class Wallet extends Component<Props> {
   props: Props;
-  state = { activeItem: 'history' };
+  
+  state = { 
+    activeItem: 'history', 
+    lastActionBlock: 0, 
+    showNotification: false 
+  };
+
+  componentWillReceiveProps(newProps) {
+    const { activeItem, lastActionBlock } = this.state;
+    const { accounts } = newProps;
+    
+    if (lastActionBlock !== accounts.lastActionBlock && activeItem !== 'history') {
+      this.setState({ showNotification: true });
+    }
+
+    if (activeItem === 'history') {
+      this.setState({ lastActionBlock: accounts.lastActionBlock })
+    }
+  }
 
   componentDidUpdate() {
     const { states, history } = this.props;
@@ -34,16 +51,27 @@ export default class Wallet extends Component<Props> {
     }
   }
 
-  handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  handleItemClick = (e, { name }) => { 
+    if (name === 'history') {
+      const { accounts } = this.props;
+      this.setState({ 
+        activeItem: name, 
+        showNotification: false, 
+        lastActionBlock: accounts.lastActionBlock 
+      });
+    } else {
+      this.setState({ activeItem: name });
+    }
+  };
 
   handleRetry = () => {
-    const { accounts } = this.props;
-    this.props.getAccount(accounts.names[accounts.activeAccount]);
+    const { accounts, actions } = this.props;
+    actions.getAccount(accounts.names[accounts.activeAccount]);
   };
 
   handleChangeNode = () => {
-    const { history } = this.props;
-    this.props.clearConnection();
+    const { history, actions } = this.props;
+    actions.clearConnection();
     history.goBack();
   };
 
@@ -64,13 +92,14 @@ export default class Wallet extends Component<Props> {
   );
 
   render() {
-    const { accounts, currency, loading, failure } = this.props;
-    const { activeItem } = this.state;
+    const { accounts, currency, loading, failure, actions } = this.props;
+    const { activeItem, showNotification } = this.state;
+    const newAction = showNotification ? <Label basic content='new' className='notification' /> : undefined;
 
     const subpanes = {
-      history: <Tokens accounts={accounts} />,
-      transfer: <Tokens accounts={accounts} />,
-      voting: <Tokens accounts={accounts} />,
+      history: <Tokens accounts={accounts} actions={actions} />,
+      transfer: <Tokens accounts={accounts} actions={actions} />,
+      voting: <Tokens accounts={accounts} actions={actions} />,
       delegate: (
         <StakedStats
           account={accounts.account}
@@ -96,7 +125,7 @@ export default class Wallet extends Component<Props> {
           onClick={this.handleItemClick}
         >
           <Icon name="history" />
-          HISTORY
+          HISTORY{newAction}
         </Menu.Item>
         <Menu.Item
           name="transfer"
@@ -149,7 +178,7 @@ export default class Wallet extends Component<Props> {
       }
     });
 
-    const actions = [
+    const buttons = [
       <Button onClick={this.handleRetry} loading={isLoading} content="Retry" />,
       <Button onClick={this.handleChangeNode} content="Change Node" />
     ];
@@ -162,7 +191,7 @@ export default class Wallet extends Component<Props> {
             size="small"
             style={{ textAlign: 'center' }}
           >
-            <Modal.Content>{this.renderContent(actions)}</Modal.Content>
+            <Modal.Content>{this.renderContent(buttons)}</Modal.Content>
           </Modal>
         ) : (
           <FairyContainer>
@@ -184,7 +213,11 @@ export default class Wallet extends Component<Props> {
                 />
               </FairyContainer.Column.Header>
               <FairyContainer.Column.Body>
-                <WalletActions activeItem={activeItem} accounts={accounts} />
+                <WalletActions 
+                  activeItem={activeItem} 
+                  accounts={accounts} 
+                  actions={actions}
+                />
               </FairyContainer.Column.Body>
             </FairyContainer.Column>
             <FairyContainer.Column position="right">

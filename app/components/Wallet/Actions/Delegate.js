@@ -15,65 +15,52 @@ const fraction10000 = 10000;
 type Props = {
   account: {},
   delegates: {},
-  transactions: {},
-  delegate: (string, string, string, string) => {},
-  setDelegateeAccount: (string) => {},
-  resetState: () => {},
-  getAccount: string => {},
-  getActions: string => {}
+  transaction: {},
+  actions: {}
 };
 
-const colors = [
-  '241,158,41',
-  '192,71,222',
-  '55,188,150',
-  '68,91,200',
-  '253,112,62',
-  '108,182,42',
-  '207,44,64'
-];
-
 export default class Delegate extends Component<Props> {
-
   constructor(props) {
     super(props);
 
+    const { account } = props;
     this.state = Object.assign(
       {
         openModal: false,
         cpuDelta: 0,
         netDelta: 0,
-        recipient: '', 
+        recipient: '',
         cpu: 0,
         net: 0
       },
-      this.getStakedValues(props.account.account_name)
+      this.getStakedValues(account.account_name)
     );
   }
 
-  isDelegatedTo = (name) => {
+  isDelegatedTo = name => {
     const { delegates } = this.props;
-    return delegates.find((el) => el.to === name) !== undefined;
-  }
+    return delegates.find(el => el.to === name) !== undefined;
+  };
 
-  getStakedValues = (name) => {
+  getStakedValues = name => {
     const { delegates } = this.props;
-    const delegatee = delegates.find((el) => el.to === name);
+    const delegatee = delegates.find(el => el.to === name);
     if (delegatee) {
       return {
         cpu: assetToNumber(delegatee.cpu_weight, true),
         net: assetToNumber(delegatee.net_weight, true),
         recipient: name
       };
-    } 
+    }
     return {
       cpu: 0,
       net: 0,
       recipient: name
-    } 
-  }
+    };
+  };
 
   handleDelegateSelect = (e, { name }) => {
+    const { actions } = this.props;
     const stakes = this.getStakedValues(name);
     if (this.recipient !== name) {
       if (stakes) {
@@ -86,60 +73,57 @@ export default class Delegate extends Component<Props> {
         });
       }
     }
-    this.props.setDelegateeAccount(stakes ? stakes.recipient : undefined);
-  }
+    actions.setDelegateeAccount(stakes ? stakes.recipient : undefined);
+  };
 
   handleRecipientChange = (e, { name, value }) => {
+    const { actions } = this.props;
     this.setState({ [name]: value });
     const stakes = this.getStakedValues(value);
     if (stakes) {
-      this.props.setDelegateeAccount(stakes.recipient);
-      this.setState({cpu: stakes.cpu, net: stakes.net});
+      actions.setDelegateeAccount(stakes.recipient);
+      this.setState({ cpu: stakes.cpu, net: stakes.net });
     } else {
-      this.props.setDelegateeAccount(undefined);
-      this.setState({cpu: 0, net: 0});
+      actions.setDelegateeAccount(undefined);
+      this.setState({ cpu: 0, net: 0 });
     }
   };
 
   handleChange = (e, { name, value }) => {
     if (value === '') {
-      this.setState({[name]: value});
+      this.setState({ [name]: value });
       return;
     }
     const staked = this.getStakedValues(this.state.recipient);
-    
+
     const intValue = exactMath.mul(parseFloat(value), fraction10000);
     const delta = intValue - staked[name];
-    
+
     this.setState({
       [name]: intValue,
       [`${name}Delta`]: delta
-    })
-  }
+    });
+  };
 
   handleSubmit = () => {
     const { cpuDelta, netDelta, recipient } = this.state;
-    const { account } = this.props;
+    const { account, actions } = this.props;
     const accountName = account.account_name;
 
     const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
-    this.props.delegate(accountName, recipient, net, cpu);
+    actions.checkAndRun(actions.delegate, accountName, recipient, net, cpu);
+
     this.setState({ openModal: true });
   };
 
   handleClose = () => {
-    const { account } = this.props;
+    const { account, actions } = this.props;
 
-    this.props.resetState();
-    this.props.getAccount(account.account_name);
-    this.props.getActions(account.account_name);
-    this.setState({
-      openModal: false,
-      cpuDelta: 0,
-      netDelta: 0
-    });
+    actions.resetState();
+    actions.getAccount(account.account_name);
+    this.setState({ openModal: false, cpuDelta: 0, netDelta: 0 });
   };
 
   validateFields = () => {
@@ -150,7 +134,7 @@ export default class Delegate extends Component<Props> {
     }
 
     if (this.isDelegatedTo(recipient)) {
-     if (cpuDelta === 0 && netDelta === 0) {
+      if (cpuDelta === 0 && netDelta === 0) {
         return false;
       }
     } else if (cpu === 0 && net === 0) {
@@ -164,13 +148,13 @@ export default class Delegate extends Component<Props> {
     const staked = this.getStakedValues(recipient);
     if (net < staked.net || cpu < staked.cpu) {
       return false;
-    } 
+    }
 
     return true;
-  }
+  };
 
   renderForm = () => {
-    const { transactions, account } = this.props;
+    const { transaction, account } = this.props;
     const { openModal, recipient } = this.state;
     let { cpu, net } = this.state;
     if (typeof cpu === 'number') {
@@ -183,15 +167,15 @@ export default class Delegate extends Component<Props> {
     const { liquid } = balanceStats(account);
     const staked = this.getStakedValues(recipient);
     const stakedCpu = exactMath.div(staked.cpu, fraction10000);
-    const stakedNet = exactMath.div(staked.net, fraction10000)
+    const stakedNet = exactMath.div(staked.net, fraction10000);
 
     let cpuInvalid;
     let netInvalid;
 
-    const enableRequest = this.validateFields(); 
+    const enableRequest = this.validateFields();
     if (!enableRequest) {
-      cpuInvalid = cpu < stakedCpu ? "invalid" : undefined;
-      netInvalid = net < stakedNet ? "invalid" : undefined;
+      cpuInvalid = cpu < stakedCpu ? 'invalid' : undefined;
+      netInvalid = net < stakedNet ? 'invalid' : undefined;
     }
 
     const total = staked.cpu + staked.net + liquid;
@@ -200,7 +184,7 @@ export default class Delegate extends Component<Props> {
       <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
           open={openModal}
-          transactions={transactions}
+          transaction={transaction}
           handleClose={this.handleClose}
         />
         <Form.Field>
@@ -212,7 +196,13 @@ export default class Delegate extends Component<Props> {
             onChange={this.handleRecipientChange}
           />
           <InputFloat
-            label={cpuInvalid ? `Cannot be lower than ${numeral(stakedCpu).format('0.0000')} EOS` : 'CPU (EOS)'}
+            label={
+              cpuInvalid
+                ? `Cannot be lower than ${numeral(stakedCpu).format(
+                    '0.0000'
+                  )} EOS`
+                : 'CPU (EOS)'
+            }
             name="cpu"
             step="0.0001"
             min={0}
@@ -223,7 +213,13 @@ export default class Delegate extends Component<Props> {
             onChange={this.handleChange}
           />
           <InputFloat
-            label={netInvalid ? `Cannot be lower than ${numeral(stakedNet).format('0.0000')} EOS` : 'NET (EOS)'}
+            label={
+              netInvalid
+                ? `Cannot be lower than ${numeral(stakedNet).format(
+                    '0.0000'
+                  )} EOS`
+                : 'NET (EOS)'
+            }
             name="net"
             step="0.0001"
             min={0}
@@ -243,17 +239,23 @@ export default class Delegate extends Component<Props> {
     );
   };
 
-  renderDelegate = (delegate, color) => {
+  renderDelegate = (delegate, colorClass) => {
     const cpu = numeral(assetToNumber(delegate.cpu_weight)).format('0,0.0000');
     const net = numeral(assetToNumber(delegate.net_weight)).format('0,0.0000');
     return (
       <Grid>
         <Grid.Row>
           <Grid.Column width={6}>
-            <span><Label circular empty style={{background: color}} /> {delegate.to}</span>
+            <span>
+              <Label circular empty className={colorClass} /> {delegate.to}
+            </span>
           </Grid.Column>
-          <Grid.Column textAlign="right" width={5}>{cpu}</Grid.Column>
-          <Grid.Column textAlign="right" width={5}>{net}</Grid.Column>
+          <Grid.Column textAlign="right" width={5}>
+            {cpu}
+          </Grid.Column>
+          <Grid.Column textAlign="right" width={5}>
+            {net}
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     );
@@ -289,21 +291,24 @@ export default class Delegate extends Component<Props> {
 
     return (
       <ScrollingTable
-        header={
-          this.renderHeader()
-        }
+        header={this.renderHeader()}
         content={
           <List selection divided>
             {_.map(delegates, (delegate, i) => (
-              <List.Item 
-                key={delegate.to} 
-                name={delegate.to} 
-                onClick={this.handleDelegateSelect} 
+              <List.Item
+                key={delegate.to}
+                name={delegate.to}
+                onClick={this.handleDelegateSelect}
                 active={recipient === delegate.to}
               >
-                <List.Content>{this.renderDelegate(delegate, `rgb(${colors[i % delegates.length]}`)}</List.Content>
+                <List.Content>
+                  {this.renderDelegate(
+                    delegate,
+                    `delegate-background-color-${i % delegates.length}`
+                  )}
+                </List.Content>
               </List.Item>
-          ))}
+            ))}
           </List>
         }
       />
@@ -312,16 +317,14 @@ export default class Delegate extends Component<Props> {
 
   render() {
     return (
-      <MainContentContainer 
+      <MainContentContainer
         title="Stake Management"
         subtitle="Here you can delegate your resources to another accounts"
         className="adjust-content"
         content={
           <div className="stake">
-            <div className="stake-form" >
-              {this.renderForm()}
-            </div>
-            <div className="stake-delegation-table" >
+            <div className="stake-form">{this.renderForm()}</div>
+            <div className="stake-delegation-table">
               {this.renderDelegates()}
             </div>
           </div>

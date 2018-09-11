@@ -88,18 +88,26 @@ class PublicKeyComponent extends Component<Props> {
     );
 
     let action;
-    if (loading.PUBLIC_KEY_DISPLAY === false) {
-      if (states.displayPublicKey) {
+    if (loading.GET_PUBLIC_KEY_CONFIRM === false) {
+      if (states.publicKey) {
         image = publicKeySvg;
 
         action = (
-          <CopyToClipboard text={publicKey.wif}>
+          <div className="public-key-confirm-modal">
             <Button
-              content="Copy to clipborad"
-              name="copied"
-              onClick={() => this.handleClose(null, { name: 'copied' })}
+              content="Close"
+              name="canceled"
+              onClick={this.handleClose}
             />
-          </CopyToClipboard>
+            <CopyToClipboard text={publicKey.wif}>
+              <Button
+                icon="copy"
+                content="Copy"
+                name="copied"
+                onClick={() => this.handleClose(null, { name: 'copied' })}
+              />
+            </CopyToClipboard>
+          </div>
         );
 
         desc = (
@@ -178,7 +186,7 @@ class PublicKeyComponent extends Component<Props> {
         <Icon name="key" />
         <Transition animation="scale" duration={200}>
           <Modal open={opened} className="public-key-modality">
-            <Modal.Content>{content}</Modal.Content>
+            <Modal.Content>{opened && content}</Modal.Content>
           </Modal>
         </Transition>
       </Button>

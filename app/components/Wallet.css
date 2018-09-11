@@ -509,3 +509,68 @@ i.airdrop-token-add {
     width: 1.5rem;
     height: 1.5rem;
 }
+
+.ui.vertical.menu .item>.label.notification {
+    float: none;
+    background: white;
+    color: rgb(241,158,41) !important;
+    border-color: rgb(241,158,41);
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+}
+
+.delegate-background-color-0 {
+    background: rgb(241,158,41) !important;
+}
+
+.delegate-background-color-1 {
+    background: rgb(192,71,222) !important;
+}
+
+.delegate-background-color-2 {
+    background: rgb(55,188,150) !important;
+}
+
+.delegate-background-color-3 {
+    background: rgb(68,91,200) !important;
+}
+
+.delegate-background-color-4 {
+    background: rgb(253,112,62) !important;
+}
+
+.delegate-background-color-5 {
+    background: rgb(108,182,42) !important;   
+}
+
+.delegate-background-color-6 {
+    background: rgb(207,44,64) !important
+}
+
+.delegate-fill-color-0 {
+    fill: rgb(241,158,41) !important;
+}
+
+.delegate-fill-color-1 {
+    fill: rgb(192,71,222) !important;
+}
+
+.delegate-fill-color-2 {
+    fill: rgb(55,188,150) !important;
+}
+
+.delegate-fill-color-3 {
+    fill: rgb(68,91,200) !important;
+}
+
+.delegate-fill-color-4 {
+    fill: rgb(253,112,62) !important;
+}
+
+.delegate-fill-color-5 {
+    fill: rgb(108,182,42) !important;   
+}
+
+.delegate-fill-color-6 {
+    fill: rgb(207,44,64) !important
+}
