@@ -288,6 +288,20 @@ body.dark-mode .ui.selection.list>.item:hover {
     background: rgba(58,68,73,0.5) !important;
 }
 
+body.dark-mode .verify-content {
+    background: rgb(58,68,73);
+}
+
+body.dark-mode .dashed-border, 
+body.dark-mode p.public-key {   
+    background: rgb(40, 47, 51);
+    border-color: rgba(204, 204, 204, 0.6);
+} 
+
+body.dark-mode .ui.very.basic.table.verify-content {
+    background: rgba(58,68,73,0.5);
+}
+
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
