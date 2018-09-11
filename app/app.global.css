@@ -63,6 +63,30 @@ body.dark-mode .ui.form input[type="radio"] {
     background-color: rgb(58,68,73);
 }
 
+body.dark-mode .ui.checkbox input~.box:before, 
+body.dark-mode .ui.checkbox input~label:before,
+body.dark-mode .ui.checkbox input:checked~.box:before, 
+body.dark-mode .ui.checkbox input:checked~label:before,
+body.dark-mode .ui.radio.checkbox input~.box:before, 
+body.dark-mode .ui.radio.checkbox input~label:before,
+body.dark-mode .ui.radio.checkbox input:checked~.box:before, 
+body.dark-mode .ui.radio.checkbox input:checked~label:before {
+    background-color: rgb(58,68,73);
+    border: 1px solid rgba(255,237,113,0.5);
+}
+
+body.dark-mode .ui.checkbox input:checked~.box:after, 
+body.dark-mode .ui.checkbox input:checked~label:after, 
+body.dark-mode .ui.form .field > label {
+    color: rgba(255,237,113,0.8);
+}
+
+
+body.dark-mode .ui.radio.checkbox input:checked~.box:after, 
+body.dark-mode .ui.radio.checkbox input:checked~label:after {
+    background-color: rgba(255,237,113,0.8);
+}
+
 body.dark-mode .ui.basic.button.dropdown,
 body.dark-mode .ui.selection.dropdown,
 body.dark-mode .ui.selection.active.dropdown .menu,
