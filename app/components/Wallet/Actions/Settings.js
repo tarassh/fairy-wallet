@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Dropdown, List } from 'semantic-ui-react';
+import { Dropdown, List, Icon } from 'semantic-ui-react';
 import MainContentContainer from './../../Shared/UI/MainContent';
 import ScrollingTable from './../../Shared/UI/ScrollingTable';
 
@@ -83,14 +83,13 @@ export default class Settings extends Component<Props> {
 
     return (
       <List.Item>
-        <p className='tableheadertitle'>Blockchain Explorer</p>
+        <p className='tableheadertitle'><Icon name='chain' />Blockchain Explorer</p>
         <List.Content>
           <label> Default Blockchain Explorer </label>
           &nbsp;
           <Dropdown 
             name='explorer'
             selection 
-            basic
             floating
             options={explorers} 
             defaultValue={defaultValue}
