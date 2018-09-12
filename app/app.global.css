@@ -60,7 +60,8 @@ body.dark-mode .ui.basic.button.dropdown,
 body.dark-mode .ui.selection.active.dropdown .menu,
 body.dark-mode .ui.form input[type="text"],
 body.dark-mode .ui.form input[type="number"],
-body.dark-mode .ui.form input[type="radio"] {
+body.dark-mode .ui.form input[type="radio"],
+body.dark-mode .ui.form input[type="url"] {
     background-color: rgb(58,68,73);
 }
 
@@ -90,11 +91,16 @@ body.dark-mode .ui.radio.checkbox input:checked~label:after {
 
 body.dark-mode .ui.basic.button.dropdown,
 body.dark-mode .ui.selection.dropdown,
+body.dark-mode span.public-key,
 body.dark-mode .ui.selection.active.dropdown .menu,
 body.dark-mode .ui.selection.visible.dropdown>.text:not(.default),
 body.dark-mode .ui.basic.button.dropdown>.text {
     background-color: rgb(58,68,73) !important;
     color: rgb(195,195,195) !important;
+}
+
+body.dark-mode span.public-key {
+    border: 1px dashed rgb(195,195,195);
 }
 
 body.dark-mode .ui.basic.button.dropdown,
@@ -104,7 +110,8 @@ body.dark-mode .ui.floating.dropdown .menu,
 body.dark-mode .ui.search>.results,
 body.dark-mode .ui.form input[type="text"],
 body.dark-mode .ui.form input[type="number"],
-body.dark-mode .ui.form input[type="radio"] {
+body.dark-mode .ui.form input[type="radio"],
+body.dark-mode .ui.form input[type="url"] {
     color: rgb(195,195,195);
     border: 1px solid rgba(255,237,113,0.5);
 }
