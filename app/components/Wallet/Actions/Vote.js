@@ -47,10 +47,6 @@ export default class Vote extends Component<Props> {
     if (!producers || producers === null) {
       producers = [];
     }
-    producers = _.filter(
-      producers,
-      el => _.find(props.producers.list, pr => pr.owner === el) !== undefined
-    );
 
     const votes = {};
 
@@ -74,14 +70,6 @@ export default class Vote extends Component<Props> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const producersList = _.map(nextProps.producers.list, (producer, index) => (
-      <List.Item key={producer.key} value={producer.owner}>
-        <List.Content>
-          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
-        </List.Content>
-      </List.Item>
-    ));
-
     const { account } = nextProps.accounts;
     let { producers } = account.voter_info;
     if (!producers || producers === null) {
@@ -104,6 +92,14 @@ export default class Vote extends Component<Props> {
         disabled: true
       });
     }
+
+    const producersList = _.map(nextProps.producers.list, (producer, index) => (
+      <List.Item key={producer.key} value={producer.owner}>
+        <List.Content>
+          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
+        </List.Content>
+      </List.Item>
+    ));
 
     Object.assign(this.state, {
       producersList
@@ -219,6 +215,7 @@ export default class Vote extends Component<Props> {
   };
 
   render() {
+    console.log('render');
     const { loading, transaction } = this.props;
     const { openModal, producersList, filter, activeItem } = this.state;
 
