@@ -286,9 +286,8 @@ body.dark-mode i.airdrop-token-add {
 }
 
 body.dark-mode .ui.button {
-    background-color: rgba(255,237,113,0.5);
-    opacity: 0.9;
-    color: rgb(195,195,195);
+    background-color: rgb(255,237,113);
+    color: rgb(51,51,51);
     text-transform: uppercase;
     font-weight: lighter;
 }
