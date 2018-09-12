@@ -24,23 +24,26 @@ type Props = {
 
 export default class Wallet extends Component<Props> {
   props: Props;
-  
-  state = { 
-    activeItem: 'history', 
-    lastActionBlock: 0, 
-    showNotification: false 
+
+  state = {
+    activeItem: 'history',
+    lastActionBlock: 0,
+    showNotification: false
   };
 
   componentWillReceiveProps(newProps) {
     const { activeItem, lastActionBlock } = this.state;
     const { accounts } = newProps;
-    
-    if (lastActionBlock !== accounts.lastActionBlock && activeItem !== 'history') {
+
+    if (
+      lastActionBlock !== accounts.lastActionBlock &&
+      activeItem !== 'history'
+    ) {
       this.setState({ showNotification: true });
     }
 
     if (activeItem === 'history') {
-      this.setState({ lastActionBlock: accounts.lastActionBlock })
+      this.setState({ lastActionBlock: accounts.lastActionBlock });
     }
   }
 
@@ -51,13 +54,13 @@ export default class Wallet extends Component<Props> {
     }
   }
 
-  handleItemClick = (e, { name }) => { 
+  handleItemClick = (e, { name }) => {
     if (name === 'history') {
       const { accounts } = this.props;
-      this.setState({ 
-        activeItem: name, 
-        showNotification: false, 
-        lastActionBlock: accounts.lastActionBlock 
+      this.setState({
+        activeItem: name,
+        showNotification: false,
+        lastActionBlock: accounts.lastActionBlock
       });
     } else {
       this.setState({ activeItem: name });
@@ -94,7 +97,11 @@ export default class Wallet extends Component<Props> {
   render() {
     const { accounts, currency, loading, failure, actions } = this.props;
     const { activeItem, showNotification } = this.state;
-    const newAction = showNotification ? <Label basic content='new' className='notification' /> : undefined;
+    const newAction = showNotification ? (
+      <Label basic content="new" className="notification" />
+    ) : (
+      undefined
+    );
 
     const subpanes = {
       history: <Tokens accounts={accounts} actions={actions} />,
@@ -171,6 +178,7 @@ export default class Wallet extends Component<Props> {
           name="settings"
           active={activeItem === 'settings'}
           onClick={this.handleItemClick}
+          className="settings"
         >
           <Icon name="setting" />
           SETTINGS
@@ -221,9 +229,9 @@ export default class Wallet extends Component<Props> {
                 />
               </FairyContainer.Column.Header>
               <FairyContainer.Column.Body>
-                <WalletActions 
-                  activeItem={activeItem} 
-                  accounts={accounts} 
+                <WalletActions
+                  activeItem={activeItem}
+                  accounts={accounts}
                   actions={actions}
                 />
               </FairyContainer.Column.Body>

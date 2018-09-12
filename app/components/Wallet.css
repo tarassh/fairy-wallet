@@ -510,6 +510,11 @@ i.airdrop-token-add {
     height: 1.5rem;
 }
 
+.ui.text.menu .item.settings {
+    position: absolute;
+    bottom: 1rem;
+}
+
 .ui.vertical.menu .item>.label.notification {
     float: none;
     background: white;
