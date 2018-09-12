@@ -110,26 +110,6 @@ export default class MenuBuilder {
           }
         },
         {
-          label: 'Light mode',
-          accelerator: 'Command+L',
-          checked: !this.darkMode,
-          type: 'radio',
-          click: () => {
-            this.darkMode = false;
-            this.mainWindow.send('set-dark-mode', this.darkMode);
-          }
-        },
-        {
-          label: 'Dark mode',
-          accelerator: 'Command+D',
-          checked: this.darkMode,
-          type: 'radio',
-          click: () => {
-            this.darkMode = true;
-            this.mainWindow.send('set-dark-mode', this.darkMode);
-          }
-        },
-        {
           label: 'Toggle Developer Tools',
           accelerator: 'Alt+Command+I',
           click: () => {
@@ -146,26 +126,6 @@ export default class MenuBuilder {
           accelerator: 'Ctrl+Command+F',
           click: () => {
             this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-          }
-        },
-        {
-          label: 'Light mode',
-          accelerator: 'Command+L',
-          checked: !this.darkMode,
-          type: 'radio',
-          click: () => {
-            this.darkMode = false;
-            this.mainWindow.send('set-dark-mode', this.darkMode);
-          }
-        },
-        {
-          label: 'Dark mode',
-          accelerator: 'Command+D',
-          checked: this.darkMode,
-          type: 'radio',
-          click: () => {
-            this.darkMode = true;
-            this.mainWindow.send('set-dark-mode', this.darkMode);
           }
         }
       ]
@@ -254,26 +214,6 @@ export default class MenuBuilder {
                     this.mainWindow.setFullScreen(
                       !this.mainWindow.isFullScreen()
                     );
-                  }
-                },
-                {
-                  label: '&Light mode',
-                  accelerator: 'Ctrl+L',
-                  checked: !this.darkMode,
-                  type: 'radio',
-                  click: () => {
-                    this.darkMode = false;
-                    this.mainWindow.send('set-dark-mode', this.darkMode);
-                  }
-                },
-                {
-                  label: '&Dark mode',
-                  accelerator: 'Ctrl+D',
-                  checked: this.darkMode,
-                  type: 'radio',
-                  click: () => {
-                    this.darkMode = true;
-                    this.mainWindow.send('set-dark-mode', this.darkMode);
                   }
                 },
                 {
