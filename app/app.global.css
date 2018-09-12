@@ -131,6 +131,7 @@ body.dark-mode .ui.segment.no-background {
     background: transparent;
 }
 
+body.dark-mode .create-account .ui.basic.button,
 body.dark-mode .fairy-container .column.left .fairy-menu .data-block .data .ui.basic.button {
     background: rgb(39, 49, 54)!important;
     color: rgb(195,195,195)!important;
@@ -149,6 +150,9 @@ body.dark-mode .fairy-container .column.middle .ui.list .item.active {
     background-color: rgba(58,68,73,0.5);
 }
 
+body.dark-mode .steps-container .active,
+body.dark-mode  .steps-container .active div, 
+body.dark-mode .steps-container .ui.list>.item.active .header,
 body.dark-mode .ui.menu .active.item, 
 body.dark-mode .ui.dropdown .menu .selected.item,
 body.dark-mode .ui.vertical.menu .active.item,
