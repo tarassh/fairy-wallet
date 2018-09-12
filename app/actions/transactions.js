@@ -1,19 +1,25 @@
 // @flow
 import * as types from './types';
 import eos from './helpers/eos';
+import * as constants from './constants/constants';
 import serialize from './helpers/ledgerserialize';
-import { numberToAsset } from '../utils/asset';
+import { getPublicKey } from './ledger';
 
 const Api = require('./helpers/eosledjer').default;
 
-const eosioContract = 'eosio';
-const transferAction = 'transfer';
-const delegateAction = 'delegatebw';
-const undelegateAction = 'undelegatebw';
-const voteProducerAction = 'voteproducer';
-const buyramAction = 'buyram';
-const buyrambytesAction = 'buyrambytes';
-const sellramAction = 'sellram';
+export function checkAndRun(action, ...args) {
+  return (dispatch: () => void) => {
+    dispatch(getPublicKey())
+      .then(() => action(...args))
+      .catch(() => {});
+  };
+}
+
+export function resetState() {
+  return (dispatch: () => void) => {
+    dispatch({ type: types.TRANSACTION_RESET_STATE });
+  };
+}
 
 export function transfer(
   from,
@@ -27,7 +33,7 @@ export function transfer(
       type: types.TRANSFER_TOKEN_REQUEST,
       context: {
         contract: tokenContract,
-        action: transferAction,
+        action: constants.eos.transfer,
         from,
         to,
         asset,
@@ -84,19 +90,13 @@ export function transfer(
   };
 }
 
-export function resetState() {
-  return (dispatch: () => void) => {
-    dispatch({ type: types.RESET_TRANSACTIONS_STATE });
-  };
-}
-
 export function delegate(from, receiver, net, cpu) {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.DELEGATE_REQUEST,
       context: {
-        contract: eosioContract,
-        action: delegateAction,
+        contract: constants.eos.eosio,
+        action: constants.eos.delegate,
         from,
         receiver,
         net,
@@ -135,7 +135,7 @@ export function delegate(from, receiver, net, cpu) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.delegatebw(from, receiver, net, cpu, 0);
       })
       .then(receipt =>
@@ -158,8 +158,8 @@ export function undelegate(from, receiver, net, cpu) {
     dispatch({
       type: types.UNDELEGATE_REQUEST,
       context: {
-        contract: eosioContract,
-        action: undelegateAction,
+        contract: constants.eos.eosio,
+        action: constants.eos.undelegate,
         from,
         receiver,
         net,
@@ -198,7 +198,7 @@ export function undelegate(from, receiver, net, cpu) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.undelegatebw(from, receiver, net, cpu);
       })
       .then(receipt =>
@@ -216,175 +216,6 @@ export function undelegate(from, receiver, net, cpu) {
   };
 }
 
-export function delegateUndelegate(netFirst, from, receiver, net, cpu) {
-  return (dispatch: () => void, getState) => {
-    const zero = numberToAsset(0);
-
-    const { connection, ledger } = getState();
-
-    const signProvider = async ({ transaction }) => {
-      const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
-      const [action] = transaction.actions;
-      const type =
-        action.name === delegateAction
-          ? types.DELEGATE_CONSTRUCTED
-          : types.UNDELEGATE_CONSTRUCTED;
-      dispatch({
-        type,
-        constructed: true
-      });
-
-      const api = new Api(ledger.transport);
-      const result = await api.signTransaction(
-        ledger.bip44Path,
-        buffer.toString('hex')
-      );
-      const rawSig = result.v + result.r + result.s;
-
-      dispatch({
-        type:
-          action.name === delegateAction
-            ? types.DELEGATE_SIGNED
-            : types.UNDELEGATE_SIGNED,
-        signed: true
-      });
-      return rawSig;
-    };
-    const promiseSigner = args => Promise.resolve(signProvider(args));
-
-    const modified = {
-      ...connection,
-      signProvider: promiseSigner
-    };
-
-    if (netFirst) {
-      dispatch({
-        type: types.DELEGATE_UNDELEGATE_REQUEST,
-        delegateContext: {
-          contract: eosioContract,
-          action: delegateAction,
-          from,
-          receiver,
-          net,
-          cpu: zero
-        },
-        undelegateContext: {
-          contract: eosioContract,
-          action: undelegateAction,
-          from,
-          receiver,
-          net: zero,
-          cpu
-        }
-      });
-
-      return eos(modified)
-        .transaction(eosioContract, contract => {
-          contract.delegatebw(from, receiver, net, zero, 0);
-        })
-        .then(delegateReceipt => {
-          dispatch({ type: types.DELEGATE_SUCCESS, receipt: delegateReceipt });
-          return eos(modified)
-            .transaction(eosioContract, contract => {
-              contract.undelegatebw(from, receiver, zero, cpu);
-            })
-            .then(undelegateReceipt => {
-              dispatch({
-                type: types.UNDELEGATE_SUCCESS,
-                receipt: undelegateReceipt
-              });
-              return dispatch({ type: types.DELEGATE_UNDELEGATE_SUCCESS });
-            })
-            .catch(err => {
-              dispatch({ type: types.UNDELEGATE_FAILURE, err });
-              dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
-            });
-        })
-        .catch(err => {
-          dispatch({ type: types.DELEGATE_FAILURE, err });
-          return eos(modified)
-            .transaction(eosioContract, contract => {
-              contract.undelegatebw(from, receiver, zero, cpu);
-            })
-            .then(undelegateReceipt => {
-              dispatch({
-                type: types.UNDELEGATE_SUCCESS,
-                receipt: undelegateReceipt
-              });
-              return dispatch({ type: types.DELEGATE_UNDELEGATE_SUCCESS });
-            })
-            .catch(err => {
-              dispatch({ type: types.UNDELEGATE_FAILURE, err });
-              dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
-            });
-        });
-    }
-
-    dispatch({
-      type: types.DELEGATE_UNDELEGATE_REQUEST,
-      delegateContext: {
-        contract: eosioContract,
-        action: delegateAction,
-        from,
-        receiver,
-        net: zero,
-        cpu
-      },
-      undelegateContext: {
-        contract: eosioContract,
-        action: undelegateAction,
-        from,
-        receiver,
-        net,
-        cpu: zero
-      }
-    });
-
-    return eos(modified)
-      .transaction(eosioContract, contract => {
-        contract.delegatebw(from, receiver, zero, cpu, 0);
-      })
-      .then(delegateReceipt => {
-        dispatch({ type: types.DELEGATE_SUCCESS, receipt: delegateReceipt });
-        return eos(modified)
-          .transaction(eosioContract, contract => {
-            contract.undelegatebw(from, receiver, net, zero);
-          })
-          .then(undelegateReceipt => {
-            dispatch({
-              type: types.UNDELEGATE_SUCCESS,
-              receipt: undelegateReceipt
-            });
-            return dispatch({ type: types.DELEGATE_UNDELEGATE_SUCCESS });
-          })
-          .catch(err => {
-            dispatch({ type: types.UNDELEGATE_FAILURE, err });
-            dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
-          });
-      })
-      .catch(err => {
-        dispatch({ type: types.DELEGATE_FAILURE, err });
-        return eos(modified)
-          .transaction(eosioContract, contract => {
-            contract.undelegatebw(from, receiver, net, zero);
-          })
-          .then(undelegateReceipt => {
-            dispatch({
-              type: types.UNDELEGATE_SUCCESS,
-              receipt: undelegateReceipt
-            });
-            return dispatch({ type: types.DELEGATE_UNDELEGATE_SUCCESS });
-          })
-          .catch(err => {
-            dispatch({ type: types.UNDELEGATE_FAILURE, err });
-            dispatch({ type: types.DELEGATE_UNDELEGATE_FAILURE, err });
-          });
-      });
-  };
-}
-
-
 export function voteProducer(producers = []) {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
@@ -394,8 +225,8 @@ export function voteProducer(producers = []) {
     dispatch({
       type: types.VOTEPRODUCER_REQUEST,
       context: {
-        contract: eosioContract,
-        action: voteProducerAction,
+        contract: constants.eos.eosio,
+        action: constants.eos.voteproducer,
         account: account.account_name,
         producers
       }
@@ -432,7 +263,7 @@ export function voteProducer(producers = []) {
 
     producers.sort();
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.voteproducer(account.account_name, proxy, producers);
       })
       .then(receipt =>
@@ -458,8 +289,8 @@ export function buyram(recipient, tokens) {
     dispatch({
       type: types.BUYRAM_REQUEST,
       context: {
-        contract: eosioContract,
-        action: buyramAction,
+        contract: constants.eos.eosio,
+        action: constants.eos.buyram,
         buyer: account.account_name,
         recipient,
         tokens
@@ -496,7 +327,7 @@ export function buyram(recipient, tokens) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.buyram(account.account_name, recipient, tokens);
       })
       .then(receipt =>
@@ -522,8 +353,8 @@ export function sellram(bytes) {
     dispatch({
       type: types.SELLRAM_REQUEST,
       context: {
-        contract: eosioContract,
-        action: sellramAction,
+        contract: constants.eos.eosio,
+        action: constants.eos.sellram,
         receiver: account.account_name,
         bytes
       }
@@ -559,7 +390,7 @@ export function sellram(bytes) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.sellram(account.account_name, bytes);
       })
       .then(receipt =>
@@ -585,8 +416,8 @@ export function buyrambytes(recipient, bytes) {
     dispatch({
       type: types.BUYRAMBYTES_REQUEST,
       context: {
-        contract: eosioContract,
-        action: buyrambytesAction,
+        contract: constants.eos.eosio,
+        action: constants.eos.buyrambytes,
         buyer: account.account_name,
         recipient,
         bytes
@@ -623,7 +454,7 @@ export function buyrambytes(recipient, bytes) {
     };
 
     return eos(modified)
-      .transaction(eosioContract, contract => {
+      .transaction(constants.eos.eosio, contract => {
         contract.buyrambytes(account.account_name, recipient, bytes);
       })
       .then(receipt =>
@@ -642,11 +473,13 @@ export function buyrambytes(recipient, bytes) {
 }
 
 export default {
+  resetState,
   transfer,
   delegate,
   undelegate,
   voteProducer,
   buyram,
   buyrambytes,
-  delegateUndelegate
+  sellram,
+  checkAndRun
 };

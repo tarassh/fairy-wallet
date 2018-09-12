@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Modal, Transition, Button, Image, Icon } from 'semantic-ui-react';
 import publicKeySvg from '../../../resources/images/verify-public-key.svg';
+import publicKeyDarkSvg from '../../../resources/images/verify-public-key-dark.svg';
 import publicKeyErrorSvg from '../../../resources/images/verify-public-key-error.svg';
+import publicKeyErrorDarkSvg from '../../../resources/images/verify-public-key-error-dark.svg';
 
 import { getPublicKey } from '../../actions/ledger';
 
@@ -13,6 +15,7 @@ type Props = {
   publicKey: {},
   loading: {},
   states: {},
+  settings: {},
   callback: any
 };
 
@@ -74,9 +77,10 @@ class PublicKeyComponent extends Component<Props> {
   };
 
   renderStep1 = () => {
-    const { publicKey, loading, states } = this.props;
+    const { publicKey, loading, states, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
     let header = <p className="title">Get Public Key</p>;
-    let image = publicKeySvg;
+    let image = darkMode ? publicKeyDarkSvg : publicKeySvg;
     let desc = (
       <div className="verify-content">
         <p className="subtitle">EOS public key</p>
@@ -88,18 +92,26 @@ class PublicKeyComponent extends Component<Props> {
     );
 
     let action;
-    if (loading.PUBLIC_KEY_DISPLAY === false) {
-      if (states.displayPublicKey) {
-        image = publicKeySvg;
+    if (loading.GET_PUBLIC_KEY_CONFIRM === false) {
+      if (states.publicKey) {
+        image = darkMode ? publicKeyDarkSvg : publicKeySvg;
 
         action = (
-          <CopyToClipboard text={publicKey.wif}>
+          <div className="public-key-confirm-modal">
             <Button
-              content="Copy to clipborad"
-              name="copied"
-              onClick={() => this.handleClose(null, { name: 'copied' })}
+              content="Close"
+              name="canceled"
+              onClick={this.handleClose}
             />
-          </CopyToClipboard>
+            <CopyToClipboard text={publicKey.wif}>
+              <Button
+                icon="copy"
+                content="Copy"
+                name="copied"
+                onClick={() => this.handleClose(null, { name: 'copied' })}
+              />
+            </CopyToClipboard>
+          </div>
         );
 
         desc = (
@@ -113,7 +125,7 @@ class PublicKeyComponent extends Component<Props> {
         );
       } else {
         header = <p className="title">Receive Public Key Rejected</p>;
-        image = publicKeyErrorSvg;
+        image = darkMode ? publicKeyErrorDarkSvg : publicKeyErrorSvg;
 
         desc = (
           <div>
@@ -178,7 +190,7 @@ class PublicKeyComponent extends Component<Props> {
         <Icon name="key" />
         <Transition animation="scale" duration={200}>
           <Modal open={opened} className="public-key-modality">
-            <Modal.Content>{content}</Modal.Content>
+            <Modal.Content>{opened && content}</Modal.Content>
           </Modal>
         </Transition>
       </Button>
@@ -189,7 +201,8 @@ class PublicKeyComponent extends Component<Props> {
 const mapStateToProps = state => ({
   loading: state.loading,
   states: state.states,
-  publicKey: state.accounts.publicKey
+  publicKey: state.accounts.publicKey,
+  settings: state.settings
 });
 
 const mapDispatchToProps = dispatch =>

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import {
   Modal,
   Transition,
   Button,
   Icon,
   Image,
-  Header
+  Header,
+  Dimmer,
+  Loader
 } from 'semantic-ui-react';
-import _ from 'lodash';
 import { shell } from 'electron';
 import TransferContext from './TransferContext';
 import DelegateContext from './DelegateContext';
@@ -17,10 +20,21 @@ import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
+import wakeupDevice from '../../../resources/images/wakeup-device.svg';
+
+import confirmTransactionDark from '../../../resources/images/confirm-transaction-dark.svg';
+import confirmTransactionFailedDark from '../../../resources/images/confirm-transaction-failed-dark.svg';
+import wakeupDeviceDark from '../../../resources/images/wakeup-device-dark.svg';
+
+import { getPublicKey } from '../../actions/ledger';
 
 type Props = {
+  states: {},
   open: boolean,
-  transactions: {},
+  explorer: {},
+  loading: {},
+  settings: {},
+  transaction: ?{},
   handleClose: () => {}
 };
 
@@ -41,7 +55,7 @@ function renderTransaction(transaction, goto) {
   const { action } = context;
   const actionName = actionDisplayName[action];
 
-  let icon = 'circle notched';
+  let icon = 'spinner';
   let statusText = constructed ? 'Ready to sign' : 'Preparing...';
   let loading = true;
   if (signed) {
@@ -50,11 +64,15 @@ function renderTransaction(transaction, goto) {
 
   if (receipt !== null) {
     statusText = (
-      <div 
-        onClick={() => goto(null, { txid: receipt.transaction_id })} 
-        style={{cursor: 'pointer'}}
+      <div
+        role="link"
+        tabIndex={0}
+        onClick={() => goto(null, { txid: receipt.transaction_id })}
+        onKeyUp={() => {}}
+        style={{ cursor: 'pointer' }}
       >
-      Transaction id <span className='public-key'>{receipt.transaction_id}</span>
+        Transaction id{' '}
+        <span className="public-key">{receipt.transaction_id}</span>
       </div>
     );
     icon = 'check circle';
@@ -68,11 +86,12 @@ function renderTransaction(transaction, goto) {
         [error] = JSON.parse(err).error.details;
       } else if (error.name && error.name === 'TransportStatusError') {
         if (error.statusCode === 0x6985) {
-          error = 'Ledger device: Condition of use not satisfied. Denied by user.';
-        } else if (error.statusCode === 0x6A80) {
-          error = 'Ledger device: Invalid data.'
-        } else if (error.statusCode === 0x6B00) {
-          error = 'Ledger device: Incorrect parameter P1 or P2.'
+          error =
+            'Ledger device: Condition of use not satisfied. Denied by user.';
+        } else if (error.statusCode === 0x6a80) {
+          error = 'Ledger device: Invalid data.';
+        } else if (error.statusCode === 0x6b00) {
+          error = 'Ledger device: Incorrect parameter P1 or P2.';
         } else {
           error = error.message;
         }
@@ -88,8 +107,10 @@ function renderTransaction(transaction, goto) {
     loading = false;
   }
 
-  let content = <TransferContext context={context} />;
-  if (action === 'delegatebw' || action === 'undelegatebw') {
+  let content;
+  if (action === 'transfer') {
+    content = <TransferContext context={context} />;
+  } else if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
   } else if (action === 'voteproducer') {
     content = <VoteContext context={context} />;
@@ -104,8 +125,17 @@ function renderTransaction(transaction, goto) {
   const header = (
     <Header style={{ marginTop: '1rem' }}>
       <Header.Content>
-        <div><Icon name={icon} loading={loading} />{actionName}</div>
-        <Header.Subheader style={err !== null ? { color: 'lightcoral', marginTop: '1rem' } : { marginTop: '1rem' }}>
+        <div>
+          <Icon name={icon} loading={loading} />
+          {actionName}
+        </div>
+        <Header.Subheader
+          style={
+            err !== null
+              ? { color: 'lightcoral', marginTop: '1rem' }
+              : { marginTop: '1rem' }
+          }
+        >
           {statusText}
         </Header.Subheader>
       </Header.Content>
@@ -121,79 +151,124 @@ function renderTransaction(transaction, goto) {
 }
 
 class TransactionsModal extends Component<Props> {
-  state = { activeIndex: 0 };
-
   renderContent = (header, content, action, image) => (
     <div>
       <p className="title">{header}</p>
       <br />
       <Image centered src={image} style={{ marginTop: '1em' }} />
       <br />
-      <div>
-        {_.map(content, (line, i) => (
-          <div key={i} className="subtitle no-top-bottom-margin">
-            {line}
-          </div>
-        ))}
-      </div>
+      <div className="subtitle no-top-bottom-margin">{content}</div>
       <br />
       <br />
       <div className="public-key-confirm-modal">{action}</div>
     </div>
   );
 
-  handleClick = (e, { index }) => {
-    const { activeIndex } = this.state;
-    const newIndex = activeIndex === index ? -1 : index;
-    this.setState({ activeIndex: newIndex });
+  renderTransaction = () => {
+    const { transaction, handleClose, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
+    if (!transaction || transaction.context === null) {
+      return undefined;
+    }
+
+    let image = darkMode ? confirmTransactionDark : confirmTransaction;
+
+    let header = 'Use your device to verify transaction';
+    let modalAction;
+    if (transaction.receipt !== null) {
+      header = 'Transaction Successful';
+      modalAction = <Button onClick={handleClose} content="Close" />;
+    } else if (transaction.err !== null) {
+      header = 'Transaction Failed';
+      modalAction = <Button onClick={handleClose} content="Close" />;
+      image = darkMode
+        ? confirmTransactionFailedDark
+        : confirmTransactionFailed;
+    }
+
+    return this.renderContent(
+      header,
+      renderTransaction(transaction, this.handleGoto),
+      modalAction,
+      image
+    );
+  };
+
+  renderInactivity = () => {
+    const { handleClose, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
+    const header = 'Unlock Device';
+    const inactivity = (
+      <p>Cannot read device properties. Make sure your device is unlocked.</p>
+    );
+    const action = <Button onClick={handleClose} content="Close" />;
+
+    return this.renderContent(
+      header,
+      inactivity,
+      action,
+      darkMode ? wakeupDeviceDark : wakeupDevice
+    );
+  };
+
+  renderLoader = () => {
+    const { settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
+    return (
+      <Dimmer active inverted={!darkMode}>
+        <Loader inverted={!darkMode} />
+      </Dimmer>
+    );
   };
 
   handleGoto = (e, { txid }) => {
-    shell.openExternal(`https://eosflare.io/tx/${txid}`);
+    const { explorer } = this.props;
+
+    shell.openExternal(`${explorer.path}${txid}`);
   };
 
   render() {
-    const { open, transactions, handleClose } = this.props;
-
-    const renderedTxs = [];
-    let successCounter = 0;
-    let failureCounter = 0;
-    let image = confirmTransaction;
-    Object.keys(transactions).forEach(key => {
-      const tx = transactions[key];
-      if (tx.context !== null) {
-        renderedTxs.push(renderTransaction(tx, this.handleGoto));
+    const { open, states, loading } = this.props;
+    let content;
+    if (open) {
+      if (loading.GET_PUBLIC_KEY === true) {
+        content = this.renderLoader();
+      } else if (states.publicKey) {
+        content = this.renderTransaction();
+      } else {
+        content = this.renderInactivity();
       }
-      successCounter += tx.receipt !== null ? 1 : 0;
-      failureCounter += tx.err !== null ? 1 : 0;
-    });
-
-    let header = 'Use your device to verify transaction';
-    let modalAction = '';
-    if (successCounter === renderedTxs.length) {
-      header = 'Transaction Successful';
-      modalAction = <Button onClick={handleClose} content="Close" />;
-    } else if (failureCounter > 0) {
-      header = 'Transaction Failed';
-      modalAction = <Button onClick={handleClose} content="Close" />;
-      image = confirmTransactionFailed;
     }
 
     return (
-      <Transition visible={open} animation="scale" duration={500}>
+      <Transition visible={open} animation="scale" duration={200}>
         <Modal
           open={open}
           size="small"
           onClose={this.onClose}
           style={{ textAlign: 'center' }}
         >
-          <Modal.Content>
-            {this.renderContent(header, renderedTxs, modalAction, image)}
-          </Modal.Content>
+          <Modal.Content>{content}</Modal.Content>
         </Modal>
       </Transition>
     );
   }
 }
 
-export default TransactionsModal;
+const mapStateToProps = state => ({
+  loading: state.loading,
+  states: state.states,
+  application: state.ledger.application,
+  explorer: state.settings.explorers[0],
+  settings: state.settings
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getPublicKey
+    },
+    dispatch
+  );
+
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsModal);

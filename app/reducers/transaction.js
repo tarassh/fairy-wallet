@@ -1,0 +1,91 @@
+// @flow
+import * as types from '../actions/types';
+
+const initialState = {
+  context: null,
+  receipt: null,
+  err: null,
+  contructed: false,
+  signed: false
+};
+
+export default function transaction(state = initialState, action) {
+  switch (action.type) {
+
+    case types.TRANSACTION_RESET_STATE: {
+      return Object.assign({}, state, {
+        context: null,
+        receipt: null,
+        err: null,
+        contructed: false,
+        signed: false
+      });
+    }
+
+    case types.BUYRAMBYTES_SUCCESS:
+    case types.SELLRAM_SUCCESS:
+    case types.BUYRAM_SUCCESS:
+    case types.VOTEPRODUCER_SUCCESS:
+    case types.UNDELEGATE_SUCCESS:
+    case types.DELEGATE_SUCCESS:
+    case types.TRANSFER_TOKEN_SUCCESS: {
+      return Object.assign({}, state, {
+        receipt: action.receipt
+      });
+    }
+
+    case types.BUYRAMBYTES_REQUEST:
+    case types.SELLRAM_REQUEST:
+    case types.BUYRAM_REQUEST:
+    case types.VOTEPRODUCER_REQUEST:
+    case types.UNDELEGATE_REQUEST:
+    case types.DELEGATE_REQUEST:
+    case types.TRANSFER_TOKEN_REQUEST: {
+      return Object.assign({}, state, {
+        context: action.context,
+        constructed: false,
+        signed: false
+      });
+    }
+
+    case types.BUYRAMBYTES_FAILURE:
+    case types.SELLRAM_FAILURE:
+    case types.BUYRAM_FAILURE:
+    case types.VOTEPRODUCER_FAILURE:
+    case types.UNDELEGATE_FAILURE:
+    case types.DELEGATE_FAILURE:
+    case types.TRANSFER_TOKEN_FAILURE: {
+      return Object.assign({}, state, {
+        err: action.err
+      });
+    }
+
+    case types.SELLRAM_CONSTRUCTED:
+    case types.BUYRAMBYTES_CONSTRUCTED:
+    case types.BUYRAM_CONSTRUCTED:
+    case types.VOTEPRODUCER_CONSTRUCTED:
+    case types.UNDELEGATE_CONSTRUCTED:
+    case types.DELEGATE_CONSTRUCTED:
+    case types.TRANSFER_TOKEN_CONSTRUCTED: {
+      return Object.assign({}, state, {
+        constructed: action.constructed
+      });
+    }
+
+    case types.SELLRAM_SIGNED:
+    case types.BUYRAMBYTES_SIGNED:
+    case types.BUYRAM_SIGNED:
+    case types.VOTEPRODUCER_SIGNED:
+    case types.UNDELEGATE_SIGNED:
+    case types.DELEGATE_SIGNED:
+    case types.TRANSFER_TOKEN_SIGNED: {
+      return Object.assign({}, state, {
+        signed: action.signed
+      });
+    }
+
+    default: {
+      return state;
+    }
+  }
+}

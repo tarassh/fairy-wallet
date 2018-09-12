@@ -14,14 +14,23 @@ type Props = {
   states: {},
   ledger: {},
   accounts: {},
-  loading: {}
+  loading: {},
+  settings: {}
 };
 
 class LockerContainer extends Component<Props> {
   props: Props;
 
   render() {
-    const { history, ledger, actions, states, accounts, loading } = this.props;
+    const {
+      history,
+      ledger,
+      actions,
+      states,
+      accounts,
+      loading,
+      settings
+    } = this.props;
     return (
       <Locker
         history={history}
@@ -30,6 +39,7 @@ class LockerContainer extends Component<Props> {
         states={states}
         accounts={accounts}
         loading={loading}
+        settings={settings}
       />
     );
   }
@@ -40,7 +50,8 @@ function mapStateToProps(state) {
     ledger: state.ledger,
     states: state.states,
     accounts: state.accounts,
-    loading: state.loading
+    loading: state.loading,
+    settings: state.settings
   };
 }
 

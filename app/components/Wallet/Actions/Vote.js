@@ -28,10 +28,8 @@ type Props = {
   accounts: {},
   producers: { list: {} },
   loading: {},
-  transactions: {},
-  voteProducer: () => {},
-  resetState: () => {},
-  getAccount: string => {}
+  transaction: {},
+  actions: {}
 };
 
 export default class Vote extends Component<Props> {
@@ -72,19 +70,16 @@ export default class Vote extends Component<Props> {
   }
 
   componentWillReceiveProps(nextProps) {
-    const producersList = _.map(nextProps.producers.list, (producer, index) => (
-      <List.Item key={producer.key} value={producer.owner}>
-        <List.Content>
-          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
-        </List.Content>
-      </List.Item>
-    ));
-
     const { account } = nextProps.accounts;
     let { producers } = account.voter_info;
     if (!producers || producers === null) {
       producers = [];
     }
+    producers = _.filter(
+      producers,
+      el =>
+        _.find(nextProps.producers.list, pr => pr.owner === el) !== undefined
+    );
 
     const votes = {};
 
@@ -98,16 +93,24 @@ export default class Vote extends Component<Props> {
       });
     }
 
+    const producersList = _.map(nextProps.producers.list, (producer, index) => (
+      <List.Item key={producer.key} value={producer.owner}>
+        <List.Content>
+          {this.renderProducer(producer, index + 1 <= HAPPY_PRODUCERS)}
+        </List.Content>
+      </List.Item>
+    ));
+
     Object.assign(this.state, {
       producersList
     });
   }
 
-  vote = () => {
-    const { voteProducer } = this.props;
+  handleSubmit = () => {
+    const { actions } = this.props;
     const producers = this.currentVotes();
+    actions.checkAndRun(actions.voteProducer, producers);
     this.setState({ openModal: true });
-    voteProducer(producers);
   };
 
   isExponential = number =>
@@ -159,66 +162,61 @@ export default class Vote extends Component<Props> {
   };
 
   handleClose = () => {
-    const { accounts } = this.props;
-    this.props.resetState();
+    const { accounts, actions } = this.props;
+    actions.resetState();
+    actions.getAccount(accounts.account.account_name);
     this.setState({ openModal: false });
-    this.props.getAccount(accounts.account.account_name);
   };
 
   handleChange = (e, { value }) => {
     this.setState({ filter: value });
   };
 
-  renderProducer = (producer, producing) => (
-    <Grid>
-      <Grid.Row>
-        <Grid.Column width={1}>
-          <Checkbox
-            className="vote-checkbox"
-            id={producer.owner}
-            onChange={this.toggle}
-            checked={
-              this.state.actualVotes &&
-              this.state.actualVotes[producer.owner] === true
-            }
-          />
-        </Grid.Column>
-        <Grid.Column width={1}>
-          {
-            producer.owner === 'cypherglasss' ? 
-              <Image src={smileCypherSvg} className='producer' /> : 
-            producing ? (
-              <Image src={smileSvg} className='producer' />
-            ) : (
-              <Image src={mehSvg} className='producer' />
-            )
-          }
-        </Grid.Column>
-        <Grid.Column width={4}>{producer.owner}</Grid.Column>
-        <Grid.Column
-          width={7}
-          onClick={() => this.handleGoto(producer.url)}
-          style={{ cursor: 'pointer' }}
-        >
-          {producer.url && this.isValidUrl(producer.url)
-            ? producer.url
-            : undefined}
-        </Grid.Column>
-        <Grid.Column width={3} textAlign="center">
-          {this.parsePercent(producer.percent)}
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  );
+  renderProducer = (producer, producing) => {
+    let image;
+    if (producer.owner === 'cypherglasss') {
+      image = <Image src={smileCypherSvg} className="producer" />;
+    } else if (producing) {
+      image = <Image src={smileSvg} className="producer" />;
+    } else {
+      image = <Image src={mehSvg} className="producer" />;
+    }
+    return (
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={1}>
+            <Checkbox
+              className="vote-checkbox"
+              id={producer.owner}
+              onChange={this.toggle}
+              checked={
+                this.state.actualVotes &&
+                this.state.actualVotes[producer.owner] === true
+              }
+            />
+          </Grid.Column>
+          <Grid.Column width={1}>{image}</Grid.Column>
+          <Grid.Column width={4}>{producer.owner}</Grid.Column>
+          <Grid.Column
+            width={7}
+            onClick={() => this.handleGoto(producer.url)}
+            style={{ cursor: 'pointer' }}
+          >
+            {producer.url && this.isValidUrl(producer.url)
+              ? producer.url
+              : undefined}
+          </Grid.Column>
+          <Grid.Column width={3} textAlign="center">
+            {this.parsePercent(producer.percent)}
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    );
+  };
 
   render() {
-    const { loading, transactions } = this.props;
-    const {
-      openModal,
-      producersList,
-      filter,
-      activeItem
-    } = this.state;
+    const { loading, transaction } = this.props;
+    const { openModal, producersList, filter, activeItem } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
     let filteredList = producersList;
@@ -264,7 +262,7 @@ export default class Vote extends Component<Props> {
               <Form loading={isLoading}>
                 <TransactionsModal
                   open={openModal}
-                  transactions={transactions}
+                  transaction={transaction}
                   handleClose={this.handleClose}
                 />
                 <Form.Group inline widths="equal">
@@ -278,9 +276,7 @@ export default class Vote extends Component<Props> {
                     onChange={this.handleChange}
                     icon="search"
                   />
-                  <Button onClick={this.vote}>
-                    Vote
-                  </Button>
+                  <Button onClick={this.handleSubmit}>Vote</Button>
                 </Form.Group>
               </Form>
             </div>

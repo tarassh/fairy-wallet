@@ -10,9 +10,6 @@ import {
   Divider
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { addToken } from '../../actions/settings';
-import { getCurrencyStats } from '../../actions/currency';
 import { InputAccount, InputSymbol } from '../Shared/EosComponents';
 import { tokenList } from '../Shared/TokenList';
 
@@ -29,18 +26,28 @@ const predefinedTokens = _.map(tokenList, el => {
   return { key, value: key, text: el.name, image: el.logo, ...el };
 });
 
+type Props = {
+  account: {},
+  currency: {},
+  loading: {},
+  actions: {},
+  open: boolean,
+  handleClose: () => {}
+};
+
 class TokenAddModal extends Component<Props> {
   state = initialState;
 
   checkToken = () => {
+    const { actions } = this.props;
     const { symbol, contract } = this.state;
-    this.props.actions.getCurrencyStats(contract, symbol);
+    actions.getCurrencyStats(contract, symbol);
     this.setState({ typing: false, requested: true });
   };
   addToken = () => {
-    const { account, handleClose } = this.props;
+    const { account, handleClose, actions } = this.props;
     const { symbol, contract } = this.state;
-    this.props.actions.addToken(account.account_name, symbol, contract);
+    actions.addToken(account.account_name, symbol, contract);
     handleClose();
     this.setState(initialState);
   };
@@ -137,7 +144,7 @@ class TokenAddModal extends Component<Props> {
       );
 
     return (
-      <Transition visible={open} animation="scale" duration={500}>
+      <Transition visible={open} animation="scale" duration={200}>
         <Modal open={open} size="mini" onClose={this.onClose}>
           <Modal.Content>
             <Modal.Description>
@@ -168,14 +175,4 @@ const mapStateToProps = state => ({
   currency: state.currency
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      addToken,
-      getCurrencyStats
-    },
-    dispatch
-  )
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(TokenAddModal);
+export default connect(mapStateToProps, null)(TokenAddModal);
