@@ -211,11 +211,15 @@ class TransactionsModal extends Component<Props> {
     );
   };
 
-  renderLoader = () => (
-    <Dimmer active inverted>
-      <Loader inverted />
-    </Dimmer>
-  );
+  renderLoader = () => {
+    const { settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
+    return (
+      <Dimmer active inverted={!darkMode}>
+        <Loader inverted={!darkMode} />
+      </Dimmer>
+    );
+  };
 
   handleGoto = (e, { txid }) => {
     const { explorer } = this.props;

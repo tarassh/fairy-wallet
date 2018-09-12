@@ -77,9 +77,15 @@ export default class Locker extends Component<Props> {
       mainSegment = <ListAccounts accounts={accounts.names} />;
     }
 
+    const darkMode = settings.selectedTheme === 'dark';
+
     return (
       <Segment className="no-border no-padding no-background">
-        <Dimmer active={isLoading} inverted className="solid-background">
+        <Dimmer
+          active={isLoading}
+          inverted={!darkMode}
+          className="solid-background"
+        >
           <Loader />
         </Dimmer>
 
