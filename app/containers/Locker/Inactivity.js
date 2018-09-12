@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getPublicKey } from '../../actions/ledger';
 import wakeupDevice from '../../../resources/images/wakeup-device.svg';
+import wakeupDeviceDark from '../../../resources/images/wakeup-device-dark.svg';
 
 class InactivityContainer extends Component<Props> {
   retry = () => {
@@ -12,7 +13,8 @@ class InactivityContainer extends Component<Props> {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
 
     const noAccountsText = `Cannot read device properties. Make sure your device is unlocked.`;
 
@@ -23,7 +25,7 @@ class InactivityContainer extends Component<Props> {
 
     return (
       <Form>
-        <Image src={wakeupDevice} centered />
+        <Image src={darkMode ? wakeupDeviceDark : wakeupDevice} centered />
         <p>{noAccountsText}</p>
         <Button
           content="Retry"
@@ -38,7 +40,8 @@ class InactivityContainer extends Component<Props> {
 
 function mapStateToProps(state) {
   return {
-    loading: state.loading
+    loading: state.loading,
+    settings: state.settings
   };
 }
 

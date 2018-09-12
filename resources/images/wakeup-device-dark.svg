@@ -2,11 +2,15 @@
   <defs>
     <style>
       .cls-1, .cls-3 {
-        fill: #fff;
+        fill: transparent;
       }
 
       .cls-1, .cls-2, .cls-3, .cls-5, .cls-6, .cls-7, .cls-9 {
-        stroke: #666;
+        stroke: rgb(195,195,195);
+      }
+
+      .cls-5, .cls-6 {
+        stroke: #78dce8;
       }
 
       .cls-1, .cls-2, .cls-3, .cls-4, .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
@@ -18,8 +22,7 @@
       }
 
       .cls-2 {
-        fill: #177cff;
-        opacity: 0.5;
+        fill: none;
       }
 
       .cls-4 {
@@ -29,7 +32,7 @@
       }
 
       .cls-5, .cls-6 {
-        fill: #666;
+        fill: #78dce8;
       }
 
       .cls-5 {
@@ -51,7 +54,7 @@
       }
 
       .cls-9 {
-        fill: #f2f2f2;
+        fill: rgb(39, 49, 54);
       }
     </style>
     <linearGradient id="Blue_Sky" data-name="Blue Sky" y1="35.12" x2="59.4" y2="35.12" gradientUnits="userSpaceOnUse">
@@ -59,21 +62,21 @@
       <stop offset="1" stop-color="#3ddeed" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="linear-gradient" y1="35.12" x2="59.4" y2="35.12" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff"/>
-      <stop offset="1" stop-color="#353535"/>
+      <stop offset="0" stop-color="#273138"/>
+      <stop offset="1" stop-color="#fff"/>
     </linearGradient>
     <linearGradient id="linear-gradient-2" x1="273.65" y1="35.94" x2="381.04" y2="35.94" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#fff"/>
-      <stop offset="0.32" stop-color="#fff" stop-opacity="0.99"/>
-      <stop offset="0.46" stop-color="#fff" stop-opacity="0.96"/>
-      <stop offset="0.56" stop-color="#fff" stop-opacity="0.92"/>
-      <stop offset="0.65" stop-color="#fff" stop-opacity="0.85"/>
-      <stop offset="0.72" stop-color="#fff" stop-opacity="0.76"/>
-      <stop offset="0.79" stop-color="#fff" stop-opacity="0.64"/>
-      <stop offset="0.85" stop-color="#fff" stop-opacity="0.51"/>
-      <stop offset="0.9" stop-color="#fff" stop-opacity="0.36"/>
-      <stop offset="0.95" stop-color="#fff" stop-opacity="0.19"/>
-      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ccc"/>
+      <stop offset="0.32" stop-color="#ccc" stop-opacity="0.99"/>
+      <stop offset="0.46" stop-color="#ccc" stop-opacity="0.96"/>
+      <stop offset="0.56" stop-color="#ccc" stop-opacity="0.92"/>
+      <stop offset="0.65" stop-color="#ccc" stop-opacity="0.85"/>
+      <stop offset="0.72" stop-color="#ccc" stop-opacity="0.76"/>
+      <stop offset="0.79" stop-color="#ccc" stop-opacity="0.64"/>
+      <stop offset="0.85" stop-color="#ccc" stop-opacity="0.51"/>
+      <stop offset="0.9" stop-color="#ccc" stop-opacity="0.36"/>
+      <stop offset="0.95" stop-color="#ccc" stop-opacity="0.19"/>
+      <stop offset="1" stop-color="#ccc" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="linear-gradient-3" x1="273.15" y1="35.94" x2="381.54" y2="35.94" gradientUnits="userSpaceOnUse">
       <stop offset="0" stop-color="#666"/>
