@@ -327,6 +327,10 @@ body.dark-mode .ui.basic.table tbody tr {
 
 }
 
+body.dark-mode .ui.vertical.menu .item>.label.notification {
+    background: transparent;
+}
+
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
