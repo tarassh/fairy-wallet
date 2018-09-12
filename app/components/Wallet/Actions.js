@@ -6,6 +6,7 @@ import ActionDelegate from '../../containers/Wallet/Actions/Delegate';
 import ActionUndelegate from '../../containers/Wallet/Actions/Undelegate';
 import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
+import ActionSettings from '../../containers/Wallet/Actions/Settings';
 
 type Props = {
   activeItem: string,
@@ -24,7 +25,8 @@ export default class Actions extends Component<Props> {
       delegate: <ActionDelegate actions={actions} />,
       undelegate: <ActionUndelegate actions={actions} />,
       ram: <ActionRam actions={actions} />,
-      voting: <ActionVote actions={actions} />
+      voting: <ActionVote actions={actions} />,
+      settings: <ActionSettings actions={actions} />
     };
 
     return (

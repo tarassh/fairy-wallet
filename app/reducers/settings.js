@@ -3,7 +3,21 @@ import * as types from '../actions/types';
 const initialState = {
   accounts: [],
   tokens: {},
-  nodes: []
+  nodes: [],
+  explorers: [
+    {
+      key: 'eosflare.io',
+      path: 'https://eosflare.io/tx/'
+    },
+    {
+      key: 'bloks.io',
+      path: 'https://bloks.io/transaction/'
+    },
+    {
+      key: 'myeoskit.com',
+      path: 'https://www.myeoskit.com/#/tx/'
+    }
+  ]
 };
 
 export default function settings(state = initialState, action) {
@@ -65,6 +79,13 @@ export default function settings(state = initialState, action) {
         nodes: nodes.slice(0, 10).sort((a, b) => a.accessdate < b.accessdate)
       });
     }
+
+    case types.SET_DEFAULT_EXPLORER: {
+      return Object.assign({}, state, {
+        explorers: action.explorers
+      })
+    }
+
     default: {
       return state;
     }

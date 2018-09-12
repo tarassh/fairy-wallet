@@ -27,6 +27,7 @@ import { getPublicKey } from '../../actions/ledger';
 type Props = {
   states: {},
   open: boolean,
+  explorer: {},
   loading: {},
   transaction: ?{},
   handleClose: () => {}
@@ -61,8 +62,8 @@ function renderTransaction(transaction, goto) {
       <div 
         role='link'
         tabIndex={0}
-        onClick={() => {}} 
-        onKeyUp={() => goto(null, { txid: receipt.transaction_id })}
+        onClick={() => goto(null, { txid: receipt.transaction_id })} 
+        onKeyUp={() => {}}
         style={{cursor: 'pointer'}}
       >
       Transaction id <span className='public-key'>{receipt.transaction_id}</span>
@@ -188,7 +189,9 @@ class TransactionsModal extends Component<Props> {
   )
 
   handleGoto = (e, { txid }) => {
-    shell.openExternal(`https://eosflare.io/tx/${txid}`);
+    const { explorer } = this.props;
+
+    shell.openExternal(`${explorer.path}${txid}`);
   };
 
   render() {
@@ -224,7 +227,8 @@ class TransactionsModal extends Component<Props> {
 const mapStateToProps = state => ({
   loading: state.loading,
   states: state.states,
-  application: state.ledger.application
+  application: state.ledger.application,
+  explorer: state.settings.explorers[0]
 });
 
 const mapDispatchToProps = dispatch =>

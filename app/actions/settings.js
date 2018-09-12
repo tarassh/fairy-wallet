@@ -1,4 +1,5 @@
 // @flow
+import _ from 'lodash';
 import * as types from './types';
 import { getCurrencyBalance } from './accounts';
 
@@ -30,6 +31,20 @@ export function removeToken(account, tokenSymbol, contract='eosio.token') {
       symbol,
       contract
     });
+  }
+}
+
+export function setDefaultExplorer(explorer) {
+  return (dispatch: () => void, getState) => {
+    const { settings } = getState();
+    const index = _.findIndex(settings.explorers, el => el.key === explorer);
+    if (index > 0) {
+      settings.explorers.splice(0, 0, settings.explorers.splice(index, 1)[0]);
+      dispatch({
+        type: types.SET_DEFAULT_EXPLORER,
+        explorers: settings.explorers
+      });
+    }
   }
 }
 

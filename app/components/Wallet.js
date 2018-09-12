@@ -167,6 +167,14 @@ export default class Wallet extends Component<Props> {
           <Icon name="signup" />
           VOTING
         </Menu.Item>
+        <Menu.Item
+          name="settings"
+          active={activeItem === 'settings'}
+          onClick={this.handleItemClick}
+        >
+          <Icon name="setting" />
+          SETTINGS
+        </Menu.Item>
       </Menu>
     );
 

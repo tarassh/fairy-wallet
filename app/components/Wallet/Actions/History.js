@@ -11,6 +11,7 @@ type Props = {
   actions: {},
   account: {},
   history: {},
+  explorer: {},
   lastIrreversibleBlock: number
 };
 
@@ -25,7 +26,8 @@ export default class History extends Component<Props> {
   };
 
   handleGoto = (e, { txid }) => {
-    shell.openExternal(`https://eosflare.io/tx/${txid}`);
+    const { explorer } = this.props;
+    shell.openExternal(`${explorer.path}${txid}`);
   };
 
   handleLoadNextActions = () => {
