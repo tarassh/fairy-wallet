@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Grid, Dropdown, List } from 'semantic-ui-react';
+import { Dropdown, List } from 'semantic-ui-react';
 import MainContentContainer from './../../Shared/UI/MainContent';
+import ScrollingTable from './../../Shared/UI/ScrollingTable';
 
 type Props = {
   settings: {},
@@ -25,27 +26,37 @@ export default class Settings extends Component<Props> {
 
     return (
       <List.Item>
-        <p className='title'>Blockchain Explorer</p>
+        <p className='tableheadertitle'>Blockchain Explorer</p>
         <List.Content>
+          <label> Default Blockchain Explorer </label>
+          &nbsp;
           <Dropdown 
             selection 
+            basic
+            floating
             options={explorers} 
             defaultValue={defaultValue}
             value={value} 
+            text={value}
             onChange={this.handleChange}
           />
+
         </List.Content>
       </List.Item>
     )    
   }
 
   renderSettings = () => (
-    <span>
-      <List divided>
-        {this.renderExplorer()}
-      </List>
-    </span>
-    )
+    <ScrollingTable 
+      content={
+        <span>
+          <List divided>
+            {this.renderExplorer()}
+          </List>
+        </span>
+      }
+    />
+  )
 
   render() {
     return (
