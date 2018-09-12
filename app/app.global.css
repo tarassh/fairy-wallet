@@ -50,7 +50,7 @@ body.dark-mode .ui.modal,
 body.dark-mode .ui.modal>div,
 body.dark-mode .ui.modal>.content,
 body.dark-mode .ui.modal>.actions {
-    background: rgb(39, 49, 54);
+    background: #273138;
     color: rgb(195,195,195);
 }
 

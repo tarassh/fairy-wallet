@@ -215,7 +215,6 @@ export default class Vote extends Component<Props> {
   };
 
   render() {
-    console.log('render');
     const { loading, transaction } = this.props;
     const { openModal, producersList, filter, activeItem } = this.state;
 

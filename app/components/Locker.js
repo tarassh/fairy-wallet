@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Grid, Segment, Dimmer, Loader, Step, Icon } from 'semantic-ui-react';
+import { Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
 import _ from 'lodash';
 import Lock from './Locker/Lock';
 import NoAccounts from './Locker/NoAccounts';
@@ -13,14 +13,15 @@ type Props = {
   states: {},
   accounts: {},
   ledger: {},
-  loading: {}
+  loading: {},
+  settings: {}
 };
 
 export default class Locker extends Component<Props> {
   props: Props;
 
   render() {
-    const { states, accounts, ledger, loading } = this.props;
+    const { states, accounts, ledger, loading, settings } = this.props;
 
     let isLoading = false;
     _.forEach(loading, value => {
@@ -32,7 +33,7 @@ export default class Locker extends Component<Props> {
 
     let mainSegment = <div />;
     if (!states.deviceConnected) {
-      mainSegment = <Lock ledger={ledger} />;
+      mainSegment = <Lock ledger={ledger} settings={settings} />;
     }
 
     if (states.deviceConnected && accounts.publicKey === null) {
@@ -56,7 +57,7 @@ export default class Locker extends Component<Props> {
       mainSegment = <Connection />;
     }
 
-    const noAccount = 
+    const noAccount =
       states.deviceConnected &&
       states.nodeConnected &&
       states.accountsRequested &&
@@ -82,14 +83,13 @@ export default class Locker extends Component<Props> {
           <Loader />
         </Dimmer>
 
-        {noAccount ?
-          <div className="no-account-container">
-            {mainSegment}
-          </div> :
+        {noAccount ? (
+          <div className="no-account-container">{mainSegment}</div>
+        ) : (
           <Grid
             stretched
             textAlign="center"
-            verticalAlign={noAccount ? "left" : "middle"}
+            verticalAlign={noAccount ? 'left' : 'middle'}
             className="locker"
           >
             <Grid.Row />
@@ -100,7 +100,7 @@ export default class Locker extends Component<Props> {
             </Grid.Row>
             <Grid.Row />
           </Grid>
-        }
+        )}
       </Segment>
     );
   }

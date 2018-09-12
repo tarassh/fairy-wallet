@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Modal, Transition, Button, Image, Icon } from 'semantic-ui-react';
 import publicKeySvg from '../../../resources/images/verify-public-key.svg';
+import publicKeyDarkSvg from '../../../resources/images/verify-public-key-dark.svg';
 import publicKeyErrorSvg from '../../../resources/images/verify-public-key-error.svg';
+import publicKeyErrorDarkSvg from '../../../resources/images/verify-public-key-error-dark.svg';
 
 import { getPublicKey } from '../../actions/ledger';
 
@@ -13,6 +15,7 @@ type Props = {
   publicKey: {},
   loading: {},
   states: {},
+  settings: {},
   callback: any
 };
 
@@ -74,9 +77,10 @@ class PublicKeyComponent extends Component<Props> {
   };
 
   renderStep1 = () => {
-    const { publicKey, loading, states } = this.props;
+    const { publicKey, loading, states, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
     let header = <p className="title">Get Public Key</p>;
-    let image = publicKeySvg;
+    let image = darkMode ? publicKeyDarkSvg : publicKeySvg;
     let desc = (
       <div className="verify-content">
         <p className="subtitle">EOS public key</p>
@@ -90,7 +94,7 @@ class PublicKeyComponent extends Component<Props> {
     let action;
     if (loading.GET_PUBLIC_KEY_CONFIRM === false) {
       if (states.publicKey) {
-        image = publicKeySvg;
+        image = darkMode ? publicKeyDarkSvg : publicKeySvg;
 
         action = (
           <div className="public-key-confirm-modal">
@@ -121,7 +125,7 @@ class PublicKeyComponent extends Component<Props> {
         );
       } else {
         header = <p className="title">Receive Public Key Rejected</p>;
-        image = publicKeyErrorSvg;
+        image = darkMode ? publicKeyErrorDarkSvg : publicKeyErrorSvg;
 
         desc = (
           <div>
@@ -197,7 +201,8 @@ class PublicKeyComponent extends Component<Props> {
 const mapStateToProps = state => ({
   loading: state.loading,
   states: state.states,
-  publicKey: state.accounts.publicKey
+  publicKey: state.accounts.publicKey,
+  settings: state.settings
 });
 
 const mapDispatchToProps = dispatch =>

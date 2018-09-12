@@ -22,6 +22,10 @@ import confirmTransaction from '../../../resources/images/confirm-transaction.sv
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
 import wakeupDevice from '../../../resources/images/wakeup-device.svg';
 
+import confirmTransactionDark from '../../../resources/images/confirm-transaction-dark.svg';
+import confirmTransactionFailedDark from '../../../resources/images/confirm-transaction-failed-dark.svg';
+import wakeupDeviceDark from '../../../resources/images/wakeup-device-dark.svg';
+
 import { getPublicKey } from '../../actions/ledger';
 
 type Props = {
@@ -29,6 +33,7 @@ type Props = {
   open: boolean,
   explorer: {},
   loading: {},
+  settings: {},
   transaction: ?{},
   handleClose: () => {}
 };
@@ -59,14 +64,15 @@ function renderTransaction(transaction, goto) {
 
   if (receipt !== null) {
     statusText = (
-      <div 
-        role='link'
+      <div
+        role="link"
         tabIndex={0}
-        onClick={() => goto(null, { txid: receipt.transaction_id })} 
+        onClick={() => goto(null, { txid: receipt.transaction_id })}
         onKeyUp={() => {}}
-        style={{cursor: 'pointer'}}
+        style={{ cursor: 'pointer' }}
       >
-      Transaction id <span className='public-key'>{receipt.transaction_id}</span>
+        Transaction id{' '}
+        <span className="public-key">{receipt.transaction_id}</span>
       </div>
     );
     icon = 'check circle';
@@ -80,11 +86,12 @@ function renderTransaction(transaction, goto) {
         [error] = JSON.parse(err).error.details;
       } else if (error.name && error.name === 'TransportStatusError') {
         if (error.statusCode === 0x6985) {
-          error = 'Ledger device: Condition of use not satisfied. Denied by user.';
-        } else if (error.statusCode === 0x6A80) {
-          error = 'Ledger device: Invalid data.'
-        } else if (error.statusCode === 0x6B00) {
-          error = 'Ledger device: Incorrect parameter P1 or P2.'
+          error =
+            'Ledger device: Condition of use not satisfied. Denied by user.';
+        } else if (error.statusCode === 0x6a80) {
+          error = 'Ledger device: Invalid data.';
+        } else if (error.statusCode === 0x6b00) {
+          error = 'Ledger device: Incorrect parameter P1 or P2.';
         } else {
           error = error.message;
         }
@@ -118,8 +125,17 @@ function renderTransaction(transaction, goto) {
   const header = (
     <Header style={{ marginTop: '1rem' }}>
       <Header.Content>
-        <div><Icon name={icon} loading={loading} />{actionName}</div>
-        <Header.Subheader style={err !== null ? { color: 'lightcoral', marginTop: '1rem' } : { marginTop: '1rem' }}>
+        <div>
+          <Icon name={icon} loading={loading} />
+          {actionName}
+        </div>
+        <Header.Subheader
+          style={
+            err !== null
+              ? { color: 'lightcoral', marginTop: '1rem' }
+              : { marginTop: '1rem' }
+          }
+        >
           {statusText}
         </Header.Subheader>
       </Header.Content>
@@ -135,29 +151,27 @@ function renderTransaction(transaction, goto) {
 }
 
 class TransactionsModal extends Component<Props> {
-
   renderContent = (header, content, action, image) => (
     <div>
       <p className="title">{header}</p>
       <br />
       <Image centered src={image} style={{ marginTop: '1em' }} />
       <br />
-      <div className="subtitle no-top-bottom-margin">
-        {content}
-      </div>
+      <div className="subtitle no-top-bottom-margin">{content}</div>
       <br />
       <br />
       <div className="public-key-confirm-modal">{action}</div>
     </div>
-  )
+  );
 
   renderTransaction = () => {
-    const { transaction, handleClose } = this.props;
+    const { transaction, handleClose, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
     if (!transaction || transaction.context === null) {
       return undefined;
     }
 
-    let image = confirmTransaction;
+    let image = darkMode ? confirmTransactionDark : confirmTransaction;
 
     let header = 'Use your device to verify transaction';
     let modalAction;
@@ -167,26 +181,41 @@ class TransactionsModal extends Component<Props> {
     } else if (transaction.err !== null) {
       header = 'Transaction Failed';
       modalAction = <Button onClick={handleClose} content="Close" />;
-      image = confirmTransactionFailed;
+      image = darkMode
+        ? confirmTransactionFailedDark
+        : confirmTransactionFailed;
     }
 
-    return this.renderContent(header, renderTransaction(transaction, this.handleGoto), modalAction, image);
-  }
+    return this.renderContent(
+      header,
+      renderTransaction(transaction, this.handleGoto),
+      modalAction,
+      image
+    );
+  };
 
   renderInactivity = () => {
-    const { handleClose } = this.props;
+    const { handleClose, settings } = this.props;
+    const darkMode = settings.selectedTheme === 'dark';
     const header = 'Unlock Device';
-    const inactivity = <p>Cannot read device properties. Make sure your device is unlocked.</p>;
+    const inactivity = (
+      <p>Cannot read device properties. Make sure your device is unlocked.</p>
+    );
     const action = <Button onClick={handleClose} content="Close" />;
 
-    return this.renderContent(header, inactivity, action, wakeupDevice);
-  }
+    return this.renderContent(
+      header,
+      inactivity,
+      action,
+      darkMode ? wakeupDeviceDark : wakeupDevice
+    );
+  };
 
   renderLoader = () => (
     <Dimmer active inverted>
-      <Loader inverted />  
+      <Loader inverted />
     </Dimmer>
-  )
+  );
 
   handleGoto = (e, { txid }) => {
     const { explorer } = this.props;
@@ -203,7 +232,7 @@ class TransactionsModal extends Component<Props> {
       } else if (states.publicKey) {
         content = this.renderTransaction();
       } else {
-        content = this.renderInactivity()
+        content = this.renderInactivity();
       }
     }
 
@@ -215,9 +244,7 @@ class TransactionsModal extends Component<Props> {
           onClose={this.onClose}
           style={{ textAlign: 'center' }}
         >
-          <Modal.Content>
-            { content }
-          </Modal.Content>
+          <Modal.Content>{content}</Modal.Content>
         </Modal>
       </Transition>
     );
@@ -228,7 +255,8 @@ const mapStateToProps = state => ({
   loading: state.loading,
   states: state.states,
   application: state.ledger.application,
-  explorer: state.settings.explorers[0]
+  explorer: state.settings.explorers[0],
+  settings: state.settings
 });
 
 const mapDispatchToProps = dispatch =>

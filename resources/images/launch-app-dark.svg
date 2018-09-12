@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="405.46" height="67.28" viewBox="0 0 405.46 67.28">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: transparent;
+      }
+
+      .cls-1, .cls-2, .cls-4, .cls-5, .cls-6, .cls-7, .cls-9 {
+        stroke: rgb(195,195,195);
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4, .cls-6, .cls-7, .cls-8, .cls-9 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1 {
+        stroke-width: 2px;
+      }
+
+      .cls-3 {
+        stroke-width: 4px;
+        fill: url(#Blue_Sky);
+        stroke: url(#linear-gradient);
+      }
+
+      .cls-4, .cls-5 {
+        fill: #666;
+      }
+
+      .cls-4 {
+        stroke-width: 0.25px;
+      }
+
+      .cls-5 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 0.5px;
+      }
+
+      .cls-6 {
+        fill: #78dce8;
+      }
+
+      .cls-7 {
+        fill: aqua;
+        opacity: 0;
+      }
+
+      .cls-8 {
+        fill: url(#linear-gradient-2);
+        stroke: url(#linear-gradient-3);
+      }
+
+      .cls-9 {
+        fill: rgb(39, 49, 54);
+      }
+    </style>
+    <linearGradient id="Blue_Sky" data-name="Blue Sky" y1="35.12" x2="59.4" y2="35.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#3ddeed"/>
+      <stop offset="1" stop-color="#3ddeed" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient" y1="35.12" x2="59.4" y2="35.12" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#273138"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="273.31" y1="35.93" x2="380.7" y2="35.93" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ccc"/>
+      <stop offset="0.32" stop-color="#ccc" stop-opacity="0.99"/>
+      <stop offset="0.46" stop-color="#ccc" stop-opacity="0.96"/>
+      <stop offset="0.56" stop-color="#ccc" stop-opacity="0.92"/>
+      <stop offset="0.65" stop-color="#ccc" stop-opacity="0.85"/>
+      <stop offset="0.72" stop-color="#ccc" stop-opacity="0.76"/>
+      <stop offset="0.79" stop-color="#ccc" stop-opacity="0.64"/>
+      <stop offset="0.85" stop-color="#ccc" stop-opacity="0.51"/>
+      <stop offset="0.9" stop-color="#ccc" stop-opacity="0.36"/>
+      <stop offset="0.95" stop-color="#ccc" stop-opacity="0.19"/>
+      <stop offset="1" stop-color="#ccc" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-3" x1="272.81" y1="35.93" x2="381.2" y2="35.93" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#666"/>
+      <stop offset="0.17" stop-color="#767676" stop-opacity="0.9"/>
+      <stop offset="0.47" stop-color="#a0a0a0" stop-opacity="0.62"/>
+      <stop offset="0.86" stop-color="#e5e5e5" stop-opacity="0.17"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <title>ChooseApp</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <rect class="cls-1" x="99.11" y="6.3" width="207.08" height="59.28" rx="3" ry="3"/>
+    <rect class="cls-2" x="134.84" y="20.21" width="135.61" height="31.46"/>
+    <path class="cls-2" d="M61.39,25.29H99.11a0,0,0,0,1,0,0V44.95a0,0,0,0,1,0,0H61.39a2,2,0,0,1-2-2V27.29A2,2,0,0,1,61.39,25.29Z"/>
+    <line class="cls-3" y1="35.12" x2="59.4" y2="35.12"/>
+    <g>
+      <path class="cls-4" d="M283.48,227.8v.63h-3.84V222.8h3.84v.63h-3.06v1.81h2.9v.62h-2.9v1.94Z" transform="translate(-84.73 -183.49)"/>
+      <path class="cls-4" d="M289.22,223.46a3,3,0,0,1,.76,2.15,3,3,0,0,1-.76,2.16,3.12,3.12,0,0,1-4.17,0,3,3,0,0,1-.76-2.16,3,3,0,0,1,.77-2.15,3.1,3.1,0,0,1,4.16,0Zm-3.58.47a2.45,2.45,0,0,0-.55,1.68,2.49,2.49,0,0,0,.54,1.68,1.88,1.88,0,0,0,1.51.63,1.9,1.9,0,0,0,1.5-.63,2.5,2.5,0,0,0,.55-1.68,2.45,2.45,0,0,0-.56-1.68,1.89,1.89,0,0,0-1.49-.62A1.91,1.91,0,0,0,285.64,223.93Z" transform="translate(-84.73 -183.49)"/>
+      <path class="cls-4" d="M290.67,227h.78a1,1,0,0,0,.51.7,2,2,0,0,0,1.09.27,1.87,1.87,0,0,0,1-.28.81.81,0,0,0,.41-.69.74.74,0,0,0-.3-.6,2.31,2.31,0,0,0-.95-.38l-.79-.19a2.62,2.62,0,0,1-1.22-.56,1.24,1.24,0,0,1-.39-1,1.35,1.35,0,0,1,.61-1.16,2.57,2.57,0,0,1,1.58-.45,2.54,2.54,0,0,1,1.51.44,1.47,1.47,0,0,1,.65,1.12h-.78a1,1,0,0,0-.45-.68,1.72,1.72,0,0,0-1-.24,1.77,1.77,0,0,0-1,.26.79.79,0,0,0-.37.69.65.65,0,0,0,.27.54,2.89,2.89,0,0,0,.92.35l.65.16a3.2,3.2,0,0,1,1.38.58,1.26,1.26,0,0,1,.42,1,1.48,1.48,0,0,1-.62,1.24,2.85,2.85,0,0,1-1.69.46,2.79,2.79,0,0,1-1.62-.44A1.51,1.51,0,0,1,290.67,227Z" transform="translate(-84.73 -183.49)"/>
+    </g>
+    <path class="cls-5" d="M287.2,208.45,284,212.5l-1.37,5.95L287.2,221l4.6-2.53-1.37-6Zm-2.49,4.15,2.49-3.1,2.49,3.1-2.49,6.82Zm5.32,1,1,4.54L287.68,220Zm-6.7,4.54,1-4.54,2.35,6.4Z" transform="translate(-84.73 -183.49)"/>
+    <path class="cls-6" d="M125.8.5h21.05a2,2,0,0,1,2,2V6.3a0,0,0,0,1,0,0H123.8a0,0,0,0,1,0,0V2.5a2,2,0,0,1,2-2Z"/>
+    <path class="cls-6" d="M259.06.5h21.05a2,2,0,0,1,2,2V6.3a0,0,0,0,1,0,0H257.06a0,0,0,0,1,0,0V2.5A2,2,0,0,1,259.06.5Z"/>
+    <rect class="cls-7" x="307.48" y="45.46" width="97.48" height="18.12"/>
+  </g>
+  <g id="Layer_3" data-name="Layer 3">
+    <g>
+      <path class="cls-8" d="M303.31,5.08H380.7a0,0,0,0,1,0,0v61.7a0,0,0,0,1,0,0H303.31a30,30,0,0,1-30-30v-1.7a30,30,0,0,1,30-30Z"/>
+      <rect class="cls-9" x="285.84" y="20.02" width="31.53" height="31.53" rx="15.77" ry="15.77"/>
+    </g>
+  </g>
+</svg>
