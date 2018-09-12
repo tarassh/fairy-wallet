@@ -13,9 +13,12 @@ const ScrollingTable = (props) => {
 
   return (
     <div className={getClasses(classes)}>
-      <div className="scrolling-table-header underline">
-        {props.header}
-      </div>
+      { 
+        props.header &&
+        <div className="scrolling-table-header underline">
+          {props.header}
+        </div>
+      }
       <div className="scrolling-table-body">
         <div className="scrolling-table-content">
           {props.content}
@@ -32,7 +35,7 @@ ScrollingTable.propTypes = {
 }
 
 ScrollingTable.defaultProps = {
-  header: [],
+  header: undefined,
   content: [],
   className: ""
 };

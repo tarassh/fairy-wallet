@@ -39,6 +39,299 @@ body {
     -webkit-app-region:drag;
 }
 
+body.dark-mode a {
+    color: #ffd866;
+}
+
+body.dark-mode,
+body.dark-mode .ui.table,
+body.dark-mode .ui.search>.results,
+body.dark-mode .ui.modal,
+body.dark-mode .ui.modal>div,
+body.dark-mode .ui.modal>.content,
+body.dark-mode .ui.modal>.actions {
+    background: #273138;
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.selection.dropdown,
+body.dark-mode .ui.segment,
+body.dark-mode .ui.search>.results,
+body.dark-mode .ui.search>.results .result:hover,
+body.dark-mode .ui.dropdown .menu > .item,
+body.dark-mode .ui.dropdown .menu::after,
+body.dark-mode .ui.basic.button.dropdown,
+body.dark-mode .ui.selection.active.dropdown .menu,
+body.dark-mode .ui.form input[type="text"],
+body.dark-mode .ui.form input[type="number"],
+body.dark-mode .ui.form input[type="radio"],
+body.dark-mode .ui.form input[type="url"] {
+    background-color: rgb(58,68,73);
+}
+
+body.dark-mode .ui.checkbox input~.box:before, 
+body.dark-mode .ui.checkbox input~label:before,
+body.dark-mode .ui.checkbox input:checked~.box:before, 
+body.dark-mode .ui.checkbox input:checked~label:before,
+body.dark-mode .ui.radio.checkbox input~.box:before, 
+body.dark-mode .ui.radio.checkbox input~label:before,
+body.dark-mode .ui.radio.checkbox input:checked~.box:before, 
+body.dark-mode .ui.radio.checkbox input:checked~label:before {
+    background-color: rgb(58,68,73);
+    border: 1px solid rgba(255,237,113,0.5);
+}
+
+body.dark-mode .ui.checkbox input:checked~.box:after, 
+body.dark-mode .ui.checkbox input:checked~label:after, 
+body.dark-mode .ui.form .field > label {
+    color: #ffd866;
+}
+
+
+body.dark-mode .ui.radio.checkbox input:checked~.box:after, 
+body.dark-mode .ui.radio.checkbox input:checked~label:after {
+    background-color: #ffd866;
+}
+
+body.dark-mode .ui.basic.button.dropdown,
+body.dark-mode .ui.selection.dropdown,
+body.dark-mode span.public-key,
+body.dark-mode .ui.selection.active.dropdown .menu,
+body.dark-mode .ui.selection.visible.dropdown>.text:not(.default),
+body.dark-mode .ui.basic.button.dropdown>.text {
+    background-color: rgb(58,68,73) !important;
+    color: rgb(195,195,195) !important;
+}
+
+body.dark-mode span.public-key {
+    border: 1px dashed rgb(195,195,195);
+}
+
+body.dark-mode .ui.basic.button.dropdown,
+body.dark-mode .ui.selection.dropdown,
+body.dark-mode .ui.selection.active.dropdown,
+body.dark-mode .ui.floating.dropdown .menu,
+body.dark-mode .ui.search>.results,
+body.dark-mode .ui.form input[type="text"],
+body.dark-mode .ui.form input[type="number"],
+body.dark-mode .ui.form input[type="radio"],
+body.dark-mode .ui.form input[type="url"] {
+    color: rgb(195,195,195);
+    border: 1px solid rgba(255,237,113,0.5);
+}
+
+body.dark-mode .ui.search>.results .result,
+body.dark-mode .ui.selection.dropdown .menu>.item {
+    border: none;
+}
+
+body.dark-mode .ui.basic.button.dropdown:focus,
+body.dark-mode .ui.selection.dropdown:focus,
+body.dark-mode .ui.selection.active.dropdown .menu,
+body.dark-mode .ui.selection.active.dropdown:hover,
+body.dark-mode .ui.selection.active.dropdown:hover .menu,
+body.dark-mode .ui.form input[type="text"]:focus,
+body.dark-mode .ui.form input[type="number"]:focus,
+body.dark-mode .ui.form input[type="radio"]:focus {
+    border: 1px solid #ffd866 !important;
+}
+
+body.dark-mode .ui.dropdown .menu,
+body.dark-mode .no-background,
+body.dark-mode .ui.segment.no-background {
+    background: transparent;
+}
+
+body.dark-mode .create-account .ui.basic.button,
+body.dark-mode .fairy-container .column.left .fairy-menu .data-block .data .ui.basic.button {
+    background: rgb(39, 49, 54)!important;
+    color: rgb(195,195,195)!important;
+    border: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .column.middle {
+    background-color: rgb(39, 49, 54);
+}
+
+body.dark-mode .fairy-container .column.middle .ui.list div.item.active:hover {
+    background: transparent !important;
+}
+
+body.dark-mode .fairy-container .column.middle .ui.list .item.active {
+    background-color: rgba(58,68,73,0.5);
+}
+
+body.dark-mode .steps-container .active,
+body.dark-mode .steps-container .active div, 
+body.dark-mode .steps-container .ui.list>.item.active .header,
+body.dark-mode .ui.menu .active.item, 
+body.dark-mode .ui.dropdown .menu .selected.item,
+body.dark-mode .ui.vertical.menu .active.item,
+body.dark-mode .fairy-container .column.middle .ui.list .item.active div {
+    color: #ffd866 !important;
+}
+
+body.dark-mode p,
+body.dark-mode p.subtitle,
+body.dark-mode .ui.header .content div,
+body.dark-mode .ui.item.menu .item,
+body.dark-mode .ui.dropdown .menu>.item,
+body.dark-mode .ui.checkbox label,
+body.dark-mode .ui.form .fields > label, 
+body.dark-mode .ui.form .field > label,
+body.dark-mode .ui.form .field div {
+    color: rgb(195,195,195);
+}
+
+body.dark-mode p.title,
+body.dark-mode p.tableheadertitle,
+body.dark-mode .ui.form .ui.divider h5 {
+    color: rgb(148,160,161);
+}
+
+body.dark-mode .ui.basic.button:hover, 
+body.dark-mode .ui.dropdown .menu>.item:hover:hover,
+body.dark-mode .ui.basic.buttons .button:hover {
+    background: rgb(39, 49, 54);
+    color: white;
+}
+
+body.dark-mode .ui.top.left.pointing.dropdown>.menu {
+    background: rgb(58,68,73);
+}
+
+body.dark-mode .ui.basic.button, 
+body.dark-mode .ui.basic.buttons .button,
+body.dark-mode .ui.basic.button:focus, 
+body.dark-mode .ui.basic.buttons .button:focus  {
+    color: rgb(39, 49, 54);
+}
+
+body.dark-mode .ui.divided.list>.item {
+    border-top: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .fairy-container .column.separator-right {
+    border-right: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .scrolling-table .scrolling-table-header.underline {
+    border-bottom: 1px solid rgb(79,90,94);
+}
+
+body.dark-mode .fairy-container .column .header.underlined {
+    border-bottom: 1px solid rgb(79,90,94);
+    box-shadow: 0 1px 0 rgba(79,90,94,0.65), 0 2px 0 rgba(79,90,94, 0.05), 0 3px 0 rgba(79,90,94, 0.075);
+}
+
+body.dark-mode .ui.divided.list>.item:first-child {
+    border-top: none;
+}
+
+body.dark-mode .ui.list,
+body.dark-mode .ui.list div,
+body.dark-mode .ui.list > a.item i.icon,
+body.dark-mode .ui.list > a .description {
+    /* background: rgb(58,68,73); */
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.list>a.item:hover .icon, 
+body.dark-mode .ui.list>a.item:hover .description {
+    color: white;
+}
+
+body.dark-mode .fairy-container .column.left,
+body.dark-mode .fairy-container .column.left div,
+body.dark-mode .fairy-container .column.left .ui.vertical.text.menu .item {
+    background: rgb(29,37,40);
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.basic.label.history-action.voteproducer {
+    color: #fc9867 !important;
+    border-color: #fc9867;
+    background: transparent;
+}
+
+body.dark-mode .ui.basic.label.history-action.transfer.send {
+    color: #ff6188 !important;
+    border-color: #ff6188;
+    background: transparent;
+}
+
+body.dark-mode .ui.basic.label.history-action {
+    color: rgb(195,195,195) !important;
+    border-color: rgb(195,195,195);
+    background: transparent;
+}
+
+body.dark-mode .ui.basic.label.history-action.transfer.receive {
+    color: #a9dc76 !important;
+    border-color: #a9dc76;
+    background: transparent;
+}
+
+body.dark-mode .ui.basic.label.history-action.delegatebw,
+body.dark-mode .ui.basic.label.history-action.undelegatebw,
+body.dark-mode .ui.basic.label.history-action.sellram,
+body.dark-mode .ui.basic.label.history-action.buyram,
+body.dark-mode .ui.basic.label.history-action.buyrambytes {
+    color: #78dce8 !important;
+    border-color: #78dce8;
+    background: transparent;
+}
+
+body.dark-mode i.airdrop-token-add {
+    color: #ffd866;
+}
+
+body.dark-mode .ui.button {
+    background-color: #ffd866;
+    color: #333333;
+    text-transform: uppercase;
+    font-weight: lighter;
+}
+
+body.dark-mode .ui.button:focus,
+body.dark-mode .ui.button:hover {
+    background-color: #dfae1b;
+    opacity: 1;
+    color: #333333;
+}
+
+body.dark-mode .ui.selection.list>.item:hover {
+    background: rgba(58,68,73,0.5) !important;
+}
+
+body.dark-mode .verify-content {
+    background: rgb(58,68,73);
+}
+
+body.dark-mode .dashed-border, 
+body.dark-mode p.public-key {   
+    background: rgb(40, 47, 51);
+    border-color: rgba(204, 204, 204, 0.6);
+} 
+
+body.dark-mode .ui.very.basic.table.verify-content {
+    background: rgba(58,68,73,0.5);
+}
+
+body.dark-mode .producer-list>div,
+body.dark-mode .producer-list>div>div {
+    color: rgb(195,195,195);
+}
+
+body.dark-mode .ui.basic.table tbody tr {
+    border-bottom: 1px solid rgba(204, 204, 204, 0.6);
+
+}
+
+body.dark-mode .ui.vertical.menu .item>.label.notification {
+    background: transparent;
+}
+
 input[type="submit"],
 input[type="reset"],
 input[type="button"],
@@ -60,6 +353,11 @@ div {
     color: rgb(51, 51, 51);
     font-size: 1em;  
     font-weight: normal;
+}
+
+a {
+    cursor: pointer;
+    color: #1a8cff;
 }
 
 input[type=text]:focus,

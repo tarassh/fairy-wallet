@@ -3,9 +3,9 @@ import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
 import { routerMiddleware, routerActions } from 'react-router-redux';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
+import persistConfig from './persist';
 import * as ledgerActions from '../actions/ledger';
 import * as stateActions from '../actions/states';
 import * as connectionActions from '../actions/connection';
@@ -57,14 +57,6 @@ const configureStore = (initialState = {}) => {
   // Apply Middleware & Compose Enhancers
   enhancers.push(applyMiddleware(...middleware));
   const enhancer = composeEnhancers(...enhancers);
-
-  // configure persistor
-  const persistConfig = {
-    version: 1,
-    key: 'root',
-    storage,
-    whitelist: ['settings']
-  };
 
   const persistedReducer = persistReducer(persistConfig, rootReducer);
 

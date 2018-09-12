@@ -3,11 +3,21 @@ import * as React from 'react';
 import { Segment } from 'semantic-ui-react';
 
 type Props = {
-  children: React.Node
+  children: React.Node,
+  settings: {}
 };
 
 class App extends React.Component<Props> {
   props: Props;
+
+  componentDidMount() {
+    const { settings } = this.props;
+
+    if (settings.selectedTheme === 'dark')
+      document.body.classList.add('dark-mode');
+    else
+      document.body.classList.remove('dark-mode');
+  }
 
   render() {
     return (

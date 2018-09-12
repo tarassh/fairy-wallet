@@ -101,34 +101,58 @@ export function stopListen() {
 }
 
 export function getPublicKey(display = false) {
+  return (dispatch: () => void, getState) =>
+    new Promise((resolve, reject) => {
+      const { ledger } = getState();
+      dispatch({
+        type: display
+          ? types.GET_PUBLIC_KEY_CONFIRM_REQUEST
+          : types.GET_PUBLIC_KEY_REQUEST
+      });
+
+      const api = new Api(ledger.transport);
+      api
+        .getPublicKey(ledger.bip44Path, display)
+        .then(result => {
+          const type = display
+            ? types.GET_PUBLIC_KEY_CONFIRM_SUCCESS
+            : types.GET_PUBLIC_KEY_SUCCESS;
+          dispatch({ type, publicKey: result });
+          return resolve();
+        })
+        .catch(err => {
+          const type = display
+            ? types.GET_PUBLIC_KEY_CONFIRM_FAILURE
+            : types.GET_PUBLIC_KEY_FAILURE;
+          dispatch({ type, err });
+          return reject();
+        });
+    });
+}
+
+export function getAppStats() {
   return (dispatch: () => void, getState) => {
     const { ledger } = getState();
 
     const api = new Api(ledger.transport);
-    if (display) {
-      dispatch({
-        type: types.PUBLIC_KEY_DISPLAY_REQUEST
-      });
-    }
+    dispatch({ type: types.GET_APP_STATS_REQUEST });
 
-    api
-      .getPublicKey(ledger.bip44Path, display)
-      .then(result => {
-        const type = display
-          ? types.PUBLIC_KEY_DISPLAY_SUCCESS
-          : types.GET_PUBLIC_KEY_SUCCESS;
-        return dispatch({ type, publicKey: result });
-      })
-      .catch(err => {
-        const type = display
-          ? types.PUBLIC_KEY_DISPLAY_FAILURE
-          : types.GET_PUBLIC_KEY_FAILURE;
-        dispatch({ type, err });
-      });
+    return api
+      .getAppConfiguration()
+      .then(result =>
+        dispatch({
+          type: types.GET_APP_STATS_SUCCESS,
+          application: result,
+          transport: ledger.transport
+        })
+      )
+      .catch(err => dispatch({ type: types.GET_APP_STATS_FAILURE, err }));
   };
 }
 
 export default {
   startListen,
-  stopListen
+  stopListen,
+  getAppStats,
+  getPublicKey
 };
