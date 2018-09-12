@@ -18,6 +18,15 @@ const tokenList = [
     account: 'eosatidiumio'
   },
   {
+    name: 'BEAN',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/bean.jpg',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/bean-lg.jpg',
+    symbol: 'BEAN',
+    account: 'thebeantoken'
+  },
+  {
     name: 'EOS BET',
     logo:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosbet.png',
@@ -29,7 +38,7 @@ const tokenList = [
   {
     name: 'eosBlack',
     logo:
-      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosblack.jpg',
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosblack.png',
     logo_lg:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
     symbol: 'BLACK',
@@ -106,6 +115,13 @@ const tokenList = [
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
     symbol: 'EETH',
     account: 'ethsidechain'
+  },
+  {
+    name: 'eosCASH',
+    logo: '',
+    logo_lg: '',
+    symbol: 'ECASH',
+    account: 'horustokenio'
   },
   {
     name: 'eosDAC',
@@ -214,15 +230,6 @@ const tokenList = [
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/poorman-lg.png',
     symbol: 'POOR',
     account: 'poormantoken'
-  },
-  {
-    name: 'Crypto Peso',
-    logo:
-      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/pso.png',
-    logo_lg:
-      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/pso-lg.png',
-    symbol: 'PSO',
-    account: 'cryptopesosc'
   },
   {
     name: 'PUB',

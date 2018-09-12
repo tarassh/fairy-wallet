@@ -6,10 +6,19 @@ import { bindActionCreators } from 'redux';
 import { removeToken } from '../../actions/settings';
 import { tokenList } from '../Shared/TokenList';
 
+type Props = {
+  actions: {},
+  account: {},
+  symbol: string,
+  contract: string,
+  open: boolean,
+  handleClose: () => {}
+};
+
 class TokenRemove extends Component<Props> {
   removeToken = () => {
-    const { account, handleClose, symbol, contract } = this.props;
-    this.props.actions.removeToken(account.account_name, symbol, contract);
+    const { account, handleClose, symbol, contract, actions } = this.props;
+    actions.removeToken(account.account_name, symbol, contract);
     handleClose();
   };
 
@@ -19,7 +28,7 @@ class TokenRemove extends Component<Props> {
     const logo = token ? token.logo : undefined;
 
     return (
-      <Transition visible={open} animation="scale" duration={500}>
+      <Transition visible={open} animation="scale" duration={200}>
         <Modal open={open} size="mini">
           <Modal.Content>
             <Modal.Description>

@@ -6,6 +6,7 @@ export default class MenuBuilder {
 
   constructor(mainWindow: BrowserWindow) {
     this.mainWindow = mainWindow;
+    this.darkMode = false;
   }
 
   buildMenu() {
@@ -156,6 +157,14 @@ export default class MenuBuilder {
           click() {
             shell.openExternal(
               'https://github.com/tarassh/fairy-wallet/issues'
+            );
+          }
+        },
+        {
+          label: 'Telegram group',
+          click() {
+            shell.openExternal(
+              'https://t.me/fairywallet'
             );
           }
         }
