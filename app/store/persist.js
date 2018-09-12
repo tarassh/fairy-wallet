@@ -19,6 +19,7 @@ const migrations = {
         path: 'https://www.myeoskit.com/#/tx/'
       }
     ];
+    newSettings.selectedTheme = 'light';
 
     return Object.assign({}, state, {
       settings: newSettings

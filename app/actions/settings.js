@@ -48,6 +48,23 @@ export function setDefaultExplorer(explorer) {
   }
 }
 
+export function setTheme(theme) {
+  return (dispatch: () => void, getState) => 
+  new Promise((resolve, reject) => {
+    const { settings } = getState();
+    if (theme && settings.selectedTheme !== theme) {
+      dispatch({
+        type: types.SET_SELECTED_THEME,
+        selectedTheme: theme
+      });
+      return resolve();
+    }
+
+    reject();    
+  });
+}
+
+
 export default {
   addToken,
   removeToken

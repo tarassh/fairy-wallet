@@ -12,7 +12,8 @@ type Props = {
   actions: {},
   store: {},
   persistor: {},
-  history: {}
+  history: {},
+  settings: {}
 };
 
 class Root extends Component<Props> {
@@ -27,19 +28,20 @@ class Root extends Component<Props> {
     const { actions } = this.props;
     actions.stopListen();
   }
-
+ 
   render() {
     const {
       store,
       persistor,
-      history
+      history,
+      settings
     } = this.props
 
     return (
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <ConnectedRouter history={history}>
-            <Routes />
+            <Routes settings={settings} />
           </ConnectedRouter>
         </PersistGate>
       </Provider>
@@ -55,4 +57,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(Root);
+function mapStateToProps(state) {
+  return {
+    settings: state.settings,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Root);

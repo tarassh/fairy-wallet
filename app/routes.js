@@ -5,8 +5,8 @@ import App from './containers/App';
 import Locker from './containers/Locker';
 import Wallet from './containers/Wallet';
 
-export default () => (
-  <App>
+export default (props) => (
+  <App settings={props.settings} >
     <HashRouter>
       <Switch>
         <Route exact path="/" component={Locker} />
