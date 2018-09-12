@@ -39,6 +39,10 @@ body {
     -webkit-app-region:drag;
 }
 
+body.dark-mode a {
+    color: rgb(255,237,113);
+}
+
 body.dark-mode,
 body.dark-mode .ui.table,
 body.dark-mode .ui.search>.results,
@@ -158,7 +162,7 @@ body.dark-mode .fairy-container .column.middle .ui.list .item.active {
 }
 
 body.dark-mode .steps-container .active,
-body.dark-mode  .steps-container .active div, 
+body.dark-mode .steps-container .active div, 
 body.dark-mode .steps-container .ui.list>.item.active .header,
 body.dark-mode .ui.menu .active.item, 
 body.dark-mode .ui.dropdown .menu .selected.item,
@@ -345,6 +349,11 @@ div {
     color: rgb(51, 51, 51);
     font-size: 1em;  
     font-weight: normal;
+}
+
+a {
+    cursor: pointer;
+    color: #1a8cff;
 }
 
 input[type=text]:focus,
