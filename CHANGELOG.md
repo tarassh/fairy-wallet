@@ -74,3 +74,9 @@
 
 - **Fixes:** Fix for hang for Windows 10 on minimize action.
 - **UI:** Add memo to history. Colored delegates.
+
+# 0.9.2 (2018.9.12)
+
+- **Features:** Settings Tab. Default Blockchain explorer.
+- **Fixes:** Fix for vires in numeris hang.
+- **UI:** Dark mode.  
