@@ -14,9 +14,9 @@ function assetToNumber(asset, finite = false, defaultValue = 0) {
   return defaultValue;
 }
 
-function numberToAsset(amount, symbol = 'EOS', defaultValue = '0.0000') {
+function numberToAsset(amount, symbol = 'EOS', precision = 4, defaultValue = '0.0000') {
   if (isNumber(amount)) {
-    return `${parseFloat(amount).toFixed(4)} ${symbol}`;
+    return `${parseFloat(amount).toFixed(precision)} ${symbol}`;
   }
   return `${defaultValue} ${symbol}`;
 }

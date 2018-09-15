@@ -49,11 +49,13 @@ const InputAccount = (props: inputProps) => {
   );
 };
 
-const handleFloatInputValidationOnChange = (e, v, onChange) => {
+const handleFloatInputValidationOnChange = (e, v, precision, onChange) => {
   const { value, min, max } = v;
   const number = parseFloat(value);
+  const testPrecision = precision || 4;
   const inRange = min <= number && number <= max;
-  const isNumber = re.float.test(value);
+  const reNumber = re.float3(testPrecision);
+  const isNumber = reNumber.test(value);
   if (value === '' || (isNumber && inRange)) {
     onChange(e, v);
   }
@@ -64,12 +66,12 @@ const InputFloat = (props: inputProps) => {
     return <Form.Input {...props} />;
   }
 
-  const { onChange, ...parentProps } = props;
+  const { onChange, precision, ...parentProps } = props;
 
   return (
     <Form.Input
       {...parentProps}
-      onChange={(e, v) => handleFloatInputValidationOnChange(e, v, onChange)}
+      onChange={(e, v) => handleFloatInputValidationOnChange(e, v, precision, onChange)}
     />
   );
 };

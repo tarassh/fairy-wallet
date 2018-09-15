@@ -35,6 +35,10 @@ const re = {
   symbol: new RegExp(`^${symbol}$`),
   float: new RegExp(`^${float}$`),
   float2: new RegExp(`^${float2}$`),
+  float3: (precision) => { 
+    const reFloat = new RegExp(`^([0-9]+([.][0-9]{0,${precision}})?|[.][0-9]{1,${precision}})$`);
+    return reFloat;
+  },
   account: new RegExp(`^${account}$`),
   asset: new RegExp(`^${asset}$`),
   transfer,
