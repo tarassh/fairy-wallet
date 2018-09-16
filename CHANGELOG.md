@@ -80,3 +80,8 @@
 - **Features:** Settings Tab. Default Blockchain explorer.
 - **Fixes:** Fix for vires in numeris hang.
 - **UI:** Dark mode.  
+
+# 0.9.3 (2018.9.16)
+
+- **Features:** Error details.
+- **Fixes:** Invalid precision for generic tokens.
