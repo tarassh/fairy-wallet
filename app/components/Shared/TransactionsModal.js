@@ -18,6 +18,7 @@ import VoteContext from './VoteContext';
 import BuyRamContext from './BuyRamContext';
 import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
+import ErrorContext from './ErrorContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
 import wakeupDevice from '../../../resources/images/wakeup-device.svg';
@@ -38,8 +39,6 @@ type Props = {
   handleClose: () => {}
 };
 
-const noop = () => {};
-
 const actionDisplayName = {
   transfer: 'Transfer funds',
   delegatebw: 'Delegate funds',
@@ -58,6 +57,7 @@ function renderTransaction(transaction, goto) {
   let icon = 'spinner';
   let statusText = constructed ? 'Ready to sign' : 'Preparing...';
   let loading = true;
+  let color;
   if (signed) {
     statusText = 'Sending...';
   }
@@ -77,38 +77,18 @@ function renderTransaction(transaction, goto) {
     );
     icon = 'check circle';
     loading = false;
-  }
-
-  if (err !== null) {
-    let error = err;
-    try {
-      if (typeof error === 'string') {
-        [error] = JSON.parse(err).error.details;
-      } else if (error.name && error.name === 'TransportStatusError') {
-        if (error.statusCode === 0x6985) {
-          error =
-            'Ledger device: Condition of use not satisfied. Denied by user.';
-        } else if (error.statusCode === 0x6a80) {
-          error = 'Ledger device: Invalid data.';
-        } else if (error.statusCode === 0x6b00) {
-          error = 'Ledger device: Incorrect parameter P1 or P2.';
-        } else {
-          error = error.message;
-        }
-      }
-      if (error.message) {
-        error = error.message.trim();
-      }
-    } catch (e) {
-      noop();
-    }
-    statusText = error;
-    icon = 'remove circle';
-    loading = false;
+    color = '#a9dc76';
   }
 
   let content;
-  if (action === 'transfer') {
+  if (err !== null) {
+    statusText = undefined;
+    icon = 'remove circle';
+    loading = false;
+    color = '#ff6188';
+
+    content = <ErrorContext context={err} />;
+  } else if (action === 'transfer') {
     content = <TransferContext context={context} />;
   } else if (action === 'delegatebw' || action === 'undelegatebw') {
     content = <DelegateContext context={context} />;
@@ -125,17 +105,11 @@ function renderTransaction(transaction, goto) {
   const header = (
     <Header style={{ marginTop: '1rem' }}>
       <Header.Content>
-        <div>
+        <div style={{ color }}>
           <Icon name={icon} loading={loading} />
           {actionName}
         </div>
-        <Header.Subheader
-          style={
-            err !== null
-              ? { color: 'lightcoral', marginTop: '1rem' }
-              : { marginTop: '1rem' }
-          }
-        >
+        <Header.Subheader style={{ marginTop: '1rem' }}>
           {statusText}
         </Header.Subheader>
       </Header.Content>
@@ -145,7 +119,7 @@ function renderTransaction(transaction, goto) {
   return (
     <div key={action}>
       {header}
-      {loading && content}
+      {receipt === null && content}
     </div>
   );
 }
