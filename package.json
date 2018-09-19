@@ -1,7 +1,7 @@
 {
   "name": "fairy-wallet",
   "productName": "FairyWallet",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "EOS desktop wallet application for Ledger Nano S",
   "scripts": {
     "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",

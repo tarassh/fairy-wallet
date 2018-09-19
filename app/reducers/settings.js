@@ -18,7 +18,8 @@ const initialState = {
       path: 'https://www.myeoskit.com/#/tx/'
     }
   ],
-  selectedTheme: ''
+  selectedTheme: '',
+  exchangeCurrency: ''
 };
 
 export default function settings(state = initialState, action) {
@@ -84,13 +85,19 @@ export default function settings(state = initialState, action) {
     case types.SET_DEFAULT_EXPLORER: {
       return Object.assign({}, state, {
         explorers: action.explorers
-      })
+      });
     }
 
     case types.SET_SELECTED_THEME: {
       return Object.assign({}, state, {
         selectedTheme: action.selectedTheme
-      })
+      });
+    }
+
+    case types.SET_EXCHANGE_CURRENCY: {
+      return Object.assign({}, state, {
+        exchangeCurrency: action.exchangeCurrency
+      });
     }
 
     default: {

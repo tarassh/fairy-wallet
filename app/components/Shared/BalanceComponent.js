@@ -14,15 +14,13 @@ const exactMath = require('exact-math');
 
 type Props = {
   account: {},
-  currency: {}
+  currency: {},
+  settings: {}
 };
 
 class BalanceComponent extends Component<Props> {
   render() {
-    const {
-      account,
-      currency,
-    } = this.props;
+    const { account, currency, settings } = this.props;
 
     const {
       total,
@@ -35,43 +33,48 @@ class BalanceComponent extends Component<Props> {
 
     let totalUDS = '';
     if (currency.exchangePairs.length > 0) {
-      let value = totalNum * currency.exchangePairs[0].value;
-      value = numeral(value).format('0,0.00$');
-      totalUDS = `Total Balance • ${value}`;
+      const exchange = currency.exchangePairs.find(
+        el => el.to === settings.exchangeCurrency.toUpperCase()
+      );
+      if (exchange) {
+        let value = totalNum * exchange.value;
+        value = `${numeral(value).format('0,0.00')}${exchange.symbol}`;
+        totalUDS = `Total Balance • ${value}`;
+      }
     }
 
     return (
       <span>
         <FairyMenu>
           <FairyMenu.MenuItem>
-            <FairyDataBlock 
+            <FairyDataBlock
               data={<p className="title">{total}</p>}
               description={<p className="subtitle">{totalUDS}</p>}
             />
           </FairyMenu.MenuItem>
           <FairyMenu.MenuItem>
-            <FairyDataBlock 
+            <FairyDataBlock
               data={<p className="title">{liquid}</p>}
               description={<p className="subtitle">Available</p>}
             />
           </FairyMenu.MenuItem>
           <FairyMenu.MenuItem>
-            <FairyDataBlock 
+            <FairyDataBlock
               data={<p className="title">{staked}</p>}
               description={<p className="subtitle">Staked</p>}
             />
           </FairyMenu.MenuItem>
         </FairyMenu>
         {unstaking && (
-        <p className="subtitle" style={{ margin: "-2rem 0 0 1rem" }}>
-          <Icon
-            name="info circle"
-            size="small"
-            style={{ color: 'rgb(62, 141, 247)' }}
-          />
-          {unstaking} will be available {unstakingTime}
-        </p>
-          )}
+          <p className="subtitle" style={{ margin: '-2rem 0 0 1rem' }}>
+            <Icon
+              name="info circle"
+              size="small"
+              style={{ color: 'rgb(62, 141, 247)' }}
+            />
+            {unstaking} will be available {unstakingTime}
+          </p>
+        )}
       </span>
     );
   }

@@ -30,12 +30,12 @@ export default function currency(state = initialState, action) {
 
     case types.GET_CURRENCY_EXCHANGE_PRICE_SUCCESS: {
       const { exchangePairs } = state;
-      const { from, to, exchange, value } = action;
+      const { from, to, exchange, value, symbol } = action;
       const index = exchangePairs.findIndex(
         el => el.from === from && el.to === to && el.exchange === exchange
       );
       if (index === -1) {
-        exchangePairs.push({ from, to, exchange, value });
+        exchangePairs.push({ from, to, exchange, value, symbol });
       } else {
         exchangePairs[index].value = value;
       }

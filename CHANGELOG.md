@@ -85,3 +85,8 @@
 
 - **Features:** Error details.
 - **Fixes:** Invalid precision for generic tokens.
+
+# 0.9.4 (2018.9.19)
+
+- **Features:** Support of USD, EUR, GBP.
+- **Fixes:** Crash pn transfer tab for new created accounts.

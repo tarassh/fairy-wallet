@@ -33,6 +33,10 @@ export default class Settings extends Component<Props> {
         .then(() => this.setMode())
         .catch();
     }
+
+    if (name === 'currency') {
+      actions.setExchangeCurrency(value);
+    }
   };
 
   renderSelectTheme = () => {
@@ -72,6 +76,64 @@ export default class Settings extends Component<Props> {
                 basic
                 floating
                 options={themes}
+                defaultValue={defaultValue}
+                onChange={this.handleChange}
+              />
+            </Grid.Column>
+          </Grid>
+        </List.Content>
+      </List.Item>
+    );
+  };
+
+  renderExchangeCurrency = () => {
+    const { settings } = this.props;
+    const currencies = [
+      {
+        key: 'usd',
+        value: 'usd',
+        text: 'USD',
+        icon: 'usd'
+      },
+      {
+        key: 'eur',
+        value: 'eur',
+        text: 'EUR',
+        icon: 'euro'
+      },
+      {
+        key: 'gbp',
+        value: 'gbp',
+        text: 'GBP',
+        icon: 'gbp'
+      }
+    ];
+
+    const defaultValue =
+      settings && settings.exchangeCurrency
+        ? _.find(
+            currencies,
+            currency => currency.value === settings.exchangeCurrency
+          ).value
+        : currencies[0].value;
+
+    return (
+      <List.Item>
+        <p className="tableheadertitle">
+          <Icon name="currency" />Currency
+        </p>
+        <List.Content>
+          <Grid columns={2} style={{ paddingBottom: '1rem' }}>
+            <Grid.Column verticalAlign="middle" width={5}>
+              Currency Equivalent
+            </Grid.Column>
+            <Grid.Column>
+              <Dropdown
+                name="currency"
+                selection
+                basic
+                floating
+                options={currencies}
                 defaultValue={defaultValue}
                 onChange={this.handleChange}
               />
@@ -128,6 +190,7 @@ export default class Settings extends Component<Props> {
           <List divided relaxed>
             {this.renderExplorer()}
             {this.renderSelectTheme()}
+            {this.renderExchangeCurrency()}
           </List>
         </span>
       }

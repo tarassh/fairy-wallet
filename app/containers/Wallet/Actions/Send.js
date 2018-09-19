@@ -21,13 +21,19 @@ type Props = {
 const eosToken = 'EOS';
 
 function formatPrecisions(balance) {
-  const [amount, symbol] = balance.split(' ');
+  if (!balance) {
+    return {
+      precision: 4,
+      step: '0.0001'
+    };
+  }
+  const [amount] = balance.split(' ');
   const [, suffix] = amount.split('.');
   let step = '1';
-  for (let i = 1; i < suffix.length; i+=1) {
-    step = `0${step}`
+  for (let i = 1; i < suffix.length; i += 1) {
+    step = `0${step}`;
     if (i === suffix.length - 1) {
-      step = `0.${step}`
+      step = `0.${step}`;
     }
   }
   return {
@@ -82,7 +88,14 @@ class SendContainer extends Component<Props> {
     const { contract, token, recipient, amount, memo, precision } = this.state;
     const asset = numberToAsset(amount, token.toUpperCase(), precision);
     const from = accounts.account.account_name;
-    actions.checkAndRun(actions.transfer, from, recipient, asset, memo, contract);
+    actions.checkAndRun(
+      actions.transfer,
+      from,
+      recipient,
+      asset,
+      memo,
+      contract
+    );
     this.setState({ openModal: true });
   };
 
@@ -118,7 +131,11 @@ class SendContainer extends Component<Props> {
       parseFloat(amount) > maxAmount ? 'invalid' : undefined;
 
     const enableRequest =
-      token !== '' && recipient !== '' && amount !== '' && !invalidAmount;
+      token !== '' &&
+      recipient !== '' &&
+      amount !== '' &&
+      !invalidAmount &&
+      parseFloat(amount) > 0;
 
     return (
       <MainContentContainer
@@ -141,12 +158,12 @@ class SendContainer extends Component<Props> {
             />
             <Form.Group widths="equal">
               <InputFloat
-                id='form-textarea-control-amount'
+                id="form-textarea-control-amount"
                 label={invalidAmount ? 'Invalid Amount' : 'Amount'}
                 min={0}
                 max={Number.MAX_VALUE}
-                name='amount'
-                type='number'
+                name="amount"
+                type="number"
                 step={numberFormat.step}
                 precision={numberFormat.precision}
                 value={amount}

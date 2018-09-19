@@ -2,7 +2,7 @@ import { createMigrate } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
 const migrations = {
-  2: (state) => {
+  2: state => {
     const { settings } = state;
     const newSettings = Object.assign({}, settings);
     newSettings.explorers = [
@@ -12,7 +12,7 @@ const migrations = {
       },
       {
         key: 'bloks.io',
-        path: 'https://bloks.io/transaction/',
+        path: 'https://bloks.io/transaction/'
       },
       {
         key: 'myeoskit.com',
@@ -24,12 +24,17 @@ const migrations = {
     return Object.assign({}, state, {
       settings: newSettings
     });
+  },
+  3: state => {
+    const { settings } = state;
+    const newSettings = Object.assign({}, settings);
+    newSettings.exchangeCurrency = 'usd';
   }
-}
+};
 
 // configure persistor
 const persistConfig = {
-  version: 2,
+  version: 3,
   key: 'root',
   storage,
   migrate: createMigrate(migrations, { debug: true }),
