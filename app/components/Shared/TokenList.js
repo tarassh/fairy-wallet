@@ -36,11 +36,11 @@ const tokenList = [
     account: 'betdividends'
   },
   {
-    name: 'eosBlack',
+    name: 'eosBLACK',
     logo:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosblack.png',
     logo_lg:
-      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/eosblack-lg.png',
     symbol: 'BLACK',
     account: 'eosblackteam'
   },
@@ -266,6 +266,15 @@ const tokenList = [
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/wizz-lg.png',
     symbol: 'WIZZ',
     account: 'wizznetwork1'
+  },
+  {
+    name: 'WECASH',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/wecash.jpg',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
+    symbol: 'WECASH',
+    account: 'weosservices'
   }
 ];
 

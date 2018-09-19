@@ -40,7 +40,8 @@ export function checkAccountExists(publicKey) {
         if (result.account_names && result.account_names.length > 0) {
           dispatch({
             type: types.CHECK_ACCOUNT_EXISTS_SUCCESS,
-            accountExists: result.account_names && result.account_names.length > 0
+            accountExists:
+              result.account_names && result.account_names.length > 0
           });
         }
 
@@ -64,7 +65,8 @@ export function setActiveAccount(index) {
 }
 
 export function setDelegateeAccount(name) {
-  return (dispatch: () => void) => dispatch({ type: types.SET_ACTIVE_DELEGATE_ACCOUNT, delegatee: name });
+  return (dispatch: () => void) =>
+    dispatch({ type: types.SET_ACTIVE_DELEGATE_ACCOUNT, delegatee: name });
 }
 
 export function getAccount(name) {
@@ -73,14 +75,15 @@ export function getAccount(name) {
       type: types.GET_ACCOUNT_REQUEST,
       name
     });
-    const { connection } = getState();
+    const { connection, settings } = getState();
+    const { exchangeCurrency } = settings;
 
     eos(connection)
       .getAccount(name)
       .then(result => {
         dispatch(getCurrencyBalance(name));
         dispatch(getActions(name));
-        dispatch(getCurrencyExchangePrice());
+        dispatch(getCurrencyExchangePrice('EOS', exchangeCurrency));
         dispatch(getDelegationsFor(name));
         return dispatch({
           type: types.GET_ACCOUNT_SUCCESS,

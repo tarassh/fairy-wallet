@@ -52,8 +52,16 @@ export function getCurrencyExchangePrice(
     dispatch({
       type: types.GET_CURRENCY_EXCHANGE_PRICE_REQUEST
     });
+    const crytoAsset = from.toUpperCase();
+    const currency = to.toUpperCase();
 
-    const urlStr = `https://min-api.cryptocompare.com/data/price?fsym=${from}&tsyms=${to}&e=${exchange}`;
+    const symbols = {
+      USD: '$',
+      EUR: '€',
+      GBP: '£'
+    };
+
+    const urlStr = `https://min-api.cryptocompare.com/data/price?fsym=${crytoAsset}&tsyms=${currency}&e=${exchange}`;
 
     https
       .get(urlStr, resp => {
@@ -67,10 +75,11 @@ export function getCurrencyExchangePrice(
           const result = JSON.parse(data);
           dispatch({
             type: types.GET_CURRENCY_EXCHANGE_PRICE_SUCCESS,
-            from,
-            to,
+            from: crytoAsset,
+            to: currency,
             exchange,
-            value: result[to]
+            value: result[currency],
+            symbol: symbols[currency]
           });
         });
       })

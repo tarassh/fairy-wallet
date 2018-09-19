@@ -19,7 +19,8 @@ type Props = {
   currency: {},
   loading: {},
   failure: {},
-  actions: {}
+  actions: {},
+  settings: {}
 };
 
 export default class Wallet extends Component<Props> {
@@ -95,7 +96,14 @@ export default class Wallet extends Component<Props> {
   );
 
   render() {
-    const { accounts, currency, loading, failure, actions } = this.props;
+    const {
+      accounts,
+      currency,
+      loading,
+      failure,
+      actions,
+      settings
+    } = this.props;
     const { activeItem, showNotification } = this.state;
     const newAction = showNotification ? (
       <Label basic content="new" className="notification" />
@@ -226,6 +234,7 @@ export default class Wallet extends Component<Props> {
                   currency={currency}
                   names={accounts.names}
                   loading={loading}
+                  settings={settings}
                 />
               </FairyContainer.Column.Header>
               <FairyContainer.Column.Body>

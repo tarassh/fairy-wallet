@@ -2,8 +2,9 @@
 import _ from 'lodash';
 import * as types from './types';
 import { getCurrencyBalance } from './accounts';
+import { getCurrencyExchangePrice } from './currency';
 
-export function addToken(account, tokenSymbol, contract='eosio.token') {
+export function addToken(account, tokenSymbol, contract = 'eosio.token') {
   return (dispatch: () => void, getState) => {
     const symbol = tokenSymbol.toUpperCase();
     const { accounts } = getState();
@@ -18,10 +19,10 @@ export function addToken(account, tokenSymbol, contract='eosio.token') {
     if (!accounts.balances[account] || !accounts.balances[account][symbol]) {
       dispatch(getCurrencyBalance(account));
     }
-  }
+  };
 }
 
-export function removeToken(account, tokenSymbol, contract='eosio.token') {
+export function removeToken(account, tokenSymbol, contract = 'eosio.token') {
   return (dispatch: () => void) => {
     const symbol = tokenSymbol.toUpperCase();
 
@@ -31,7 +32,7 @@ export function removeToken(account, tokenSymbol, contract='eosio.token') {
       symbol,
       contract
     });
-  }
+  };
 }
 
 export function setDefaultExplorer(explorer) {
@@ -45,27 +46,40 @@ export function setDefaultExplorer(explorer) {
         explorers: settings.explorers
       });
     }
-  }
+  };
 }
 
 export function setTheme(theme) {
-  return (dispatch: () => void, getState) => 
-  new Promise((resolve, reject) => {
-    const { settings } = getState();
-    if (theme && settings.selectedTheme !== theme) {
-      dispatch({
-        type: types.SET_SELECTED_THEME,
-        selectedTheme: theme
-      });
-      return resolve();
-    }
+  return (dispatch: () => void, getState) =>
+    new Promise((resolve, reject) => {
+      const { settings } = getState();
+      if (theme && settings.selectedTheme !== theme) {
+        dispatch({
+          type: types.SET_SELECTED_THEME,
+          selectedTheme: theme
+        });
+        return resolve();
+      }
 
-    reject();    
-  });
+      reject();
+    });
 }
 
+export function setExchangeCurrency(currency) {
+  return (dispatch: () => void, getState) => {
+    const { settings } = getState();
+    if (currency && settings.exchageCurrency !== currency) {
+      dispatch({
+        type: types.SET_EXCHANGE_CURRENCY,
+        exchangeCurrency: currency
+      });
+      dispatch(getCurrencyExchangePrice('EOS', currency));
+    }
+  };
+}
 
 export default {
   addToken,
-  removeToken
+  removeToken,
+  setExchangeCurrency
 };
