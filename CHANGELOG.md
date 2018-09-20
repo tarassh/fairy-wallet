@@ -90,3 +90,8 @@
 
 - **Features:** Support of USD, EUR, GBP.
 - **Fixes:** Crash pn transfer tab for new created accounts.
+
+# 0.9.5 (2018.9.20)
+
+- **Features:** Run transaction under particular permission.
+- **Fixes:** #36: Invalid Packed Transaction error occurs when trying to send EDNA tokens.
