@@ -287,7 +287,7 @@ export function voteProducer(producers = []) {
   };
 }
 
-export function buyram(recipient, tokens) {
+export function buyram(recipient, tokens, permission='') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -302,6 +302,11 @@ export function buyram(recipient, tokens) {
         tokens
       }
     });
+
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -329,7 +334,8 @@ export function buyram(recipient, tokens) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`,
     };
 
     return eos(modified)
@@ -414,7 +420,7 @@ export function sellram(bytes) {
   };
 }
 
-export function buyrambytes(recipient, bytes) {
+export function buyrambytes(recipient, bytes, permission='') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -429,6 +435,11 @@ export function buyrambytes(recipient, bytes) {
         bytes
       }
     });
+
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -456,7 +467,8 @@ export function buyrambytes(recipient, bytes) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
     };
 
     return eos(modified)

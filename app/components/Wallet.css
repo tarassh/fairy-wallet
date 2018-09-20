@@ -428,6 +428,14 @@
     /* padding-left: 1rem; */
 }
 
+.main-container .ui.form .fields {
+    margin-left: 0; 
+}
+
+.main-container .ui.form .fields>.field {
+    padding-left: 0;
+}
+
 .scrolling-table.vote::-webkit-scrollbar {
     width: 5px !important;
 } 
