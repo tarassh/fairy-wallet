@@ -193,7 +193,7 @@ function renderAction(action, account, handler, goto) {
             </div>
             {
               typeof action.data.memo === 'string' && (
-                <div>Memo :&nbsp;{_.truncate(action.data.memo, { length: 80})}</div>
+                <div>Memo :&nbsp;{_.truncate(action.data.memo, { length: 1024})}</div>
               )
             }
           </Grid.Column>
