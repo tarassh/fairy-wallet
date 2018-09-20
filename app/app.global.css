@@ -179,6 +179,7 @@ body.dark-mode .ui.dropdown .menu>.item,
 body.dark-mode .ui.checkbox label,
 body.dark-mode .ui.form .fields > label, 
 body.dark-mode .ui.form .field > label,
+body.dark-mode .ui.form .inline.fields .field > label,
 body.dark-mode .ui.form .field div {
     color: rgb(195,195,195);
 }
@@ -292,7 +293,17 @@ body.dark-mode .ui.button {
     text-transform: uppercase;
     font-weight: lighter;
 }
+body.dark-mode .ui.button.dropdown.icon.permission {
+    text-transform: lowercase;
+    font-weight: lighter;
+}
 
+body.dark-mode .ui.button.dropdown.icon.permission > .text {
+    color: #333333;
+}
+
+body.dark-mode .ui.button.dropdown.icon.permission:focus,
+body.dark-mode .ui.button.dropdown.icon.permission:hover,
 body.dark-mode .ui.button:focus,
 body.dark-mode .ui.button:hover {
     background-color: #dfae1b;
@@ -383,6 +394,16 @@ input {
     font-weight: lighter;
 }
 
+.ui.button.dropdown.icon.permission {
+    text-transform: lowercase;
+}
+
+.ui.button.dropdown.icon.permission > .text {
+    color: white;
+}
+
+.ui.button.dropdown.icon.permission:focus,
+.ui.button.dropdown.icon.permission:hover,
 .ui.button:focus,
 .ui.button:hover {
     background: #1a8cff;

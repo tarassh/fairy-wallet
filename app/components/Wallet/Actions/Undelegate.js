@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Grid, List, Label } from 'semantic-ui-react';
+import { Form, Grid, List, Label, Button, Dropdown } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
@@ -31,7 +31,8 @@ export default class Undelegate extends Component<Props> {
         netDelta: 0,
         recipient: '',
         cpu: 0,
-        net: 0
+        net: 0,
+        permission: ''
       },
       this.getStakedValues(account.account_name)
     );
@@ -106,7 +107,7 @@ export default class Undelegate extends Component<Props> {
   };
 
   handleChange = (e, { name, value }) => {
-    if (value === '') {
+    if (value === '' || name === 'permission') {
       this.setState({ [name]: value });
       return;
     }
@@ -122,14 +123,21 @@ export default class Undelegate extends Component<Props> {
   };
 
   handleSubmit = () => {
-    const { cpuDelta, netDelta, recipient } = this.state;
+    const { cpuDelta, netDelta, recipient, permission } = this.state;
     const { account, actions } = this.props;
     const accountName = account.account_name;
 
     const cpu = numberToAsset(Math.abs(exactMath.div(cpuDelta, fraction10000)));
     const net = numberToAsset(Math.abs(exactMath.div(netDelta, fraction10000)));
 
-    actions.checkAndRun(actions.undelegate, accountName, recipient, net, cpu);
+    actions.checkAndRun(
+      actions.undelegate,
+      accountName,
+      recipient,
+      net,
+      cpu,
+      permission
+    );
 
     this.setState({ openModal: true });
   };
@@ -203,6 +211,12 @@ export default class Undelegate extends Component<Props> {
     const enableRequest =
       this.validateFields() && !validCpu.isInvalid && !validNet.isInvalid;
 
+    const permissions = _.map(account.permissions, el => ({
+      key: el.perm_name,
+      value: el.perm_name,
+      text: `@${el.perm_name}`
+    }));
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
@@ -242,11 +256,20 @@ export default class Undelegate extends Component<Props> {
             onChange={this.handleChange}
           />
         </Form.Field>
-        <Form.Button
-          id="form-button-control-public"
-          content="Undelegate"
-          disabled={!enableRequest}
-        />
+        <Form.Group id="form-button-control-public">
+          <Button.Group>
+            <Button content="Undelegate" disabled={!enableRequest} />
+            <Dropdown
+              options={permissions}
+              floating
+              name="permission"
+              button
+              className="icon permission"
+              disabled={!enableRequest}
+              onChange={this.handleChange}
+            />
+          </Button.Group>
+        </Form.Group>
       </Form>
     );
   };

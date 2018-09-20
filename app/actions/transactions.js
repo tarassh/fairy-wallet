@@ -26,7 +26,8 @@ export function transfer(
   to,
   asset,
   memo = '',
-  tokenContract = 'eosio.token'
+  tokenContract = 'eosio.token',
+  permission = ''
 ) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -40,7 +41,11 @@ export function transfer(
         memo
       }
     });
-    const { connection, ledger } = getState();
+    const { connection, ledger, accounts } = getState();
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -67,6 +72,7 @@ export function transfer(
 
     const modified = {
       ...connection,
+      authorization: `${from}@${withPermission}`,
       signProvider: promiseSigner
     };
 
@@ -90,7 +96,7 @@ export function transfer(
   };
 }
 
-export function delegate(from, receiver, net, cpu) {
+export function delegate(from, receiver, net, cpu, permission = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.DELEGATE_REQUEST,
@@ -104,7 +110,11 @@ export function delegate(from, receiver, net, cpu) {
       }
     });
 
-    const { connection, ledger } = getState();
+    const { connection, ledger, accounts } = getState();
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -131,7 +141,8 @@ export function delegate(from, receiver, net, cpu) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${from}@${withPermission}`
     };
 
     return eos(modified)
@@ -153,7 +164,7 @@ export function delegate(from, receiver, net, cpu) {
   };
 }
 
-export function undelegate(from, receiver, net, cpu) {
+export function undelegate(from, receiver, net, cpu, permission = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.UNDELEGATE_REQUEST,
@@ -167,7 +178,11 @@ export function undelegate(from, receiver, net, cpu) {
       }
     });
 
-    const { connection, ledger } = getState();
+    const { connection, ledger, accounts } = getState();
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -194,7 +209,8 @@ export function undelegate(from, receiver, net, cpu) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${from}@${withPermission}`
     };
 
     return eos(modified)
@@ -216,7 +232,7 @@ export function undelegate(from, receiver, net, cpu) {
   };
 }
 
-export function voteProducer(producers = []) {
+export function voteProducer(producers = [], permission = '') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -231,6 +247,10 @@ export function voteProducer(producers = []) {
         producers
       }
     });
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -258,7 +278,8 @@ export function voteProducer(producers = []) {
     const modified = {
       ...connection,
       signProvider: promiseSigner,
-      expireInSeconds: 300
+      expireInSeconds: 300,
+      authorization: `${account.account_name}@${withPermission}`
     };
 
     producers.sort();
@@ -281,7 +302,7 @@ export function voteProducer(producers = []) {
   };
 }
 
-export function buyram(recipient, tokens) {
+export function buyram(recipient, tokens, permission = '') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -296,6 +317,11 @@ export function buyram(recipient, tokens) {
         tokens
       }
     });
+
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -323,7 +349,8 @@ export function buyram(recipient, tokens) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
     };
 
     return eos(modified)
@@ -345,7 +372,7 @@ export function buyram(recipient, tokens) {
   };
 }
 
-export function sellram(bytes) {
+export function sellram(bytes, permission = '') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -359,6 +386,11 @@ export function sellram(bytes) {
         bytes
       }
     });
+
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -386,7 +418,8 @@ export function sellram(bytes) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
     };
 
     return eos(modified)
@@ -408,7 +441,7 @@ export function sellram(bytes) {
   };
 }
 
-export function buyrambytes(recipient, bytes) {
+export function buyrambytes(recipient, bytes, permission = '') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -423,6 +456,11 @@ export function buyrambytes(recipient, bytes) {
         bytes
       }
     });
+
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -450,7 +488,8 @@ export function buyrambytes(recipient, bytes) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
     };
 
     return eos(modified)

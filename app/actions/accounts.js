@@ -134,7 +134,7 @@ export function getActions(name, position = -1, offset = -20) {
       .catch(err => {
         dispatch({
           type: types.GET_ACTIONS_FAILURE,
-          err: JSON.parse(err)
+          err
         });
       });
   };

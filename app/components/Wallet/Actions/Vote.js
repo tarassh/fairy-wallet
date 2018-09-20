@@ -7,7 +7,8 @@ import {
   Grid,
   Form,
   Menu,
-  Image
+  Image,
+  Dropdown
 } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
@@ -39,7 +40,8 @@ export default class Vote extends Component<Props> {
     super(props);
 
     this.state = {
-      openModal: false
+      openModal: false,
+      permission: ''
     };
 
     const { account } = props.accounts;
@@ -108,8 +110,9 @@ export default class Vote extends Component<Props> {
 
   handleSubmit = () => {
     const { actions } = this.props;
+    const { permission } = this.state;
     const producers = this.currentVotes();
-    actions.checkAndRun(actions.voteProducer, producers);
+    actions.checkAndRun(actions.voteProducer, producers, permission);
     this.setState({ openModal: true });
   };
 
@@ -168,8 +171,12 @@ export default class Vote extends Component<Props> {
     this.setState({ openModal: false });
   };
 
-  handleChange = (e, { value }) => {
-    this.setState({ filter: value });
+  handleChange = (e, { name, value }) => {
+    if (name === 'permission') {
+      this.setState({ permission: value });
+    } else {
+      this.setState({ filter: value });
+    }
   };
 
   renderProducer = (producer, producing) => {
@@ -215,7 +222,7 @@ export default class Vote extends Component<Props> {
   };
 
   render() {
-    const { loading, transaction } = this.props;
+    const { loading, transaction, accounts } = this.props;
     const { openModal, producersList, filter, activeItem } = this.state;
 
     const isLoading = loading.GET_PRODUCERS === true;
@@ -252,6 +259,12 @@ export default class Vote extends Component<Props> {
       </Menu>
     );
 
+    const permissions = _.map(accounts.account.permissions, el => ({
+      key: el.perm_name,
+      value: el.perm_name,
+      text: `@${el.perm_name}`
+    }));
+
     return (
       <MainContentContainer
         title="Vote for block producers"
@@ -276,7 +289,19 @@ export default class Vote extends Component<Props> {
                     onChange={this.handleChange}
                     icon="search"
                   />
-                  <Button onClick={this.handleSubmit}>Vote</Button>
+                  <Form.Group>
+                    <Button.Group>
+                      <Button content="Vote" onClick={this.handleSubmit} />
+                      <Dropdown
+                        options={permissions}
+                        floating
+                        name="permission"
+                        button
+                        className="icon permission"
+                        onChange={this.handleChange}
+                      />
+                    </Button.Group>
+                  </Form.Group>
                 </Form.Group>
               </Form>
             </div>

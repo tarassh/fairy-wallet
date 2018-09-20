@@ -1,7 +1,7 @@
 {
   "name": "fairy-wallet",
   "productName": "FairyWallet",
-  "version": "0.9.4",
+  "version": "0.9.5",
   "description": "EOS desktop wallet application for Ledger Nano S",
   "scripts": {
     "build": "concurrently \"npm run build-main\" \"npm run build-renderer\"",
@@ -163,7 +163,7 @@
     "eslint-plugin-flowtype": "^2.47.1",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jest": "^21.15.2",
-    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-jsx-a11y": "6.1.0",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.8.2",
     "express": "^4.16.3",
@@ -206,7 +206,7 @@
     "bip32-path": "0.4.2",
     "devtron": "^1.4.0",
     "electron-debug": "1.4.0",
-    "eosjs": "^15.0.0",
+    "eosjs": "^16.0.8",
     "exact-math": "1.0.0",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",
