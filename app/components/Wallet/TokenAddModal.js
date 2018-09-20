@@ -113,6 +113,7 @@ class TokenAddModal extends Component<Props> {
             placeholder="Select one"
             options={predefinedTokens}
             onChange={this.handleChange}
+            search
             name="token"
             label="Select Token"
             value={selectValue}

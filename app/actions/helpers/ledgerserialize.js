@@ -15,7 +15,7 @@ export default function serialize(chainId, transaction, types) {
   );
   encode(
     writter,
-    fcbuffer.toBuffer(types.unsigned_int(), transaction.net_usage_words)
+    fcbuffer.toBuffer(types.unsigned_int(), transaction.max_net_usage_words)
   );
   encode(
     writter,

@@ -206,7 +206,7 @@
     "bip32-path": "0.4.2",
     "devtron": "^1.4.0",
     "electron-debug": "1.4.0",
-    "eosjs": "^15.0.0",
+    "eosjs": "^16.0.8",
     "exact-math": "1.0.0",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",

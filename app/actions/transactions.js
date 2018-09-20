@@ -26,7 +26,8 @@ export function transfer(
   to,
   asset,
   memo = '',
-  tokenContract = 'eosio.token'
+  tokenContract = 'eosio.token',
+  permission = ''
 ) {
   return (dispatch: () => void, getState) => {
     dispatch({
@@ -40,7 +41,11 @@ export function transfer(
         memo
       }
     });
-    const { connection, ledger } = getState();
+    const { connection, ledger, accounts } = getState();
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -67,6 +72,7 @@ export function transfer(
 
     const modified = {
       ...connection,
+      authorization: `${from}@${withPermission}`,
       signProvider: promiseSigner
     };
 

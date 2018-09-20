@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
+import { Form, Button, Dropdown } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
@@ -50,7 +50,8 @@ class SendContainer extends Component<Props> {
     memo: '',
     resetValue: false,
     openModal: false,
-    precision: 4
+    precision: 4,
+    permission: ''
   };
 
   handleClose = () => {
@@ -80,12 +81,25 @@ class SendContainer extends Component<Props> {
         resetValue: this.state.token !== symbol
       });
     }
+    if (name === 'permission') {
+      Object.assign(obj, {
+        permission: value
+      });
+    }
     this.setState(obj);
   };
 
   handleSubmit = () => {
     const { actions, accounts } = this.props;
-    const { contract, token, recipient, amount, memo, precision } = this.state;
+    const {
+      contract,
+      token,
+      recipient,
+      amount,
+      memo,
+      precision,
+      permission
+    } = this.state;
     const asset = numberToAsset(amount, token.toUpperCase(), precision);
     const from = accounts.account.account_name;
     actions.checkAndRun(
@@ -94,7 +108,8 @@ class SendContainer extends Component<Props> {
       recipient,
       asset,
       memo,
-      contract
+      contract,
+      permission
     );
     this.setState({ openModal: true });
   };
@@ -136,6 +151,12 @@ class SendContainer extends Component<Props> {
       amount !== '' &&
       !invalidAmount &&
       parseFloat(amount) > 0;
+
+    const permissions = _.map(account.permissions, el => ({
+      key: el.perm_name,
+      value: el.perm_name,
+      text: `@${el.perm_name}`
+    }));
 
     return (
       <MainContentContainer
@@ -195,11 +216,20 @@ class SendContainer extends Component<Props> {
               maxLength={80}
               placeholder="80 symbols long..."
             />
-            <Form.Button
-              id="form-button-control-public"
-              content="Transfer"
-              disabled={!enableRequest}
-            />
+            <Form.Group id="form-button-control-public">
+              <Button.Group>
+                <Button content="Transfer" disabled={!enableRequest} />
+                <Dropdown
+                  options={permissions}
+                  floating
+                  name="permission"
+                  button
+                  className="icon permission"
+                  disabled={!enableRequest}
+                  onChange={this.handleChange}
+                />
+              </Button.Group>
+            </Form.Group>
           </Form>
         }
       />
