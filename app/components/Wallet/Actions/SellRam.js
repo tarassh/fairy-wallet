@@ -1,5 +1,6 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form } from 'semantic-ui-react';
+import { Form, Button, Dropdown } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { InputFloat } from '../../Shared/EosComponents';
 
@@ -12,7 +13,8 @@ type Props = {
 export default class BuyRam extends Component<Props> {
   state = {
     quantity: 0,
-    openModal: false
+    openModal: false,
+    permission: ''
   };
 
   handleChange = (e, { name, value }) => {
@@ -24,9 +26,9 @@ export default class BuyRam extends Component<Props> {
   };
 
   handleSubmit = () => {
-    const { quantity } = this.state;
+    const { quantity, permission } = this.state;
     const { actions } = this.props;
-    actions.checkAndRun(actions.sellram, parseInt(quantity, 10));
+    actions.checkAndRun(actions.sellram, parseInt(quantity, 10), permission);
     this.setState({ openModal: true });
   };
 
@@ -43,6 +45,12 @@ export default class BuyRam extends Component<Props> {
     const { quantity, openModal } = this.state;
     const available = account.ram_quota - 4096;
     const disabled = quantity === 0;
+
+    const permissions = _.map(account.permissions, el => ({
+      key: el.perm_name,
+      value: el.perm_name,
+      text: `@${el.perm_name}`
+    }));
 
     return (
       <div>
@@ -64,11 +72,20 @@ export default class BuyRam extends Component<Props> {
               onChange={this.handleChange}
             />
           </Form.Group>
-          <Form.Button
-            id="form-button-control-public"
-            content="Sell RAM"
-            disabled={disabled}
-          />
+          <Form.Group id="form-button-control-public">
+            <Button.Group>
+              <Button content="Sell RAM" disabled={disabled} />
+              <Dropdown
+                options={permissions}
+                floating
+                name="permission"
+                button
+                className="icon permission"
+                disabled={disabled}
+                onChange={this.handleChange}
+              />
+            </Button.Group>
+          </Form.Group>
         </Form>
       </div>
     );
