@@ -164,7 +164,7 @@ export function delegate(from, receiver, net, cpu, permission = '') {
   };
 }
 
-export function undelegate(from, receiver, net, cpu) {
+export function undelegate(from, receiver, net, cpu, permission = '') {
   return (dispatch: () => void, getState) => {
     dispatch({
       type: types.UNDELEGATE_REQUEST,
@@ -178,7 +178,11 @@ export function undelegate(from, receiver, net, cpu) {
       }
     });
 
-    const { connection, ledger } = getState();
+    const { connection, ledger, accounts } = getState();
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -205,7 +209,8 @@ export function undelegate(from, receiver, net, cpu) {
 
     const modified = {
       ...connection,
-      signProvider: promiseSigner
+      signProvider: promiseSigner,
+      authorization: `${from}@${withPermission}`
     };
 
     return eos(modified)
