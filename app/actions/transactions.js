@@ -222,7 +222,7 @@ export function undelegate(from, receiver, net, cpu) {
   };
 }
 
-export function voteProducer(producers = []) {
+export function voteProducer(producers = [], permission = '') {
   return (dispatch: () => void, getState) => {
     const { accounts, connection, ledger } = getState();
     const { account } = accounts;
@@ -237,6 +237,10 @@ export function voteProducer(producers = []) {
         producers
       }
     });
+    const withPermission =
+      permission === ''
+        ? accounts.account.permissions[0].perm_name
+        : permission;
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
@@ -264,7 +268,8 @@ export function voteProducer(producers = []) {
     const modified = {
       ...connection,
       signProvider: promiseSigner,
-      expireInSeconds: 300
+      expireInSeconds: 300,
+      authorization: `${account.account_name}@${withPermission}`
     };
 
     producers.sort();
