@@ -109,7 +109,9 @@ export default class BuyRam extends Component<Props> {
             />
           </Form.Group>
           <Form.Group inline>
-            <label>Units</label>
+            <Form.Field>
+              <label>Units</label>
+            </Form.Field>
             <Form.Field
               control={Radio}
               label='EOS'
@@ -123,6 +125,7 @@ export default class BuyRam extends Component<Props> {
               label='Bytes'
               value='bytes'
               name='option'
+              id='form-radio-control'
               checked={this.state.option === 'bytes'}
               onChange={this.handleChange}
             />

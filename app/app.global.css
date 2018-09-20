@@ -179,6 +179,7 @@ body.dark-mode .ui.dropdown .menu>.item,
 body.dark-mode .ui.checkbox label,
 body.dark-mode .ui.form .fields > label, 
 body.dark-mode .ui.form .field > label,
+body.dark-mode .ui.form .inline.fields .field > label,
 body.dark-mode .ui.form .field div {
     color: rgb(195,195,195);
 }
