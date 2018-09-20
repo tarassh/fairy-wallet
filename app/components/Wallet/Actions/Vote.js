@@ -289,17 +289,19 @@ export default class Vote extends Component<Props> {
                     onChange={this.handleChange}
                     icon="search"
                   />
-                  <Button.Group>
-                    <Button content="Vote" onClick={this.handleSubmit} />
-                    <Dropdown
-                      options={permissions}
-                      floating
-                      name="permission"
-                      button
-                      className="icon permission"
-                      onChange={this.handleChange}
-                    />
-                  </Button.Group>
+                  <Form.Group>
+                    <Button.Group>
+                      <Button content="Vote" onClick={this.handleSubmit} />
+                      <Dropdown
+                        options={permissions}
+                        floating
+                        name="permission"
+                        button
+                        className="icon permission"
+                        onChange={this.handleChange}
+                      />
+                    </Button.Group>
+                  </Form.Group>
                 </Form.Group>
               </Form>
             </div>
