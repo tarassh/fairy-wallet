@@ -5,8 +5,11 @@ import { Form, Button, Dropdown } from 'semantic-ui-react';
 import CurrencyInput from 'react-currency-input';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import MainContentContainer from './../../../components/Shared/UI/MainContent';
-import { InputAccount, InputFloat } from '../../../components/Shared/EosComponents';
-import { assetToNumber } from '../../../utils/asset';
+import {
+  InputAccount,
+  InputFloat
+} from '../../../components/Shared/EosComponents';
+import { assetToNumber, numberToAsset } from '../../../utils/asset';
 
 type Props = {
   currency: {},
@@ -24,28 +27,42 @@ const numeral = require('numeral');
 export default class Transfer extends Component<Props> {
   constructor(props) {
     super(props);
-    const { settings, currency , account} = this.props;
-    const pair = _.find(currency.exchangePairs, el => el.to === settings.exchangeCurrency.toUpperCase());
+    const { settings, currency, account } = this.props;
+    const pair = _.find(
+      currency.exchangePairs,
+      el => el.to === settings.exchangeCurrency.toUpperCase()
+    );
     this.state = {
-      recipient: '', amount: '', memo: '',
-      symbol: defaultToken, 
+      recipient: '',
+      amount: '',
+      memo: '',
+      symbol: defaultToken,
       contract: defaultContract,
       quantity: assetToNumber(account.core_liquid_balance),
       precision: 4,
       step: '0.0001',
       equivalent: 0,
-      preffix: pair ? pair.symbol : '',
-      openModal: false,
+      prefix: pair ? pair.symbol : '',
+      openModal: false
     };
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { settings, currency } = newProps;
+    const pair = _.find(
+      currency.exchangePairs,
+      el => el.to === settings.exchangeCurrency.toUpperCase()
+    );
+    this.setState({ prefix: pair ? pair.symbol : '' });
   }
 
   tokens = () => {
     const { settings, account } = this.props;
     const tokens = _.map(settings.tokens[account.account_name], elem => ({
-        text: elem.symbol,
-        value: `${elem.contract}-${elem.symbol}`,
-        key: `${elem.contract}-${elem.symbol}`
-      }));
+      text: elem.symbol,
+      value: `${elem.contract}-${elem.symbol}`,
+      key: `${elem.contract}-${elem.symbol}`
+    }));
 
     if (!tokens.find(element => element.key === defaultToken)) {
       tokens.splice(0, 0, {
@@ -56,60 +73,93 @@ export default class Transfer extends Component<Props> {
     }
 
     return tokens;
-  }
+  };
 
   validateFields = () => {
     const { symbol, recipient, amount } = this.state;
-    return symbol !== '' &&
+    return (
+      symbol !== '' &&
       recipient !== '' &&
       amount !== '' &&
-      parseFloat(amount) > 0;
-  }
+      parseFloat(amount) > 0
+    );
+  };
 
-  handleChange = (e, {name, value}) => {
+  handleChange = (e, { name, value }) => {
     if (name === 'symbol') {
       const [contract, symbol] = value.split('-');
       if (symbol === this.state.symbol) return;
       const { balances, account, currency, settings } = this.props;
-      const pair = _.find(currency.exchangePairs, el => el.to === settings.exchangeCurrency.toUpperCase());
+      const pair = _.find(
+        currency.exchangePairs,
+        el => el.to === settings.exchangeCurrency.toUpperCase()
+      );
       const token = balances.find(el => el.symbol === symbol);
-      const { precision, quantity, step } = token ? 
-        formatPrecisions(token.amount) : 
-        formatPrecisions(account.core_liquid_balance);
+      const { precision, quantity, step } = token
+        ? formatPrecisions(token.amount)
+        : formatPrecisions(account.core_liquid_balance);
 
-      this.setState({ 
-        symbol, 
-        contract, 
-        quantity, 
-        precision, 
-        step, 
-        amount: '', 
-        equivalent: 0, 
-        preffix: pair.symbol });
+      this.setState({
+        symbol,
+        contract,
+        quantity,
+        precision,
+        step,
+        amount: '',
+        equivalent: 0,
+        prefix: pair.symbol
+      });
       return;
     }
     if (name === 'amount') {
       const { symbol } = this.state;
       const { currency, settings } = this.props;
-      const pair = _.find(currency.exchangePairs, el => el.to === settings.exchangeCurrency.toUpperCase());
-      const equivalent = symbol === defaultToken ? pair.value * parseFloat(value) : 0;
-      this.setState({ amount: value, equivalent, preffix: pair.symbol });
+      const pair = _.find(
+        currency.exchangePairs,
+        el => el.to === settings.exchangeCurrency.toUpperCase()
+      );
+      const equivalent =
+        symbol === defaultToken ? pair.value * parseFloat(value) : 0;
+      this.setState({ amount: value, equivalent, prefix: pair.symbol });
       return;
     }
-    this.setState({[name]: value});
-  }
+    this.setState({ [name]: value });
+  };
 
   handleCurrencyChange = (event, maskedvalue, floatvalue) => {
     if (this.state.symbol !== defaultToken) return;
     const { currency, settings } = this.props;
-    const pair = _.find(currency.exchangePairs, el => el.to === settings.exchangeCurrency.toUpperCase());
+    const pair = _.find(
+      currency.exchangePairs,
+      el => el.to === settings.exchangeCurrency.toUpperCase()
+    );
     const amount = numeral(floatvalue / pair.value).format('0.0000');
-    this.setState({ amount, equivalent: floatvalue, preffix: pair.symbol });
-  }
+    this.setState({ amount, equivalent: floatvalue, prefix: pair.symbol });
+  };
 
   handleSubmit = () => {
-
-  }
+    const { actions, account } = this.props;
+    const {
+      contract,
+      symbol,
+      recipient,
+      amount,
+      memo,
+      precision,
+      permission
+    } = this.state;
+    const asset = numberToAsset(amount, symbol.toUpperCase(), precision);
+    actions.checkAndRun(
+      actions.transfer,
+      account.account_name,
+      recipient,
+      asset,
+      memo,
+      contract,
+      permission
+    );
+    this.setState({ openModal: true });
+  };
 
   handleClose = () => {
     const { account, actions } = this.props;
@@ -120,11 +170,21 @@ export default class Transfer extends Component<Props> {
   };
 
   renderForm = () => {
-    const { symbol, recipient, memo, amount, quantity, precision, step, equivalent, preffix, openModal } = this.state;
+    const {
+      symbol,
+      recipient,
+      memo,
+      amount,
+      quantity,
+      precision,
+      step,
+      equivalent,
+      prefix,
+      openModal
+    } = this.state;
     const { account, transaction } = this.props;
 
-    const invalidAmount =
-      parseFloat(amount) > quantity ? 'invalid' : undefined;
+    const invalidAmount = parseFloat(amount) > quantity ? 'invalid' : undefined;
 
     const enableRequest = !invalidAmount && this.validateFields();
 
@@ -134,7 +194,6 @@ export default class Transfer extends Component<Props> {
       text: `@${el.perm_name}`
     }));
 
-    
     const tokens = this.tokens();
 
     return (
@@ -176,13 +235,13 @@ export default class Transfer extends Component<Props> {
               onChange={this.handleChange}
               className="tokendropdown"
             />
-            <input />   
-            <CurrencyInput 
+            <input />
+            <CurrencyInput
               id="form-textarea-control-equivalent"
-              className="currency-equivalent" 
-              prefix={preffix}
+              className="currency-equivalent"
+              prefix={prefix}
               value={equivalent}
-              name='equivalent'
+              name="equivalent"
               disabled={symbol !== defaultToken}
               onChangeEvent={this.handleCurrencyChange}
             />
@@ -212,13 +271,11 @@ export default class Transfer extends Component<Props> {
             />
           </Button.Group>
         </Form.Group>
-      </Form>      
-    )
-  }
+      </Form>
+    );
+  };
 
-  renderContracts = () => {
-
-  }
+  renderContracts = () => {};
 
   render() {
     return (
@@ -235,7 +292,7 @@ export default class Transfer extends Component<Props> {
           </div>
         }
       />
-    )
+    );
   }
 }
 
@@ -262,4 +319,3 @@ function formatPrecisions(balance) {
     step
   };
 }
-
