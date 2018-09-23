@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import ActionsHistory from '../../containers/Wallet/Actions/History';
-import ActionsSend from '../../containers/Wallet/Actions/Send';
+import ActionTransfer from '../../containers/Wallet/Actions/Transfer';
 import ActionDelegate from '../../containers/Wallet/Actions/Delegate';
 import ActionUndelegate from '../../containers/Wallet/Actions/Undelegate';
 import ActionRam from '../../containers/Wallet/Actions/Ram';
@@ -21,7 +21,7 @@ export default class Actions extends Component<Props> {
 
     const panes = {
       history: <ActionsHistory actions={actions} />,
-      transfer: <ActionsSend actions={actions} />,
+      transfer: <ActionTransfer actions={actions} />,
       delegate: <ActionDelegate actions={actions} />,
       undelegate: <ActionUndelegate actions={actions} />,
       ram: <ActionRam actions={actions} />,

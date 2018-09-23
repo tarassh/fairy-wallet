@@ -145,6 +145,10 @@
     margin-right: 10px;
 }
 
+#form-textarea-control-equivalent.currency-equivalent {
+    margin: 0 0 0 0.25em;  
+}
+
 .scrollable {
     overflow: hidden;
     height: 100%;
@@ -393,6 +397,19 @@
     width: 100%;
     height: 100%;
     padding: 0 1rem;
+}
+
+.main-container .main-container-content .transfer .transfer-form {
+    width: 70%;
+    height: 100%;
+    float: left;
+}
+
+.main-container .main-container-content .transfer .transfer-contact-table {
+    width: 30%;
+    height: 100%;
+    float: right;
+    margin-top: -0.6rem;
 }
 
 .main-container .main-container-content .stake .stake-form {
