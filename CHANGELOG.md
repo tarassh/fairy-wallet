@@ -99,4 +99,4 @@
 # 0.9.6 (2018.9.24)
 
 - **Features:** Contact list. Currency equivalent for transfer.
-- **Fixes:** #36: Invalid Packed Transaction error occurs when trying to send EDNA tokens.
+- **Fixes:** Minor fixes.
