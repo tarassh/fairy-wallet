@@ -38,7 +38,7 @@ const persistConfig = {
   key: 'root',
   storage,
   migrate: createMigrate(migrations, { debug: true }),
-  whitelist: ['settings'],
+  whitelist: ['settings', 'contacts'],
   debug: true
 };
 

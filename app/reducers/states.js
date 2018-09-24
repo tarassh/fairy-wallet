@@ -7,6 +7,7 @@ const initialState = {
   accountsRequested: false,
   accountInfoRetrieved: false,
   publicKey: false,
+  addContactFailed: false
 };
 
 export default function states(state = initialState, action) {
@@ -74,6 +75,18 @@ export default function states(state = initialState, action) {
     case types.GET_PUBLIC_KEY_CONFIRM_SUCCESS: {
       return Object.assign({}, state, {
         publicKey: true
+      });
+    }
+
+    case types.ADD_CONTACT_FAILURE: {
+      return Object.assign({}, state, {
+        addContactFailed: true
+      });
+    }
+
+    case types.ADD_CONTACT_REQUEST: {
+      return Object.assign({}, state, {
+        addContactFailed: false
       });
     }
 

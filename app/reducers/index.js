@@ -12,6 +12,7 @@ import failure from './failure';
 import currency from './currency';
 import producers from './producers';
 import global from './global';
+import contacts from './contacts';
 
 const rootReducer = combineReducers({
   ledger,
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   failure,
   currency,
   producers,
-  global
+  global,
+  contacts
 });
 
 export default rootReducer;

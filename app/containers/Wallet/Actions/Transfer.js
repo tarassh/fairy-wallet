@@ -8,12 +8,21 @@ type Props = {
   actions: {},
   balances: {},
   currency: {},
-  settings: {}
+  settings: {},
+  contacts: {}
 };
 
 class TransferContainer extends Component<Props> {
   render() {
-    const { account, transaction, actions, balances, currency, settings } = this.props;
+    const {
+      account,
+      transaction,
+      actions,
+      balances,
+      currency,
+      settings,
+      contacts
+    } = this.props;
 
     return (
       <Transfer
@@ -21,6 +30,7 @@ class TransferContainer extends Component<Props> {
         balances={balances}
         currency={currency}
         settings={settings}
+        contacts={contacts}
         transaction={transaction}
         actions={actions}
       />
@@ -34,7 +44,8 @@ function mapStateToProps(state) {
     balances: state.accounts.balances,
     transaction: state.transaction,
     currency: state.currency,
-    settings: state.settings
+    settings: state.settings,
+    contacts: state.contacts
   };
 }
 

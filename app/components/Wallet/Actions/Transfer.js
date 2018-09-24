@@ -1,7 +1,7 @@
 // @flow
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Button, Dropdown } from 'semantic-ui-react';
+import { Form, Button, Dropdown, List, Grid, Icon } from 'semantic-ui-react';
 import CurrencyInput from 'react-currency-input';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import MainContentContainer from './../../../components/Shared/UI/MainContent';
@@ -10,12 +10,16 @@ import {
   InputFloat
 } from '../../../components/Shared/EosComponents';
 import { assetToNumber, numberToAsset } from '../../../utils/asset';
+import ScrollingTable from '../../Shared/UI/ScrollingTable';
+import ContactAddModal from '../ContactAddModal';
+import ContactRemoveModal from '../ContactRemoveModal';
 
 type Props = {
   currency: {},
   settings: {},
   account: {},
   balances: {},
+  contacts: {},
   transaction: {},
   actions: {}
 };
@@ -43,7 +47,10 @@ export default class Transfer extends Component<Props> {
       step: '0.0001',
       equivalent: 0,
       prefix: pair ? pair.symbol : '',
-      openModal: false
+      openModal: false,
+      openAdd: false,
+      openRemove: false,
+      contact: {}
     };
   }
 
@@ -83,6 +90,10 @@ export default class Transfer extends Component<Props> {
       amount !== '' &&
       parseFloat(amount) > 0
     );
+  };
+
+  handleContactSelected = (e, { name }) => {
+    this.setState({ recipient: name });
   };
 
   handleChange = (e, { name, value }) => {
@@ -167,6 +178,22 @@ export default class Transfer extends Component<Props> {
     actions.getAccount(account.account_name);
 
     this.setState({ openModal: false });
+  };
+
+  removeContact = contact => {
+    this.setState({ openRemove: true, contact });
+  };
+
+  addContact = () => {
+    this.setState({ openAdd: true });
+  };
+
+  handleAddClose = () => {
+    this.setState({ openAdd: false });
+  };
+
+  handleRemoveClose = () => {
+    this.setState({ openRemove: false, contact: {} });
   };
 
   renderForm = () => {
@@ -275,7 +302,79 @@ export default class Transfer extends Component<Props> {
     );
   };
 
-  renderContracts = () => {};
+  renderHeader = () => (
+    <Grid className="tableheader">
+      <Grid.Row textAlign="center">
+        <Grid.Column width={16}>
+          <p className="tableheadertitle">
+            contacts{' '}
+            {
+              <Icon
+                name="add circle"
+                onClick={() => this.addContact()}
+                style={{ cursor: 'pointer' }}
+                className="airdrop-token-add"
+              />
+            }
+          </p>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  );
+
+  renderContact = contact => (
+    <Grid>
+      <Grid.Column width={12}>
+        <Grid.Row className="airdrop-token">{contact.title}</Grid.Row>
+        <Grid.Row className="airdrop-token">{contact.name}</Grid.Row>
+      </Grid.Column>
+      <Grid.Column
+        width={2}
+        verticalAlign="middle"
+        onClick={() => this.removeContact(contact)}
+        style={{ cursor: 'pointer' }}
+        className="airdrop-token-remove"
+      >
+        <Icon name="times circle outline" />
+      </Grid.Column>
+    </Grid>
+  );
+
+  renderContracts = () => {
+    const { contacts, actions } = this.props;
+    const { openAdd, openRemove, contact } = this.state;
+    return (
+      <ScrollingTable
+        header={this.renderHeader()}
+        content={
+          <span>
+            <ContactAddModal
+              open={openAdd}
+              handleClose={this.handleAddClose}
+              actions={actions}
+            />
+            <ContactRemoveModal
+              open={openRemove}
+              handleClose={this.handleRemoveClose}
+              actions={actions}
+              contact={contact}
+            />
+            <List divided style={{ marginBottom: '2em' }} selection>
+              {_.map(contacts.list, _contact => (
+                <List.Item
+                  key={_contact.name}
+                  name={_contact.name}
+                  onClick={this.handleContactSelected}
+                >
+                  {this.renderContact(_contact)}
+                </List.Item>
+              ))}
+            </List>
+          </span>
+        }
+      />
+    );
+  };
 
   render() {
     return (

@@ -11,6 +11,7 @@ import * as CurrencyActions from '../actions/currency';
 import * as ProducersActions from '../actions/producers';
 import * as GlobalActions from '../actions/global';
 import * as SettingsActions from '../actions/settings';
+import * as ContactActions from '../actions/contacts';
 
 type Props = {
   actions: {},
@@ -20,7 +21,8 @@ type Props = {
   history: {},
   currency: {},
   failure: {},
-  settings: {}
+  settings: {},
+  contacts: {}
 };
 
 class WalletContainer extends Component<Props> {
@@ -54,7 +56,8 @@ class WalletContainer extends Component<Props> {
       currency,
       failure,
       actions,
-      settings
+      settings,
+      contacts
     } = this.props;
 
     return (
@@ -67,6 +70,7 @@ class WalletContainer extends Component<Props> {
         failure={failure}
         actions={actions}
         settings={settings}
+        contacts={contacts}
       />
     );
   }
@@ -94,7 +98,8 @@ function mapDispatchToProps(dispatch) {
         ...CurrencyActions,
         ...ProducersActions,
         ...GlobalActions,
-        ...SettingsActions
+        ...SettingsActions,
+        ...ContactActions
       },
       dispatch
     )
