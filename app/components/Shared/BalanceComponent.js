@@ -31,7 +31,9 @@ class BalanceComponent extends Component<Props> {
       unstakingTime
     } = balanceStats(account);
 
-    let totalUDS = '';
+    let totalUDS = 'Total Balance';
+    let availableCur = 'Available';
+    let stakedCur = 'Staked';
     if (currency.exchangePairs.length > 0) {
       const exchange = currency.exchangePairs.find(
         el => el.to === settings.exchangeCurrency.toUpperCase()
@@ -40,6 +42,14 @@ class BalanceComponent extends Component<Props> {
         let value = totalNum * exchange.value;
         value = `${numeral(value).format('0,0.00')}${exchange.symbol}`;
         totalUDS = `Total Balance • ${value}`;
+
+        value = assetToNumber(liquid) * exchange.value;
+        value = `${numeral(value).format('0,0.00')}${exchange.symbol}`;
+        availableCur = `Available • ${value}`;
+
+        value = assetToNumber(staked) * exchange.value;
+        value = `${numeral(value).format('0,0.00')}${exchange.symbol}`;
+        stakedCur = `Staked • ${value}`;
       }
     }
 
@@ -55,13 +65,13 @@ class BalanceComponent extends Component<Props> {
           <FairyMenu.MenuItem>
             <FairyDataBlock
               data={<p className="title">{liquid}</p>}
-              description={<p className="subtitle">Available</p>}
+              description={<p className="subtitle">{availableCur}</p>}
             />
           </FairyMenu.MenuItem>
           <FairyMenu.MenuItem>
             <FairyDataBlock
               data={<p className="title">{staked}</p>}
-              description={<p className="subtitle">Staked</p>}
+              description={<p className="subtitle">{stakedCur}</p>}
             />
           </FairyMenu.MenuItem>
         </FairyMenu>

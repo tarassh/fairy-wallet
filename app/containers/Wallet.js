@@ -84,7 +84,8 @@ function mapStateToProps(state) {
     transaction: state.transaction,
     currency: state.currency,
     failure: state.failure,
-    settings: state.settings
+    settings: state.settings,
+    contacts: state.contacts
   };
 }
 
