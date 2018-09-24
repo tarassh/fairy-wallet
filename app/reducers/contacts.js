@@ -28,8 +28,9 @@ export default function contracts(state = initialState, action) {
       const { list } = state;
       const index = list.findIndex(el => el.name === action.name);
       if (index !== -1) {
+        list.splice(index, 1);
         return Object.assign({}, state, {
-          list: list.splice(index, 1)
+          list
         });
       }
       return state;
