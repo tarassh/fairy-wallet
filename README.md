@@ -3,7 +3,7 @@
 </p>
 
 
-[![version](https://img.shields.io/badge/release-0.9.5-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
+[![version](https://img.shields.io/badge/release-0.9.6-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
 
 # Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
 
@@ -25,13 +25,13 @@
 
 ## Releases
 
-The latest release version is 0.9.5. To download application use one the following links:
+The latest release version is 0.9.6. To download application use one the following links:
 
-- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.5/FairyWallet-0.9.5.dmg)
-- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.5/FairyWallet.Setup.0.9.5.exe)
-- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.5/fairy-wallet_0.9.5_amd64.deb)
+- [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.6/FairyWallet-0.9.6.dmg)
+- [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.6/FairyWallet.Setup.0.9.6.exe)
+- [for Linux](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.6/fairy-wallet_0.9.6_amd64.deb)
 
-Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.9.5
+Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.9.6
 
 
 **NOTE**: Wallet on Linux may require additional permitions for the device. To add permitions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 
@@ -72,7 +72,6 @@ If you want to do testing of this application you can connect to available testn
 
 [Jungle Testnet](http://jungle.cryptolions.io/) - operated by [CryptoLions](http://CryptoLions.io/):
 
-* https://jungle.eosio.cr
 * http://jungle.cryptolions.io:18888
 * http://dev.cryptolions.io:38888
 
