@@ -1,5 +1,6 @@
 // @flow
 import _ from 'lodash';
+import { shell } from 'electron';
 import React, { Component } from 'react';
 import { Form, Button, Icon, List } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -65,7 +66,7 @@ class NoAccountsContainer extends Component<Props> {
               </List.Content>
             </List.Item>
 
-            <List.Item
+            {/* <List.Item
               active={copied && !accountExists}
               className={accountExists ? 'visited' : undefined}
             >
@@ -73,6 +74,17 @@ class NoAccountsContainer extends Component<Props> {
               <List.Content>
                 <List.Header>Choose account name</List.Header>
                 <p className="subtitle">Then proceed to payment</p>
+              </List.Content>
+            </List.Item> */}
+
+            <List.Item
+              active={copied && !accountExists}
+              className={accountExists ? 'visited' : undefined}
+            >
+              <Icon name="add user" />
+              <List.Content>
+                <List.Header>Create account</List.Header>
+                <p className="subtitle">Application will automatically detect new account once it created</p>
               </List.Content>
             </List.Item>
 
@@ -120,6 +132,10 @@ class NoAccountsContainer extends Component<Props> {
     return content;
   };
 
+  handleClick(e, data) {
+    shell.openExternal(data.children);
+  }
+
   renderSecond = () => {
     const { accounts } = this.props;
 
@@ -128,26 +144,46 @@ class NoAccountsContainer extends Component<Props> {
       width: '100%',
       boxShadow: '1px 1px 1px 1px rgba(0, 0, 0, 0.15)'
     };
+    // const content = (
+    //   <div className="center">
+    //     <div className="header">
+    //       <div>
+    //         Public key&nbsp;
+    //         <span className="public-key">{accounts.publicKey.wif}</span>
+    //       </div>
+    //       <br />
+    //       <p>
+    //         Now choose your account name. Then compare the keys, that we have
+    //         already filled in for you.
+    //       </p>
+    //     </div>
+    //     <WebViewWrapper
+    //       style={webViewStyle}
+    //       accounts={accounts}
+    //       publicKey={accounts.publicKey.wif}
+    //       onLogin={this.onLogin}
+    //       checkAccountExists={this.props.checkAccountExists}
+    //     />
+    //   </div>
+    // );
+
     const content = (
       <div className="center">
         <div className="header">
           <div>
-            Public key&nbsp;
+            <p>Public key&nbsp;</p>
             <span className="public-key">{accounts.publicKey.wif}</span>
           </div>
           <br />
           <p>
-            Now choose your account name. Then compare the keys, that we have
-            already filled in for you.
+            Now use your Public Key with one of the following account creation services.
           </p>
+          <List>
+            <List.Item as='a' onClick={this.handleClick}>https://eos-account-creator.com</List.Item>
+            <List.Item as='a' onClick={this.handleClick}>https://www.zeos.co</List.Item>
+            <List.Item as='a' onClick={this.handleClick}>https://eostoolkit.io/account/create</List.Item>
+          </List>
         </div>
-        <WebViewWrapper
-          style={webViewStyle}
-          accounts={accounts}
-          publicKey={accounts.publicKey.wif}
-          onLogin={this.onLogin}
-          checkAccountExists={this.props.checkAccountExists}
-        />
       </div>
     );
 
