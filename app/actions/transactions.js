@@ -511,6 +511,74 @@ export function buyrambytes(recipient, bytes, permission = '') {
   };
 }
 
+export function updateauth(permission, parent, auth, authorization = '') {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+    dispatch({
+      type: types.UPDATE_AUTH_REQUEST,
+      context: {
+        contract: constants.eos.eosio,
+        action: constants.eos.updateauth,
+        permission,
+        parent,
+        auth
+      }
+    });
+
+    const withPermission =
+      authorization === ''
+        ? accounts.account.permissions[0].perm_name
+        : authorization;
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.UPDATE_AUTH_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.UPDATE_AUTH_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
+    };
+
+    return eos(modified)
+      .transaction(constants.eos.eosio, contract => {
+        contract.updateauth(account.account_name, permission, parent, auth);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.UPDATE_AUTH_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.UPDATE_AUTH_FAILURE,
+          err
+        });
+      });
+  };
+}
+
 export default {
   resetState,
   transfer,
@@ -520,5 +588,6 @@ export default {
   buyram,
   buyrambytes,
   sellram,
+  updateauth,
   checkAndRun
 };

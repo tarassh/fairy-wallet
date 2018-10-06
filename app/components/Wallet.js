@@ -183,6 +183,14 @@ export default class Wallet extends Component<Props> {
           VOTING
         </Menu.Item>
         <Menu.Item
+          name="permissions"
+          active={activeItem === 'permissions'}
+          onClick={this.handleItemClick}
+        >
+          <Icon name="list" />
+          PERMISSIONS
+        </Menu.Item>
+        <Menu.Item
           name="settings"
           active={activeItem === 'settings'}
           onClick={this.handleItemClick}

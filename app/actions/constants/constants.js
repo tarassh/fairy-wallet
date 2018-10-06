@@ -10,7 +10,8 @@ const eos = {
   voteproducer: 'voteproducer',
   buyram: 'buyram',
   buyrambytes: 'buyrambytes',
-  sellram: 'sellram'
+  sellram: 'sellram',
+  updateauth: 'updateauth'
 };
 
 export default { eos };

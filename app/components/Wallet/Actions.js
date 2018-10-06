@@ -7,6 +7,7 @@ import ActionUndelegate from '../../containers/Wallet/Actions/Undelegate';
 import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 import ActionSettings from '../../containers/Wallet/Actions/Settings';
+import ActionUpdateAuth from '../../containers/Wallet/Actions/UpdateAuth';
 
 type Props = {
   activeItem: string,
@@ -26,11 +27,10 @@ export default class Actions extends Component<Props> {
       undelegate: <ActionUndelegate actions={actions} />,
       ram: <ActionRam actions={actions} />,
       voting: <ActionVote actions={actions} />,
-      settings: <ActionSettings actions={actions} />
+      settings: <ActionSettings actions={actions} />,
+      permissions: <ActionUpdateAuth actions={actions} />
     };
 
-    return (
-        panes[activeItem]
-    );
+    return panes[activeItem];
   }
 }
