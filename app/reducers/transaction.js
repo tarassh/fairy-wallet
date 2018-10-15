@@ -21,6 +21,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.DELETE_AUTH_SUCCESS:
     case types.UPDATE_AUTH_SUCCESS:
     case types.BUYRAMBYTES_SUCCESS:
     case types.SELLRAM_SUCCESS:
@@ -34,6 +35,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.DELETE_AUTH_REQUEST:
     case types.UPDATE_AUTH_REQUEST:
     case types.BUYRAMBYTES_REQUEST:
     case types.SELLRAM_REQUEST:
@@ -49,6 +51,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.DELETE_AUTH_FAILURE:
     case types.UPDATE_AUTH_FAILURE:
     case types.BUYRAMBYTES_FAILURE:
     case types.SELLRAM_FAILURE:
@@ -62,6 +65,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.DELETE_AUTH_CONSTRUCTED:
     case types.UPDATE_AUTH_CONSTRUCTED:
     case types.SELLRAM_CONSTRUCTED:
     case types.BUYRAMBYTES_CONSTRUCTED:
@@ -75,6 +79,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.DELETE_AUTH_SIGNED:
     case types.UPDATE_AUTH_SIGNED:
     case types.SELLRAM_SIGNED:
     case types.BUYRAMBYTES_SIGNED:
