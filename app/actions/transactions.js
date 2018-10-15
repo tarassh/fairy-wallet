@@ -645,6 +645,141 @@ export function deleteauth(permission, authorization = '') {
   };
 }
 
+export function linkauth(code, action, permission, authorization = '') {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+    dispatch({
+      type: types.LINK_AUTH_REQUEST,
+      context: {
+        contract: constants.eos.eosio,
+        action: constants.eos.linkauth,
+        code,
+        codeAction: action,
+        permission
+      }
+    });
+
+    const withPermission =
+      authorization === ''
+        ? accounts.account.permissions[0].perm_name
+        : authorization;
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.LINK_AUTH_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.LINK_AUTH_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
+    };
+
+    return eos(modified)
+      .transaction(constants.eos.eosio, contract => {
+        contract.linkauth(account.account_name, code, action, permission);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.LINK_AUTH_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.LINK_AUTH_FAILURE,
+          err
+        });
+      });
+  };
+}
+
+export function unlinkauth(code, action, authorization = '') {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+    dispatch({
+      type: types.UNLINK_AUTH_REQUEST,
+      context: {
+        contract: constants.eos.eosio,
+        action: constants.eos.unlinkauth,
+        code,
+        codeAction: action
+      }
+    });
+
+    const withPermission =
+      authorization === ''
+        ? accounts.account.permissions[0].perm_name
+        : authorization;
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.UNLINK_AUTH_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.UNLINK_AUTH_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
+    };
+
+    return eos(modified)
+      .transaction(constants.eos.eosio, contract => {
+        contract.unlinkauth(account.account_name, code, action);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.UNLINK_AUTH_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.UNLINK_AUTH_FAILURE,
+          err
+        });
+      });
+  };
+}
+
 export default {
   resetState,
   transfer,
@@ -656,5 +791,7 @@ export default {
   sellram,
   updateauth,
   deleteauth,
+  linkauth,
+  unlinkauth,
   checkAndRun
 };

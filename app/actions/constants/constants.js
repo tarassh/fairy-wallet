@@ -12,7 +12,9 @@ const eos = {
   buyrambytes: 'buyrambytes',
   sellram: 'sellram',
   updateauth: 'updateauth',
-  deleteauth: 'deleteauth'
+  deleteauth: 'deleteauth',
+  linkauth: 'linkauth',
+  unlinkauth: 'unlinkauth'
 };
 
 export default { eos };
