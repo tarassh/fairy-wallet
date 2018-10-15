@@ -21,6 +21,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.REFUND_SUCCESS:
     case types.LINK_AUTH_SUCCESS:
     case types.UNLINK_AUTH_SUCCESS:
     case types.DELETE_AUTH_SUCCESS:
@@ -37,6 +38,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.REFUND_REQUEST:
     case types.LINK_AUTH_REQUEST:
     case types.UNLINK_AUTH_REQUEST:
     case types.DELETE_AUTH_REQUEST:
@@ -55,6 +57,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.REFUND_FAILURE:
     case types.LINK_AUTH_FAILURE:
     case types.UNLINK_AUTH_FAILURE:
     case types.DELETE_AUTH_FAILURE:
@@ -71,6 +74,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.REFUND_CONSTRUCTED:
     case types.LINK_AUTH_CONSTRUCTED:
     case types.UNLINK_AUTH_CONSTRUCTED:
     case types.DELETE_AUTH_CONSTRUCTED:
@@ -87,6 +91,7 @@ export default function transaction(state = initialState, action) {
       });
     }
 
+    case types.REFUND_SIGNED:
     case types.LINK_AUTH_SIGNED:
     case types.UNLINK_AUTH_SIGNED:
     case types.DELETE_AUTH_SIGNED:

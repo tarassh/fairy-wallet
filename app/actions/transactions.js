@@ -780,6 +780,71 @@ export function unlinkauth(code, action, authorization = '') {
   };
 }
 
+export function refund(authorization = '') {
+  return (dispatch: () => void, getState) => {
+    const { accounts, connection, ledger } = getState();
+    const { account } = accounts;
+    dispatch({
+      type: types.REFUND_REQUEST,
+      context: {
+        contract: constants.eos.eosio,
+        action: constants.eos.refund
+      }
+    });
+
+    const withPermission =
+      authorization === ''
+        ? accounts.account.permissions[0].perm_name
+        : authorization;
+
+    const signProvider = async ({ transaction }) => {
+      const { fc } = eos(connection);
+      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
+      dispatch({
+        type: types.REFUND_CONSTRUCTED,
+        constructed: true
+      });
+
+      const api = new Api(ledger.transport);
+      const result = await api.signTransaction(
+        ledger.bip44Path,
+        buffer.toString('hex')
+      );
+      const rawSig = result.v + result.r + result.s;
+
+      dispatch({
+        type: types.REFUND_SIGNED,
+        signed: true
+      });
+      return rawSig;
+    };
+
+    const promiseSigner = args => Promise.resolve(signProvider(args));
+    const modified = {
+      ...connection,
+      signProvider: promiseSigner,
+      authorization: `${account.account_name}@${withPermission}`
+    };
+
+    return eos(modified)
+      .transaction(constants.eos.eosio, contract => {
+        contract.refund(account.account_name);
+      })
+      .then(receipt =>
+        dispatch({
+          type: types.REFUND_SUCCESS,
+          receipt
+        })
+      )
+      .catch(err => {
+        dispatch({
+          type: types.REFUND_FAILURE,
+          err
+        });
+      });
+  };
+}
+
 export default {
   resetState,
   transfer,

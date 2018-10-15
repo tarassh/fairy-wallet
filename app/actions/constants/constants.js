@@ -14,7 +14,8 @@ const eos = {
   updateauth: 'updateauth',
   deleteauth: 'deleteauth',
   linkauth: 'linkauth',
-  unlinkauth: 'unlinkauth'
+  unlinkauth: 'unlinkauth',
+  refund: 'refund'
 };
 
 export default { eos };
