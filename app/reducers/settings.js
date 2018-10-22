@@ -19,7 +19,7 @@ const initialState = {
     }
   ],
   selectedTheme: '',
-  exchangeCurrency: ''
+  exchangeCurrency: 'usd'
 };
 
 export default function settings(state = initialState, action) {
