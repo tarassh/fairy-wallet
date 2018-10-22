@@ -8,6 +8,7 @@ import ActionRam from '../../containers/Wallet/Actions/Ram';
 import ActionVote from '../../containers/Wallet/Actions/Vote';
 import ActionSettings from '../../containers/Wallet/Actions/Settings';
 import ActionUpdateAuth from '../../containers/Wallet/Actions/UpdateAuth';
+import ActionRefund from '../../containers/Wallet/Actions/Refund';
 
 type Props = {
   activeItem: string,
@@ -28,7 +29,8 @@ export default class Actions extends Component<Props> {
       ram: <ActionRam actions={actions} />,
       voting: <ActionVote actions={actions} />,
       settings: <ActionSettings actions={actions} />,
-      permissions: <ActionUpdateAuth actions={actions} />
+      permissions: <ActionUpdateAuth actions={actions} />,
+      refund: <ActionRefund actions={actions} />
     };
 
     return panes[activeItem];

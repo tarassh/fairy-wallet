@@ -167,6 +167,14 @@ export default class Wallet extends Component<Props> {
           UNDELEGATE
         </Menu.Item>
         <Menu.Item
+          name="refund"
+          active={activeItem === 'refund'}
+          onClick={this.handleItemClick}
+        >
+          <Icon name="redo" />
+          REFUND
+        </Menu.Item>
+        <Menu.Item
           name="ram"
           active={activeItem === 'ram'}
           onClick={this.handleItemClick}
