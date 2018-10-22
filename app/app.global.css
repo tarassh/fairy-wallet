@@ -277,7 +277,12 @@ body.dark-mode .ui.basic.label.history-action.delegatebw,
 body.dark-mode .ui.basic.label.history-action.undelegatebw,
 body.dark-mode .ui.basic.label.history-action.sellram,
 body.dark-mode .ui.basic.label.history-action.buyram,
-body.dark-mode .ui.basic.label.history-action.buyrambytes {
+body.dark-mode .ui.basic.label.history-action.buyrambytes,
+body.dark-mode .ui.basic.label.history-action.refund,
+body.dark-mode .ui.basic.label.history-action.updateauth,
+body.dark-mode .ui.basic.label.history-action.deleteauth,
+body.dark-mode .ui.basic.label.history-action.linkauth,
+body.dark-mode .ui.basic.label.history-action.unlinkauth {
     color: #78dce8 !important;
     border-color: #78dce8;
     background: transparent;

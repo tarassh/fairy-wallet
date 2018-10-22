@@ -31,6 +31,24 @@ const buyrambytes = new RegExp(
 
 const sellram = new RegExp(`^account ${account} bytes [0-9]+$`);
 
+const refund = new RegExp(`^owner ${account}$`);
+
+const updateauth = new RegExp(
+  `^account ${account} permission ${account} parent ${account} auth .+$`
+);
+
+const deleteauth = new RegExp(
+  `^account ${account} permission ${account}$`
+);
+
+const linkauth = new RegExp(
+  `^account ${account} code ${account} type ${account} requirement ${account}$`
+);
+
+const unlinkauth = new RegExp(
+  `^account ${account} code ${account} type ${account}$`
+);
+
 const re = {
   symbol: new RegExp(`^${symbol}$`),
   float: new RegExp(`^${float}$`),
@@ -47,7 +65,12 @@ const re = {
   buyram,
   buyrambytes,
   sellram,
-  voteproducer
+  voteproducer,
+  refund,
+  updateauth,
+  deleteauth,
+  linkauth,
+  unlinkauth
 };
 
 const fn = {
@@ -125,7 +148,47 @@ const fn = {
       desc: `for ${producers.length} producers`,
       prettyname: 'vote'
     };
-  }
+  },
+
+  refund: action => {
+    const { owner } = action.data;
+    return {
+      desc: `to ${owner}`,
+      prettyname: 'refund'
+    };
+  },
+
+  updateauth: action => {
+    const { account, permission } = action.data;
+    return {
+      desc: `${permission} for ${account}`,
+      prettyname: 'update authority'
+    }
+  },
+
+  deleteauth: action => {
+    const { account, permission } = action.data;
+    return {
+      desc: `${permission} from ${account}`,
+      prettyname: 'delete authority'
+    }
+  },
+
+  linkauth: action => {
+    const { account, code, requirement, type } = action.data;
+    return {
+      desc: `${requirement} to action ${code}::${type} for ${account}`,
+      prettyname: 'link authority'
+    }
+  },
+
+  unlinkauth: action => {
+    const { account, code, type }= action.data;
+    return {
+      desc: `action ${code}::${type} from ${account}`,
+      prettyname: 'unlink authority'
+    }
+  },
 };
 
 const defaultV = {

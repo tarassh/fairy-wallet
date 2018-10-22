@@ -76,7 +76,12 @@
 .ui.basic.label.history-action.undelegatebw,
 .ui.basic.label.history-action.sellram,
 .ui.basic.label.history-action.buyram,
-.ui.basic.label.history-action.buyrambytes {
+.ui.basic.label.history-action.buyrambytes,
+.ui.basic.label.history-action.refund,
+.ui.basic.label.history-action.updateauth,
+.ui.basic.label.history-action.deleteauth,
+.ui.basic.label.history-action.linkauth,
+.ui.basic.label.history-action.unlinkauth {
     color: rgb(68,91,200) !important;
     border-color: rgb(68,91,200);
 }
