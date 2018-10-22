@@ -18,6 +18,15 @@ const tokenList = [
     account: 'eosatidiumio'
   },
   {
+    name: 'ATMOS',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/atmos.svg',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/atmos.svg',
+    symbol: 'ATMOS',
+    account: 'novusphereio'
+  },
+  {
     name: 'BEAN',
     logo:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/bean.jpg',
@@ -83,11 +92,20 @@ const tokenList = [
   {
     name: 'DEOS Games',
     logo:
-      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/deos.png',
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/deosgames.png',
     logo_lg:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
     symbol: 'DEOS',
     account: 'thedeosgames'
+  },
+  {
+    name: 'DICE',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/dice.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/dice-lg.png',
+    symbol: 'DICE',
+    account: 'betdicetoken'
   },
   {
     name: 'EDNA',
@@ -160,6 +178,15 @@ const tokenList = [
     account: 'eosvrtokenss'
   },
   {
+    name: 'GrandpaETH',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/grandpa-eth.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/grandpa-eth-lg.png',
+    symbol: 'ETH',
+    account: 'grandpacoins'
+  },
+  {
     name: 'Horus Pay',
     logo:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/horuspay.jpg',
@@ -167,6 +194,15 @@ const tokenList = [
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/horuspay-lg.jpg',
     symbol: 'HORUS',
     account: 'horustokenio'
+  },
+  {
+    name: 'Infinicoin',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/infiniverse.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/infiniverse-lg.png',
+    symbol: 'INF',
+    account: 'infinicoinio'
   },
   {
     name: 'IPOS',
@@ -185,6 +221,24 @@ const tokenList = [
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/everpedia-lg.png',
     symbol: 'IQ',
     account: 'everipediaiq'
+  },
+  {
+    name: 'GrandpaBTC',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/grandpa-btc.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/grandpa-btc-lg.png',
+    symbol: 'BTC',
+    account: 'grandpacoins'
+  },
+  {
+    name: 'GrandpaDOGE',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/grandpa-doge.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/grandpa-doge-lg.png',
+    symbol: 'DOGE',
+    account: 'grandpacoins'
   },
   {
     name: 'iRespo',
@@ -214,6 +268,15 @@ const tokenList = [
     account: 'eosiomeetone'
   },
   {
+    name: 'Lelego',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/lelego.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/lelego-lg.png',
+    symbol: 'LLG',
+    account: 'llgonebtotal'
+  },
+  {
     name: 'Oracle Chain',
     logo:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/oraclechain.png',
@@ -232,7 +295,7 @@ const tokenList = [
     account: 'poormantoken'
   },
   {
-    name: 'PUB',
+    name: 'PUBLYTO',
     logo:
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/pub.png',
     logo_lg:
@@ -275,6 +338,33 @@ const tokenList = [
       'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/placeholder-lg.png',
     symbol: 'WECASH',
     account: 'weosservices'
+  },
+  {
+    name: 'ZKS',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/zks.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/zks-lg.png',
+    symbol: 'ZKS',
+    account: 'zkstokensr4u'
+  },
+  {
+    name: 'Crypto Peso',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/cryptopeso.png',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/cryptopeso-lg.png',
+    symbol: 'PSO',
+    account: 'cryptopesosc'
+  },
+  {
+    name: 'CADEOS.io',
+    logo:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/ADE-logo-225x225.jpg',
+    logo_lg:
+      'https://raw.githubusercontent.com/eoscafe/eos-airdrops/master/logos/ADE-logo-225x225.jpg',
+    symbol: 'ADE',
+    account: 'buildertoken'
   }
 ];
 
