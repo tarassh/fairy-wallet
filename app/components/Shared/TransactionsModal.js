@@ -20,6 +20,7 @@ import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import ErrorContext from './ErrorContext';
 import UpdateAuthContext from './UpdateAuthContext';
+import RefundContext from './RefundContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
 import wakeupDevice from '../../../resources/images/wakeup-device.svg';
@@ -48,7 +49,8 @@ const actionDisplayName = {
   buyram: 'Buy RAM',
   buyrambytes: 'Buy RAM bytes',
   sellram: 'Sell RAM',
-  updateauth: 'Update authorization'
+  updateauth: 'Update authorization',
+  refund: 'Refund'
 };
 
 function renderTransaction(transaction, goto) {
@@ -104,6 +106,8 @@ function renderTransaction(transaction, goto) {
     content = <SellRamContext context={context} />;
   } else if (action === 'updateauth') {
     content = <UpdateAuthContext context={context} />;
+  } else if (action === 'refund') {
+    content = <RefundContext context={context} />;
   }
 
   const header = (

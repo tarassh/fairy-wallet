@@ -789,7 +789,8 @@ export function refund(authorization = '') {
       type: types.REFUND_REQUEST,
       context: {
         contract: constants.eos.eosio,
-        action: constants.eos.refund
+        action: constants.eos.refund,
+        account: account.account_name
       }
     });
 
