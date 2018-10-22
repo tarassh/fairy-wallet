@@ -229,7 +229,7 @@ export default class Undelegate extends Component<Props> {
             id="form-input-control-recipient"
             label="From"
             name="recipient"
-            disabled
+            readOnly
             value={recipient}
             onChange={this.handleRecipientChange}
           />

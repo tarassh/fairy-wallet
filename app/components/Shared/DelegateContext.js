@@ -9,7 +9,8 @@ type Props = {
 class DelegateContext extends Component<Props> {
   renderText = () => {
     const { context } = this.props;
-    const actionName = context.action === 'delegatebw' ? 'delegate' : 'undelegate';
+    const actionName =
+      context.action === 'delegatebw' ? 'delegate' : 'undelegate';
     const total = assetToNumber(context.net) + assetToNumber(context.cpu);
     return (
       <p className="dashed-border">
@@ -20,7 +21,7 @@ class DelegateContext extends Component<Props> {
         details are listed below.
       </p>
     );
-  }
+  };
 
   renderDetails = () => {
     const { context } = this.props;
@@ -32,7 +33,7 @@ class DelegateContext extends Component<Props> {
             <Table.Cell>Action</Table.Cell>
             <Table.Cell>From</Table.Cell>
             <Table.Cell>Receiver</Table.Cell>
-            <Table.Cell>Network</Table.Cell>
+            <Table.Cell>NET</Table.Cell>
             <Table.Cell>CPU</Table.Cell>
           </Table.Row>
           <Table.Row>
@@ -46,7 +47,7 @@ class DelegateContext extends Component<Props> {
         </Table.Body>
       </Table>
     );
-  }
+  };
 
   render() {
     const { context } = this.props;
