@@ -99,6 +99,7 @@ export default class UpdateAuth extends Component<Props> {
           open={openModal}
           transaction={transaction}
           handleClose={this.handleClose}
+          size='large'
         />
         <Form onSubmit={this.handleActiveSubmit}>
           <Divider />

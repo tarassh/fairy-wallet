@@ -5,13 +5,12 @@ type Props = {
   context: {}
 };
 
-class TransferContext extends Component<Props> {
+class UpdateAuthContext extends Component<Props> {
   renderText = () => {
     const { context } = this.props;
     return (
       <p className="dashed-border">
-        You are about to transfer <strong>{context.asset}</strong> tokens to{' '}
-        <strong>{context.to}</strong> account. Transaction details are listed
+        You are about to update account <strong>{context.permission}</strong> permission with <strong>{context.auth.keys[0].key}</strong> key. Transaction details are listed
         below.
       </p>
     );
@@ -25,18 +24,22 @@ class TransferContext extends Component<Props> {
           <Table.Row>
             <Table.Cell width={3}>Contract</Table.Cell>
             <Table.Cell>Action</Table.Cell>
-            <Table.Cell>From</Table.Cell>
-            <Table.Cell>To</Table.Cell>
-            <Table.Cell>Quantity</Table.Cell>
-            { context.memo !== '' ? <Table.Cell>Memo</Table.Cell> : undefined }
+            <Table.Cell>Account</Table.Cell>
+            <Table.Cell>Permission</Table.Cell>
+            <Table.Cell>Parent</Table.Cell>
+            <Table.Cell>Threshold</Table.Cell>
+            <Table.Cell>Key</Table.Cell>
+            <Table.Cell>Weight</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>{context.contract}</Table.Cell>
             <Table.Cell>{context.action}</Table.Cell>
-            <Table.Cell>{context.from}</Table.Cell>
-            <Table.Cell>{context.to}</Table.Cell>
-            <Table.Cell>{context.asset}</Table.Cell>
-            { context.memo !== '' ? <Table.Cell>{context.memo}</Table.Cell>: undefined }
+            <Table.Cell>{context.account}</Table.Cell>
+            <Table.Cell>{context.permission}</Table.Cell>
+            <Table.Cell>{context.parent}</Table.Cell>
+            <Table.Cell>{context.auth.threshold}</Table.Cell>
+            <Table.Cell>{context.auth.keys[0].key}</Table.Cell>
+            <Table.Cell>{context.auth.keys[0].weight}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
@@ -60,4 +63,4 @@ class TransferContext extends Component<Props> {
   }
 }
 
-export default TransferContext;
+export default UpdateAuthContext;

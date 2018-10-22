@@ -19,6 +19,7 @@ import BuyRamContext from './BuyRamContext';
 import BuyRamBytesContext from './BuyRamBytesContext';
 import SellRamContext from './SellRamContext';
 import ErrorContext from './ErrorContext';
+import UpdateAuthContext from './UpdateAuthContext';
 import confirmTransaction from '../../../resources/images/confirm-transaction.svg';
 import confirmTransactionFailed from '../../../resources/images/confirm-transaction-failed.svg';
 import wakeupDevice from '../../../resources/images/wakeup-device.svg';
@@ -46,7 +47,8 @@ const actionDisplayName = {
   voteproducer: 'Vote producer',
   buyram: 'Buy RAM',
   buyrambytes: 'Buy RAM bytes',
-  sellram: 'Sell RAM'
+  sellram: 'Sell RAM',
+  updateauth: 'Update authorization'
 };
 
 function renderTransaction(transaction, goto) {
@@ -100,6 +102,8 @@ function renderTransaction(transaction, goto) {
     content = <BuyRamBytesContext context={context} />;
   } else if (action === 'sellram') {
     content = <SellRamContext context={context} />;
+  } else if (action === 'updateauth') {
+    content = <UpdateAuthContext context={context} />;
   }
 
   const header = (
@@ -203,6 +207,7 @@ class TransactionsModal extends Component<Props> {
 
   render() {
     const { open, states, loading } = this.props;
+    const size = this.props.size || 'small';
     let content;
     if (open) {
       if (loading.GET_PUBLIC_KEY === true) {
@@ -218,7 +223,7 @@ class TransactionsModal extends Component<Props> {
       <Transition visible={open} animation="scale" duration={200}>
         <Modal
           open={open}
-          size="small"
+          size={size}
           onClose={this.onClose}
           style={{ textAlign: 'center' }}
         >

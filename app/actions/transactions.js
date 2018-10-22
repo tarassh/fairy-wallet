@@ -520,6 +520,7 @@ export function updateauth(permission, parent, auth, authorization = '') {
       context: {
         contract: constants.eos.eosio,
         action: constants.eos.updateauth,
+        account: account.account_name,
         permission,
         parent,
         auth
@@ -858,5 +859,6 @@ export default {
   deleteauth,
   linkauth,
   unlinkauth,
+  refund,
   checkAndRun
 };
