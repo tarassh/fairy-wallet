@@ -56,12 +56,16 @@ export class ListAccountsContainer extends Component<Props> {
           <Grid.Column width={6}>
             <Form>
               <Segment>
-                <List divided relaxed>
+                <List divided relaxed animated>
                   {accountRender}
                 </List>
               </Segment>
               <div>
-                <Button content="Back" onClick={this.onGoBack} />
+                <Button
+                  icon="arrow alternate circle left"
+                  content="Back"
+                  onClick={this.onGoBack}
+                />
               </div>
             </Form>
           </Grid.Column>
