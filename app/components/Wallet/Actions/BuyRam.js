@@ -1,7 +1,8 @@
-import _ from 'lodash';
+// @flow
 import React, { Component } from 'react';
-import { Form, Radio, Button, Dropdown } from 'semantic-ui-react';
+import { Form, Radio } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
+import PermissionButton from '../../Shared/UI/PermissionButton';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
 
@@ -72,12 +73,6 @@ export default class BuyRam extends Component<Props> {
       disabled = true;
     }
 
-    const permissions = _.map(account.permissions, el => ({
-      key: el.perm_name,
-      value: el.perm_name,
-      text: `@${el.perm_name}`
-    }));
-
     return (
       <div>
         <TransactionsModal
@@ -131,18 +126,12 @@ export default class BuyRam extends Component<Props> {
             />
           </Form.Group>
           <Form.Group id="form-button-control-public">
-            <Button.Group>
-              <Button content="Buy Ram" disabled={disabled} />
-              <Dropdown
-                options={permissions}
-                floating
-                name="permission"
-                button
-                className="icon permission"
-                disabled={disabled}
-                onChange={this.handleChange}
-              />
-            </Button.Group>
+            <PermissionButton 
+              content="But RAM"
+              disabled={disabled}
+              account={account}
+              onChange={this.handleChange}
+            />
           </Form.Group>
         </Form>
       </div>

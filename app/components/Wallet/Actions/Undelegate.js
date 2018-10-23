@@ -1,11 +1,12 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Grid, List, Label, Button, Dropdown } from 'semantic-ui-react';
+import { Form, Grid, List, Label } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import { numberToAsset, assetToNumber } from '../../../utils/asset';
 import { InputFloat, InputAccount } from '../../Shared/EosComponents';
 import MainContentContainer from '../../Shared/UI/MainContent';
 import ScrollingTable from '../../Shared/UI/ScrollingTable';
+import PermissionButton from '../../Shared/UI/PermissionButton';
 
 const numeral = require('numeral');
 const exactMath = require('exact-math');
@@ -211,12 +212,6 @@ export default class Undelegate extends Component<Props> {
     const enableRequest =
       this.validateFields() && !validCpu.isInvalid && !validNet.isInvalid;
 
-    const permissions = _.map(account.permissions, el => ({
-      key: el.perm_name,
-      value: el.perm_name,
-      text: `@${el.perm_name}`
-    }));
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
@@ -257,18 +252,12 @@ export default class Undelegate extends Component<Props> {
           />
         </Form.Field>
         <Form.Group id="form-button-control-public">
-          <Button.Group>
-            <Button content="Undelegate" disabled={!enableRequest} />
-            <Dropdown
-              options={permissions}
-              floating
-              name="permission"
-              button
-              className="icon permission"
-              disabled={!enableRequest}
-              onChange={this.handleChange}
-            />
-          </Button.Group>
+          <PermissionButton 
+            content="Undelegate"
+            disabled={!enableRequest}
+            account={account}
+            onChange={this.handleChange}
+          />
         </Form.Group>
       </Form>
     );

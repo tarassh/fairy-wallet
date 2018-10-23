@@ -3,16 +3,15 @@ import React, { Component } from 'react';
 import {
   List,
   Checkbox,
-  Button,
   Grid,
   Form,
   Menu,
   Image,
-  Dropdown
 } from 'semantic-ui-react';
 import { shell } from 'electron';
 import _ from 'lodash';
 import TransactionsModal from '../../Shared/TransactionsModal';
+import PermissionButton from '../../Shared/UI/PermissionButton';
 import { InputAccount } from '../../Shared/EosComponents';
 import MainContentContainer from './../../Shared/UI/MainContent';
 import ScrollingTable from './../../Shared/UI/ScrollingTable';
@@ -259,12 +258,6 @@ export default class Vote extends Component<Props> {
       </Menu>
     );
 
-    const permissions = _.map(accounts.account.permissions, el => ({
-      key: el.perm_name,
-      value: el.perm_name,
-      text: `@${el.perm_name}`
-    }));
-
     return (
       <MainContentContainer
         title="Vote for block producers"
@@ -290,17 +283,12 @@ export default class Vote extends Component<Props> {
                     icon="search"
                   />
                   <Form.Group>
-                    <Button.Group>
-                      <Button content="Vote" onClick={this.handleSubmit} />
-                      <Dropdown
-                        options={permissions}
-                        floating
-                        name="permission"
-                        button
-                        className="icon permission"
-                        onChange={this.handleChange}
-                      />
-                    </Button.Group>
+                    <PermissionButton 
+                      content="Vote"
+                      account={accounts.account}
+                      onChange={this.handleChange}
+                      onClick={this.handleSubmit}
+                    />
                   </Form.Group>
                 </Form.Group>
               </Form>

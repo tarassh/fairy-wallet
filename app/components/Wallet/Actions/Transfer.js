@@ -1,7 +1,7 @@
 // @flow
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Form, Button, Dropdown, List, Grid, Icon } from 'semantic-ui-react';
+import { Form, List, Grid, Icon } from 'semantic-ui-react';
 import CurrencyInput from 'react-currency-input';
 import TransactionsModal from '../../../components/Shared/TransactionsModal';
 import MainContentContainer from './../../../components/Shared/UI/MainContent';
@@ -11,6 +11,7 @@ import {
 } from '../../../components/Shared/EosComponents';
 import { assetToNumber, numberToAsset } from '../../../utils/asset';
 import ScrollingTable from '../../Shared/UI/ScrollingTable';
+import PermissionButton from '../../Shared/UI/PermissionButton';
 import ContactAddModal from '../ContactAddModal';
 import ContactRemoveModal from '../ContactRemoveModal';
 
@@ -215,12 +216,6 @@ export default class Transfer extends Component<Props> {
 
     const enableRequest = !invalidAmount && this.validateFields();
 
-    const permissions = _.map(account.permissions, el => ({
-      key: el.perm_name,
-      value: el.perm_name,
-      text: `@${el.perm_name}`
-    }));
-
     const tokens = this.tokens();
 
     return (
@@ -281,22 +276,16 @@ export default class Transfer extends Component<Props> {
           name="memo"
           value={memo}
           onChange={this.handleChange}
-          maxLength={80}
-          placeholder="80 symbols long..."
+          maxLength={127}
+          placeholder="127 symbols long..."
         />
         <Form.Group id="form-button-control-public">
-          <Button.Group>
-            <Button content="Transfer" disabled={!enableRequest} />
-            <Dropdown
-              options={permissions}
-              floating
-              name="permission"
-              button
-              className="icon permission"
-              disabled={!enableRequest}
-              onChange={this.handleChange}
-            />
-          </Button.Group>
+          <PermissionButton
+            account={account}
+            content="Transfer"
+            disabled={!enableRequest}
+            onChange={this.handleChange}
+          />
         </Form.Group>
       </Form>
     );

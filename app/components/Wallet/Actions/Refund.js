@@ -1,8 +1,9 @@
-import _ from 'lodash';
+// @flow
 import React, { Component } from 'react';
-import { Form, Button, Dropdown } from 'semantic-ui-react';
+import { Form } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import MainContentContainer from '../../Shared/UI/MainContent';
+import PermissionButton from '../../Shared/UI/PermissionButton';
 
 type Props = {
   account: {},
@@ -41,12 +42,6 @@ export default class Refund extends Component<Props> {
     const { transaction, account } = this.props;
     const { openModal } = this.state;
 
-    const permissions = _.map(account.permissions, el => ({
-      key: el.perm_name,
-      value: el.perm_name,
-      text: `@${el.perm_name}`
-    }));
-
     return (
       <Form onSubmit={this.handleSubmit}>
         <TransactionsModal
@@ -55,17 +50,11 @@ export default class Refund extends Component<Props> {
           handleClose={this.handleClose}
         />
         <Form.Group id="form-button-control-public">
-          <Button.Group>
-            <Button content="Refund" />
-            <Dropdown
-              options={permissions}
-              floating
-              name="permission"
-              button
-              className="icon permission"
-              onChange={this.handleChange}
-            />
-          </Button.Group>
+          <PermissionButton 
+            content="Refund"
+            onChange={this.handleChange}
+            account={account}
+          />
         </Form.Group>
       </Form>
     );
