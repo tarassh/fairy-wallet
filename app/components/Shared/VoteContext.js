@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Header } from 'semantic-ui-react';
-import _ from 'lodash';
+import { Table } from 'semantic-ui-react';
 
 type Props = {
   context: {}
@@ -11,28 +10,19 @@ class VoteContext extends Component<Props> {
     const { context } = this.props;
     return context.producers.length > 0 ? (
       <p className="dashed-border">
-          You are about to vote for <strong>{context.producers.length}</strong>{' '}
-          block producers. Transaction details are listed below.
+        You are about to vote for <strong>{context.producers.length}</strong>{' '}
+        block producers. Transaction details are listed below.
       </p>
-      ) : (
-        <p>
-          You are about to discard your vote. Transaction details are listed
-          below.
-        </p>
-      );
-  }
+    ) : (
+      <p>
+        You are about to discard your vote. Transaction details are listed
+        below.
+      </p>
+    );
+  };
 
   renderDetails = () => {
     const { context } = this.props;
-    const groups = [];
-    _.forEach(context.producers, producer => {
-      const { length } = groups;
-      if (length === 0 || groups[length - 1].length === 8) {
-        groups.push([producer]);
-      } else {
-        groups[length - 1].push(producer);
-      }
-    });
 
     return (
       <Table basic="very" className="verify-content">
@@ -47,26 +37,14 @@ class VoteContext extends Component<Props> {
             <Table.Cell>{context.contract}</Table.Cell>
             <Table.Cell>{context.action}</Table.Cell>
             <Table.Cell>{context.account}</Table.Cell>
-            <Table.Cell className='producer-list'>
-              {_.map(groups, (group, i) => (
-                <div key={`group-${i}`}>
-                  <Header
-                    size="tiny"
-                    textAlign="center"
-                    dividing
-                    style={{ marginBottom: '0em', marginTop: '1em' }}
-                  >
-                    {`Page ${i + 1}`}
-                  </Header>
-                  {group.join(' ')}
-                </div>
-                  ))}
+            <Table.Cell className="producer-list">
+              {context.producers.join(' ')}
             </Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
     );
-  }
+  };
 
   render() {
     const { context } = this.props;
