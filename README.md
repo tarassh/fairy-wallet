@@ -2,30 +2,29 @@
   <img src="https://github.com/tarassh/fairy-wallet/blob/master/resources/logo.png" height="128" width="128" />
 </p>
 
-
 [![version](https://img.shields.io/badge/release-0.9.6-lightgrey.svg)](https://github.com/tarassh/fairy-wallet/releases)
 
-# Fairy Wallet - Ledger Nano S compatible wallet for EOS software.
+# Fairy Wallet - Ledger Nano S compatible wallet for EOS
 
-`Fairy Wallet` is light and secure companion desktop application for Ledger Nano S for EOS software. Application provides basic wallet functionality which allows to controll tokens and initiate transfer for multiple accounts.
+`Fairy Wallet` is a light and secure desktop application for the Ledger Nano S and EOS blockchain. The application provides basic wallet functionality that allows the control and transfer of tokens using multiple accounts.
 
 ![fairy-wallet screenshot](https://github.com/tarassh/fairy-wallet/blob/master/resources/application/Wallet.png)
 
 ## Features
 
-- **Hardware Wallet support** Application works with Ledger Nano S hardware wallet. To sign the transaction, application upploads transaction data onto hardware wallet and signing is done internally, so private key is never revealed to the world.
-- **Multi account support** Application allows user to switch between EOS accounts if he have such. Accouns should be bounded to public key from hardware wallet.
-- **Transfer tokens** Application allows to transfer EOS tokens and generic tokens.
-- **Balance Staking** Application allows to stake/unstrake EOS tokens.
-- **Airdrop** Apllication allows to track generic tokens that user is interested in.
-- **Transaction History** Apllication provides history transaction track.
-- **Currency price** Added EOS USD exchange pair.
+- **Hardware Wallet Support** Application works with Ledger Nano S hardware wallet. To sign the transaction, application uploads transaction data onto hardware wallet and signing is done internally, so the private key is never revealed to the world.
+- **Multi Account Support** Application allows user to switch between EOS accounts. Accounts should be bound to the public key on the hardware wallet.
+- **Transfer Tokens** Application allows the transfer of EOS and generic tokens.
+- **Balance Staking** Application allows the user to stake/unstake EOS tokens.
+- **Airdrop** Application allows the tracking of generic tokens that user is interested in.
+- **Transaction History** Application provides transaction history.
+- **Currency Price** Added EOS USD exchange pair.
 - **Voting** User can vote up to 30 block producers.
 - **Resource Delegation** Application allows to delegate resource to multiple accounts.
 
 ## Releases
 
-The latest release version is 0.9.6. To download application use one the following links:
+The latest release version is 0.9.6. To download the application use one the following links:
 
 - [for MacOS](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.6/FairyWallet-0.9.6.dmg)
 - [for Windows](https://github.com/tarassh/fairy-wallet/releases/download/v0.9.6/FairyWallet.Setup.0.9.6.exe)
@@ -33,29 +32,28 @@ The latest release version is 0.9.6. To download application use one the followi
 
 Release notes: https://github.com/tarassh/fairy-wallet/releases/tag/v0.9.6
 
+**NOTE**: Wallet on Linux may require additional permissions for the device. To add permissions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 
+Windows users may experience slow response from the device due to driver issues.
 
-**NOTE**: Wallet on Linux may require additional permitions for the device. To add permitions, use this [script](https://github.com/LedgerHQ/udev-rules/blob/master/add_udev_rules.sh). 
-Windows users may expirience slow response from the device due to driver issues.
-
-## Building from source
+## Building from Source
 
 Please make sure that you have `yarn` preinstalled.
-To build binaries from souse follow the intruction below:
+To build binaries from source follow the instructions below:
 
 ```
-git clone https://github.com/tarassh/fairy-wallet fairy-wallet
+git clone https://github.com/tarassh/fairy-wallet
 cd fairy-wallet
 yarn
 yarn package
 ```
 
-## User manual
+## User Manual
 
-User manual you can find on [Wiki](https://github.com/tarassh/fairy-wallet/wiki/How-to-use-Ledger-Nano-S-with-Fairy-Wallet) page.
+User manual can be found on the [Wiki](https://github.com/tarassh/fairy-wallet/wiki/How-to-use-Ledger-Nano-S-with-Fairy-Wallet) page.
 
 ## Connect to Mainnet
 
-To connect to EOS Mainnet you can use one of the following endpoints:
+Connect to the EOS Mainnet using one of the following endpoints:
 
 * http://api.cypherglass.com - operated by [Cypherglass](https://www.cypherglass.com)
 * https://eos.greymass.com - operated by [Greymass](https://greymass.com)
@@ -68,17 +66,17 @@ To connect to EOS Mainnet you can use one of the following endpoints:
 
 ## Connect to Testnet
 
-If you want to do testing of this application you can connect to available testnet.
+Connect to the EOS Testnet for testing this application.
 
 [Jungle Testnet](http://jungle.cryptolions.io/) - operated by [CryptoLions](http://CryptoLions.io/):
 
 * http://jungle.cryptolions.io:18888
 * http://dev.cryptolions.io:38888
 
-## Debugging mode
+## Development Mode
 
 ```
-git clone https://github.com/tarassh/fairy-wallet fairy-wallet
+git clone https://github.com/tarassh/fairy-wallet
 cd fairy-wallet
 yarn
 yarn dev
