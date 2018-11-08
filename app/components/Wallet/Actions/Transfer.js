@@ -394,6 +394,13 @@ function formatPrecisions(balance) {
   }
   const [quantity] = balance.split(' ');
   const [, suffix] = quantity.split('.');
+  if (!suffix) {
+    return {
+      quantity,
+      precision: 0,
+      step: 1,
+    };
+  }
   let step = '1';
   for (let i = 1; i < suffix.length; i += 1) {
     step = `0${step}`;
