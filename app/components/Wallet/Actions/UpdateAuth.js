@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Divider } from 'semantic-ui-react';
 import TransactionsModal from '../../Shared/TransactionsModal';
 import MainContentContainer from './../../../components/Shared/UI/MainContent';
+import PermissionButton from '../../Shared/UI/PermissionButton';
 
 const ecc = require('eosjs-ecc');
 
@@ -15,7 +16,8 @@ export default class UpdateAuth extends Component<Props> {
   state = {
     openModal: false,
     active: '',
-    owner: ''
+    owner: '',
+    permission: ''
   };
 
   handleChange = (e, { name, value }) => {
@@ -48,7 +50,7 @@ export default class UpdateAuth extends Component<Props> {
   };
 
   handleActiveSubmit = () => {
-    const { active } = this.state;
+    const { active, permission } = this.state;
     const { actions, account } = this.props;
     const perm = getAuth(account, 'active');
     const auth = {
@@ -67,7 +69,7 @@ export default class UpdateAuth extends Component<Props> {
       perm.perm_name,
       perm.parent,
       auth,
-      perm.perm_name
+      permission
     );
     this.setState({ openModal: true, active: '', owner: '' });
   };
@@ -99,7 +101,7 @@ export default class UpdateAuth extends Component<Props> {
           open={openModal}
           transaction={transaction}
           handleClose={this.handleClose}
-          size='large'
+          size="large"
         />
         <Form onSubmit={this.handleActiveSubmit}>
           <Divider />
@@ -133,10 +135,11 @@ export default class UpdateAuth extends Component<Props> {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Button
+            <PermissionButton
               content="Update"
-              name="active"
               disabled={!enableActive}
+              account={account}
+              onChange={this.handleChange}
             />
           </Form.Group>
           <Divider />

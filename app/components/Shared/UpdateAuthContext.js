@@ -1,20 +1,36 @@
 import React, { Component } from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Message } from 'semantic-ui-react';
 
 type Props = {
   context: {}
 };
 
 class UpdateAuthContext extends Component<Props> {
+  renderWarning = () => {
+    const { context } = this.props;
+    return (
+      <Message warning>
+        <Message.Header>Action has serious consequences!</Message.Header>
+        <p>
+          If you dont have corresponding private key to{' '}
+          <strong>{context.auth.keys[0].key}</strong> you will no longer be able
+          send transactions under <strong>{context.permission}</strong>{' '}
+          permission.
+        </p>
+      </Message>
+    );
+  };
+
   renderText = () => {
     const { context } = this.props;
     return (
       <p className="dashed-border">
-        You are about to update account <strong>{context.permission}</strong> permission with <strong>{context.auth.keys[0].key}</strong> key. Transaction details are listed
-        below.
+        You are about to update account <strong>{context.permission}</strong>{' '}
+        permission with <strong>{context.auth.keys[0].key}</strong> key.
+        Transaction details are listed below.
       </p>
     );
-  }
+  };
 
   renderDetails = () => {
     const { context } = this.props;
@@ -43,8 +59,8 @@ class UpdateAuthContext extends Component<Props> {
           </Table.Row>
         </Table.Body>
       </Table>
-    )
-  }
+    );
+  };
 
   render() {
     const { context } = this.props;
@@ -53,6 +69,7 @@ class UpdateAuthContext extends Component<Props> {
     if (context !== null) {
       content = (
         <div>
+          {this.renderWarning()}
           {this.renderText()}
           {this.renderDetails()}
         </div>

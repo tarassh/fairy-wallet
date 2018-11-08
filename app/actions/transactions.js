@@ -558,7 +558,8 @@ export function updateauth(permission, parent, auth, authorization = '') {
     const modified = {
       ...connection,
       signProvider: promiseSigner,
-      authorization: `${account.account_name}@${withPermission}`
+      authorization: `${account.account_name}@${withPermission}`,
+      expireInSeconds: 300
     };
 
     return eos(modified)
