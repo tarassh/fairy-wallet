@@ -100,3 +100,10 @@
 
 - **Features:** Contact list. Currency equivalent for transfer.
 - **Fixes:** Minor fixes.
+
+# 0.10.0 (2018.11.8)
+
+- **Features:** Refund, UpdateAuth. 
+- **Fixes:** #61: Cannot transfer token with 0 decimal precision.
+  Minor fixes.
+
