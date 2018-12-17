@@ -14,8 +14,8 @@ const initialState = {
       path: 'https://bloks.io/transaction/'
     },
     {
-      key: 'myeoskit.com',
-      path: 'https://www.myeoskit.com/#/tx/'
+      key: 'eosx.io',
+      path: 'https://www.eosx.io/tx/'
     }
   ],
   selectedTheme: '',
