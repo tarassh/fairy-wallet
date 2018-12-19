@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
 import states from './states';
-import ledger from './ledger';
+import wallet from './wallet';
 import connection from './connection';
 import accounts from './accounts';
 import settings from './settings';
@@ -15,7 +15,7 @@ import global from './global';
 import contacts from './contacts';
 
 const rootReducer = combineReducers({
-  ledger,
+  wallet,
   states,
   connection,
   accounts,

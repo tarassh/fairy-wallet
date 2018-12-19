@@ -8,13 +8,13 @@ import launchAppDark from '../../../resources/images/launch-app-dark.svg';
 
 class Lock extends Component<Props> {
   render() {
-    const { ledger, settings } = this.props;
+    const { wallet, settings } = this.props;
     const dark = settings.selectedTheme === 'dark';
 
     let text = 'To begin, connect and unlock your Ledger Wallet.';
     let src = dark ? plugDeviceDark : plugDevice;
 
-    if (ledger.devicePath !== null) {
+    if (wallet.devicePath !== null) {
       text = 'Open EOS application on your device.';
       src = dark ? launchAppDark : launchApp;
     }

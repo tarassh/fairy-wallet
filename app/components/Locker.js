@@ -12,7 +12,7 @@ import styles from './Locker.css'; // eslint-disable-line no-unused-vars
 type Props = {
   states: {},
   accounts: {},
-  ledger: {},
+  wallet: {},
   loading: {},
   settings: {}
 };
@@ -21,7 +21,7 @@ export default class Locker extends Component<Props> {
   props: Props;
 
   render() {
-    const { states, accounts, ledger, loading, settings } = this.props;
+    const { states, accounts, wallet, loading, settings } = this.props;
 
     let isLoading = false;
     _.forEach(loading, value => {
@@ -33,7 +33,7 @@ export default class Locker extends Component<Props> {
 
     let mainSegment = <div />;
     if (!states.deviceConnected) {
-      mainSegment = <Lock ledger={ledger} settings={settings} />;
+      mainSegment = <Lock wallet={wallet} settings={settings} />;
     }
 
     if (states.deviceConnected && accounts.publicKey === null) {

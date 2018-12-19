@@ -41,7 +41,7 @@ export function transfer(
         memo
       }
     });
-    const { connection, ledger, accounts } = getState();
+    const { connection, wallet, accounts } = getState();
     const withPermission =
       permission === ''
         ? accounts.account.permissions[0].perm_name
@@ -55,9 +55,9 @@ export function transfer(
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -110,7 +110,7 @@ export function delegate(from, receiver, net, cpu, permission = '') {
       }
     });
 
-    const { connection, ledger, accounts } = getState();
+    const { connection, wallet, accounts } = getState();
     const withPermission =
       permission === ''
         ? accounts.account.permissions[0].perm_name
@@ -124,9 +124,9 @@ export function delegate(from, receiver, net, cpu, permission = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -178,7 +178,7 @@ export function undelegate(from, receiver, net, cpu, permission = '') {
       }
     });
 
-    const { connection, ledger, accounts } = getState();
+    const { connection, wallet, accounts } = getState();
     const withPermission =
       permission === ''
         ? accounts.account.permissions[0].perm_name
@@ -192,9 +192,9 @@ export function undelegate(from, receiver, net, cpu, permission = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -234,7 +234,7 @@ export function undelegate(from, receiver, net, cpu, permission = '') {
 
 export function voteProducer(producers = [], permission = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
     const proxy = '';
 
@@ -260,9 +260,9 @@ export function voteProducer(producers = [], permission = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -304,7 +304,7 @@ export function voteProducer(producers = [], permission = '') {
 
 export function buyram(recipient, tokens, permission = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
 
     dispatch({
@@ -331,9 +331,9 @@ export function buyram(recipient, tokens, permission = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -374,7 +374,7 @@ export function buyram(recipient, tokens, permission = '') {
 
 export function sellram(bytes, permission = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
 
     dispatch({
@@ -400,9 +400,9 @@ export function sellram(bytes, permission = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -443,7 +443,7 @@ export function sellram(bytes, permission = '') {
 
 export function buyrambytes(recipient, bytes, permission = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
 
     dispatch({
@@ -470,9 +470,9 @@ export function buyrambytes(recipient, bytes, permission = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -513,7 +513,7 @@ export function buyrambytes(recipient, bytes, permission = '') {
 
 export function updateauth(permission, parent, auth, authorization = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
     dispatch({
       type: types.UPDATE_AUTH_REQUEST,
@@ -540,9 +540,9 @@ export function updateauth(permission, parent, auth, authorization = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -583,7 +583,7 @@ export function updateauth(permission, parent, auth, authorization = '') {
 
 export function deleteauth(permission, authorization = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
     dispatch({
       type: types.DELETE_AUTH_REQUEST,
@@ -607,9 +607,9 @@ export function deleteauth(permission, authorization = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -649,7 +649,7 @@ export function deleteauth(permission, authorization = '') {
 
 export function linkauth(code, action, permission, authorization = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
     dispatch({
       type: types.LINK_AUTH_REQUEST,
@@ -675,9 +675,9 @@ export function linkauth(code, action, permission, authorization = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -717,7 +717,7 @@ export function linkauth(code, action, permission, authorization = '') {
 
 export function unlinkauth(code, action, authorization = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
     dispatch({
       type: types.UNLINK_AUTH_REQUEST,
@@ -742,9 +742,9 @@ export function unlinkauth(code, action, authorization = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;
@@ -784,7 +784,7 @@ export function unlinkauth(code, action, authorization = '') {
 
 export function refund(authorization = '') {
   return (dispatch: () => void, getState) => {
-    const { accounts, connection, ledger } = getState();
+    const { accounts, connection, wallet } = getState();
     const { account } = accounts;
     dispatch({
       type: types.REFUND_REQUEST,
@@ -808,9 +808,9 @@ export function refund(authorization = '') {
         constructed: true
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       const result = await api.signTransaction(
-        ledger.bip44Path,
+        wallet.bip44Path,
         buffer.toString('hex')
       );
       const rawSig = result.v + result.r + result.s;

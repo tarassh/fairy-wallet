@@ -241,7 +241,7 @@ class TransactionsModal extends Component<Props> {
 const mapStateToProps = state => ({
   loading: state.loading,
   states: state.states,
-  application: state.ledger.application,
+  application: state.wallet.application,
   explorer: state.settings.explorers[0],
   settings: state.settings
 });

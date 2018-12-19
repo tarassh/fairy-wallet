@@ -10,20 +10,20 @@ export function startListen() {
 
     dispatch({
       type: types.APP_LEDGER_CONNECTION_STATUS,
-      deviceConnected: !!currentState.ledger.transport
+      deviceConnected: !!currentState.wallet.transport
     });
 
-    if (getState().ledger.subscriber !== null) {
+    if (getState().wallet.subscriber !== null) {
       return;
     }
 
     const subscriber = Transport.listen({
       next: event => {
         if (event.type === 'add') {
-          if (getState().ledger.devicePath === null) {
+          if (getState().wallet.devicePath === null) {
             if (
-              getState().ledger.devicePath !== event.device.path &&
-              getState().ledger.application === null
+              getState().wallet.devicePath !== event.device.path &&
+              getState().wallet.application === null
             ) {
               dispatch(stopListen());
 
@@ -89,9 +89,9 @@ export function startListen() {
 
 export function stopListen() {
   return (dispatch: () => void, getState) => {
-    const { ledger } = getState();
-    if (ledger.subscriber !== null) {
-      ledger.subscriber.unsubscribe();
+    const { wallet } = getState();
+    if (wallet.subscriber !== null) {
+      wallet.subscriber.unsubscribe();
 
       dispatch({
         type: types.STOP_LISTEN_DEVICE_EVENTS
@@ -103,16 +103,16 @@ export function stopListen() {
 export function getPublicKey(display = false) {
   return (dispatch: () => void, getState) =>
     new Promise((resolve, reject) => {
-      const { ledger } = getState();
+      const { wallet } = getState();
       dispatch({
         type: display
           ? types.GET_PUBLIC_KEY_CONFIRM_REQUEST
           : types.GET_PUBLIC_KEY_REQUEST
       });
 
-      const api = new Api(ledger.transport);
+      const api = new Api(wallet.transport);
       api
-        .getPublicKey(ledger.bip44Path, display)
+        .getPublicKey(wallet.bip44Path, display)
         .then(result => {
           const type = display
             ? types.GET_PUBLIC_KEY_CONFIRM_SUCCESS
@@ -132,9 +132,9 @@ export function getPublicKey(display = false) {
 
 export function getAppStats() {
   return (dispatch: () => void, getState) => {
-    const { ledger } = getState();
+    const { wallet } = getState();
 
-    const api = new Api(ledger.transport);
+    const api = new Api(wallet.transport);
     dispatch({ type: types.GET_APP_STATS_REQUEST });
 
     return api
@@ -143,7 +143,7 @@ export function getAppStats() {
         dispatch({
           type: types.GET_APP_STATS_SUCCESS,
           application: result,
-          transport: ledger.transport
+          transport: wallet.transport
         })
       )
       .catch(err => dispatch({ type: types.GET_APP_STATS_FAILURE, err }));
