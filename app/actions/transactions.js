@@ -2,7 +2,6 @@
 import * as types from './types';
 import eos from './helpers/eos';
 import * as constants from './constants/constants';
-import serialize from './helpers/ledgerserialize';
 import { getPublicKey } from './ledger';
 
 const Api = require('./helpers/eosledger').default;
@@ -49,7 +48,6 @@ export function transfer(
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.TRANSFER_TOKEN_CONSTRUCTED,
         constructed: true
@@ -58,7 +56,8 @@ export function transfer(
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -118,7 +117,6 @@ export function delegate(from, receiver, net, cpu, permission = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.DELEGATE_CONSTRUCTED,
         constructed: true
@@ -127,7 +125,8 @@ export function delegate(from, receiver, net, cpu, permission = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -186,7 +185,6 @@ export function undelegate(from, receiver, net, cpu, permission = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.UNDELEGATE_CONSTRUCTED,
         constructed: true
@@ -195,7 +193,8 @@ export function undelegate(from, receiver, net, cpu, permission = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -254,7 +253,6 @@ export function voteProducer(producers = [], permission = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.VOTEPRODUCER_CONSTRUCTED,
         constructed: true
@@ -263,7 +261,8 @@ export function voteProducer(producers = [], permission = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -325,7 +324,6 @@ export function buyram(recipient, tokens, permission = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.BUYRAM_CONSTRUCTED,
         constructed: true
@@ -334,7 +332,8 @@ export function buyram(recipient, tokens, permission = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -394,7 +393,6 @@ export function sellram(bytes, permission = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.SELLRAM_CONSTRUCTED,
         constructed: true
@@ -403,7 +401,8 @@ export function sellram(bytes, permission = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -464,7 +463,6 @@ export function buyrambytes(recipient, bytes, permission = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.BUYRAMBYTES_CONSTRUCTED,
         constructed: true
@@ -473,7 +471,8 @@ export function buyrambytes(recipient, bytes, permission = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -534,7 +533,6 @@ export function updateauth(permission, parent, auth, authorization = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.UPDATE_AUTH_CONSTRUCTED,
         constructed: true
@@ -543,7 +541,8 @@ export function updateauth(permission, parent, auth, authorization = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -601,7 +600,6 @@ export function deleteauth(permission, authorization = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.UPDATE_AUTH_CONSTRUCTED,
         constructed: true
@@ -610,7 +608,8 @@ export function deleteauth(permission, authorization = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -669,7 +668,6 @@ export function linkauth(code, action, permission, authorization = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.LINK_AUTH_CONSTRUCTED,
         constructed: true
@@ -678,7 +676,8 @@ export function linkauth(code, action, permission, authorization = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -736,7 +735,6 @@ export function unlinkauth(code, action, authorization = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.UNLINK_AUTH_CONSTRUCTED,
         constructed: true
@@ -745,7 +743,8 @@ export function unlinkauth(code, action, authorization = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
@@ -802,7 +801,6 @@ export function refund(authorization = '') {
 
     const signProvider = async ({ transaction }) => {
       const { fc } = eos(connection);
-      const buffer = serialize(fc.types.config.chainId, transaction, fc.types);
       dispatch({
         type: types.REFUND_CONSTRUCTED,
         constructed: true
@@ -811,7 +809,8 @@ export function refund(authorization = '') {
       const api = new Api(wallet.transport);
       const result = await api.signTransaction(
         wallet.bip44Path,
-        buffer.toString('hex')
+        transaction,
+        fc
       );
       const rawSig = result.v + result.r + result.s;
 
