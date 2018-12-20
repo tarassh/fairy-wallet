@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Locker from '../components/Locker';
 
-import * as LedgerActions from '../actions/ledger';
+import * as WalletActions from '../actions/wallet';
 import * as StateActions from '../actions/states';
 
 type Props = {
@@ -60,7 +60,7 @@ function mapDispatchToProps(dispatch) {
     actions: bindActionCreators(
       {
         ...StateActions,
-        ...LedgerActions
+        ...WalletActions
       },
       dispatch
     )

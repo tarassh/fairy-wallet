@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Button, Form, Image } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getPublicKey } from '../../actions/ledger';
+import { getPublicKey } from '../../actions/wallet';
 import wakeupDevice from '../../../resources/images/wakeup-device.svg';
 import wakeupDeviceDark from '../../../resources/images/wakeup-device-dark.svg';
 

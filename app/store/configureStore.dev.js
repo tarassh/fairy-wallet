@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
-import { routerMiddleware, routerActions } from 'react-router-redux';
+import { routerMiddleware, RouterActions } from 'react-router-redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
 import persistConfig from './persist';
-import * as ledgerActions from '../actions/ledger';
-import * as stateActions from '../actions/states';
-import * as connectionActions from '../actions/connection';
-import * as accountsActions from '../actions/accounts';
+import * as WalletActions from '../actions/wallet';
+import * as StateActions from '../actions/states';
+import * as ConnectionActions from '../actions/connection';
+import * as AccountsActions from '../actions/accounts';
 
 const history = createHashHistory();
 
@@ -38,11 +38,11 @@ const configureStore = (initialState = {}) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...ledgerActions,
-    ...routerActions,
-    ...stateActions,
-    ...connectionActions,
-    ...accountsActions
+    ...WalletActions,
+    ...RouterActions,
+    ...StateActions,
+    ...ConnectionActions,
+    ...AccountsActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */

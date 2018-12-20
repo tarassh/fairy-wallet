@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import Routes from '../routes';
 
-import * as LedgerActions from "../actions/ledger";
+import * as WalletActions from "../actions/wallet";
 
 type Props = {
   actions: {},
@@ -52,7 +52,7 @@ class Root extends Component<Props> {
 function mapDispatchToProps(dispatch) {
   return {
     actions: bindActionCreators({
-      ...LedgerActions
+      ...WalletActions
     }, dispatch)
   };
 }

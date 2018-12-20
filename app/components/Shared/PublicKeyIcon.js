@@ -8,7 +8,7 @@ import publicKeyDarkSvg from '../../../resources/images/verify-public-key-dark.s
 import publicKeyErrorSvg from '../../../resources/images/verify-public-key-error.svg';
 import publicKeyErrorDarkSvg from '../../../resources/images/verify-public-key-error-dark.svg';
 
-import { getPublicKey } from '../../actions/ledger';
+import { getPublicKey } from '../../actions/wallet';
 
 type Props = {
   getPublicKey: () => {},

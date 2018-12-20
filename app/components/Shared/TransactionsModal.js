@@ -29,7 +29,7 @@ import confirmTransactionDark from '../../../resources/images/confirm-transactio
 import confirmTransactionFailedDark from '../../../resources/images/confirm-transaction-failed-dark.svg';
 import wakeupDeviceDark from '../../../resources/images/wakeup-device-dark.svg';
 
-import { getPublicKey } from '../../actions/ledger';
+import { getPublicKey } from '../../actions/wallet';
 
 type Props = {
   states: {},

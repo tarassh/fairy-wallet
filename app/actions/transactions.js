@@ -2,7 +2,7 @@
 import * as types from './types';
 import eos from './helpers/eos';
 import * as constants from './constants/constants';
-import { getPublicKey } from './ledger';
+import { getPublicKey } from './wallet';
 
 const Api = require('./helpers/eosledger').default;
 
