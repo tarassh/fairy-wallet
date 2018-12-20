@@ -1,7 +1,7 @@
 // @flow
 import * as types from './types';
 
-const Api = require('./helpers/eosledjer').default;
+const Api = require('./helpers/eosledger').default;
 const Transport = require('@ledgerhq/hw-transport-node-hid').default;
 
 export function startListen() {

@@ -5,7 +5,7 @@ import * as constants from './constants/constants';
 import serialize from './helpers/ledgerserialize';
 import { getPublicKey } from './ledger';
 
-const Api = require('./helpers/eosledjer').default;
+const Api = require('./helpers/eosledger').default;
 
 export function checkAndRun(action, ...args) {
   return (dispatch: () => void) => {
