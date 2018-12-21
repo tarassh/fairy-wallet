@@ -9,7 +9,7 @@ export function startListen() {
     const currentState = getState();
 
     dispatch({
-      type: types.APP_LEDGER_CONNECTION_STATUS,
+      type: types.APP_WALLET_CONNECTION_STATUS,
       deviceConnected: !!currentState.wallet.transport
     });
 

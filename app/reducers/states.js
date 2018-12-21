@@ -12,7 +12,7 @@ const initialState = {
 
 export default function states(state = initialState, action) {
   switch (action.type) {
-    case types.APP_LEDGER_CONNECTION_STATUS: {
+    case types.APP_WALLET_CONNECTION_STATUS: {
       return Object.assign({}, state, {
         deviceConnected: action.deviceConnected
       });
