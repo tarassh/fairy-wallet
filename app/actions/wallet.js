@@ -130,29 +130,8 @@ export function getPublicKey(display = false) {
     });
 }
 
-export function getAppStats() {
-  return (dispatch: () => void, getState) => {
-    const { wallet } = getState();
-
-    const api = new Api(wallet.transport);
-    dispatch({ type: types.GET_APP_STATS_REQUEST });
-
-    return api
-      .getAppConfiguration()
-      .then(result =>
-        dispatch({
-          type: types.GET_APP_STATS_SUCCESS,
-          application: result,
-          transport: wallet.transport
-        })
-      )
-      .catch(err => dispatch({ type: types.GET_APP_STATS_FAILURE, err }));
-  };
-}
-
 export default {
   startListen,
   stopListen,
-  getAppStats,
   getPublicKey
 };
